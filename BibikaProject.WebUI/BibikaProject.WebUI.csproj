@@ -5,14 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ClientApp\**" />
-    <Content Remove="ClientApp\**" />
-    <EmbeddedResource Remove="ClientApp\**" />
-    <None Remove="ClientApp\**" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.13" />
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BibikaProject.Infrastructure\BibikaProject.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

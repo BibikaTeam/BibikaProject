@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BibikaProject.WebUI", "BibikaProject.WebUI\BibikaProject.WebUI.csproj", "{E6639619-7FAA-4155-9EE9-B128159756B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BibikaProject.Infrastructure", "BibikaProject.Infrastructure\BibikaProject.Infrastructure.csproj", "{73906112-706F-45C1-9394-11CD356F3B9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BibikaProject.Infrastructure", "BibikaProject.Infrastructure\BibikaProject.Infrastructure.csproj", "{73906112-706F-45C1-9394-11CD356F3B9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BibikaProject.Domain", "BibikaProject.Domain\BibikaProject.Domain.csproj", "{923B82ED-D2EC-426E-8DF8-505F8073E28B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BibikaProject.Domain", "BibikaProject.Domain\BibikaProject.Domain.csproj", "{923B82ED-D2EC-426E-8DF8-505F8073E28B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BibikaProject.Application", "BibikaProject.Application\BibikaProject.Application.csproj", "{32C786C5-819E-45C2-A7B3-24656747133D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BibikaProject.Application", "BibikaProject.Application\BibikaProject.Application.csproj", "{32C786C5-819E-45C2-A7B3-24656747133D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BibikaProject.WebUI", "BibikaProject.WebUI\BibikaProject.WebUI.csproj", "{17CA7470-63CD-4120-A0F9-8F6165543E17}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E6639619-7FAA-4155-9EE9-B128159756B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E6639619-7FAA-4155-9EE9-B128159756B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E6639619-7FAA-4155-9EE9-B128159756B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E6639619-7FAA-4155-9EE9-B128159756B0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{73906112-706F-45C1-9394-11CD356F3B9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{73906112-706F-45C1-9394-11CD356F3B9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73906112-706F-45C1-9394-11CD356F3B9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +29,10 @@ Global
 		{32C786C5-819E-45C2-A7B3-24656747133D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32C786C5-819E-45C2-A7B3-24656747133D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32C786C5-819E-45C2-A7B3-24656747133D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17CA7470-63CD-4120-A0F9-8F6165543E17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17CA7470-63CD-4120-A0F9-8F6165543E17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17CA7470-63CD-4120-A0F9-8F6165543E17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17CA7470-63CD-4120-A0F9-8F6165543E17}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
