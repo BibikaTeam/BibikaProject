@@ -31,7 +31,13 @@ namespace BibikaProject.WebUI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BibikaProject.WebUI", Version = "v1" });
             });
 
+            services.AddCors();
 
+            services.ConfigureSqlContext(Configuration);
+
+            services.ConfigureJWT(Configuration);
+
+            services.ConfigureIdentity();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -40,12 +46,16 @@ namespace BibikaProject.WebUI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BibikaProject.WebUI v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
             }
+
+            app.UseCors("CorsPolicy");
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
