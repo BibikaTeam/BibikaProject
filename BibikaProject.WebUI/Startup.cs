@@ -31,13 +31,14 @@ namespace BibikaProject.WebUI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BibikaProject.WebUI", Version = "v1" });
             });
 
-            services.AddCors();
+            //services.AddCors();
+            services.ConfigureCors();
 
             services.ConfigureSqlContext(Configuration);
 
             services.ConfigureJWT(Configuration);
 
-            services.ConfigureIdentity();
+            services.ConfigureIdentity(); 
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

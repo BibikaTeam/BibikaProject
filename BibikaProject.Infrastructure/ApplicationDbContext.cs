@@ -11,7 +11,7 @@ namespace BibikaProject.Infrastructure
         {
         }
 
-        public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -35,7 +35,6 @@ namespace BibikaProject.WebUI
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                      options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
-
         }
 
         public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
