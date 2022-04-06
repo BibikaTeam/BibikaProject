@@ -3,15 +3,17 @@ using System;
 using BibikaProject.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace BibikaProject.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220406161932_CreatedCoreModels")]
+    partial class CreatedCoreModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,7 +29,6 @@ namespace BibikaProject.Infrastructure.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -43,7 +44,6 @@ namespace BibikaProject.Infrastructure.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -58,50 +58,40 @@ namespace BibikaProject.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("BrandId")
+                    b.Property<int?>("BrandId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("CarBodyId")
+                    b.Property<int?>("CarBodyId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Color")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("CompleteSet")
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Engine")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("GearBox")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("GenerationId")
+                    b.Property<int?>("GenerationId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Location")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("Mileage")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ModelId")
+                    b.Property<int?>("ModelId")
                         .HasColumnType("integer");
 
                     b.Property<string>("SellerId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -127,7 +117,6 @@ namespace BibikaProject.Infrastructure.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("YearFrom")
@@ -152,7 +141,6 @@ namespace BibikaProject.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -170,7 +158,6 @@ namespace BibikaProject.Infrastructure.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -186,11 +173,9 @@ namespace BibikaProject.Infrastructure.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Category")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -332,15 +317,15 @@ namespace BibikaProject.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3c5bdd20-0a27-4dbd-ac42-98b535303e0d",
-                            ConcurrencyStamp = "d4dac6c5-4193-4586-9c3d-c83482bca661",
+                            Id = "3abc98db-8086-4742-9745-f0e5d9c7d65d",
+                            ConcurrencyStamp = "63ed4079-2bdd-4bf0-b5e8-3f3fa05fa9e8",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "1bce652a-5203-4f73-a45d-9abab3dd69ee",
-                            ConcurrencyStamp = "9da5712b-4a57-4fd6-ad79-97f2c4f0b3a1",
+                            Id = "7f5a84f0-4a13-43fa-8afd-d41f0c0540f8",
+                            ConcurrencyStamp = "8936d9ec-24f6-4e50-83e2-7349ac24b637",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -454,33 +439,23 @@ namespace BibikaProject.Infrastructure.Migrations
                 {
                     b.HasOne("BibikaProject.Domain.Entities.Core.Brand", "Brand")
                         .WithMany("CarPosts")
-                        .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BrandId");
 
                     b.HasOne("BibikaProject.Domain.Entities.Core.CarBody", "CarBody")
                         .WithMany("CarPosts")
-                        .HasForeignKey("CarBodyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CarBodyId");
 
                     b.HasOne("BibikaProject.Domain.Entities.Core.Generation", "Generation")
                         .WithMany("CarPosts")
-                        .HasForeignKey("GenerationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GenerationId");
 
                     b.HasOne("BibikaProject.Domain.Entities.Core.Model", "Model")
                         .WithMany("CarPosts")
-                        .HasForeignKey("ModelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ModelId");
 
                     b.HasOne("BibikaProject.Domain.Entities.Identity.ApplicationUser", "Seller")
                         .WithMany("CarPosts")
-                        .HasForeignKey("SellerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SellerId");
 
                     b.Navigation("Brand");
 
