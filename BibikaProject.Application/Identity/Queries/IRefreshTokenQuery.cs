@@ -5,6 +5,6 @@ namespace BibikaProject.Application.Identity.Queries
 {
     public interface IRefreshTokenQuery
     {
-        Task<RefreshToken> GetRefreshToken(string token);
+        Task<RefreshToken> GetRefreshTokenAsync(string token);
     }
 }

@@ -98,7 +98,7 @@ namespace BibikaProject.Infrastructure.Identity.Services
 
             var jti = principal.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
 
-            var storedRefreshToken = await refreshTokenQuery.GetRefreshToken(request.RefreshToken);
+            var storedRefreshToken = await refreshTokenQuery.GetRefreshTokenAsync(request.RefreshToken);
 
             if (storedRefreshToken == null)
             {

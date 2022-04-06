@@ -14,7 +14,7 @@ namespace BibikaProject.Infrastructure.Identity.Queries
 
         private readonly ApplicationDbContext context;
 
-        public async Task<RefreshToken> GetRefreshToken(string token)
+        public async Task<RefreshToken> GetRefreshTokenAsync(string token)
         {
             return await context.RefreshTokens.FirstOrDefaultAsync(x => x.Token == token);
         }
