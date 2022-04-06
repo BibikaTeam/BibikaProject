@@ -7,6 +7,7 @@ namespace BibikaProject.Domain.Entities.Core
         [Key]
         public int Id { get; set; }
 
+        [Required]
         public string Title { get; set; }
 
         public CarPost CarPost { get; set; }
