@@ -12,3 +12,5 @@ bld/
 [Ll]og/
 [Pp]ublishProfiles/
 .vs
+internal_logs/
+logs/
