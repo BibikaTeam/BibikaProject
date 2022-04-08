@@ -1,12 +1,14 @@
 ﻿using BibikaProject.Application.Identity.Commands;
 using BibikaProject.Application.Identity.Queries;
 using BibikaProject.Application.Identity.Services;
+using BibikaProject.Application.Logger;
 using BibikaProject.Domain.Entities.Identity;
 using BibikaProject.Infrastructure;
 using BibikaProject.Infrastructure.Identity;
 using BibikaProject.Infrastructure.Identity.Commands;
 using BibikaProject.Infrastructure.Identity.Queries;
 using BibikaProject.Infrastructure.Identity.Services;
+using BibikaProject.Infrastructure.Logger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -89,6 +91,11 @@ namespace BibikaProject.WebUI
 
             services.AddTransient<IRefreshTokenQuery, RefreshTokenQuery>();
             services.AddTransient<IRefreshTokenCommand, RefreshTokenCommand>();
+        }
+
+        public static void ConfigureLogger(this IServiceCollection services)
+        {
+            services.AddScoped<ILoggerManager, LoggerManager>();
         }
     }
 }

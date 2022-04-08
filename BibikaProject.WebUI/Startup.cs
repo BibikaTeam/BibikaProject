@@ -1,16 +1,20 @@
+using BibikaProject.Application.Logger;
+using BibikaProject.WebUI.ExceptionMiddleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using NLog;
+using System.IO;
 
 namespace BibikaProject.WebUI
 {
     public class Startup
     {
         public Startup(IConfiguration configuration)
-        {
+        {          
             Configuration = configuration;
         }
 
@@ -24,17 +28,18 @@ namespace BibikaProject.WebUI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BibikaProject.WebUI", Version = "v1" });
             });
 
-            //services.AddCors();
             services.ConfigureCors();
 
             services.ConfigureSqlContext(Configuration);
 
             services.ConfigureJWT(Configuration);
 
-            services.ConfigureIdentity(); 
+            services.ConfigureIdentity();
+
+            services.ConfigureLogger();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
         {
             if (env.IsDevelopment())
             {
@@ -46,6 +51,8 @@ namespace BibikaProject.WebUI
             app.UseCors("CorsPolicy");
 
             app.UseHttpsRedirection();
+
+            app.ConfigureExceptionHandler(logger);
 
             app.UseRouting();
 
