@@ -22,13 +22,13 @@ namespace BibikaProject.Domain.Entities.Core
         public string Location { get; set; }
 
         [Required]
-        public string Engine { get; set; }
+        public string EngineCapacity { get; set; }
+
+        [Required]
+        public string Fuel { get; set; }
 
         [Required]
         public string Color { get; set; }
-
-        [Required]
-        public string GearBox { get; set; }
 
         public string CompleteSet { get; set; }
 
@@ -43,6 +43,9 @@ namespace BibikaProject.Domain.Entities.Core
 
         [Required]
         public CarBody CarBody { get; set; }
+
+        [Required]
+        public GearBox GearBox { get; set; }
 
         public ICollection<Option> Options { get; set; }
 
