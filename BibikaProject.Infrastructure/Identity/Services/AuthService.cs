@@ -41,12 +41,22 @@ namespace BibikaProject.Infrastructure.Identity.Services
 
             if (user == null)
             {
-                return null;
+                return new TokenResponse
+                {
+                    Token = null,
+                    RefreshToken = null,
+                    Error = "Wrong email",
+                };
             }
 
             if (!await userManager.CheckPasswordAsync(user, request.Password))
             {
-                return null;
+                return new TokenResponse
+                {
+                    Token = null,
+                    RefreshToken = null,
+                    Error = "Wrong password",
+                };
             }
 
             var JWT = await CreateTokenAsync(user);
@@ -57,10 +67,11 @@ namespace BibikaProject.Infrastructure.Identity.Services
             {
                 Token = JWT,
                 RefreshToken = refresh,
+                Error = null,
             };
         }
 
-        public async Task<ApplicationUser> RegisterAsync(UserRegisterRequest request)
+        public async Task<List<string>> RegisterAsync(UserRegisterRequest request)
         {
             var user = new ApplicationUser
             {
@@ -68,14 +79,21 @@ namespace BibikaProject.Infrastructure.Identity.Services
                 Email = request.Email
             };
 
-            var result = await userManager.CreateAsync(user, request.Password);
+            var result = await userManager.CreateAsync(user, request.Password);           
 
             if (!result.Succeeded)
             {
-                return null;
+                var errors = new List<string>();
+
+                foreach (var item in result.Errors)
+                {
+                    errors.Add(item.Description);
+                }
+
+                return errors;
             }
 
-            return user;
+            return null;
         }
 
         public async Task<TokenResponse> RefreshAsync(RefreshTokenRequest request)
@@ -84,45 +102,53 @@ namespace BibikaProject.Infrastructure.Identity.Services
 
             if (principal == null)
             {
-                return null;
+                return new TokenResponse
+                {
+                    Token = null,
+                    RefreshToken = null,
+                    Error = "Invalid access token"
+                };
             }
 
             var expDateUnix = long.Parse(principal.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
 
             var expDate = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(expDateUnix);
 
-            if (expDate > DateTime.UtcNow)
-            {
-                return null;
-            }
-
             var jti = principal.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
 
             var storedRefreshToken = await refreshTokenQuery.GetRefreshTokenAsync(request.RefreshToken);
 
-            if (storedRefreshToken == null)
+            if(storedRefreshToken == null ||
+               storedRefreshToken.Invalidated ||
+               storedRefreshToken.Used ||
+               storedRefreshToken.JwtId != jti)
             {
-                return null;
+                return new TokenResponse
+                {
+                    Token = null,
+                    RefreshToken = null,
+                    Error = "Invalid refresh token"
+                };
             }
 
-            if (DateTime.UtcNow > storedRefreshToken.ExpiryDate)
+            if(expDate > DateTime.UtcNow)
             {
-                return null;
+                return new TokenResponse
+                {
+                    Token = null,
+                    RefreshToken = null,
+                    Error = "Access token hasn't expired"
+                };
             }
 
-            if (storedRefreshToken.Invalidated)
+            if(DateTime.UtcNow > storedRefreshToken.ExpiryDate)
             {
-                return null;
-            }
-
-            if (storedRefreshToken.Used)
-            {
-                return null;
-            }
-
-            if (storedRefreshToken.JwtId != jti)
-            {
-                return null;
+                return new TokenResponse
+                {
+                    Token = null,
+                    RefreshToken = null,
+                    Error = "Refresh token has expired"
+                };
             }
 
             storedRefreshToken.Used = true;
@@ -140,6 +166,7 @@ namespace BibikaProject.Infrastructure.Identity.Services
             {
                 RefreshToken = newRefresh,
                 Token = newJWT,
+                Error = null
             };
         }
 
