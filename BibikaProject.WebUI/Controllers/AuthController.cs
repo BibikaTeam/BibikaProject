@@ -21,6 +21,11 @@ namespace BibikaProject.WebUI.Controllers
         {
             var result = await authService.LoginAsync(model);
 
+            if (!string.IsNullOrEmpty(result.Error))
+            {
+                return Unauthorized(result.Error);
+            }
+
             return Ok(result);
         }
 
@@ -31,10 +36,10 @@ namespace BibikaProject.WebUI.Controllers
 
             if (result != null)
             {
-                return Ok();
+                return BadRequest(result);
             }
 
-            return BadRequest();
+            return Ok();
         }
 
         [HttpPost("refresh")]
@@ -42,9 +47,9 @@ namespace BibikaProject.WebUI.Controllers
         {
             var result = await authService.RefreshAsync(request);
 
-            if (result == null)
+            if (!string.IsNullOrEmpty(result.Error))
             {
-                return BadRequest();
+                return BadRequest(result.Error);
             }
 
             return Ok(result);
