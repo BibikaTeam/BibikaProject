@@ -6,6 +6,6 @@ namespace BibikaProject.Domain.Entities.Identity
 {
     public class ApplicationUser : IdentityUser
     {
-        public ICollection<CarPost> CarPosts { get; set; }
+        public ICollection<Post> Posts { get; set; }
     }
 }

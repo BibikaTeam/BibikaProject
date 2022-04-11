@@ -11,6 +11,6 @@ namespace BibikaProject.Domain.Entities.Core
         [Required]
         public string Title { get; set; }
 
-        public ICollection<CarPost> CarPosts { get; set; }
+        public ICollection<Model> Models { get; set; }
     }
 }
