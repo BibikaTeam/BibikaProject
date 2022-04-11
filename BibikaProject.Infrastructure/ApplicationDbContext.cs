@@ -14,11 +14,17 @@ namespace BibikaProject.Infrastructure
 
         public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
 
-        public virtual DbSet<CarPost> CarPosts { get; set; }
-
         public virtual DbSet<Brand> Brands { get; set; }
 
+        public virtual DbSet<Car> Cars { get; set; }
+
         public virtual DbSet<CarBody> CarBodies { get; set; }
+
+        public virtual DbSet<CompleteSet> CompleteSets { get; set; }
+
+        public virtual DbSet<Engine> Engines { get; set; }
+
+        public virtual DbSet<GearBox> GearBoxes { get; set; }
 
         public virtual DbSet<Generation> Generations { get; set; }
 
@@ -27,6 +33,8 @@ namespace BibikaProject.Infrastructure
         public virtual DbSet<Model> Models { get; set; }
 
         public virtual DbSet<Option> Options { get; set; }
+
+        public virtual DbSet<Post> Posts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace BibikaProject.Domain.Entities.Core
@@ -12,12 +11,8 @@ namespace BibikaProject.Domain.Entities.Core
         [Required]
         public string Title { get; set; }
 
-        [Required]
-        public DateTime YearFrom { get; set; }
+        public Model Model { get; set; }
 
-        [Required]
-        public DateTime YearTo { get; set; }
-
-        public ICollection<CarPost> CarPosts { get; set; }
+        public ICollection<Car> Cars { get; set; }
     }
 }

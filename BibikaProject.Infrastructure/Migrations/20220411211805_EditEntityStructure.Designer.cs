@@ -3,15 +3,17 @@ using System;
 using BibikaProject.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace BibikaProject.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220411211805_EditEntityStructure")]
+    partial class EditEntityStructure
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,10 +27,6 @@ namespace BibikaProject.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -157,10 +155,6 @@ namespace BibikaProject.Infrastructure.Migrations
                     b.Property<int?>("ModelId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ModelId");
@@ -198,10 +192,6 @@ namespace BibikaProject.Infrastructure.Migrations
 
                     b.Property<int?>("BrandId")
                         .HasColumnType("integer");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -387,15 +377,15 @@ namespace BibikaProject.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a7c03d22-5094-491f-bc05-565959e1850f",
-                            ConcurrencyStamp = "02294455-515e-46f7-8091-3b1e2d7bac46",
+                            Id = "d1c7f312-9522-438a-9c25-70237cbe1057",
+                            ConcurrencyStamp = "f48aaec3-3f51-4020-8a56-2b90f912681a",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "19edc165-2b98-4f4f-b2df-549920d8dcc0",
-                            ConcurrencyStamp = "893b0ae5-0015-4e5e-8177-3698546ece84",
+                            Id = "a1c33749-503d-422e-b0b2-813159cb9829",
+                            ConcurrencyStamp = "bccb46b6-d972-49f1-acfb-94c0322af949",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BibikaProject.Domain.Entities.Core
 {
-    public class Option
+    public class Engine
     {
         [Key]
         public int Id { get; set; }
@@ -12,8 +12,14 @@ namespace BibikaProject.Domain.Entities.Core
         public string Title { get; set; }
 
         [Required]
-        public string Category { get; set; }
+        public string Capacity { get; set; }
 
-        public ICollection<Post> Posts { get; set; }
+        [Required]
+        public int KWPower { get; set; }
+
+        [Required]
+        public string Fuel { get; set; }
+
+        public ICollection<Car> Cars { get; set; }
     }
 }
