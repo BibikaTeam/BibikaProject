@@ -6,7 +6,7 @@ namespace BibikaProject.Application.Core.Queries
 {
     public interface IGenerationQuery
     {
-        Task<IQueryable<Generation>> GetAllGenerationsAsync();
+        IQueryable<Generation> GetAllGenerationsAsync();
 
         Task<Generation> GetGenerationByIdAsync(int id);
     }

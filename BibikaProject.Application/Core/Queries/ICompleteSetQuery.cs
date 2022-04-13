@@ -6,7 +6,7 @@ namespace BibikaProject.Application.Core.Queries
 {
     public interface ICompleteSetQuery
     {
-        Task<IQueryable<CompleteSet>> GetAllCompleteSetsAsync();
+        IQueryable<CompleteSet> GetAllCompleteSetsAsync();
 
         Task<CompleteSet> GetCompleteSetByIdAsync(int id);
     }

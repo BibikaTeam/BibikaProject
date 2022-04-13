@@ -6,7 +6,7 @@ namespace BibikaProject.Application.Core.Queries
 {
     public interface IGearBoxQuery
     {
-        Task<IQueryable<GearBox>> GetAllGearBoxesAsync();
+        IQueryable<GearBox> GetAllGearBoxesAsync();
 
         Task<GearBox> GetGearBoxByIdAsync(int id);
     }

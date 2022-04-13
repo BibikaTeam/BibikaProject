@@ -6,7 +6,7 @@ namespace BibikaProject.Application.Core.Queries
 {
     public interface IImageQuery
     {
-        Task<IQueryable<Image>> GetAllImagesAsync();
+        IQueryable<Image> GetAllImagesAsync();
 
         Task<Image> GetImageIdAsync(int id);
     }

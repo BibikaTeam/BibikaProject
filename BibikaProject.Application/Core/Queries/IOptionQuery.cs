@@ -6,7 +6,7 @@ namespace BibikaProject.Application.Core.Queries
 {
     public interface IOptionQuery
     {
-        Task<IQueryable<Option>> GetAllOptionsAsync();
+        IQueryable<Option> GetAllOptionsAsync();
 
         Task<Option> GetOptionIdAsync(int id);
     }

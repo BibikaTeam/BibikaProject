@@ -6,8 +6,8 @@ namespace BibikaProject.Application.Core.Queries
 {
     public interface IPostQuery
     {
-        Task<IQueryable<Option>> GetAllPostsAsync();
+        IQueryable<Post> GetAllPostsAsync();
 
-        Task<Option> GetPostIdAsync(int id);
+        Task<Post> GetPostIdAsync(int id);
     }
 }

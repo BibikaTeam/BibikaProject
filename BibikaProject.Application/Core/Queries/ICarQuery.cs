@@ -6,7 +6,7 @@ namespace BibikaProject.Application.Core.Queries
 {
     public interface ICarQuery
     {
-        Task<IQueryable<Car>> GetAllCarsAsync();
+        IQueryable<Car> GetAllCarsAsync();
 
         Task<Car> GetCarByIdAsync(int id);
     }

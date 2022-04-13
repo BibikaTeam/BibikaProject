@@ -6,7 +6,7 @@ namespace BibikaProject.Application.Core.Queries
 {
     public interface IModelQuery
     {
-        Task<IQueryable<Model>> GetAllModelsAsync();
+        IQueryable<Model> GetAllModelsAsync();
 
         Task<Model> GetModelIdAsync(int id);
     }

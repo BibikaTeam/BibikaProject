@@ -6,7 +6,7 @@ namespace BibikaProject.Application.Core.Queries
 {
     public interface IBrandQuery
     {
-        Task<IQueryable<Brand>> GetAllBrandsAsync();
+        IQueryable<Brand> GetAllBrandsAsync();
 
         Task<Brand> GetBrandByIdAsync(int id);
     }
