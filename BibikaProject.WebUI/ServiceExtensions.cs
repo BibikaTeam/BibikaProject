@@ -4,11 +4,16 @@ using BibikaProject.Application.Identity.Services;
 using BibikaProject.Application.Logger;
 using BibikaProject.Domain.Entities.Identity;
 using BibikaProject.Infrastructure;
+using BibikaProject.Infrastructure.Core.Services.DTO.Brand;
+using BibikaProject.Infrastructure.Core.Services.DTO.Car;
+using BibikaProject.Infrastructure.Core.Services.DTO.Generation;
+using BibikaProject.Infrastructure.Core.Services.DTO.Model;
 using BibikaProject.Infrastructure.Identity;
 using BibikaProject.Infrastructure.Identity.Commands;
 using BibikaProject.Infrastructure.Identity.Queries;
 using BibikaProject.Infrastructure.Identity.Services;
 using BibikaProject.Infrastructure.Logger;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -96,6 +101,21 @@ namespace BibikaProject.WebUI
         public static void ConfigureLogger(this IServiceCollection services)
         {
             services.AddScoped<ILoggerManager, LoggerManager>();
+        }
+
+        public static void ConfigureFluentValidators(this IServiceCollection services)
+        {
+            services.AddTransient<IValidator<AddBrandDTO>, AddBrandDTOValidator>();
+            services.AddTransient<IValidator<UpdateBrandDTO>, UpdateBrandDTOValidator>();
+
+            services.AddTransient<IValidator<AddModelDTO>, AddModelDTOValidator>();
+            services.AddTransient<IValidator<UpdateModelDTO>, UpdateModelDTOValidator>();
+
+            services.AddTransient<IValidator<AddGenerationDTO>, AddGenerationDTOValidator>();
+            services.AddTransient<IValidator<UpdateGenerationDTO>, UpdateGenerationDTOValidator>();
+
+            services.AddTransient<IValidator<AddCarDTO>, AddCarDTOValidator>();
+            services.AddTransient<IValidator<UpdateCarDTO>, UpdateCarDTOValidator>();
         }
     }
 }
