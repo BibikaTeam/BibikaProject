@@ -1,5 +1,6 @@
 using BibikaProject.Application.Logger;
 using BibikaProject.WebUI.ExceptionMiddleware;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -21,7 +22,9 @@ namespace BibikaProject.WebUI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                    .AddFluentValidation();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BibikaProject.WebUI", Version = "v1" });
@@ -38,6 +41,8 @@ namespace BibikaProject.WebUI
             services.ConfigureIdentity();
           
             services.ConfigureLogger();
+
+            services.ConfigureFluentValidators();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
