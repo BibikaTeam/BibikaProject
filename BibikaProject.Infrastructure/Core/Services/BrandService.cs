@@ -7,6 +7,7 @@ using BibikaProject.Application.Core.Responses;
 using BibikaProject.Application.Core.Services;
 using BibikaProject.Domain.Entities.Core;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -50,7 +51,7 @@ namespace BibikaProject.Infrastructure.Core.Services
                 brands = brands.Where(x => x.Title.Contains(pagedBrandsRequest.Search));
             }
 
-            response.AllPages = await brands.CountAsync();
+            response.AllPages = (int)Math.Ceiling((double)await brands.CountAsync() / (double)pagedBrandsRequest.CountOnPage);
 
             brands = brands.Skip((pagedBrandsRequest.Page - 1) * pagedBrandsRequest.CountOnPage)
                            .Take(pagedBrandsRequest.CountOnPage)
