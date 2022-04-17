@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,11 +28,13 @@ namespace BibikaProject.WebUI
             //services.AddCors();
             services.ConfigureCors();
 
+            services.AddSpaStaticFiles(configuration => configuration.RootPath = "Client/build");
+
             services.ConfigureSqlContext(Configuration);
 
             services.ConfigureJWT(Configuration);
 
-            services.ConfigureIdentity(); 
+            services.ConfigureIdentity();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -42,6 +45,8 @@ namespace BibikaProject.WebUI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
             }
+
+            app.UseSpaStaticFiles();
 
             app.UseCors("CorsPolicy");
 
@@ -56,6 +61,16 @@ namespace BibikaProject.WebUI
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "Client";
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                }
             });
         }
     }
