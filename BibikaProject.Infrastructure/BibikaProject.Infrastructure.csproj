@@ -27,4 +27,8 @@
     <ProjectReference Include="..\BibikaProject.Domain\BibikaProject.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Core\Services\" />
+  </ItemGroup>
+
 </Project>

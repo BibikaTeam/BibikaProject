@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace BibikaProject.Infrastructure.Core.Services.DTO.Model
+namespace BibikaProject.Application.Core.DTO.Model
 {
     public class AddModelDTO
     {

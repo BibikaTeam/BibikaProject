@@ -1,4 +1,4 @@
-﻿namespace BibikaProject.Infrastructure.Core.Services.DTO.Car
+﻿namespace BibikaProject.Application.Core.DTO.Car
 {
     public class CarDTO
     {

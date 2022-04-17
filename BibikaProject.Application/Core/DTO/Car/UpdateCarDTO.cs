@@ -1,9 +1,11 @@
 ﻿using FluentValidation;
 
-namespace BibikaProject.Infrastructure.Core.Services.DTO.Car
+namespace BibikaProject.Application.Core.DTO.Car
 {
-    public class AddCarDTO
+    public class UpdateCarDTO
     {
+        public int CarId { get; set; }
+
         public int GenerationId { get; set; }
 
         public int EngineId { get; set; }
@@ -13,10 +15,11 @@ namespace BibikaProject.Infrastructure.Core.Services.DTO.Car
         public int CompleteSetId { get; set; }
     }
 
-    public class AddCarDTOValidator : AbstractValidator<AddCarDTO>
+    public class UpdateCarDTOValidator : AbstractValidator<UpdateCarDTO>
     {
-        public AddCarDTOValidator()
+        public UpdateCarDTOValidator()
         {
+            RuleFor(x => x.CarId).NotNull();
             RuleFor(x => x.GenerationId).NotNull();
             RuleFor(x => x.EngineId).NotNull();
             RuleFor(x => x.CarBodyId).NotNull();

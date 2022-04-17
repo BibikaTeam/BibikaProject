@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace BibikaProject.Infrastructure.Core.Services.DTO.Generation
+namespace BibikaProject.Application.Core.DTO.Generation
 {
     public class UpdateGenerationDTO
     {

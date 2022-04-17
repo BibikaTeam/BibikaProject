@@ -1,4 +1,0 @@
-﻿namespace BibikaProject.Infrastructure.Test
-{
-
-}
