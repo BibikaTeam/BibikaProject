@@ -1,17 +1,18 @@
 ﻿using BibikaProject.Application.Core.DTO.Brand;
 using BibikaProject.Application.Core.Requests;
+using BibikaProject.Application.Core.Responses;
 using System.Threading.Tasks;
 
 namespace BibikaProject.Application.Core.Services
 {
     public interface IBrandService
     {
-        Task AddBrand(AddBrandDTO addBrandDTO);
+        Task AddBrandAsync(AddBrandDTO addBrandDTO);
 
-        void UpdateBrand(UpdateBrandDTO updateBrandDTO);
+        Task UpdateBrandAsync(UpdateBrandDTO updateBrandDTO);
 
-        void DeleteBrand(int id);
+        Task DeleteBrandAsync(int id);
 
-        void GetPagedBrands(PagedBrandsRequest pagedBrandsRequest);
+        Task<PagedList<BrandDTO>> GetPagedBrandsAsync(PagedBrandsRequest pagedBrandsRequest);
     }
 }

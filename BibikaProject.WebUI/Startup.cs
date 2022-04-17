@@ -43,6 +43,8 @@ namespace BibikaProject.WebUI
             services.ConfigureLogger();
 
             services.ConfigureFluentValidators();
+
+            services.AddAutoMapper(typeof(Startup));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
