@@ -19,6 +19,255 @@ namespace BibikaProject.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "5.0.15")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+            modelBuilder.Entity("BibikaProject.Domain.Entities.Core.Brand", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Brands");
+                });
+
+            modelBuilder.Entity("BibikaProject.Domain.Entities.Core.Car", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int?>("CarBodyId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("CompleteSetId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("EngineId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("GearBoxId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("GenerationId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarBodyId");
+
+                    b.HasIndex("CompleteSetId");
+
+                    b.HasIndex("EngineId");
+
+                    b.HasIndex("GearBoxId");
+
+                    b.HasIndex("GenerationId");
+
+                    b.ToTable("Cars");
+                });
+
+            modelBuilder.Entity("BibikaProject.Domain.Entities.Core.CarBody", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CarBodies");
+                });
+
+            modelBuilder.Entity("BibikaProject.Domain.Entities.Core.CompleteSet", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CompleteSets");
+                });
+
+            modelBuilder.Entity("BibikaProject.Domain.Entities.Core.Engine", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Capacity")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Fuel")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("KWPower")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Engines");
+                });
+
+            modelBuilder.Entity("BibikaProject.Domain.Entities.Core.GearBox", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GearBoxes");
+                });
+
+            modelBuilder.Entity("BibikaProject.Domain.Entities.Core.Generation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int?>("ModelId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ModelId");
+
+                    b.ToTable("Generations");
+                });
+
+            modelBuilder.Entity("BibikaProject.Domain.Entities.Core.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int?>("PostId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("BibikaProject.Domain.Entities.Core.Model", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int?>("BrandId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
+
+                    b.ToTable("Models");
+                });
+
+            modelBuilder.Entity("BibikaProject.Domain.Entities.Core.Option", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Options");
+                });
+
+            modelBuilder.Entity("BibikaProject.Domain.Entities.Core.Post", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("CarId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SellerId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Year")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.HasIndex("SellerId");
+
+                    b.ToTable("Posts");
+                });
+
             modelBuilder.Entity("BibikaProject.Domain.Entities.Identity.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -138,15 +387,15 @@ namespace BibikaProject.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3e0b1108-9c93-4fd0-b854-b5f2847a8259",
-                            ConcurrencyStamp = "73550969-91d8-471b-aacb-1b7cf155f79c",
+                            Id = "a7c03d22-5094-491f-bc05-565959e1850f",
+                            ConcurrencyStamp = "02294455-515e-46f7-8091-3b1e2d7bac46",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "541ac81e-705f-4484-bceb-6e541928d563",
-                            ConcurrencyStamp = "0d769910-0237-4fcc-b74d-2e3c7087a656",
+                            Id = "19edc165-2b98-4f4f-b2df-549920d8dcc0",
+                            ConcurrencyStamp = "893b0ae5-0015-4e5e-8177-3698546ece84",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -256,6 +505,100 @@ namespace BibikaProject.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("OptionPost", b =>
+                {
+                    b.Property<int>("OptionsId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PostsId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("OptionsId", "PostsId");
+
+                    b.HasIndex("PostsId");
+
+                    b.ToTable("OptionPost");
+                });
+
+            modelBuilder.Entity("BibikaProject.Domain.Entities.Core.Car", b =>
+                {
+                    b.HasOne("BibikaProject.Domain.Entities.Core.CarBody", "CarBody")
+                        .WithMany("Cars")
+                        .HasForeignKey("CarBodyId");
+
+                    b.HasOne("BibikaProject.Domain.Entities.Core.CompleteSet", "CompleteSet")
+                        .WithMany("Cars")
+                        .HasForeignKey("CompleteSetId");
+
+                    b.HasOne("BibikaProject.Domain.Entities.Core.Engine", "Engine")
+                        .WithMany("Cars")
+                        .HasForeignKey("EngineId");
+
+                    b.HasOne("BibikaProject.Domain.Entities.Core.GearBox", "GearBox")
+                        .WithMany("Cars")
+                        .HasForeignKey("GearBoxId");
+
+                    b.HasOne("BibikaProject.Domain.Entities.Core.Generation", "Generation")
+                        .WithMany("Cars")
+                        .HasForeignKey("GenerationId");
+
+                    b.Navigation("CarBody");
+
+                    b.Navigation("CompleteSet");
+
+                    b.Navigation("Engine");
+
+                    b.Navigation("GearBox");
+
+                    b.Navigation("Generation");
+                });
+
+            modelBuilder.Entity("BibikaProject.Domain.Entities.Core.Generation", b =>
+                {
+                    b.HasOne("BibikaProject.Domain.Entities.Core.Model", "Model")
+                        .WithMany("Generations")
+                        .HasForeignKey("ModelId");
+
+                    b.Navigation("Model");
+                });
+
+            modelBuilder.Entity("BibikaProject.Domain.Entities.Core.Image", b =>
+                {
+                    b.HasOne("BibikaProject.Domain.Entities.Core.Post", "Post")
+                        .WithMany("Images")
+                        .HasForeignKey("PostId");
+
+                    b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("BibikaProject.Domain.Entities.Core.Model", b =>
+                {
+                    b.HasOne("BibikaProject.Domain.Entities.Core.Brand", "Brand")
+                        .WithMany("Models")
+                        .HasForeignKey("BrandId");
+
+                    b.Navigation("Brand");
+                });
+
+            modelBuilder.Entity("BibikaProject.Domain.Entities.Core.Post", b =>
+                {
+                    b.HasOne("BibikaProject.Domain.Entities.Core.Car", "Car")
+                        .WithMany("Posts")
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BibikaProject.Domain.Entities.Identity.ApplicationUser", "Seller")
+                        .WithMany("Posts")
+                        .HasForeignKey("SellerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Car");
+
+                    b.Navigation("Seller");
+                });
+
             modelBuilder.Entity("BibikaProject.Domain.Entities.Identity.RefreshToken", b =>
                 {
                     b.HasOne("BibikaProject.Domain.Entities.Identity.ApplicationUser", "User")
@@ -314,6 +657,71 @@ namespace BibikaProject.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("OptionPost", b =>
+                {
+                    b.HasOne("BibikaProject.Domain.Entities.Core.Option", null)
+                        .WithMany()
+                        .HasForeignKey("OptionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BibikaProject.Domain.Entities.Core.Post", null)
+                        .WithMany()
+                        .HasForeignKey("PostsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BibikaProject.Domain.Entities.Core.Brand", b =>
+                {
+                    b.Navigation("Models");
+                });
+
+            modelBuilder.Entity("BibikaProject.Domain.Entities.Core.Car", b =>
+                {
+                    b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("BibikaProject.Domain.Entities.Core.CarBody", b =>
+                {
+                    b.Navigation("Cars");
+                });
+
+            modelBuilder.Entity("BibikaProject.Domain.Entities.Core.CompleteSet", b =>
+                {
+                    b.Navigation("Cars");
+                });
+
+            modelBuilder.Entity("BibikaProject.Domain.Entities.Core.Engine", b =>
+                {
+                    b.Navigation("Cars");
+                });
+
+            modelBuilder.Entity("BibikaProject.Domain.Entities.Core.GearBox", b =>
+                {
+                    b.Navigation("Cars");
+                });
+
+            modelBuilder.Entity("BibikaProject.Domain.Entities.Core.Generation", b =>
+                {
+                    b.Navigation("Cars");
+                });
+
+            modelBuilder.Entity("BibikaProject.Domain.Entities.Core.Model", b =>
+                {
+                    b.Navigation("Generations");
+                });
+
+            modelBuilder.Entity("BibikaProject.Domain.Entities.Core.Post", b =>
+                {
+                    b.Navigation("Images");
+                });
+
+            modelBuilder.Entity("BibikaProject.Domain.Entities.Identity.ApplicationUser", b =>
+                {
+                    b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618
         }
