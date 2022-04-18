@@ -1,4 +1,4 @@
-﻿namespace BibikaProject.Infrastructure.Core.Services.DTO.Brand
+﻿namespace BibikaProject.Application.Core.DTO.Brand
 {
     public class BrandDTO
     {

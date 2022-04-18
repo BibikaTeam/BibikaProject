@@ -4,10 +4,10 @@ using BibikaProject.Application.Identity.Services;
 using BibikaProject.Application.Logger;
 using BibikaProject.Domain.Entities.Identity;
 using BibikaProject.Infrastructure;
-using BibikaProject.Infrastructure.Core.Services.DTO.Brand;
-using BibikaProject.Infrastructure.Core.Services.DTO.Car;
-using BibikaProject.Infrastructure.Core.Services.DTO.Generation;
-using BibikaProject.Infrastructure.Core.Services.DTO.Model;
+using BibikaProject.Application.Core.DTO.Brand;
+using BibikaProject.Application.Core.DTO.Car;
+using BibikaProject.Application.Core.DTO.Generation;
+using BibikaProject.Application.Core.DTO.Model;
 using BibikaProject.Infrastructure.Identity;
 using BibikaProject.Infrastructure.Identity.Commands;
 using BibikaProject.Infrastructure.Identity.Queries;
@@ -21,6 +21,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using BibikaProject.Application.Core.Services;
+using BibikaProject.Infrastructure.Core.Services;
+using BibikaProject.Application.Core.Commands;
+using BibikaProject.Infrastructure.Core.Commands;
+using BibikaProject.Infrastructure.Core.Queries;
+using BibikaProject.Application.Core.Queries;
 
 namespace BibikaProject.WebUI
 {
@@ -116,6 +122,14 @@ namespace BibikaProject.WebUI
 
             services.AddTransient<IValidator<AddCarDTO>, AddCarDTOValidator>();
             services.AddTransient<IValidator<UpdateCarDTO>, UpdateCarDTOValidator>();
+        }
+
+        public static void ConfigureBrandService(this IServiceCollection services)
+        {
+            services.AddTransient<IBrandService, BrandService>();
+
+            services.AddTransient<IBrandCommand, BrandCommand>();
+            services.AddTransient<IBrandQuery, BrandQuery>();
         }
     }
 }

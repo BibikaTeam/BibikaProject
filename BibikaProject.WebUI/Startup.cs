@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using BibikaProject.Infrastructure.Core.Services.Mapper;
+using System;
 
 namespace BibikaProject.WebUI
 {
@@ -43,6 +45,10 @@ namespace BibikaProject.WebUI
             services.ConfigureLogger();
 
             services.ConfigureFluentValidators();
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.ConfigureBrandService();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
