@@ -15,7 +15,7 @@ export interface ILoginModel {
 }
 export interface IUser {
   id: string | null | undefined;
-  nickname: string;
+  name: string;
   email: string;
   role?: string | null | undefined;
 }
@@ -31,3 +31,14 @@ export interface AuthLogin {
 }
 
 export type AuthAction = AuthLogin;
+export interface RegisterErrorType {
+  errorsString: Array<string>;
+}
+export interface LoginErrorType {
+  errorString: string;
+}
+export interface LoginResponseType {
+  token: string;
+  refreshToken: string;
+  error: string;
+}

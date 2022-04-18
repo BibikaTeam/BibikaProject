@@ -1,20 +1,22 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { Input, Checkbox, Button } from "antd";
 import { Form, Formik, FormikProps, FormikHelpers } from "formik";
-import { ILoginModel } from "../types";
+import { ILoginModel, LoginErrorType } from "../types";
 
 import { validationFields } from "./validation";
 
 import { FormInput, FormButton } from "../../common/form";
 
 import { useActions } from "../../../hooks/useActions";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const refFormik = useRef<FormikProps<ILoginModel>>(null);
 
   const { loginUser } = useActions();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const initialValues: ILoginModel = {
     email: "",
@@ -25,8 +27,16 @@ const LoginPage = () => {
     values: ILoginModel,
     action: FormikHelpers<ILoginModel>
   ) => {
-    console.log("values: ", values);
-    loginUser(values);
+    setLoading(true);
+    try {
+      await loginUser(values);
+      toast.success("Successfully login");
+    } catch (error) {
+      if (!error || !(error as LoginErrorType)) toast.error("Some error");
+      else toast.error((error as LoginErrorType).errorString);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -63,7 +73,7 @@ const LoginPage = () => {
             <FormButton
               text="Submit"
               htmlType="submit"
-              loading={false}
+              loading={loading}
               buttonType="default"
             />
           </Form>

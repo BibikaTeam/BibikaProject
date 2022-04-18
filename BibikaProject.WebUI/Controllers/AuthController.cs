@@ -23,7 +23,7 @@ namespace BibikaProject.WebUI.Controllers
 
             if (!string.IsNullOrEmpty(result.Error))
             {
-                return Unauthorized(result.Error);
+                return NotFound(result.Error);
             }
 
             return Ok(result);
