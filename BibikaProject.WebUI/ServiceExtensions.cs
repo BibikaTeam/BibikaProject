@@ -131,5 +131,13 @@ namespace BibikaProject.WebUI
             services.AddTransient<IBrandCommand, BrandCommand>();
             services.AddTransient<IBrandQuery, BrandQuery>();
         }
+
+        public static void ConfigureModelService(this IServiceCollection services)
+        {
+            services.AddTransient<IModelService, ModelService>();
+
+            services.AddTransient<IModelCommand, ModelCommand>();
+            services.AddTransient<IModelQuery, ModelQuery>();
+        }
     }
 }
