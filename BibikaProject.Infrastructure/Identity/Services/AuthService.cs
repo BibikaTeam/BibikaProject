@@ -14,6 +14,7 @@ using BibikaProject.Application.Identity.Queries;
 using BibikaProject.Application.Identity.Commands;
 using BibikaProject.Application.Identity.Responses;
 using BibikaProject.Application.Identity.Requests;
+using BibikaProject.Application.Identity.Claims;
 
 namespace BibikaProject.Infrastructure.Identity.Services
 {
@@ -37,26 +38,24 @@ namespace BibikaProject.Infrastructure.Identity.Services
 
         public async Task<TokenResponse> LoginAsync(UserLoginRequest request)
         {
-            var user = await userManager.FindByEmailAsync(request.Email);
+            ApplicationUser user = null;
+            TokenResponse errorResponse = new TokenResponse
+            {
+                Token = null,
+                RefreshToken = null,
+                Error = "Wrong password or email",
+            };
+
+            user = await userManager.FindByEmailAsync(request.Email);
 
             if (user == null)
             {
-                return new TokenResponse
-                {
-                    Token = null,
-                    RefreshToken = null,
-                    Error = "Wrong email",
-                };
+                return errorResponse;
             }
 
             if (!await userManager.CheckPasswordAsync(user, request.Password))
             {
-                return new TokenResponse
-                {
-                    Token = null,
-                    RefreshToken = null,
-                    Error = "Wrong password",
-                };
+                return errorResponse;
             }
 
             var JWT = await CreateTokenAsync(user);
@@ -79,7 +78,7 @@ namespace BibikaProject.Infrastructure.Identity.Services
                 Email = request.Email
             };
 
-            var result = await userManager.CreateAsync(user, request.Password);           
+            var result = await userManager.CreateAsync(user, request.Password);
 
             if (!result.Succeeded)
             {
@@ -92,6 +91,8 @@ namespace BibikaProject.Infrastructure.Identity.Services
 
                 return errors;
             }
+
+            await userManager.AddToRoleAsync(user, "User");
 
             return null;
         }
@@ -118,7 +119,7 @@ namespace BibikaProject.Infrastructure.Identity.Services
 
             var storedRefreshToken = await refreshTokenQuery.GetRefreshTokenAsync(request.RefreshToken);
 
-            if(storedRefreshToken == null ||
+            if (storedRefreshToken == null ||
                storedRefreshToken.Invalidated ||
                storedRefreshToken.Used ||
                storedRefreshToken.JwtId != jti)
@@ -131,7 +132,7 @@ namespace BibikaProject.Infrastructure.Identity.Services
                 };
             }
 
-            if(expDate > DateTime.UtcNow)
+            if (expDate > DateTime.UtcNow)
             {
                 return new TokenResponse
                 {
@@ -141,7 +142,7 @@ namespace BibikaProject.Infrastructure.Identity.Services
                 };
             }
 
-            if(DateTime.UtcNow > storedRefreshToken.ExpiryDate)
+            if (DateTime.UtcNow > storedRefreshToken.ExpiryDate)
             {
                 return new TokenResponse
                 {
@@ -230,8 +231,9 @@ namespace BibikaProject.Infrastructure.Identity.Services
         {
             var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id),
-                    new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                    new Claim(UserJWTClaimTypes.Name, user.UserName),
+                    new Claim(UserJWTClaimTypes.Id, user.Id),
+                    new Claim(UserJWTClaimTypes.Email, user.Email),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 };
 
@@ -239,7 +241,7 @@ namespace BibikaProject.Infrastructure.Identity.Services
 
             foreach (var role in roles)
             {
-                claims.Add(new Claim(ClaimTypes.Role, role));
+                claims.Add(new Claim(UserJWTClaimTypes.Role, role));
             }
 
             return claims;

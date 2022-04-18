@@ -1,5 +1,5 @@
 import http from "../../../http_common";
-import { IRegisterModel } from "../types";
+import { IRegisterModel, RegisterErrorType } from "../types";
 import axios from "axios";
 
 export const registerUser = async (data: IRegisterModel) => {
@@ -7,7 +7,9 @@ export const registerUser = async (data: IRegisterModel) => {
     .post("api/register", data)
     .catch(function (error) {
       if (axios.isAxiosError(error)) {
-        const serverError = error.response?.data;
+        const serverError: RegisterErrorType = {
+          errorsString: error.response?.data as Array<string>,
+        };
         if (serverError) {
           throw serverError;
         }

@@ -1,18 +1,20 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { Input, Checkbox, Button } from "antd";
 import { Form, Formik, FormikProps, FormikHelpers } from "formik";
-import { IRegisterModel } from "../types";
+import { IRegisterModel, RegisterErrorType } from "../types";
 
 import { validationFields } from "./validation";
 
 import { FormInput, FormButton } from "../../common/form";
 
 import { registerUser } from "./service";
+import { toast } from "react-toastify";
 
 const RegisterPage = () => {
   const refFormik = useRef<FormikProps<IRegisterModel>>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const initialValues: IRegisterModel = {
     username: "",
@@ -26,8 +28,18 @@ const RegisterPage = () => {
     values: IRegisterModel,
     action: FormikHelpers<IRegisterModel>
   ) => {
-    console.log("values: ", values);
-    registerUser(values);
+    setLoading(true);
+    try {
+      await registerUser(values);
+      toast.success(`User ${values.username} are successfully registered`);
+    } catch (error) {
+      const errorType = error as RegisterErrorType;
+      errorType.errorsString.forEach((el) => {
+        toast.error(el);
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -94,7 +106,7 @@ const RegisterPage = () => {
             <FormButton
               text="Submit"
               htmlType="submit"
-              loading={false}
+              loading={loading}
               buttonType="default"
             />
           </Form>

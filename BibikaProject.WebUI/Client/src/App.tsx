@@ -15,6 +15,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
         </Route>
       </Routes>
+      <ToastContainer pauseOnHover={false} pauseOnFocusLoss={false} />
     </Router>
   );
 }

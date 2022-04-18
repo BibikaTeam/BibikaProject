@@ -3,7 +3,7 @@ import { AuthAction, AuthActionTypes, AuthState } from "../types";
 const initialState: AuthState = {
   user: {
     id: "0",
-    nickname: "",
+    name: "",
     email: "",
     role: "",
   },
