@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace BibikaProject.Infrastructure.Core.Services
 {
-    internal class GenerationService : IGenerationService
+    public class GenerationService : IGenerationService
     {
         public GenerationService(IMapper mapper, IGenerationQuery query, IGenerationCommand command)
         {

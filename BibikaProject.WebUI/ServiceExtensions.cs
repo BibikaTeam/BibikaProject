@@ -139,5 +139,13 @@ namespace BibikaProject.WebUI
             services.AddTransient<IModelCommand, ModelCommand>();
             services.AddTransient<IModelQuery, ModelQuery>();
         }
+
+        public static void ConfigureGenerationService(this IServiceCollection services)
+        {
+            services.AddTransient<IGenerationService, GenerationService>();
+
+            services.AddTransient<IGenerationCommand, GenerationCommand>();
+            services.AddTransient<IGenerationQuery, GenerationQuery>();
+        }
     }
 }

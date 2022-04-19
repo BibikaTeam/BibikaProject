@@ -50,6 +50,7 @@ namespace BibikaProject.WebUI
 
             services.ConfigureBrandService();
             services.ConfigureModelService();
+            services.ConfigureGenerationService();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
