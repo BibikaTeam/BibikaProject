@@ -21,23 +21,13 @@ namespace BibikaProject.WebUI.Controllers
         {
             var result = await authService.LoginAsync(model);
 
-            if (!string.IsNullOrEmpty(result.Error))
-            {
-                return NotFound(result.Error);
-            }
-
             return Ok(result);
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserRegisterRequest model)
         {
-            var result = await authService.RegisterAsync(model);
-
-            if (result != null)
-            {
-                return BadRequest(result);
-            }
+            await authService.RegisterAsync(model);
 
             return Ok();
         }
@@ -46,11 +36,6 @@ namespace BibikaProject.WebUI.Controllers
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
         {
             var result = await authService.RefreshAsync(request);
-
-            if (!string.IsNullOrEmpty(result.Error))
-            {
-                return BadRequest(result.Error);
-            }
 
             return Ok(result);
         }

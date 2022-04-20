@@ -1,4 +1,5 @@
 ﻿using BibikaProject.Application.Logger;
+using BibikaProject.Infrastructure.Identity.Errors;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
@@ -13,23 +14,41 @@ namespace BibikaProject.WebUI.ExceptionMiddleware
             app.UseExceptionHandler(appError =>
             {
                 appError.Run(async context =>
-                {
-                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-
-                    context.Response.ContentType = "application/json";
-
+                {                   
                     var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
 
                     if (contextFeature != null)
                     {
-                        logger.LogError($"Something went wrong: {contextFeature.Error}");
+                        context.Response.ContentType = "application/json";
 
-                        await context.Response.WriteAsync(new ErrorDetails()
+                        if (contextFeature.Error is IdentityException)
                         {
-                            StatusCode = context.Response.StatusCode,
-                            Message = "Internal Server Error."
+                            var error = (IdentityException)contextFeature.Error;
 
-                        }.ToString());
+                            context.Response.StatusCode = (int)error.Code;
+
+                            await context.Response.WriteAsync(new ErrorDetails()
+                            {
+                                StatusCode = context.Response.StatusCode,
+                                Message = error.Message
+
+                            }.ToString());
+                        }
+                        else
+                        {
+                            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
+                            await context.Response.WriteAsync(new ErrorDetails()
+                            {
+                                StatusCode = context.Response.StatusCode,
+                                Message = "Internal Server Error."
+                                
+
+                            }.ToString());
+
+                        }
+
+                        logger.LogError($"Something went wrong: {contextFeature.Error}");
                     }
                 });
             });
