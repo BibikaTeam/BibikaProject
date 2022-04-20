@@ -15,6 +15,8 @@ using BibikaProject.Application.Identity.Commands;
 using BibikaProject.Application.Identity.Responses;
 using BibikaProject.Application.Identity.Requests;
 using BibikaProject.Application.Identity.Claims;
+using BibikaProject.Infrastructure.Identity.Errors;
+using System.Net;
 
 namespace BibikaProject.Infrastructure.Identity.Services
 {
@@ -38,24 +40,16 @@ namespace BibikaProject.Infrastructure.Identity.Services
 
         public async Task<TokenResponse> LoginAsync(UserLoginRequest request)
         {
-            ApplicationUser user = null;
-            TokenResponse errorResponse = new TokenResponse
-            {
-                Token = null,
-                RefreshToken = null,
-                Error = "Wrong password or email",
-            };
-
-            user = await userManager.FindByEmailAsync(request.Email);
+            ApplicationUser user = await userManager.FindByEmailAsync(request.Email);
 
             if (user == null)
             {
-                return errorResponse;
+                throw new IdentityException("Wrong password or email", HttpStatusCode.NotFound);
             }
 
             if (!await userManager.CheckPasswordAsync(user, request.Password))
             {
-                return errorResponse;
+                throw new IdentityException("Wrong password or email", HttpStatusCode.NotFound);
             }
 
             var JWT = await CreateTokenAsync(user);
@@ -65,8 +59,7 @@ namespace BibikaProject.Infrastructure.Identity.Services
             return new TokenResponse
             {
                 Token = JWT,
-                RefreshToken = refresh,
-                Error = null,
+                RefreshToken = refresh
             };
         }
 
@@ -103,12 +96,7 @@ namespace BibikaProject.Infrastructure.Identity.Services
 
             if (principal == null)
             {
-                return new TokenResponse
-                {
-                    Token = null,
-                    RefreshToken = null,
-                    Error = "Invalid access token"
-                };
+                throw new IdentityException("Invalid access token", HttpStatusCode.BadRequest);
             }
 
             var expDateUnix = long.Parse(principal.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
@@ -124,32 +112,17 @@ namespace BibikaProject.Infrastructure.Identity.Services
                storedRefreshToken.Used ||
                storedRefreshToken.JwtId != jti)
             {
-                return new TokenResponse
-                {
-                    Token = null,
-                    RefreshToken = null,
-                    Error = "Invalid refresh token"
-                };
+                throw new IdentityException("Invalid refresh token", HttpStatusCode.BadRequest);
             }
 
             if (expDate > DateTime.UtcNow)
             {
-                return new TokenResponse
-                {
-                    Token = null,
-                    RefreshToken = null,
-                    Error = "Access token hasn't expired"
-                };
+                throw new IdentityException("Access token hasn't expired", HttpStatusCode.BadRequest);
             }
 
             if (DateTime.UtcNow > storedRefreshToken.ExpiryDate)
             {
-                return new TokenResponse
-                {
-                    Token = null,
-                    RefreshToken = null,
-                    Error = "Refresh token has expired"
-                };
+                throw new IdentityException("Refresh token has expired", HttpStatusCode.BadRequest);
             }
 
             storedRefreshToken.Used = true;
@@ -166,8 +139,7 @@ namespace BibikaProject.Infrastructure.Identity.Services
             return new TokenResponse
             {
                 RefreshToken = newRefresh,
-                Token = newJWT,
-                Error = null
+                Token = newJWT
             };
         }
 
