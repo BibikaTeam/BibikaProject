@@ -147,5 +147,13 @@ namespace BibikaProject.WebUI
             services.AddTransient<IGenerationCommand, GenerationCommand>();
             services.AddTransient<IGenerationQuery, GenerationQuery>();
         }
+
+        public static void ConfigureCarService(this IServiceCollection services)
+        {
+            services.AddTransient<ICarService, CarService>();
+
+            services.AddTransient<ICarCommand, CarCommand>();
+            services.AddTransient<ICarQuery, CarQuery>();
+        }
     }
 }
