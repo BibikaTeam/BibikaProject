@@ -49,6 +49,9 @@ namespace BibikaProject.WebUI
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.ConfigureBrandService();
+            services.ConfigureModelService();
+            services.ConfigureGenerationService();
+            services.ConfigureCarService();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)

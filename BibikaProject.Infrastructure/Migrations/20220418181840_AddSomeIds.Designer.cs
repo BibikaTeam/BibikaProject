@@ -3,15 +3,17 @@ using System;
 using BibikaProject.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace BibikaProject.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220418181840_AddSomeIds")]
+    partial class AddSomeIds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,19 +44,19 @@ namespace BibikaProject.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("CarBodyId")
+                    b.Property<int?>("CarBodyId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("CompleteSetId")
+                    b.Property<int?>("CompleteSetId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("EngineId")
+                    b.Property<int?>("EngineId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("GearBoxId")
+                    b.Property<int?>("GearBoxId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("GenerationId")
+                    b.Property<int?>("GenerationId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -383,6 +385,22 @@ namespace BibikaProject.Infrastructure.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "e676f7ea-fc2a-4c11-8173-c48e21f9dbfd",
+                            ConcurrencyStamp = "2cc43474-475b-4758-934a-a2b77bc12756",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        },
+                        new
+                        {
+                            Id = "f5c801ee-6682-4e06-b8b0-b3887b7d6862",
+                            ConcurrencyStamp = "97b0670a-c99d-4c1d-9ad9-4d0e62cf73ce",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -508,33 +526,23 @@ namespace BibikaProject.Infrastructure.Migrations
                 {
                     b.HasOne("BibikaProject.Domain.Entities.Core.CarBody", "CarBody")
                         .WithMany("Cars")
-                        .HasForeignKey("CarBodyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CarBodyId");
 
                     b.HasOne("BibikaProject.Domain.Entities.Core.CompleteSet", "CompleteSet")
                         .WithMany("Cars")
-                        .HasForeignKey("CompleteSetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CompleteSetId");
 
                     b.HasOne("BibikaProject.Domain.Entities.Core.Engine", "Engine")
                         .WithMany("Cars")
-                        .HasForeignKey("EngineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EngineId");
 
                     b.HasOne("BibikaProject.Domain.Entities.Core.GearBox", "GearBox")
                         .WithMany("Cars")
-                        .HasForeignKey("GearBoxId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GearBoxId");
 
                     b.HasOne("BibikaProject.Domain.Entities.Core.Generation", "Generation")
                         .WithMany("Cars")
-                        .HasForeignKey("GenerationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GenerationId");
 
                     b.Navigation("CarBody");
 

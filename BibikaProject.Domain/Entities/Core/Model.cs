@@ -11,6 +11,8 @@ namespace BibikaProject.Domain.Entities.Core
         [Required]
         public string Title { get; set; }
 
+        public int BrandId { get; set; }
+
         public Brand Brand { get; set; }
 
         public ICollection<Generation> Generations { get; set; }

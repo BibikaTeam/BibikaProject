@@ -11,6 +11,8 @@ namespace BibikaProject.Application.Core.DTO.Car
         public int CarBodyId { get; set; }
 
         public int CompleteSetId { get; set; }
+
+        public int GearBoxId { get; set; }
     }
 
     public class AddCarDTOValidator : AbstractValidator<AddCarDTO>
@@ -21,6 +23,7 @@ namespace BibikaProject.Application.Core.DTO.Car
             RuleFor(x => x.EngineId).NotNull();
             RuleFor(x => x.CarBodyId).NotNull();
             RuleFor(x => x.CompleteSetId).NotNull();
+            RuleFor(x => x.GearBoxId).NotNull();
         }
     }
 }

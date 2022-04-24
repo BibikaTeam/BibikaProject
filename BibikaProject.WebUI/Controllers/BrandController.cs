@@ -52,6 +52,5 @@ namespace BibikaProject.WebUI.Controllers
 
             return Ok(result);
         }
-
     }
 }
