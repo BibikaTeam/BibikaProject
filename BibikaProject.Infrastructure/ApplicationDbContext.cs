@@ -40,7 +40,7 @@ namespace BibikaProject.Infrastructure
         {
             base.OnModelCreating(builder);
 
-            builder.ApplyConfiguration(new RoleConfiguration());
+            //builder.ApplyConfiguration(new RoleConfiguration());
         }
     }
 }

@@ -22,6 +22,9 @@ namespace BibikaProject.Domain.Entities.Core
         [Required]
         public string Color { get; set; }
 
+        public int CarId { get; set; }
+        public string SellerId { get; set; }
+
         [Required]
         public ApplicationUser Seller { get; set; }
 
