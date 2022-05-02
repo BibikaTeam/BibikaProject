@@ -4,29 +4,4 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="10.4.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.15" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.15" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-    <PackageReference Include="NLog" Version="4.7.15" />
-    <PackageReference Include="Npgsql" Version="5.0.12" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.10" />
-    <PackageReference Include="System.Drawing.Common" Version="5.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\BibikaProject.Application\BibikaProject.Application.csproj" />
-    <ProjectReference Include="..\BibikaProject.Domain\BibikaProject.Domain.csproj" />
-  </ItemGroup>
-
 </Project>
