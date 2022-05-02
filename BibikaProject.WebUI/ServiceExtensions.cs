@@ -27,6 +27,7 @@ using BibikaProject.Application.Core.Commands;
 using BibikaProject.Infrastructure.Core.Commands;
 using BibikaProject.Infrastructure.Core.Queries;
 using BibikaProject.Application.Core.Queries;
+using BibikaProject.Application.Core.DTO.Post;
 
 namespace BibikaProject.WebUI
 {
@@ -122,6 +123,8 @@ namespace BibikaProject.WebUI
 
             services.AddTransient<IValidator<AddCarDTO>, AddCarDTOValidator>();
             services.AddTransient<IValidator<UpdateCarDTO>, UpdateCarDTOValidator>();
+
+            services.AddTransient<IValidator<AddPostDTO>, AddPostDTOValidator>();
         }
 
         public static void ConfigureBrandService(this IServiceCollection services)
@@ -131,6 +134,16 @@ namespace BibikaProject.WebUI
             services.AddTransient<IBrandCommand, BrandCommand>();
             services.AddTransient<IBrandQuery, BrandQuery>();
         }
+
+        public static void ConfigurePostService(this IServiceCollection services)
+        {
+            services.AddTransient<IPostService, PostService>();
+            services.AddTransient<IPostCommand, PostCommand>();
+        }
+        public static void ConfigureHelperServices (this IServiceCollection services)
+        {
+            services.AddTransient<IImageService, ImageService>();   
+        } 
 
         public static void ConfigureModelService(this IServiceCollection services)
         {

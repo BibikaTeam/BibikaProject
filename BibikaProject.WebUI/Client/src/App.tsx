@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 
 const RegisterPage = lazy(() => import("./components/authorization/register"));
 const LoginPage = lazy(() => import("./components/authorization/login"));
+const AddPost = lazy(() => import("./components/posts/add"));
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/">
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/add-post" element={<AddPost />} />
         </Route>
       </Routes>
       <ToastContainer pauseOnHover={false} pauseOnFocusLoss={false} />
@@ -21,3 +23,5 @@ function App() {
 }
 
 export default App;
+
+// https://www.npmjs.com/package/ntc

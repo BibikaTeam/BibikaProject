@@ -49,6 +49,10 @@ namespace BibikaProject.WebUI
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.ConfigureBrandService();
+
+            services.ConfigurePostService();
+            services.ConfigureHelperServices();
+
             services.ConfigureModelService();
             services.ConfigureGenerationService();
             services.ConfigureCarService();
