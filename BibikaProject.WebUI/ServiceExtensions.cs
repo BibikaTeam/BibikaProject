@@ -134,6 +134,7 @@ namespace BibikaProject.WebUI
             services.AddTransient<IBrandCommand, BrandCommand>();
             services.AddTransient<IBrandQuery, BrandQuery>();
         }
+
         public static void ConfigurePostService(this IServiceCollection services)
         {
             services.AddTransient<IPostService, PostService>();
@@ -143,5 +144,29 @@ namespace BibikaProject.WebUI
         {
             services.AddTransient<IImageService, ImageService>();   
         } 
+
+        public static void ConfigureModelService(this IServiceCollection services)
+        {
+            services.AddTransient<IModelService, ModelService>();
+
+            services.AddTransient<IModelCommand, ModelCommand>();
+            services.AddTransient<IModelQuery, ModelQuery>();
+        }
+
+        public static void ConfigureGenerationService(this IServiceCollection services)
+        {
+            services.AddTransient<IGenerationService, GenerationService>();
+
+            services.AddTransient<IGenerationCommand, GenerationCommand>();
+            services.AddTransient<IGenerationQuery, GenerationQuery>();
+        }
+
+        public static void ConfigureCarService(this IServiceCollection services)
+        {
+            services.AddTransient<ICarService, CarService>();
+
+            services.AddTransient<ICarCommand, CarCommand>();
+            services.AddTransient<ICarQuery, CarQuery>();
+        }
     }
 }
