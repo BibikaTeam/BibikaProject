@@ -3,11 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BibikaProject.Domain.Entities.Core
 {
-    public class CarBody
+    public class CarBody : BaseEntity<int>
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         public string Title { get; set; }
 

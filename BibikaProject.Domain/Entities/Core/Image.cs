@@ -2,11 +2,8 @@
 
 namespace BibikaProject.Domain.Entities.Core
 {
-    public class Image
+    public class Image : BaseEntity<int>
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         public string Title { get; set; }
 
