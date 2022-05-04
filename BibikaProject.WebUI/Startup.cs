@@ -50,8 +50,8 @@ namespace BibikaProject.WebUI
 
             services.ConfigureBrandService();
 
-            services.ConfigurePostService();
-            services.ConfigureHelperServices();
+            //services.ConfigurePostService(); 
+            //services.ConfigureHelperServices();
 
             services.ConfigureModelService();
             services.ConfigureGenerationService();

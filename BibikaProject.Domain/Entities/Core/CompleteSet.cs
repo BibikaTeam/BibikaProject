@@ -3,11 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BibikaProject.Domain.Entities.Core
 {
-    public class CompleteSet
+    public class CompleteSet : BaseEntity<int>
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         public string Title { get; set; }
 
