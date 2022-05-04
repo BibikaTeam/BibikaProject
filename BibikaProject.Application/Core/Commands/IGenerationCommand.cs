@@ -1,16 +1,8 @@
 ﻿using BibikaProject.Domain.Entities.Core;
-using System.Threading.Tasks;
 
 namespace BibikaProject.Application.Core.Commands
 {
-    public interface IGenerationCommand
+    public interface IGenerationCommand : IBaseCommand<Generation, int>
     {
-        Task AddGenerationAsync(Generation generation);
-
-        void UpdateGeneration(Generation generation);
-
-        void DeleteGeneration(int id);
-
-        Task SaveChangesAsync();
     }
 }

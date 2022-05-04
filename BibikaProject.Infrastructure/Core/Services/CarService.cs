@@ -29,14 +29,14 @@ namespace BibikaProject.Infrastructure.Core.Services
 
         public async Task AddCarAsync(AddCarDTO addCarDTO)
         {
-            await command.AddCarAsync(mapper.Map<Car>(addCarDTO));
+            await command.AddAsync(mapper.Map<Car>(addCarDTO));
 
             await command.SaveChangesAsync();
         }
 
         public async Task DeleteCarAsync(int id)
         {
-            command.DeleteCar(id);
+            command.Delete(id);
 
             await command.SaveChangesAsync();
         }
@@ -78,7 +78,7 @@ namespace BibikaProject.Infrastructure.Core.Services
 
         public async Task UpdateCarAsync(UpdateCarDTO updateCarDTO)
         {
-            command.UpdateCar(mapper.Map<Car>(updateCarDTO));
+            command.Update(mapper.Map<Car>(updateCarDTO));
 
             await command.SaveChangesAsync();
         }

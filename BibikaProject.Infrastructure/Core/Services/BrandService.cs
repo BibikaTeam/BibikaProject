@@ -28,14 +28,14 @@ namespace BibikaProject.Infrastructure.Core.Services
 
         public async Task AddBrandAsync(AddBrandDTO addBrandDTO)
         {
-            await command.AddBrandAsync(mapper.Map<Brand>(addBrandDTO));
+            await command.AddAsync(mapper.Map<Brand>(addBrandDTO));
 
             await command.SaveChangesAsync();
         }
 
         public async Task DeleteBrandAsync(int id)
         {
-            command.DeleteBrand(id);
+            command.Delete(id);
 
             await command.SaveChangesAsync();
         }
@@ -67,7 +67,7 @@ namespace BibikaProject.Infrastructure.Core.Services
 
         public async Task UpdateBrandAsync(UpdateBrandDTO updateBrandDTO)
         {
-            command.UpdateBrand(mapper.Map<Brand>(updateBrandDTO));
+            command.Update(mapper.Map<Brand>(updateBrandDTO));
 
             await command.SaveChangesAsync();
         }

@@ -1,16 +1,8 @@
 ﻿using BibikaProject.Domain.Entities.Core;
-using System.Threading.Tasks;
 
 namespace BibikaProject.Application.Core.Commands
 {
-    public interface IImageCommand
+    public interface IImageCommand : IBaseCommand<Image, int>
     {
-        Task AddImageAsync(Image image);
-
-        void UpdateImage(Image image);
-
-        void DeleteImage(int id);
-
-        Task SaveChangesAsync();
     }
 }
