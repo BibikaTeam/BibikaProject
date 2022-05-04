@@ -1,16 +1,8 @@
 ﻿using BibikaProject.Domain.Entities.Core;
-using System.Threading.Tasks;
 
 namespace BibikaProject.Application.Core.Commands
 {
-    public interface IEngineCommand
+    public interface IEngineCommand : IBaseCommand<Engine, int>
     {
-        Task AddEngineAsync(Engine engine);
-
-        void UpdateEngine(Engine engine);
-
-        void DeleteEngine(int id);
-
-        Task SaveChangesAsync();
     }
 }

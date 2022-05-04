@@ -1,13 +1,8 @@
 ﻿using BibikaProject.Domain.Entities.Core;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BibikaProject.Application.Core.Queries
 {
-    public interface IImageQuery
+    public interface IImageQuery : IBaseQuery<Image, int>
     {
-        IQueryable<Image> GetAllImagesAsync();
-
-        Task<Image> GetImageIdAsync(int id);
     }
 }

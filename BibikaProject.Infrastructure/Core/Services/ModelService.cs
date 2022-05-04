@@ -28,21 +28,21 @@ namespace BibikaProject.Infrastructure.Core.Services
 
         public async Task AddModelAsync(AddModelDTO addModelDTO)
         {
-            await command.AddModelAsync(mapper.Map<Model>(addModelDTO));
+            await command.AddAsync(mapper.Map<Model>(addModelDTO));
 
             await command.SaveChangesAsync();
         }
 
         public async Task DeleteModelAsync(int id)
         {
-            command.DeleteModel(id);
+            command.Delete(id);
 
             await command.SaveChangesAsync();
         }
 
         public async Task<PagedList<ModelDTO>> GetPagedModelsAsync(PagedModelsRequest pagedModelsRequest)
         {
-            IQueryable<Model> models = query.GetAllModelsAsync()
+            IQueryable<Model> models = query.GetAll()
                                             .Include(x => x.Brand);
 
             var response = new PagedList<ModelDTO> { CurrentPage = pagedModelsRequest.Page };
@@ -73,7 +73,7 @@ namespace BibikaProject.Infrastructure.Core.Services
 
         public async Task UpdateModelAsync(UpdateModelDTO updateModelDTO)
         {
-            command.UpdateModel(mapper.Map<Model>(updateModelDTO));
+            command.Update(mapper.Map<Model>(updateModelDTO));
 
             await command.SaveChangesAsync();
         }

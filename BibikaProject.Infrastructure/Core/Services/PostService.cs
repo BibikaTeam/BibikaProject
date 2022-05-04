@@ -22,7 +22,7 @@ namespace BibikaProject.Infrastructure.Core.Services
         }
         public async Task AddPostAsync(AddPostDTO addPostDTO)
         {
-            await command.AddPostAsync(mapper.Map<Post>(addPostDTO));
+            await command.AddAsync(mapper.Map<Post>(addPostDTO));
 
             await command.SaveChangesAsync();  
         }

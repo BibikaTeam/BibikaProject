@@ -1,16 +1,8 @@
 ﻿using BibikaProject.Domain.Entities.Core;
-using System.Threading.Tasks;
 
 namespace BibikaProject.Application.Core.Commands
 {
-    public interface IBrandCommand
+    public interface IBrandCommand : IBaseCommand<Brand, int>
     {
-        Task AddBrandAsync(Brand brand);
-
-        void UpdateBrand(Brand brand);
-
-        void DeleteBrand(int id);
-
-        Task SaveChangesAsync();
     }
 }

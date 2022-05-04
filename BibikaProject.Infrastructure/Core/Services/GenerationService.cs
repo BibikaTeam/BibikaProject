@@ -28,21 +28,21 @@ namespace BibikaProject.Infrastructure.Core.Services
 
         public async Task AddGenerationAsync(AddGenerationDTO addGenerationDTO)
         {
-            await command.AddGenerationAsync(mapper.Map<Generation>(addGenerationDTO));
+            await command.AddAsync(mapper.Map<Generation>(addGenerationDTO));
 
             await command.SaveChangesAsync();
         }
 
         public async Task DeleteGenerationAsync(int id)
         {
-            command.DeleteGeneration(id);
+            command.Delete(id);
 
             await command.SaveChangesAsync();
         }
 
         public async Task<PagedList<GenerationDTO>> GetPagedGenerationsAsync(PagedGenerationsRequest pagedGenerationsRequest)
         {
-            IQueryable<Generation> generations = query.GetAllGenerationsAsync()
+            IQueryable<Generation> generations = query.GetAll()
                                                       .Include(x => x.Model)
                                                       .ThenInclude(x => x.Brand);
 
@@ -79,7 +79,7 @@ namespace BibikaProject.Infrastructure.Core.Services
 
         public async Task UpdateGenerationAsync(UpdateGenerationDTO updateGenerationDTO)
         {
-            command.UpdateGeneration(mapper.Map<Generation>(updateGenerationDTO));
+            command.Update(mapper.Map<Generation>(updateGenerationDTO));
 
             await command.SaveChangesAsync();
         }

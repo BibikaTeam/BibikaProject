@@ -1,13 +1,8 @@
 ﻿using BibikaProject.Domain.Entities.Core;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BibikaProject.Application.Core.Queries
 {
-    public interface IPostQuery
+    public interface IPostQuery : IBaseQuery<Post, int>
     {
-        IQueryable<Post> GetAllPostsAsync();
-
-        Task<Post> GetPostIdAsync(int id);
     }
 }

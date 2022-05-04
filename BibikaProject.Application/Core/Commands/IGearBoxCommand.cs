@@ -1,16 +1,8 @@
 ﻿using BibikaProject.Domain.Entities.Core;
-using System.Threading.Tasks;
 
 namespace BibikaProject.Application.Core.Commands
 {
-    public interface IGearBoxCommand
+    public interface IGearBoxCommand : IBaseCommand<GearBox, int>
     {
-        Task AddGearBoxAsync(GearBox gearBox);
-
-        void UpdateGearBox(GearBox gearBox);
-
-        void DeleteGearBox(int id);
-
-        Task SaveChangesAsync();
     }
 }

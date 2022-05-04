@@ -1,16 +1,8 @@
 ﻿using BibikaProject.Domain.Entities.Core;
-using System.Threading.Tasks;
 
 namespace BibikaProject.Application.Core.Commands
 {
-    public interface ICarBodyCommand
+    public interface ICarBodyCommand : IBaseCommand<CarBody, int>
     {
-        Task AddCarBodyAsync(CarBody carBody);
-
-        void UpdateCarBody(CarBody carBody);
-
-        void DeleteCarBody(int id);
-
-        Task SaveChangesAsync();
     }
 }
