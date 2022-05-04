@@ -42,7 +42,7 @@ namespace BibikaProject.Infrastructure.Core.Services
 
         public async Task<PagedList<GenerationDTO>> GetPagedGenerationsAsync(PagedGenerationsRequest pagedGenerationsRequest)
         {
-            IQueryable<Generation> generations = query.GetAllGenerationsAsync()
+            IQueryable<Generation> generations = query.GetAll()
                                                       .Include(x => x.Model)
                                                       .ThenInclude(x => x.Brand);
 

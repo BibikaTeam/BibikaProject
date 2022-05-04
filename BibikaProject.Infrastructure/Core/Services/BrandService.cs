@@ -42,7 +42,7 @@ namespace BibikaProject.Infrastructure.Core.Services
 
         public async Task<PagedList<BrandDTO>> GetPagedBrandsAsync(PagedBrandsRequest pagedBrandsRequest)
         {
-            var brands = query.GetAllBrandsAsync();
+            var brands = query.GetAll();
 
             var response = new PagedList<BrandDTO> { CurrentPage = pagedBrandsRequest.Page };
 

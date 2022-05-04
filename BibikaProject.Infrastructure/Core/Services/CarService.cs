@@ -43,7 +43,7 @@ namespace BibikaProject.Infrastructure.Core.Services
 
         public async Task<PagedList<CarDTO>> GetPagedCarsAsync(PagedCarsRequest pagedCarRequest)
         {
-            IQueryable<Car> cars = query.GetAllCarsAsync()
+            IQueryable<Car> cars = query.GetAll()
                                         .Include(x => x.CarBody)
                                         .Include(x => x.CompleteSet)
                                         .Include(x => x.Engine)

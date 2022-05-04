@@ -42,7 +42,7 @@ namespace BibikaProject.Infrastructure.Core.Services
 
         public async Task<PagedList<ModelDTO>> GetPagedModelsAsync(PagedModelsRequest pagedModelsRequest)
         {
-            IQueryable<Model> models = query.GetAllModelsAsync()
+            IQueryable<Model> models = query.GetAll()
                                             .Include(x => x.Brand);
 
             var response = new PagedList<ModelDTO> { CurrentPage = pagedModelsRequest.Page };
