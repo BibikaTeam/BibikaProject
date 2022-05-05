@@ -13,5 +13,7 @@ namespace BibikaProject.Application.Core.DTO.Car
         public string CompleteSetTitle { get; set; }
 
         public string GearBoxTitle { get; set; }
+
+        public string Title { get; set; }
     }
 }

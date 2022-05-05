@@ -1,6 +1,7 @@
 ﻿using BibikaProject.Application.Core.DTO.Brand;
 using BibikaProject.Application.Core.Requests;
 using BibikaProject.Application.Core.Responses;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BibikaProject.Application.Core.Services
@@ -14,5 +15,7 @@ namespace BibikaProject.Application.Core.Services
         Task DeleteBrandAsync(int id);
 
         Task<PagedList<BrandDTO>> GetPagedBrandsAsync(PagedBrandsRequest pagedBrandsRequest);
+
+        Task<List<BrandDTO>> GetAllBrands();
     }
 }

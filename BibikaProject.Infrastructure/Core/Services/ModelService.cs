@@ -63,10 +63,7 @@ namespace BibikaProject.Infrastructure.Core.Services
                            .Take(pagedModelsRequest.CountOnPage)
                            .AsNoTracking();
 
-            foreach (var item in await models.ToListAsync())
-            {
-                response.Data.Add(mapper.Map<ModelDTO>(item));
-            }
+            response.Data = await models.Select(x => mapper.Map<ModelDTO>(x)).ToListAsync();
 
             return response;
         }
