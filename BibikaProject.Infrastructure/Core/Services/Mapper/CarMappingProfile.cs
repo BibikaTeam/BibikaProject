@@ -27,7 +27,8 @@ namespace BibikaProject.Infrastructure.Core.Services.Mapper
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.CarBodyTitle, opt => opt.MapFrom(src => src.CarBody.Title))
                 .ForMember(dest => dest.CompleteSetTitle, opt => opt.MapFrom(src => src.CompleteSet.Title))
-                .ForMember(dest => dest.GearBoxTitle, opt => opt.MapFrom(src => src.GearBox.Title));
+                .ForMember(dest => dest.GearBoxTitle, opt => opt.MapFrom(src => src.GearBox.Title))
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => $"{src.Generation.Model.Brand.Title} {src.Generation.Model.Title} {src.Generation.Title}"));
         }
     }
 }

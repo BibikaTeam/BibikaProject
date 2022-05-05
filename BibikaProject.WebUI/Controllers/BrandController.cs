@@ -52,5 +52,13 @@ namespace BibikaProject.WebUI.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("get/all")]
+        public async Task<IActionResult> GetAllBrands()
+        {
+            var result = await brandService.GetAllBrands();
+
+            return Ok(result);
+        }
     }
 }

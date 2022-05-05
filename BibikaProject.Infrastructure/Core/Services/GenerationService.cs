@@ -69,10 +69,7 @@ namespace BibikaProject.Infrastructure.Core.Services
                                      .Take(pagedGenerationsRequest.CountOnPage)
                                      .AsNoTracking();
 
-            foreach (var item in await generations.ToListAsync())
-            {
-                response.Data.Add(mapper.Map<GenerationDTO>(item));
-            }
+            response.Data = await generations.Select(x => mapper.Map<GenerationDTO>(x)).ToListAsync();
 
             return response;
         }

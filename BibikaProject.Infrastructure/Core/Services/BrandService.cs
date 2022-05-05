@@ -8,6 +8,7 @@ using BibikaProject.Application.Core.Services;
 using BibikaProject.Domain.Entities.Core;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -57,10 +58,7 @@ namespace BibikaProject.Infrastructure.Core.Services
                            .Take(pagedBrandsRequest.CountOnPage)
                            .AsNoTracking();
 
-            foreach (var item in await brands.ToListAsync())
-            {
-                response.Data.Add(mapper.Map<BrandDTO>(item));
-            }
+            response.Data = await brands.Select(x => mapper.Map<BrandDTO>(x)).ToListAsync();
 
             return response;
         }
@@ -70,6 +68,11 @@ namespace BibikaProject.Infrastructure.Core.Services
             command.Update(mapper.Map<Brand>(updateBrandDTO));
 
             await command.SaveChangesAsync();
+        }
+
+        public async Task<List<BrandDTO>> GetAllBrands()
+        {
+            return await query.GetAll().Select(x => mapper.Map<BrandDTO>(x)).ToListAsync();
         }
     }
 }

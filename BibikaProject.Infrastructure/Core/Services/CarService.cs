@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using BibikaProject.Application.Core.Commands;
 using BibikaProject.Application.Core.DTO.Car;
-using BibikaProject.Application.Core.DTO.Engine;
 using BibikaProject.Application.Core.Queries;
 using BibikaProject.Application.Core.Requests;
 using BibikaProject.Application.Core.Responses;
@@ -48,7 +47,9 @@ namespace BibikaProject.Infrastructure.Core.Services
                                         .Include(x => x.CompleteSet)
                                         .Include(x => x.Engine)
                                         .Include(x => x.GearBox)
-                                        .Include(x => x.Generation);
+                                        .Include(x => x.Generation)
+                                        .ThenInclude(x => x.Model)
+                                        .ThenInclude(x => x.Brand);
                                         
 
             var response = new PagedList<CarDTO> { CurrentPage = pagedCarRequest.Page };
@@ -61,17 +62,10 @@ namespace BibikaProject.Infrastructure.Core.Services
             response.AllPages = (int)Math.Ceiling((double)await cars.CountAsync() / (double)pagedCarRequest.CountOnPage);
 
             cars = cars.Skip((pagedCarRequest.Page - 1) * pagedCarRequest.CountOnPage)
-                                     .Take(pagedCarRequest.CountOnPage)
-                                     .AsNoTracking();
+                       .Take(pagedCarRequest.CountOnPage)
+                       .AsNoTracking();
 
-            foreach (var item in await cars.ToListAsync())
-            {
-                var carDto = mapper.Map<CarDTO>(item);
-
-                carDto.Engine = mapper.Map<EngineDTO>(item.Engine);
-
-                response.Data.Add(carDto);
-            }
+            response.Data = await cars.Select(x => mapper.Map<CarDTO>(x)).ToListAsync();
 
             return response;
         }
