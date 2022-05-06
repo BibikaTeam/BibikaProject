@@ -16,6 +16,6 @@ namespace BibikaProject.Application.Core.Services
 
         Task<PagedList<BrandDTO>> GetPagedBrandsAsync(PagedBrandsRequest pagedBrandsRequest);
 
-        Task<List<BrandDTO>> GetAllBrands();
+        Task<List<BrandDTO>> GetAllBrandsAsync();
     }
 }

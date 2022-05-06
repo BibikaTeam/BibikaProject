@@ -52,5 +52,21 @@ namespace BibikaProject.WebUI.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("get/all")]
+        public async Task<IActionResult> GetAllGenrations()
+        {
+            var result = await generationService.GetAllGenerationsAsync();
+
+            return Ok(result);
+        }
+
+        [HttpGet("get/by-model/{id}")]
+        public async Task<IActionResult> GetGenerationsByBrand(int id)
+        {
+            var result = await generationService.GetGenerationsByModelAsync(id);
+
+            return Ok(result);
+        }
     }
 }
