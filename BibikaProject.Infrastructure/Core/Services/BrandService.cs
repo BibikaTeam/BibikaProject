@@ -70,7 +70,7 @@ namespace BibikaProject.Infrastructure.Core.Services
             await command.SaveChangesAsync();
         }
 
-        public async Task<List<BrandDTO>> GetAllBrands()
+        public async Task<List<BrandDTO>> GetAllBrandsAsync()
         {
             return await query.GetAll().Select(x => mapper.Map<BrandDTO>(x)).ToListAsync();
         }

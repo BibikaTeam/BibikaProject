@@ -8,6 +8,7 @@ using BibikaProject.Application.Core.Services;
 using BibikaProject.Domain.Entities.Core;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -73,6 +74,23 @@ namespace BibikaProject.Infrastructure.Core.Services
             command.Update(mapper.Map<Model>(updateModelDTO));
 
             await command.SaveChangesAsync();
+        }
+
+        public async Task<List<ModelDTO>> GetModelsByBrandAsync(int brandId)
+        {
+            return await query.GetAll()
+                              .Include(x => x.Brand)
+                              .Where(x => x.BrandId == brandId)
+                              .Select(x => mapper.Map<ModelDTO>(x))
+                              .ToListAsync();
+        }
+
+        public async Task<List<ModelDTO>> GetAllModelsAsync()
+        {
+            return await query.GetAll()
+                              .Include(x => x.Brand)                           
+                              .Select(x => mapper.Map<ModelDTO>(x))
+                              .ToListAsync();
         }
     }
 }
