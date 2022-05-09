@@ -13,13 +13,20 @@ namespace BibikaProject.Infrastructure.Core.Services.Mapper
     {
         public PostMappingProfile()
         {
-
-            //CreateMap<AddPost, Brand>()
-            //    .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title));
-
             CreateMap<AddPostDTO, Post>()
                 .ForMember(dest => dest.CarId, opt => opt.MapFrom(src => src.CarId))
-                .ForMember(dest => dest.SellerId, opt => opt.MapFrom(src => src.SellerId));
+                .ForMember(dest => dest.SellerId, opt => opt.MapFrom(src => src.SellerId))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+                .ForMember(dest => dest.Year, opt => opt.MapFrom(src => src.Year))
+                .ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.Location))
+                .ForMember(dest => dest.Color, opt => opt.MapFrom(src => src.Color));
+
+            CreateMap<Post, PostDTO>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Year, opt => opt.MapFrom(src => src.Year))
+                .ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.Location))
+                .ForMember(dest => dest.Color, opt => opt.MapFrom(src => src.Color))
+                .ForMember(dest => dest.SellerName, opt => opt.MapFrom(src => src.Seller.UserName));           
         }
     }
 }
