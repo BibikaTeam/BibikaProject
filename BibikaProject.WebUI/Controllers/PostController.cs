@@ -1,11 +1,11 @@
 ﻿using BibikaProject.Application.Core.DTO.Post;
 using BibikaProject.Application.Core.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace BibikaProject.WebUI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/post")]
     [ApiController]
     public class PostController : ControllerBase
     {
@@ -16,12 +16,20 @@ namespace BibikaProject.WebUI.Controllers
             this.postService = postService;
         }
 
-        [HttpPost("posts/add")]
-        public IActionResult AddNewPost(AddPostDTO postDTO)
+        [HttpPost("add")]
+        public async Task<IActionResult> AddNewPost(AddPostDTO postDTO)
         {
-            postService.AddPostAsync(postDTO);
+            await postService.AddPostAsync(postDTO);
 
             return Ok();
+        }
+
+        [HttpGet("get")]
+        public async Task<IActionResult> GetAllPosts()
+        {
+            var result = await postService.GetAllPosts();
+
+            return Ok(result);
         }
     }
 }
