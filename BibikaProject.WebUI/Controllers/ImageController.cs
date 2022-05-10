@@ -2,17 +2,11 @@
 using BibikaProject.Application.Identity.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace BibikaProject.WebUI.Controllers
 {
-    public class Base64
-    {
-        public string Value { get; set; }
-    }
-
     [Route("api/image")]
     [ApiController]
     public class ImageController : ControllerBase
@@ -31,6 +25,23 @@ namespace BibikaProject.WebUI.Controllers
             await imageService.SaveImage(base64, HttpContext.User.Claims.First(x => x.Type == UserJWTClaimTypes.Id).Value);
 
             return Ok(); 
+        }
+
+        [HttpDelete("delete/{id}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteImage(int id)
+        {
+            await imageService.DeleteImage(id, HttpContext.User.Claims.First(x => x.Type == UserJWTClaimTypes.Id).Value);
+
+            return Ok();
+        }
+
+        [HttpGet("get/{id}")]
+        public async Task<IActionResult> GetImage(int id)
+        {
+            var result = await imageService.GetImage(id);
+
+            return File(result, "image/png");
         }
     }
 }

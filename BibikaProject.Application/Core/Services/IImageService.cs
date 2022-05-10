@@ -8,6 +8,6 @@ namespace BibikaProject.Application.Core.Services
 
         Task DeleteImage(int id, string userId);
 
-        //Task GetImage(int id);
+        Task<byte[]> GetImage(int id);
     }
 }
