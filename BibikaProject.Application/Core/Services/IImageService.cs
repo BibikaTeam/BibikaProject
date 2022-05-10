@@ -1,12 +1,13 @@
-﻿using System.Drawing;
-using static System.Net.Mime.MediaTypeNames;
+﻿using System.Threading.Tasks;
 
 namespace BibikaProject.Application.Core.Services
 {
     public interface IImageService
     {
-        public System.Drawing.Image GetImageFromBase64(string base64);
-        public Bitmap GetSizedBitmap(System.Drawing.Image originalImage, int width);
-        public void SaveImage(Bitmap bitmap, string filename);
+        Task SaveImage(string base64, string userId);
+
+        Task DeleteImage(int id, string userId);
+
+        //Task GetImage(int id);
     }
 }
