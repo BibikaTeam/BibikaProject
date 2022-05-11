@@ -50,5 +50,12 @@ namespace BibikaProject.Infrastructure.Core.Services
 
             await command.SaveChangesAsync();
         }
+
+        public async Task AddOptionsToPost(AddOptionsToPostDTO optionsToPostDTO)
+        {
+            await command.AddOptionsToPost(optionsToPostDTO.PostId, optionsToPostDTO.OptionsId);
+
+            await command.SaveChangesAsync();
+        }
     }
 }

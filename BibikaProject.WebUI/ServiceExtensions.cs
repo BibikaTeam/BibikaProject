@@ -172,5 +172,13 @@ namespace BibikaProject.WebUI
             services.AddTransient<ICarCommand, CarCommand>();
             services.AddTransient<ICarQuery, CarQuery>();
         }
+
+        public static void ConfigureOptionService(this IServiceCollection services)
+        {
+            services.AddTransient<IOptionService, OptionService>();
+
+            services.AddTransient<IOptionCommand, OptionCommand>();
+            services.AddTransient<IOptionQuery, OptionQuery>();
+        }
     }
 }

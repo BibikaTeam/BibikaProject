@@ -32,6 +32,14 @@ namespace BibikaProject.WebUI.Controllers
             return Ok();
         }
 
+        [HttpPost("add-options")]
+        public async Task<IActionResult> AddOptionsToPost(AddOptionsToPostDTO addOptionsToPostDTO)
+        {
+            await postService.AddOptionsToPost(addOptionsToPostDTO);
+
+            return Ok();
+        }
+
         [HttpGet("get")]
         public async Task<IActionResult> GetAllPosts()
         {

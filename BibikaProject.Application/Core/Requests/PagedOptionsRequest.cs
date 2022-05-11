@@ -1,6 +1,6 @@
 ﻿namespace BibikaProject.Application.Core.Requests
 {
-    public class PagedBrandsRequest : PagedRequest
+    public class PagedOptionsRequest : PagedRequest
     {
     }
 }
