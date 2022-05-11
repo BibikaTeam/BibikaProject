@@ -51,10 +51,10 @@ namespace BibikaProject.WebUI
 
             services.ConfigurePostService(); 
             services.ConfigureImageService();
-
             services.ConfigureModelService();
             services.ConfigureGenerationService();
             services.ConfigureCarService();
+            services.ConfigureOptionService();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)

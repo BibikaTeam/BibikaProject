@@ -12,5 +12,7 @@ namespace BibikaProject.Application.Core.Services
         Task<List<PostDTO>> GetAllPosts();
 
         Task AddImagesToPost(AddImagesToPostDTO imagesToPostDTO);
+
+        Task AddOptionsToPost(AddOptionsToPostDTO optionsToPostDTO);
     }
 }
