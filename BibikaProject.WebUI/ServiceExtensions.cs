@@ -142,9 +142,11 @@ namespace BibikaProject.WebUI
             services.AddTransient<IPostQuery, PostQuery>();
         }
 
-        public static void ConfigureHelperServices (this IServiceCollection services)
+        public static void ConfigureImageService(this IServiceCollection services)
         {
-            services.AddTransient<IImageService, ImageService>();   
+            services.AddTransient<IImageService, ImageService>();
+            services.AddTransient<IImageCommand, ImageCommand>();
+            services.AddTransient<IImageQuery, ImageQuery>();
         } 
 
         public static void ConfigureModelService(this IServiceCollection services)

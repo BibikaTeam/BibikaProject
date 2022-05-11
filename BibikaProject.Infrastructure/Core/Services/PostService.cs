@@ -26,9 +26,9 @@ namespace BibikaProject.Infrastructure.Core.Services
 
         public async Task AddPostAsync(AddPostDTO addPostDTO)
         {
-            await command.AddAsync(mapper.Map<Post>(addPostDTO));
-
-            await command.SaveChangesAsync();  
+            var entity = await command.AddAsync(mapper.Map<Post>(addPostDTO));
+           
+            await command.SaveChangesAsync();
         }
 
         public async Task<List<PostDTO>> GetAllPosts()
@@ -42,6 +42,13 @@ namespace BibikaProject.Infrastructure.Core.Services
                                           .Include(x => x.Car).ThenInclude(x => x.Generation).ThenInclude(x => x.Model).ThenInclude(x => x.Brand);
 
             return await posts.Select(x => mapper.Map<PostDTO>(x)).ToListAsync();
+        }
+
+        public async Task AddImagesToPost(AddImagesToPostDTO addImagesToPostDTO)
+        {
+            await command.AddImagesToPost(addImagesToPostDTO.PostId, addImagesToPostDTO.ImagesId);
+
+            await command.SaveChangesAsync();
         }
     }
 }

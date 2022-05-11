@@ -1,66 +1,71 @@
 ﻿using BibikaProject.Application.Core.Commands;
+using BibikaProject.Application.Core.Queries;
 using BibikaProject.Application.Core.Services;
+using BibikaProject.Domain.Entities.Core;
+using BibikaProject.Domain.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Windows.Input;
+using System.Threading.Tasks;
 
 namespace BibikaProject.Infrastructure.Core.Services
 {
     public class ImageService : IImageService
     {
-        private readonly IImageCommand imageCommand;
-        public ImageService(IImageCommand imageCommand)
+        public ImageService(UserManager<ApplicationUser> userManager, IImageCommand command, IImageQuery query)
         {
-            this.imageCommand = imageCommand;
+            this.userManager = userManager;
+            this.command = command;
+            this.query = query;
         }
-        public void SaveImages(List<string> base64Array)
-        {
 
-        }
-        public Image GetImageFromBase64(string base64)
-        {
-            byte[] bytes = Convert.FromBase64String(base64);
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly IImageCommand command;
+        private readonly IImageQuery query;
 
-            Image image;
-            using (MemoryStream ms = new MemoryStream(bytes))
+        public const string ImagesPath = "images/";
+
+        public async Task DeleteImage(int id, string userId)
+        {
+            var userRoles = await userManager.GetRolesAsync(await userManager.FindByIdAsync(userId));
+            var image = await query.GetByIdAsync(id);
+            
+            if (userRoles.Contains("Administrator") || image.UserId == userId)
             {
-                image = Image.FromStream(ms);
+                File.Delete($"{ImagesPath}/{image.Title}.png");
+
+                command.Delete(id);
+                await command.SaveChangesAsync();
+            }      
+        }
+
+        public async Task SaveImage(string base64, string userId)
+        {          
+            string imageTitle = $"{userId}_{ Guid.NewGuid()}";
+
+            if (!Directory.Exists(ImagesPath))
+            {
+                Directory.CreateDirectory(ImagesPath);
+            }    
+
+            var bytes = Convert.FromBase64String(base64);
+            using (var imageFile = new FileStream($"{ImagesPath}/{imageTitle}.png", FileMode.Create))
+            {
+                await imageFile.WriteAsync(bytes, 0, bytes.Length);
+                await imageFile.FlushAsync();
             }
 
-            return image;
+            await command.AddAsync(new Image { Title = imageTitle, UserId = userId });
+            await command.SaveChangesAsync();
         }
-        public Bitmap GetSizedBitmap(Image originalImage, int width)
+
+        public async Task<byte[]> GetImage(int id)
         {
-            double aspectRatio = originalImage.Width / originalImage.Height;
+            var image = await query.GetByIdAsync(id);
 
-            var destRect = new Rectangle(0, 0, width, (int)(width / aspectRatio));
-            var destImage = new Bitmap(width, (int)(width / aspectRatio));
+            var byteImage = await File.ReadAllBytesAsync($"{ImagesPath}/{image.Title}.png");
 
-            destImage.SetResolution(originalImage.HorizontalResolution, originalImage.VerticalResolution);
-            using (var graphics = Graphics.FromImage(destImage))
-            {
-                graphics.CompositingMode = CompositingMode.SourceCopy;
-                graphics.CompositingQuality = CompositingQuality.HighQuality;
-                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                graphics.SmoothingMode = SmoothingMode.HighQuality;
-                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-
-                using (var wrapMode = new ImageAttributes())
-                {
-                    wrapMode.SetWrapMode(WrapMode.TileFlipXY);
-                    graphics.DrawImage(originalImage, destRect, 0, 0, originalImage.Width, originalImage.Height, GraphicsUnit.Pixel, wrapMode);
-                }
-            }
-
-            return destImage;
-        }
-        public void SaveImage(Bitmap bitmap, string filename)
-        {
-            bitmap.Save("/images/posts" + filename + ".jpg");
+            return byteImage;
         }
     }
 }
