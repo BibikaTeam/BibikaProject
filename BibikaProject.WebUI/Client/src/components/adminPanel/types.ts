@@ -15,7 +15,7 @@ export interface ICarModel {
 }
 
 export interface IBrandModel {
-    id: number | null;
+    id: number;
     title: string;
 }
 
