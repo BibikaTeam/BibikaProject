@@ -24,6 +24,14 @@ namespace BibikaProject.WebUI.Controllers
             return Ok();
         }
 
+        [HttpPost("add-images")]
+        public async Task<IActionResult> AddImagesToPost(AddImagesToPostDTO addImagesToPostDTO)
+        {
+            await postService.AddImagesToPost(addImagesToPostDTO);
+
+            return Ok();
+        }
+
         [HttpGet("get")]
         public async Task<IActionResult> GetAllPosts()
         {

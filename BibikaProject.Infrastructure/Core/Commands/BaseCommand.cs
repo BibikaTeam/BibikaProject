@@ -11,11 +11,13 @@ namespace BibikaProject.Infrastructure.Core.Commands
             this.context = context;
         }
 
-        private readonly ApplicationDbContext context;
+        protected readonly ApplicationDbContext context;
 
-        public async Task AddAsync(TEntity entity)
+        public async Task<TEntity> AddAsync(TEntity entity)
         {
             await context.AddAsync(entity);
+
+            return entity;
         }
 
         public void Delete(TIdType id)

@@ -10,5 +10,7 @@ namespace BibikaProject.Application.Core.Services
 
         // temporary method returning all posts for test
         Task<List<PostDTO>> GetAllPosts();
+
+        Task AddImagesToPost(AddImagesToPostDTO imagesToPostDTO);
     }
 }
