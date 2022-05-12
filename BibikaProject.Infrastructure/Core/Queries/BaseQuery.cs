@@ -1,5 +1,6 @@
 ﻿using BibikaProject.Application.Core.Queries;
 using BibikaProject.Domain.Entities;
+using BibikaProject.Infrastructure.Core.Errors;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,7 +22,14 @@ namespace BibikaProject.Infrastructure.Core.Queries
 
         public async Task<TEntity> GetByIdAsync(TIdType id)
         {
-            return await context.Set<TEntity>().FindAsync(id);
+            var entity = await context.Set<TEntity>().FindAsync(id);
+
+            if (entity == null)
+            {
+                throw new NotFoundException("There is no entity with this id.");
+            }
+
+            return entity;
         }
     }
 }

@@ -6,6 +6,7 @@ using BibikaProject.Application.Core.Requests;
 using BibikaProject.Application.Core.Responses;
 using BibikaProject.Application.Core.Services;
 using BibikaProject.Domain.Entities.Core;
+using BibikaProject.Infrastructure.Core.Services.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -48,23 +49,17 @@ namespace BibikaProject.Infrastructure.Core.Services
 
         public async Task<PagedList<OptionDTO>> GetPagedOptionsAsync(PagedOptionsRequest pagedOptionsRequest)
         {
-            var brands = query.GetAll();
+            var options = query.GetAll();
 
             var response = new PagedList<OptionDTO> { CurrentPage = pagedOptionsRequest.Page };
 
-            if (!string.IsNullOrEmpty(pagedOptionsRequest.Search))
-            {
-                brands = brands.Where(x => x.Title.Contains(pagedOptionsRequest.Search) ||
-                                           x.Category.Contains(pagedOptionsRequest.Search));
-            }
+            options = options.Search(pagedOptionsRequest.Search, new[] { "Title", "Category" });
 
-            response.AllPages = (int)Math.Ceiling((double)await brands.CountAsync() / (double)pagedOptionsRequest.CountOnPage);
+            response.AllPages = (int)Math.Ceiling((double)await options.CountAsync() / (double)pagedOptionsRequest.CountOnPage);
 
-            brands = brands.Skip((pagedOptionsRequest.Page - 1) * pagedOptionsRequest.CountOnPage)
-                           .Take(pagedOptionsRequest.CountOnPage)
-                           .AsNoTracking();
+            options = options.GetPage(pagedOptionsRequest.Page, pagedOptionsRequest.CountOnPage).AsNoTracking();
 
-            response.Data = await brands.Select(x => mapper.Map<OptionDTO>(x)).ToListAsync();
+            response.Data = await options.Select(x => mapper.Map<OptionDTO>(x)).ToListAsync();
 
             return response;
         }
