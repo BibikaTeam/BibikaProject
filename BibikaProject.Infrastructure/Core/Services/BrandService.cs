@@ -6,6 +6,7 @@ using BibikaProject.Application.Core.Requests;
 using BibikaProject.Application.Core.Responses;
 using BibikaProject.Application.Core.Services;
 using BibikaProject.Domain.Entities.Core;
+using BibikaProject.Infrastructure.Core.Services.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -47,16 +48,11 @@ namespace BibikaProject.Infrastructure.Core.Services
 
             var response = new PagedList<BrandDTO> { CurrentPage = pagedBrandsRequest.Page };
 
-            if(!string.IsNullOrEmpty(pagedBrandsRequest.Search))
-            {
-                brands = brands.Where(x => x.Title.Contains(pagedBrandsRequest.Search));
-            }
+            brands = brands.Search(pagedBrandsRequest.Search, "Title");
 
             response.AllPages = (int)Math.Ceiling((double)await brands.CountAsync() / (double)pagedBrandsRequest.CountOnPage);
 
-            brands = brands.Skip((pagedBrandsRequest.Page - 1) * pagedBrandsRequest.CountOnPage)
-                           .Take(pagedBrandsRequest.CountOnPage)
-                           .AsNoTracking();
+            brands = brands.GetPage(pagedBrandsRequest.Page, pagedBrandsRequest.CountOnPage).AsNoTracking();
 
             response.Data = await brands.Select(x => mapper.Map<BrandDTO>(x)).ToListAsync();
 

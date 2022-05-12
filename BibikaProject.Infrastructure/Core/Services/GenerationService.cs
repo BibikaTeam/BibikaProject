@@ -6,6 +6,7 @@ using BibikaProject.Application.Core.Requests;
 using BibikaProject.Application.Core.Responses;
 using BibikaProject.Application.Core.Services;
 using BibikaProject.Domain.Entities.Core;
+using BibikaProject.Infrastructure.Core.Services.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -49,10 +50,7 @@ namespace BibikaProject.Infrastructure.Core.Services
 
             var response = new PagedList<GenerationDTO> { CurrentPage = pagedGenerationsRequest.Page };
 
-            if (!string.IsNullOrEmpty(pagedGenerationsRequest.Search))
-            {
-                generations = generations.Where(x => x.Title.Contains(pagedGenerationsRequest.Search));
-            }
+            generations = generations.Search(pagedGenerationsRequest.Search, "Title");
 
             if (pagedGenerationsRequest.ModelId != 0)
             {
@@ -66,9 +64,7 @@ namespace BibikaProject.Infrastructure.Core.Services
 
             response.AllPages = (int)Math.Ceiling((double)await generations.CountAsync() / (double)pagedGenerationsRequest.CountOnPage);
 
-            generations = generations.Skip((pagedGenerationsRequest.Page - 1) * pagedGenerationsRequest.CountOnPage)
-                                     .Take(pagedGenerationsRequest.CountOnPage)
-                                     .AsNoTracking();
+            generations = generations.GetPage(pagedGenerationsRequest.Page, pagedGenerationsRequest.CountOnPage).AsNoTracking();
 
             response.Data = await generations.Select(x => mapper.Map<GenerationDTO>(x)).ToListAsync();
 
