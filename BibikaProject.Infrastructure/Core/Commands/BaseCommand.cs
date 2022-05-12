@@ -1,5 +1,6 @@
 ﻿using BibikaProject.Application.Core.Commands;
 using BibikaProject.Domain.Entities;
+using BibikaProject.Infrastructure.Core.Errors;
 using System.Threading.Tasks;
 
 namespace BibikaProject.Infrastructure.Core.Commands
@@ -22,7 +23,14 @@ namespace BibikaProject.Infrastructure.Core.Commands
 
         public void Delete(TIdType id)
         {
-            context.Remove(context.Set<TEntity>().Find(id));
+            var entity = context.Set<TEntity>().Find(id);
+
+            if (entity == null)
+            {
+                throw new NotFoundException("There is no entity with this id.");
+            }
+
+            context.Remove(entity);
         }
 
         public async Task SaveChangesAsync()
@@ -32,6 +40,11 @@ namespace BibikaProject.Infrastructure.Core.Commands
 
         public void Update(TEntity entity)
         {
+            if (context.Find<TEntity>(entity.Id) == null)
+            {
+                throw new NotFoundException("There is no entity with this id.");
+            }
+
             context.Update(entity);
         }
     }
