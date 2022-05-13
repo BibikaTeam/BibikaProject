@@ -180,5 +180,13 @@ namespace BibikaProject.WebUI
             services.AddTransient<IOptionCommand, OptionCommand>();
             services.AddTransient<IOptionQuery, OptionQuery>();
         }
+
+        public static void ConfigureEngineService(this IServiceCollection services)
+        {
+            services.AddTransient<IEngineService, EngineService>();
+
+            services.AddTransient<IEngineCommand, EngineCommand>();
+            services.AddTransient<IEngineQuery, EngineQuery>();
+        }
     }
 }
