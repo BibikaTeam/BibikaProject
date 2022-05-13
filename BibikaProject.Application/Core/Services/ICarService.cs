@@ -14,5 +14,7 @@ namespace BibikaProject.Application.Core.Services
         Task DeleteCarAsync(int id);
 
         Task<PagedList<CarDTO>> GetPagedCarsAsync(PagedCarsRequest pagedCarRequest);
+
+        Task<CarDTO> GetCarByParamsAsync(GetCarDTO getCarDTO);
     }
 }
