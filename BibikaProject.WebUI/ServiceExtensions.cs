@@ -188,5 +188,13 @@ namespace BibikaProject.WebUI
             services.AddTransient<IEngineCommand, EngineCommand>();
             services.AddTransient<IEngineQuery, EngineQuery>();
         }
+
+        public static void ConfigureGearBoxService(this IServiceCollection services)
+        {
+            services.AddTransient<IGearBoxService, GearBoxService>();
+
+            services.AddTransient<IGearBoxCommand, GearBoxCommand>();
+            services.AddTransient<IGearBoxQuery, GearBoxQuery>();
+        }
     }
 }
