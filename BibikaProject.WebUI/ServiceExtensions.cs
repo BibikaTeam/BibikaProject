@@ -204,5 +204,13 @@ namespace BibikaProject.WebUI
             services.AddTransient<ICompleteSetCommand, CompleteSetCommand>();
             services.AddTransient<ICompleteSetQuery, CompleteSetQuery>();
         }
+
+        public static void ConfigureCarBodyService(this IServiceCollection services)
+        {
+            services.AddTransient<ICarBodyService, CarBodyService>();
+
+            services.AddTransient<ICarBodyCommand, CarBodyCommand>();
+            services.AddTransient<ICarBodyQuery, CarBodyQuery>();
+        }
     }
 }

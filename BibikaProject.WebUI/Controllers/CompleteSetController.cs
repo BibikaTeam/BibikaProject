@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BibikaProject.WebUI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/completeSet")]
     [ApiController]
     public class CompleteSetController : ControllerBase
     {
