@@ -196,5 +196,13 @@ namespace BibikaProject.WebUI
             services.AddTransient<IGearBoxCommand, GearBoxCommand>();
             services.AddTransient<IGearBoxQuery, GearBoxQuery>();
         }
+
+        public static void ConfigureCompleteSetService(this IServiceCollection services)
+        {
+            services.AddTransient<ICompleteSetService, CompleteSetService>();
+
+            services.AddTransient<ICompleteSetCommand, CompleteSetCommand>();
+            services.AddTransient<ICompleteSetQuery, CompleteSetQuery>();
+        }
     }
 }

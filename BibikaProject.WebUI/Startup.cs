@@ -56,6 +56,7 @@ namespace BibikaProject.WebUI
             services.ConfigureOptionService();
             services.ConfigureEngineService();
             services.ConfigureGearBoxService();
+            services.ConfigureCompleteSetService();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)

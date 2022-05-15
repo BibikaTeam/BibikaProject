@@ -45,7 +45,7 @@ namespace BibikaProject.WebUI.Controllers
         }
 
         [HttpGet("get/all")]
-        public async Task<IActionResult> GetAllBrands()
+        public async Task<IActionResult> GetAllGearBoxes()
         {
             var result = await gearBoxService.GetAllGearBoxesAsync();
 
