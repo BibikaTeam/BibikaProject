@@ -15,9 +15,25 @@ const BrandPage = () => {
     title: "Ford",
   };
 
+  const handleGetAllBrands = async () => {
+    setLoading(true);
+    try {
+      await getAllBrands();
+    } catch (error) {
+      const errorType = error as BrandErrorType;
+      errorType.errorsString.forEach((el) => {
+        toast.error(el);
+      });
+    } finally {
+      setLoading(false);
+    }
+  }
+
   const [form] = Form.useForm();
 
   const dataSource = [initialValues];
+
+  handleGetAllBrands().then(d=> { console.log(d);});
 
 
   const columns = [
@@ -91,19 +107,7 @@ const BrandPage = () => {
     handleGetAllBrands();
   }, []);
 
-  const handleGetAllBrands = async () => {
-    setLoading(true);
-    try {
-      await getAllBrands();
-    } catch (error) {
-      const errorType = error as BrandErrorType;
-      errorType.errorsString.forEach((el) => {
-        toast.error(el);
-      });
-    } finally {
-      setLoading(false);
-    }
-  }
+  
 
   const handleAddBrand = async (
     values: IBrandModel,
