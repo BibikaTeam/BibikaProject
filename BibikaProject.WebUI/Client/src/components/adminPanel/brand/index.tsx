@@ -29,12 +29,44 @@ const BrandPage = () => {
     }
   }
 
+  const handleUpdateBrand = async (
+    value: IBrandModel
+  ) => {
+    setLoading(true);
+    try {
+      await updateBrand(value);
+      toast.success(`Brand ${value.title} are successfully update`);
+    } catch (error) {
+      const errorType = error as BrandErrorType;
+      errorType.errorsString.forEach((el) => {
+        toast.error(el);
+      });
+    } finally {
+      setLoading(false);
+    }
+  }
+
   const [form] = Form.useForm();
 
-  const dataSource = [initialValues];
+  const tmpBrand: IBrandModel = {
+    id:5,
+    title:"string4"
+  };
 
-  handleGetAllBrands().then(d=> { console.log(d);});
+  const dataSource = [tmpBrand];
 
+  //console.log(handleGetAllBrands());
+  //console.log(getAllBrands());
+
+  const showModalUpdateBrand = () => {
+    setIsModalVisible(true) 
+  };
+
+  const handleOkModalUpdateBrand = (value: IBrandModel) => {
+    handleUpdateBrand(value);
+    setIsModalVisible(false);
+  }
+  
 
   const columns = [
     {
@@ -53,7 +85,7 @@ const BrandPage = () => {
       key: "actions",
       render: (record: IBrandModel) => (
         <div className="buttonGroup">
-          <Button htmlType="submit" type="default" className="buttonInfo" onClick={showModalUpdateBrand}>
+          <Button htmlType="submit" type="default" className="buttonInfo" onClick={showModalUpdateBrand} >
             Редагувати
           </Button>
           <Modal
@@ -89,9 +121,9 @@ const BrandPage = () => {
           </Modal>
           &nbsp;
           <Popconfirm
-            title={`Ви впевнені що хочете видалити цю марку?`}
-          //title={`Ви впевнені що хочете видалити ${record.title }?`}
-          //onConfirm={() => handleDeleteBrand(record)} 
+            //title={`Ви впевнені що хочете видалити цю марку?`}
+          title={`Ви впевнені що хочете видалити ${tmpBrand.title }?`}
+          onConfirm={() => handleDeleteBrand(tmpBrand)} 
           >
             <Button type="primary" htmlType="submit" className="danger">
               Видалити
@@ -126,22 +158,7 @@ const BrandPage = () => {
     }
   };
 
-  const handleUpdateBrand = async (
-    value: IBrandModel
-  ) => {
-    setLoading(true);
-    try {
-      await updateBrand(value);
-      toast.success(`Brand ${value.title} are successfully update`);
-    } catch (error) {
-      const errorType = error as BrandErrorType;
-      errorType.errorsString.forEach((el) => {
-        toast.error(el);
-      });
-    } finally {
-      setLoading(false);
-    }
-  }
+  
 
   const handleDeleteBrand = async (
     value: IBrandModel
@@ -160,21 +177,10 @@ const BrandPage = () => {
     }
   }
 
-
-
   const showModalAddNewBrand = () => { setIsModalVisible(true) };
 
   const handleOkModalAddNewBrand = (value: IBrandModel) => {
     handleAddBrand(value);
-    setIsModalVisible(false);
-  }
-
-  const showModalUpdateBrand = () => {
-    setIsModalVisible(true) 
-  };
-
-  const handleOkModalUpdateBrand = (value: IBrandModel) => {
-    handleUpdateBrand(value);
     setIsModalVisible(false);
   }
 
