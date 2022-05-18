@@ -5,6 +5,9 @@ import axios from "axios";
 export const getAllBrands = async () => {
   const response = await http
   .get("api/brand/get/all")
+  .then((response) => {
+    return response.data;
+  })
   .catch(function (error) {
     if (axios.isAxiosError(error)) {
       const serverError: BrandErrorType = {
@@ -15,7 +18,10 @@ export const getAllBrands = async () => {
       }
     }
   });
+  return response;
+  
 }
+
 
 export const addBrand = async (data: IBrandModel) => {
   const response = await http

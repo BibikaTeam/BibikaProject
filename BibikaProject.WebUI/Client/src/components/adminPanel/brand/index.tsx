@@ -15,10 +15,17 @@ const BrandPage = () => {
     title: "Ford",
   };
 
+  const tmpBrand: IBrandModel = {
+    id: 2,
+    title: "jet",
+  };
+
+  const [form] = Form.useForm();
+
   const handleGetAllBrands = async () => {
     setLoading(true);
     try {
-      await getAllBrands();
+      return await getAllBrands().then;
     } catch (error) {
       const errorType = error as BrandErrorType;
       errorType.errorsString.forEach((el) => {
@@ -28,6 +35,31 @@ const BrandPage = () => {
       setLoading(false);
     }
   }
+
+  console.log(handleGetAllBrands());
+
+  const dataSource = [
+    handleGetAllBrands()
+  ];
+
+  
+  
+  const handleAddBrand = async (
+    values: IBrandModel,
+  ) => {
+    setLoading(true);
+    try {
+      await addBrand(values);
+      toast.success(`Brand ${values.title} are successfully added`);
+    } catch (error) {
+      const errorType = error as BrandErrorType;
+      errorType.errorsString.forEach((el) => {
+        toast.error(el);
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleUpdateBrand = async (
     value: IBrandModel
@@ -46,27 +78,38 @@ const BrandPage = () => {
     }
   }
 
-  const [form] = Form.useForm();
+  const handleDeleteBrand = async (
+    value: IBrandModel
+  ) => {
+    setLoading(true);
+    try {
+      await deleteBrand(value.id);
+      toast.warning(`Brand ${value.title} are successfully deleted`);
+    } catch (error) {
+      const errorType = error as BrandErrorType;
+      errorType.errorsString.forEach((el) => {
+        toast.error(el);
+      });
+    } finally {
+      setLoading(false);
+    }
+  }
 
-  const tmpBrand: IBrandModel = {
-    id:5,
-    title:"string4"
-  };
+  //handleGetAllBrands().then(d=> { console.log(d);});
 
-  const dataSource = [tmpBrand];
+  // const showModalUpdateBrand = () => {
+  //   setIsModalVisible(true) 
+  // };
 
-  //console.log(handleGetAllBrands());
-  //console.log(getAllBrands());
+  // const handleOkModalUpdateBrand = (value: IBrandModel) => {
+  //   handleUpdateBrand(value);
+  //   setIsModalVisible(false);
+  // }
 
-  const showModalUpdateBrand = () => {
-    setIsModalVisible(true) 
-  };
-
-  const handleOkModalUpdateBrand = (value: IBrandModel) => {
-    handleUpdateBrand(value);
+  const handleCloseModalBrand = () => {
     setIsModalVisible(false);
   }
-  
+
 
   const columns = [
     {
@@ -85,7 +128,7 @@ const BrandPage = () => {
       key: "actions",
       render: (record: IBrandModel) => (
         <div className="buttonGroup">
-          <Button htmlType="submit" type="default" className="buttonInfo" onClick={showModalUpdateBrand} >
+          <Button htmlType="submit" type="default" className="buttonInfo">
             Редагувати
           </Button>
           <Modal
@@ -96,7 +139,7 @@ const BrandPage = () => {
               name="basic"
               labelCol={{ span: 10 }}
               wrapperCol={{ span: 16 }}
-              //onFinish={handleOkModalAddNewBrand}
+              //onFinish={handleUpdateBrand}
               autoComplete="off"
             >
               <Form.Item
@@ -104,9 +147,8 @@ const BrandPage = () => {
                 name="title"
                 rules={[{ required: true, message: 'Введіть нову назву марки машини'}]}
               >
-                <Input />
+                <Input/>
               </Form.Item>
-
               <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                 <Button type="default" htmlType="submit" onClick={handleCloseModalBrand}>
                   Відмінити
@@ -123,7 +165,7 @@ const BrandPage = () => {
           <Popconfirm
             //title={`Ви впевнені що хочете видалити цю марку?`}
           title={`Ви впевнені що хочете видалити ${tmpBrand.title }?`}
-          onConfirm={() => handleDeleteBrand(tmpBrand)} 
+          //onConfirm={() => handleDeleteBrand(record)} 
           >
             <Button type="primary" htmlType="submit" className="danger">
               Видалити
@@ -141,54 +183,12 @@ const BrandPage = () => {
 
   
 
-  const handleAddBrand = async (
-    values: IBrandModel,
-  ) => {
-    setLoading(true);
-    try {
-      await addBrand(values);
-      toast.success(`Brand ${values.title} are successfully added`);
-    } catch (error) {
-      const errorType = error as BrandErrorType;
-      errorType.errorsString.forEach((el) => {
-        toast.error(el);
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  
-
-  const handleDeleteBrand = async (
-    value: IBrandModel
-  ) => {
-    setLoading(true);
-    try {
-      await deleteBrand(value.id);
-      toast.warning(`Brand ${value.title} are successfully deleted`);
-    } catch (error) {
-      const errorType = error as BrandErrorType;
-      errorType.errorsString.forEach((el) => {
-        toast.error(el);
-      });
-    } finally {
-      setLoading(false);
-    }
-  }
-
   const showModalAddNewBrand = () => { setIsModalVisible(true) };
 
   const handleOkModalAddNewBrand = (value: IBrandModel) => {
     handleAddBrand(value);
     setIsModalVisible(false);
   }
-
-  const handleCloseModalBrand = () => {
-    setIsModalVisible(false);
-  }
-
-  
 
   return (
     <div>
