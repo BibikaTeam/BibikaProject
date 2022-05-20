@@ -22,10 +22,14 @@ const BrandPage = () => {
 
   const [form] = Form.useForm();
 
+  useEffect(() => {
+    handleGetAllBrands();
+  }, [loading]);
+
   const handleGetAllBrands = async () => {
     setLoading(true);
     try {
-      return await getAllBrands().then;
+      return await getAllBrands();
     } catch (error) {
       const errorType = error as BrandErrorType;
       errorType.errorsString.forEach((el) => {
@@ -35,12 +39,17 @@ const BrandPage = () => {
       setLoading(false);
     }
   }
-
+  console.log("handle get all ");
+  
   console.log(handleGetAllBrands());
 
   const dataSource = [
     handleGetAllBrands()
   ];
+  // console.log("dataSource");
+  
+  // console.log(dataSource);
+  
 
   
   
@@ -177,12 +186,7 @@ const BrandPage = () => {
     }
   ];
 
-  useEffect(() => {
-    handleGetAllBrands();
-  }, []);
-
   
-
   const showModalAddNewBrand = () => { setIsModalVisible(true) };
 
   const handleOkModalAddNewBrand = (value: IBrandModel) => {

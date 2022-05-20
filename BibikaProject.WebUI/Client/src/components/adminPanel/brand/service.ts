@@ -19,7 +19,6 @@ export const getAllBrands = async () => {
     }
   });
   return response;
-  
 }
 
 
