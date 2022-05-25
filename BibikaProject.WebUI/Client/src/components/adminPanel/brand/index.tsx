@@ -1,20 +1,39 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Id, toast } from "react-toastify";
-import { BrandErrorType, IBrandModel } from "../types";
+import {
+  BrandErrorType,
+  IBrandModel,
+  IPaginationModel,
+  IPaginationRequest,
+} from "../types";
 import { Link } from "react-router-dom";
 
 import { FormModal } from "../../common/form";
 
-import { Input, Form, Checkbox, Button, Popconfirm, Table } from "antd";
-import { getAllBrands, addBrand, updateBrand, deleteBrand } from "./service";
+import { Input, Form, Button, Popconfirm, Table, Pagination } from "antd";
+import {
+  getAllBrands,
+  addBrand,
+  updateBrand,
+  deleteBrand,
+  getPaginatedBrands,
+} from "./service";
 
 const BrandPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isModalAdd, setModalAdd] = useState(false);
   const [isModalEdit, setModalEdit] = useState(false);
-  const [brands, setBrands] = useState<Array<IBrandModel>>([]);
-  //const [inputAddBrandValue, setInputAddBrandValue] = useState<IBrandModel>
+  const [paginatedBrands, setPaginatedBrands] = useState<IPaginationRequest>({
+    allPages: 0,
+    currentPage: 0,
+    data: [],
+  });
+  const countOnPage: number = 3;
   const [form] = Form.useForm();
+  const [editableValue, setEditableValue] = useState<IBrandModel>({
+    id: 0,
+    title: "",
+  });
 
   useEffect(() => {
     const init = async () => {
@@ -26,8 +45,13 @@ const BrandPage = () => {
   const handleGetAllBrands = async () => {
     setLoading(true);
     try {
-      await getAllBrands().then((data) => {
-        setBrands(data);
+      const paginationModel: IPaginationModel = {
+        search: "",
+        page: 1,
+        countOnPage: countOnPage,
+      };
+      await getPaginatedBrands(paginationModel).then((data) => {
+        setPaginatedBrands(data as IPaginationRequest);
       });
     } catch (error) {
       const errorType = error as BrandErrorType;
@@ -54,10 +78,19 @@ const BrandPage = () => {
     }
   };
   const handleUpdateBrand = async (value: IBrandModel) => {
+    value.id = editableValue.id;
     setLoading(true);
     try {
       await updateBrand(value);
       toast.success(`Brand ${value.title} are successfully update`);
+      setModalEdit(false);
+
+      const tmpArr = paginatedBrands.data.slice();
+      tmpArr[tmpArr.findIndex((x) => x.id === value.id)].title = value.title;
+      setPaginatedBrands({
+        ...paginatedBrands,
+        data: tmpArr,
+      });
     } catch (error) {
       const errorType = error as BrandErrorType;
       errorType.errorsString.forEach((el) => {
@@ -74,7 +107,10 @@ const BrandPage = () => {
       await deleteBrand(value.id);
       toast.success(`Brand ${value.title} are successfully deleted`);
 
-      setBrands(brands.filter((x) => x.id != value.id));
+      setPaginatedBrands({
+        ...paginatedBrands,
+        data: paginatedBrands.data.filter((x) => x.id != value.id),
+      });
     } catch (error) {
       const errorType = error as BrandErrorType;
       errorType.errorsString.forEach((el) => {
@@ -83,6 +119,10 @@ const BrandPage = () => {
     } finally {
       setLoading(false);
     }
+  };
+  const handleEditClick = async (record: IBrandModel) => {
+    setModalEdit(true);
+    setEditableValue(record);
   };
 
   const columns = [
@@ -102,25 +142,37 @@ const BrandPage = () => {
       key: "actions",
       render: (text: string, record: IBrandModel) => (
         <div className="buttonGroup">
-          <Button htmlType="submit" type="default" className="buttonInfo">
+          <Button
+            htmlType="submit"
+            type="default"
+            className="buttonInfo"
+            onClick={() => handleEditClick(record)}
+          >
             Редагувати
           </Button>
           <FormModal
             title="Редагувавання марки авто"
             visible={isModalEdit}
-            onCancel={() => setModalEdit(false)}
-            onSubmit={() => {}}
+            onCancel={() => {
+              setModalEdit(false);
+              setEditableValue({ id: 0, title: "" });
+            }}
+            onSubmit={() => {
+              form.submit();
+            }}
           >
             <Form
               name="basic"
               labelCol={{ span: 10 }}
               wrapperCol={{ span: 16 }}
-              //onFinish={handleUpdateBrand}
+              onFinish={handleUpdateBrand}
               autoComplete="off"
+              form={form}
             >
               <Form.Item
                 label="Зміна назви марки машини"
                 name="title"
+                initialValue={editableValue.title}
                 rules={[
                   {
                     required: true,
@@ -158,6 +210,26 @@ const BrandPage = () => {
   const handleFormSubmit = (value: IBrandModel) => {
     handleAddBrand(value);
   };
+  const onHandlePaginationChanged = async (page: number, pageSize: number) => {
+    const paginationModel: IPaginationModel = {
+      search: "",
+      page: page,
+      countOnPage: pageSize,
+    };
+    await getPaginatedBrands(paginationModel).then((data) => {
+      setPaginatedBrands(data as IPaginationRequest);
+    });
+  };
+  const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const paginationModel: IPaginationModel = {
+      search: e.target.value,
+      page: 1,
+      countOnPage: countOnPage,
+    };
+    await getPaginatedBrands(paginationModel).then((data) => {
+      setPaginatedBrands(data as IPaginationRequest);
+    });
+  };
 
   return (
     <div>
@@ -171,6 +243,7 @@ const BrandPage = () => {
         >
           Додати нову марку авто
         </Button>
+        <Input placeholder="Input brand name" onChange={handleSearchChange} />
         <FormModal
           title="Додавання нової марки авто"
           visible={isModalAdd}
@@ -210,10 +283,14 @@ const BrandPage = () => {
       </div>
       <Table
         size="large"
-        dataSource={brands}
+        dataSource={paginatedBrands.data}
         columns={columns}
         rowKey="id"
-        pagination={false}
+        pagination={{
+          pageSize: countOnPage,
+          total: paginatedBrands.allPages * countOnPage,
+          onChange: onHandlePaginationChanged,
+        }}
       />
     </div>
   );
