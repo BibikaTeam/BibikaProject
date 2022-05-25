@@ -142,9 +142,11 @@ namespace BibikaProject.WebUI
             services.AddTransient<IPostQuery, PostQuery>();
         }
 
-        public static void ConfigureHelperServices (this IServiceCollection services)
+        public static void ConfigureImageService(this IServiceCollection services)
         {
-            services.AddTransient<IImageService, ImageService>();   
+            services.AddTransient<IImageService, ImageService>();
+            services.AddTransient<IImageCommand, ImageCommand>();
+            services.AddTransient<IImageQuery, ImageQuery>();
         } 
 
         public static void ConfigureModelService(this IServiceCollection services)
@@ -169,6 +171,46 @@ namespace BibikaProject.WebUI
 
             services.AddTransient<ICarCommand, CarCommand>();
             services.AddTransient<ICarQuery, CarQuery>();
+        }
+
+        public static void ConfigureOptionService(this IServiceCollection services)
+        {
+            services.AddTransient<IOptionService, OptionService>();
+
+            services.AddTransient<IOptionCommand, OptionCommand>();
+            services.AddTransient<IOptionQuery, OptionQuery>();
+        }
+
+        public static void ConfigureEngineService(this IServiceCollection services)
+        {
+            services.AddTransient<IEngineService, EngineService>();
+
+            services.AddTransient<IEngineCommand, EngineCommand>();
+            services.AddTransient<IEngineQuery, EngineQuery>();
+        }
+
+        public static void ConfigureGearBoxService(this IServiceCollection services)
+        {
+            services.AddTransient<IGearBoxService, GearBoxService>();
+
+            services.AddTransient<IGearBoxCommand, GearBoxCommand>();
+            services.AddTransient<IGearBoxQuery, GearBoxQuery>();
+        }
+
+        public static void ConfigureCompleteSetService(this IServiceCollection services)
+        {
+            services.AddTransient<ICompleteSetService, CompleteSetService>();
+
+            services.AddTransient<ICompleteSetCommand, CompleteSetCommand>();
+            services.AddTransient<ICompleteSetQuery, CompleteSetQuery>();
+        }
+
+        public static void ConfigureCarBodyService(this IServiceCollection services)
+        {
+            services.AddTransient<ICarBodyService, CarBodyService>();
+
+            services.AddTransient<ICarBodyCommand, CarBodyCommand>();
+            services.AddTransient<ICarBodyQuery, CarBodyQuery>();
         }
     }
 }

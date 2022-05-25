@@ -182,9 +182,14 @@ namespace BibikaProject.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PostId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Images");
                 });
@@ -564,7 +569,13 @@ namespace BibikaProject.Infrastructure.Migrations
                         .WithMany("Images")
                         .HasForeignKey("PostId");
 
+                    b.HasOne("BibikaProject.Domain.Entities.Identity.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
                     b.Navigation("Post");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BibikaProject.Domain.Entities.Core.Model", b =>

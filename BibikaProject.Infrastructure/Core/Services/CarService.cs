@@ -6,6 +6,7 @@ using BibikaProject.Application.Core.Requests;
 using BibikaProject.Application.Core.Responses;
 using BibikaProject.Application.Core.Services;
 using BibikaProject.Domain.Entities.Core;
+using BibikaProject.Infrastructure.Core.Services.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -61,9 +62,7 @@ namespace BibikaProject.Infrastructure.Core.Services
 
             response.AllPages = (int)Math.Ceiling((double)await cars.CountAsync() / (double)pagedCarRequest.CountOnPage);
 
-            cars = cars.Skip((pagedCarRequest.Page - 1) * pagedCarRequest.CountOnPage)
-                       .Take(pagedCarRequest.CountOnPage)
-                       .AsNoTracking();
+            cars = cars.GetPage(pagedCarRequest.Page, pagedCarRequest.CountOnPage).AsNoTracking();
 
             response.Data = await cars.Select(x => mapper.Map<CarDTO>(x)).ToListAsync();
 
@@ -76,5 +75,18 @@ namespace BibikaProject.Infrastructure.Core.Services
 
             await command.SaveChangesAsync();
         }
+
+        public async Task<CarDTO> GetCarByParamsAsync(GetCarDTO getCarDTO)
+        {
+            IQueryable<Car> cars = query.GetAll();
+
+            return await cars.Where(x => x.EngineId == getCarDTO.EngineId &&
+                                   x.CarBodyId == getCarDTO.CarBodyId &&
+                                   x.CompleteSetId == getCarDTO.CompleteSetId &&
+                                   x.GenerationId == getCarDTO.GenerationId &&
+                                   x.GearBoxId == getCarDTO.GearBoxId)
+                            .Select(x => mapper.Map<CarDTO>(x))
+                            .FirstAsync();         
+        } 
     }
 }

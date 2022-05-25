@@ -17,11 +17,8 @@ namespace BibikaProject.Application.Core.DTO.Post
         public string SellerId { get; set; }
 
         public int CarId { get; set; }
-
-        public List<int> OptionsList { get; set; }
-
-        public List<string> ImagesBase64 { get; set; }
     }
+
     public class AddPostDTOValidator : AbstractValidator<AddPostDTO>
     {
         public AddPostDTOValidator()
@@ -29,8 +26,6 @@ namespace BibikaProject.Application.Core.DTO.Post
             RuleFor(x => x.Description).NotEmpty();
             RuleFor(x => x.Location).NotEmpty();
             RuleFor(x => x.Color).NotEmpty();
-            //RuleFor(x => x.OptionsList).NotEmpty();
-            //RuleFor(x => x.ImagesBase64).NotEmpty();
             RuleFor(x => x.Year).NotNull();
             RuleFor(x => x.SellerId).NotEmpty();
             RuleFor(x => x.CarId).NotNull();

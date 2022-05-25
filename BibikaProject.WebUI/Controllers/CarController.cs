@@ -52,5 +52,13 @@ namespace BibikaProject.WebUI.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("get/by-params")]
+        public async Task<IActionResult> GetCarByParams([FromQuery] GetCarDTO model)
+        {
+            var result = await carService.GetCarByParamsAsync(model);
+
+            return Ok(result);
+        }
     }
 }

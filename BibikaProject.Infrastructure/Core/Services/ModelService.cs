@@ -6,6 +6,7 @@ using BibikaProject.Application.Core.Requests;
 using BibikaProject.Application.Core.Responses;
 using BibikaProject.Application.Core.Services;
 using BibikaProject.Domain.Entities.Core;
+using BibikaProject.Infrastructure.Core.Services.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -48,10 +49,7 @@ namespace BibikaProject.Infrastructure.Core.Services
 
             var response = new PagedList<ModelDTO> { CurrentPage = pagedModelsRequest.Page };
 
-            if (!string.IsNullOrEmpty(pagedModelsRequest.Search))
-            {
-                models = models.Where(x => x.Title.Contains(pagedModelsRequest.Search));
-            }
+            models = models.Search(pagedModelsRequest.Search, "Title");
 
             if (pagedModelsRequest.BrandId != 0)
             {
@@ -60,9 +58,7 @@ namespace BibikaProject.Infrastructure.Core.Services
 
             response.AllPages = (int)Math.Ceiling((double)await models.CountAsync() / (double)pagedModelsRequest.CountOnPage);
 
-            models = models.Skip((pagedModelsRequest.Page - 1) * pagedModelsRequest.CountOnPage)
-                           .Take(pagedModelsRequest.CountOnPage)
-                           .AsNoTracking();
+            models = models.GetPage(pagedModelsRequest.Page, pagedModelsRequest.CountOnPage).AsNoTracking();
 
             response.Data = await models.Select(x => mapper.Map<ModelDTO>(x)).ToListAsync();
 
@@ -88,7 +84,7 @@ namespace BibikaProject.Infrastructure.Core.Services
         public async Task<List<ModelDTO>> GetAllModelsAsync()
         {
             return await query.GetAll()
-                              .Include(x => x.Brand)                           
+                              .Include(x => x.Brand)
                               .Select(x => mapper.Map<ModelDTO>(x))
                               .ToListAsync();
         }

@@ -4,7 +4,7 @@ namespace BibikaProject.Application.Core.Commands
 {
     public interface IBaseCommand<TEntity, TIdType>
     {
-        Task AddAsync(TEntity entity);
+        Task<TEntity> AddAsync(TEntity entity);
 
         void Update(TEntity entity);
 
