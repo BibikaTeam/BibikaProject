@@ -10,7 +10,16 @@ import { Link } from "react-router-dom";
 
 import { FormModal } from "../../common/form";
 
-import { Input, Form, Button, Popconfirm, Table, Pagination } from "antd";
+import {
+  Input,
+  Form,
+  Button,
+  Popconfirm,
+  Table,
+  Pagination,
+  Row,
+  Col,
+} from "antd";
 import {
   getAllBrands,
   addBrand,
@@ -130,16 +139,19 @@ const BrandPage = () => {
       title: "Id",
       dataIndex: "id",
       key: "id",
+      outerWidth: "10%",
     },
     {
       title: "Назва",
       dataIndex: "title",
       key: "title",
+      outerWidth: "50%",
     },
     {
       title: "Дії",
       dataIndex: "actions",
       key: "actions",
+      outerWidth: "40%",
       render: (text: string, record: IBrandModel) => (
         <div className="buttonGroup">
           <Button
@@ -234,54 +246,52 @@ const BrandPage = () => {
   return (
     <div>
       {loading}
-      <div className="text-align: center">
-        <Button
-          htmlType="button"
-          type="default"
-          className="buttonPrimary"
-          onClick={showModalAddNewBrand}
-        >
-          Додати нову марку авто
-        </Button>
-        <Input placeholder="Input brand name" onChange={handleSearchChange} />
-        <FormModal
-          title="Додавання нової марки авто"
-          visible={isModalAdd}
-          onCancel={() => setModalAdd(false)}
-          onSubmit={handleOkModalAddNewBrand}
-        >
-          <Form
-            name="basic"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-            onFinish={handleFormSubmit}
-            autoComplete="off"
-            form={form}
+
+      <Row>
+        <Col span={12}>
+          <Input
+            placeholder="Input brand name"
+            onChange={handleSearchChange}
+            style={{ width: "300px" }}
+          />
+        </Col>
+        <Col span={12} style={{ textAlign: "right" }}>
+          <Button
+            htmlType="button"
+            type="default"
+            className="buttonPrimary"
+            onClick={showModalAddNewBrand}
           >
-            <Form.Item
-              label="Назва марки"
-              name="title"
-              rules={[{ required: true, message: "Введіть нову марку машини" }]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-              {/* <Button
-                type="default"
-                htmlType="submit"
-                onClick={handleCloseModalBrand}
-              >
-                Відмінити
-              </Button>
-              &nbsp;
-              <Button type="primary" htmlType="submit">
-                Додати
-              </Button> */}
-            </Form.Item>
-          </Form>
-        </FormModal>
-      </div>
+            Додати нову марку авто
+          </Button>
+        </Col>
+      </Row>
+
+      <FormModal
+        title="Додавання нової марки авто"
+        visible={isModalAdd}
+        onCancel={() => setModalAdd(false)}
+        onSubmit={handleOkModalAddNewBrand}
+      >
+        <Form
+          name="basic"
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
+          onFinish={handleFormSubmit}
+          autoComplete="off"
+          form={form}
+        >
+          <Form.Item
+            label="Назва марки"
+            name="title"
+            rules={[{ required: true, message: "Введіть нову марку машини" }]}
+          >
+            <Input />
+          </Form.Item>
+        </Form>
+      </FormModal>
       <Table
+        className="adminTable"
         size="large"
         dataSource={paginatedBrands.data}
         columns={columns}
