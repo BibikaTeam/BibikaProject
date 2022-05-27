@@ -24,8 +24,13 @@ export interface BrandErrorType {
 }
 
 export interface IModelModel {
+  id: number;
   title: string;
   brandTitle: string;
+}
+
+export interface ModelErrorType {
+  errorsString: Array<string>;
 }
 
 export interface IGenerationModel {
@@ -68,7 +73,7 @@ export interface IPaginationModel {
   search: string;
 }
 export interface IPaginationRequest {
-  data: Array<IBrandModel>;
+  data: Array<IBrandModel | IModelModel>;
   currentPage: number;
   allPages: number;
 }
