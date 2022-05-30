@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { 
-  IModelModel, 
-  ModelErrorType, 
-  IBrandModel, 
-  BrandErrorType
- } from "../types";
+import {
+  IModelModel,
+  ModelErrorType,
+  IPaginationModel,
+  IPaginationRequest
+} from "../types";
 
-import { FormModal } from "../../common/form";
+import {
+  FormModal,
+  AntdSelect
+} from "../../common/form";
 
 import {
   Input,
@@ -20,7 +23,19 @@ import {
   Row,
   Col,
 } from "antd";
-import { getAllModel, addModel, updateModel, deleteModal } from "./service";
+
+import {
+  getAllModel,
+  addModel,
+  updateModel,
+  deleteModal,
+  getPaginatedModels
+} from "./service";
+
+import {
+  getAllBrands
+} from "../brand/service"
+
 const { Option } = Select;
 
 const onChange = (value: string) => {
@@ -33,24 +48,50 @@ const onSearch = (value: string) => {
 
 const ModelPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
+  const [brandLoading, setBrandLoading] = useState<boolean>(false);
   const [isModalAdd, setModalAdd] = useState(false);
   const [isModalEdit, setModalEdit] = useState(false);
+  const [paginatedModels, setPaginatedModels] = useState<IPaginationRequest>({
+    allPages: 0,
+    currentPage: 0,
+    data: [],
+  })
+  const [selectedBrand, setSelectedBrand] = useState<number | undefined>(
+    undefined
+  );
   const [models, setModels] = useState<Array<IModelModel>>([]);
-  // const [brands, setBrands] = useState<Array<IBrandModel>>([]);
+  const [editableValue, setEditableValue] = useState<IModelModel>({
+    id: 0,
+    title: "",
+    brandTitle: "",
+  })
+  const [brandsList, setBrandsList] = useState<Array<IModelModel>>([]);
+  const countOnPage: number = 3;
   const [form] = Form.useForm();
 
   useEffect(() => {
     const init = async () => {
       await handleGetAllModels();
     };
+    const initBrandsList = async () => {
+      await getAllBrands().then((data) => {
+        setBrandsList(data);
+      })
+    }
     init();
+    initBrandsList();
   }, []);
 
   const handleGetAllModels = async () => {
     setLoading(true);
     try {
-      await getAllModel().then((data) => {
-        setModels(data);
+      const paginationModel: IPaginationModel = {
+        search: "",
+        page: 1,
+        countOnPage: countOnPage,
+      };
+      await getPaginatedModels(paginationModel).then((data) => {
+        setPaginatedModels(data as IPaginationRequest);
       });
     } catch (error) {
       const errorType = error as ModelErrorType;
@@ -76,6 +117,7 @@ const ModelPage = () => {
       setLoading(false);
     }
   };
+
   const handleUpdateModel = async (value: IModelModel) => {
     setLoading(true);
     try {
@@ -90,6 +132,7 @@ const ModelPage = () => {
       setLoading(false);
     }
   };
+
   const handleDeleteModel = async (value: IModelModel) => {
     console.log("value: ", value);
     setLoading(true);
@@ -97,7 +140,10 @@ const ModelPage = () => {
       await deleteModal(value.id);
       toast.success(`Model ${value.title} are successfully deleted`);
 
-      setModels(models.filter((x) => x.id != value.id));
+      setPaginatedModels({
+        ...paginatedModels,
+        data: paginatedModels.data.filter((x) => x.id != value.id)
+      });
     } catch (error) {
       const errorType = error as ModelErrorType;
       errorType.errorsString.forEach((el) => {
@@ -108,38 +154,46 @@ const ModelPage = () => {
     }
   };
 
-  const showModalUpdateModel = () => {
-    setModalEdit(true);
+  const handleBrandChange = (value: number) => {
+    setSelectedBrand(value);
   };
 
-  const handleOkModalUpdateModel = () => {
-    form.submit();
-    setModalEdit(false);
+  // const showModalUpdateModel = () => {
+  //   setModalEdit(true);
+  // };
+
+  const handleEditClick = async (record: IModelModel) => {
+    setModalEdit(true);
+    setEditableValue(record);
   };
-  const handleUpdateFormSubmit = (value: IModelModel) => {
-    handleUpdateModel(value);
-  };
+  // const handleUpdateFormSubmit = (value: IModelModel) => {
+  //   handleUpdateModel(value);
+  // };
 
   const columns = [
     {
       title: "Id",
       dataIndex: "id",
       key: "id",
+      outerWidth: "10%",
     },
     {
       title: "Назва моделі",
       dataIndex: "title",
       key: "title",
+      outerWidth: "30%",
     },
     {
       title: "Назва марки",
       dataIndex: "brandTitle",
       key: "brandTitle",
+      outerWidth: "30%",
     },
     {
       title: "Дії",
       dataIndex: "actions",
       key: "actions",
+      outerWidth: "30%",
       render: (text: string, record: IModelModel) => (
         <div className="buttonGroup">
           <Button htmlType="submit" type="default" className="buttonInfo" onClick={showModalUpdateModel}>
@@ -148,20 +202,27 @@ const ModelPage = () => {
           <FormModal
             title="Редагувавання моделі авто"
             visible={isModalEdit}
-            onCancel={() => setModalEdit(false)}
-            onSubmit={handleOkModalUpdateModel}
+            onCancel={() => { 
+              setModalEdit(false),
+              setEditableValue({ 
+                id: 0, 
+                title:"",
+                brandTitle:"",});
+            }}
+            onSubmit={() => {form.submit()}}
           >
             <Form
               name="basic"
               labelCol={{ span: 10 }}
               wrapperCol={{ span: 16 }}
-              onFinish={handleUpdateFormSubmit}
+              onFinish={handleUpdateModel}
               autoComplete="off"
               form={form}
             >
               <Form.Item
                 label="Зміна назви моделі машини"
                 name="title"
+                initialValue={editableValue.title}
                 rules={[
                   {
                     required: true,
@@ -169,27 +230,21 @@ const ModelPage = () => {
                   },
                 ]}
               >
-                <Input defaultValue={record.title} />
+                <Input />
               </Form.Item>
               <Form.Item
                 label="Виберіть марку авто"
                 name="brandTitle"
-                rules={[{ required: true, message: "Виберіть марку машини" }]}
+                rules={[{ required: true, message: "Виберіть модель машини" }]}
               >
-                <Select
-                  showSearch
-                  placeholder="Виберіть марку авто"
-                  optionFilterProp="children"
-                  onChange={onChange}
-                  onSearch={onSearch}
-                  filterOption={(input, option) =>
-                    (option!.children as unknown as string).toLowerCase().includes(input.toLowerCase())
-                  }
-                >
-                  <Option value="jack">Jack</Option>
-                  <Option value="lucy">Lucy</Option>
-                  <Option value="tom">Tom</Option>
-                </Select>
+                <AntdSelect
+                  value={selectedBrand}
+                  onChange={handleBrandChange}
+                  options={brandsList}
+                  placeholder="Select brand"
+                  loading={brandLoading}
+                  disabled={false}
+                />
               </Form.Item>
             </Form>
           </FormModal>
@@ -219,13 +274,35 @@ const ModelPage = () => {
     handleAddModel(value);
   };
 
+  const onHandlePaginationChanged = async (page: number, pageSize: number) => {
+    const paginationModel: IPaginationModel = {
+      search: "",
+      page: page,
+      countOnPage: pageSize,
+    };
+    await getPaginatedModels(paginationModel).then((data) => {
+      setPaginatedModels(data as IPaginationRequest);
+    });
+  };
+  const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const paginationModel: IPaginationModel = {
+      search: e.target.value,
+      page: 1,
+      countOnPage: countOnPage,
+    };
+    await getPaginatedModels(paginationModel).then((data) => {
+      setPaginatedModels(data as IPaginationRequest);
+    });
+  };
+
   return (
     <div>
       {loading}
+
       <Row>
         <Col span={12}>
           <Input
-            placeholder="Input brand name"
+            placeholder="Input model name"
             //onChange={handleSearchChange}
             style={{ width: "300px" }}
           />
@@ -235,9 +312,9 @@ const ModelPage = () => {
             htmlType="button"
             type="default"
             className="buttonPrimary"
-            //onClick={showModalAddNewBrand}
+            onClick={showModalAddNewModal}
           >
-            Додати нову марку авто
+            Додати нову модель авто
           </Button>
         </Col>
       </Row>
@@ -260,20 +337,14 @@ const ModelPage = () => {
             name="brandTitle"
             rules={[{ required: true, message: "Виберіть марку машини" }]}
           >
-            <Select
-              showSearch
-              placeholder="Виберіть марку авто"
-              optionFilterProp="children"
-              onChange={onChange}
-              onSearch={onSearch}
-              filterOption={(input, option) =>
-                (option!.children as unknown as string).toLowerCase().includes(input.toLowerCase())
-              }
-            >
-              <Option value="jack">Jack</Option>
-              <Option value="lucy">Lucy</Option>
-              <Option value="tom">Tom</Option>
-            </Select>
+            <AntdSelect
+              value={selectedBrand}
+              onChange={handleBrandChange}
+              options={brandsList}
+              placeholder="Select brand"
+              loading={brandLoading}
+              disabled={false}
+            />
           </Form.Item>
           <Form.Item
             label="Назва моделі"
@@ -282,15 +353,20 @@ const ModelPage = () => {
           >
             <Input />
           </Form.Item>
-
         </Form>
       </FormModal>
 
       <Table
+        className="adminTable"
         size="large"
-        dataSource={models}
+        dataSource={paginatedModels.data}
         columns={columns}
         rowKey="id"
+        pagination={{
+          pageSize: countOnPage,
+          total: paginatedModels.allPages * countOnPage,
+          onChange: onHandlePaginationChanged,
+        }}
       />
     </div>
   );
