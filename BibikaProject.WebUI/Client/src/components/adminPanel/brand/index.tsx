@@ -4,7 +4,7 @@ import {
   BrandErrorType,
   IBrandModel,
   IPaginationModel,
-  IPaginationRequest,
+  IPaginationBrandRequest,
 } from "../types";
 import { Link } from "react-router-dom";
 
@@ -32,7 +32,7 @@ const BrandPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isModalAdd, setModalAdd] = useState(false);
   const [isModalEdit, setModalEdit] = useState(false);
-  const [paginatedBrands, setPaginatedBrands] = useState<IPaginationRequest>({
+  const [paginatedBrands, setPaginatedBrands] = useState<IPaginationBrandRequest>({
     allPages: 0,
     currentPage: 0,
     data: [],
@@ -60,7 +60,7 @@ const BrandPage = () => {
         countOnPage: countOnPage,
       };
       await getPaginatedBrands(paginationModel).then((data) => {
-        setPaginatedBrands(data as IPaginationRequest);
+        setPaginatedBrands(data as IPaginationBrandRequest);
       });
     } catch (error) {
       const errorType = error as BrandErrorType;
@@ -229,7 +229,7 @@ const BrandPage = () => {
       countOnPage: pageSize,
     };
     await getPaginatedBrands(paginationModel).then((data) => {
-      setPaginatedBrands(data as IPaginationRequest);
+      setPaginatedBrands(data as IPaginationBrandRequest);
     });
   };
   const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -239,7 +239,7 @@ const BrandPage = () => {
       countOnPage: countOnPage,
     };
     await getPaginatedBrands(paginationModel).then((data) => {
-      setPaginatedBrands(data as IPaginationRequest);
+      setPaginatedBrands(data as IPaginationBrandRequest);
     });
   };
 

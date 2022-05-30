@@ -29,6 +29,11 @@ export interface IModelModel {
   brandTitle: string;
 }
 
+export interface IAddModelModel {
+  title: string;
+  brandId: number;
+}
+
 export interface ModelErrorType {
   errorsString: Array<string>;
 }
@@ -72,8 +77,15 @@ export interface IPaginationModel {
   countOnPage: number;
   search: string;
 }
-export interface IPaginationRequest {
-  data: Array<IBrandModel | IModelModel>;
+
+export interface IPaginationBrandRequest {
+  data: Array<IBrandModel>;
+  currentPage: number;
+  allPages: number;
+}
+
+export interface IPaginationModelRequest {
+  data: Array<IModelModel>;
   currentPage: number;
   allPages: number;
 }

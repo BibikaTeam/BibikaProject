@@ -2,7 +2,7 @@ import {
   IBrandModel,
   BrandErrorType,
   IPaginationModel,
-  IPaginationRequest,
+  IPaginationBrandRequest,
 } from "../types";
 import http from "../../../http_common";
 import axios from "axios";
@@ -29,7 +29,7 @@ export const getAllBrands = async () => {
 
 export const getPaginatedBrands = async (paginationModel: IPaginationModel) => {
   const response = await http
-    .get<IPaginationRequest>(`api/brand/get?` + qs.stringify(paginationModel))
+    .get<IPaginationBrandRequest>(`api/brand/get?` + qs.stringify(paginationModel))
     .then((response) => {
       return response.data;
     })

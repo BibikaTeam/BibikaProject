@@ -1,4 +1,4 @@
-import { IModelModel, ModelErrorType, IPaginationModel, IPaginationRequest } from "../types"
+import { IModelModel, ModelErrorType, IPaginationModel, IPaginationModelRequest, IAddModelModel } from "../types"
 import http from "../../../http_common"
 import axios from "axios";
 import qs from "qs";
@@ -24,7 +24,7 @@ export const getAllModel = async () => {
 
 export const getPaginatedModels = async (paginationModel: IPaginationModel) => {
   const response = await http
-    .get<IPaginationRequest>(`api/model/get?` + qs.stringify(paginationModel))
+    .get<IPaginationModelRequest>(`api/model/get?` + qs.stringify(paginationModel))
     .then((response) => {
       return response.data;
     })
@@ -42,7 +42,8 @@ export const getPaginatedModels = async (paginationModel: IPaginationModel) => {
   return response;
 };
 
-export const addModel = async (data: IModelModel) => {
+export const addModel = async (data: IAddModelModel) => {
+  console.log("data service add", data);
   const response = await http
     .post("api/model/add", data)
     .catch(function (error) {

@@ -2,9 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import {
   IModelModel,
+  IAddModelModel,
   ModelErrorType,
   IPaginationModel,
-  IPaginationRequest
+  IPaginationModelRequest
 } from "../types";
 
 import {
@@ -38,28 +39,17 @@ import {
 
 const { Option } = Select;
 
-const onChange = (value: string) => {
-  console.log(`selected ${value}`);
-};
-
-const onSearch = (value: string) => {
-  console.log('search:', value);
-};
-
 const ModelPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [brandLoading, setBrandLoading] = useState<boolean>(false);
   const [isModalAdd, setModalAdd] = useState(false);
   const [isModalEdit, setModalEdit] = useState(false);
-  const [paginatedModels, setPaginatedModels] = useState<IPaginationRequest>({
+  const [paginatedModels, setPaginatedModels] = useState<IPaginationModelRequest>({
     allPages: 0,
     currentPage: 0,
     data: [],
   })
-  const [selectedBrand, setSelectedBrand] = useState<number | undefined>(
-    undefined
-  );
-  const [models, setModels] = useState<Array<IModelModel>>([]);
+  const [selectedBrand, setSelectedBrand] = useState<number>();
   const [editableValue, setEditableValue] = useState<IModelModel>({
     id: 0,
     title: "",
@@ -91,7 +81,7 @@ const ModelPage = () => {
         countOnPage: countOnPage,
       };
       await getPaginatedModels(paginationModel).then((data) => {
-        setPaginatedModels(data as IPaginationRequest);
+        setPaginatedModels(data as IPaginationModelRequest);
       });
     } catch (error) {
       const errorType = error as ModelErrorType;
@@ -103,7 +93,7 @@ const ModelPage = () => {
     }
   };
 
-  const handleAddModel = async (values: IModelModel) => {
+  const handleAddModel = async (values: IAddModelModel) => {
     setLoading(true);
     try {
       await addModel(values);
@@ -158,17 +148,10 @@ const ModelPage = () => {
     setSelectedBrand(value);
   };
 
-  // const showModalUpdateModel = () => {
-  //   setModalEdit(true);
-  // };
-
   const handleEditClick = async (record: IModelModel) => {
     setModalEdit(true);
     setEditableValue(record);
   };
-  // const handleUpdateFormSubmit = (value: IModelModel) => {
-  //   handleUpdateModel(value);
-  // };
 
   const columns = [
     {
@@ -196,7 +179,12 @@ const ModelPage = () => {
       outerWidth: "30%",
       render: (text: string, record: IModelModel) => (
         <div className="buttonGroup">
-          <Button htmlType="submit" type="default" className="buttonInfo" onClick={showModalUpdateModel}>
+          <Button 
+          htmlType="submit" 
+          type="default" 
+          className="buttonInfo" 
+          onClick={() => {handleEditClick(record)}}
+          >
             Редагувати
           </Button>
           <FormModal
@@ -271,7 +259,11 @@ const ModelPage = () => {
     setModalAdd(false);
   };
   const handleFormSubmit = (value: IModelModel) => {
-    handleAddModel(value);
+    const newModel: IAddModelModel = {
+      title: value.title,
+      brandId: selectedBrand,
+    }
+    handleAddModel(newModel);
   };
 
   const onHandlePaginationChanged = async (page: number, pageSize: number) => {
@@ -281,7 +273,7 @@ const ModelPage = () => {
       countOnPage: pageSize,
     };
     await getPaginatedModels(paginationModel).then((data) => {
-      setPaginatedModels(data as IPaginationRequest);
+      setPaginatedModels(data as IPaginationModelRequest);
     });
   };
   const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -291,7 +283,7 @@ const ModelPage = () => {
       countOnPage: countOnPage,
     };
     await getPaginatedModels(paginationModel).then((data) => {
-      setPaginatedModels(data as IPaginationRequest);
+      setPaginatedModels(data as IPaginationModelRequest);
     });
   };
 
@@ -303,7 +295,7 @@ const ModelPage = () => {
         <Col span={12}>
           <Input
             placeholder="Input model name"
-            //onChange={handleSearchChange}
+            onChange={handleSearchChange}
             style={{ width: "300px" }}
           />
         </Col>
@@ -333,6 +325,13 @@ const ModelPage = () => {
           form={form}
         >
           <Form.Item
+            label="Назва моделі"
+            name="title"
+            rules={[{ required: true, message: "Введіть нову модель машини" }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
             label="Виберіть марку авто"
             name="brandTitle"
             rules={[{ required: true, message: "Виберіть марку машини" }]}
@@ -345,13 +344,6 @@ const ModelPage = () => {
               loading={brandLoading}
               disabled={false}
             />
-          </Form.Item>
-          <Form.Item
-            label="Назва моделі"
-            name="title"
-            rules={[{ required: true, message: "Введіть нову модель машини" }]}
-          >
-            <Input />
           </Form.Item>
         </Form>
       </FormModal>
