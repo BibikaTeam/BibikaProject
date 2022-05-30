@@ -43,7 +43,6 @@ export const getPaginatedModels = async (paginationModel: IPaginationModel) => {
 };
 
 export const addModel = async (data: IAddModelModel) => {
-  console.log("data service add", data);
   const response = await http
     .post("api/model/add", data)
     .catch(function (error) {

@@ -49,7 +49,7 @@ const ModelPage = () => {
     currentPage: 0,
     data: [],
   })
-  const [selectedBrand, setSelectedBrand] = useState<number>();
+  const [selectedBrand, setSelectedBrand] = useState<number>(0);
   const [editableValue, setEditableValue] = useState<IModelModel>({
     id: 0,
     title: "",
@@ -109,6 +109,8 @@ const ModelPage = () => {
   };
 
   const handleUpdateModel = async (value: IModelModel) => {
+    console.log("edit value", value);
+    
     setLoading(true);
     try {
       await updateModel(value);
@@ -179,25 +181,28 @@ const ModelPage = () => {
       outerWidth: "30%",
       render: (text: string, record: IModelModel) => (
         <div className="buttonGroup">
-          <Button 
-          htmlType="submit" 
-          type="default" 
-          className="buttonInfo" 
-          onClick={() => {handleEditClick(record)}}
+          <Button
+            htmlType="submit"
+            type="default"
+            className="buttonInfo"
+            onClick={() => { handleEditClick(record) }}
           >
             Редагувати
           </Button>
           <FormModal
             title="Редагувавання моделі авто"
             visible={isModalEdit}
-            onCancel={() => { 
+            onCancel={() => {
               setModalEdit(false),
-              setEditableValue({ 
-                id: 0, 
-                title:"",
-                brandTitle:"",});
+                setEditableValue({
+                  id: 0,
+                  title: "",
+                  brandTitle: "",
+                });
             }}
-            onSubmit={() => {form.submit()}}
+            onSubmit={() => { 
+              form.submit();
+              setModalEdit(false) }}
           >
             <Form
               name="basic"
@@ -223,6 +228,7 @@ const ModelPage = () => {
               <Form.Item
                 label="Виберіть марку авто"
                 name="brandTitle"
+                initialValue={editableValue.brandTitle}
                 rules={[{ required: true, message: "Виберіть модель машини" }]}
               >
                 <AntdSelect
@@ -297,6 +303,18 @@ const ModelPage = () => {
             placeholder="Input model name"
             onChange={handleSearchChange}
             style={{ width: "300px" }}
+          />
+          &nbsp;
+          <AntdSelect
+            value={undefined}
+            onChange={handleBrandChange}
+            options={brandsList}
+            placeholder="Select brand"
+            loading={brandLoading}
+            disabled={false} 
+            // filterOption={(input, option) =>
+            //   (option!.children as unknown as string).toLowerCase().includes(input.toLowerCase())
+            // }
           />
         </Col>
         <Col span={12} style={{ textAlign: "right" }}>
