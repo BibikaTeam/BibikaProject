@@ -5,7 +5,8 @@ import {
   IAddModelModel,
   ModelErrorType,
   IPaginationModel,
-  IPaginationModelRequest
+  IPaginationModelRequest,
+  IBrandModel
 } from "../types";
 
 import {
@@ -50,12 +51,13 @@ const ModelPage = () => {
     data: [],
   })
   const [selectedBrand, setSelectedBrand] = useState<number>(0);
+  const [selectedEditBrand, setSelectedEditBrand] = useState<string>("");
   const [editableValue, setEditableValue] = useState<IModelModel>({
     id: 0,
     title: "",
     brandTitle: "",
   })
-  const [brandsList, setBrandsList] = useState<Array<IModelModel>>([]);
+  const [brandsList, setBrandsList] = useState<Array<IBrandModel>>([]);
   const countOnPage: number = 3;
   const [form] = Form.useForm();
 
@@ -110,7 +112,10 @@ const ModelPage = () => {
 
   const handleUpdateModel = async (value: IModelModel) => {
     console.log("edit value", value);
+    console.log("select edit brand", selectedEditBrand);
     
+    value.brandTitle = selectedEditBrand;
+    console.log("edit value update", value);
     setLoading(true);
     try {
       await updateModel(value);
@@ -148,6 +153,12 @@ const ModelPage = () => {
 
   const handleBrandChange = (value: number) => {
     setSelectedBrand(value);
+  };
+
+  const handleBrandTitleChange = (value: string) => {
+    setSelectedEditBrand(value);
+    console.log("value brand title", value);
+    
   };
 
   const handleEditClick = async (record: IModelModel) => {
@@ -193,16 +204,17 @@ const ModelPage = () => {
             title="Редагувавання моделі авто"
             visible={isModalEdit}
             onCancel={() => {
-              setModalEdit(false),
-                setEditableValue({
-                  id: 0,
-                  title: "",
-                  brandTitle: "",
-                });
+              setModalEdit(false)
+              setEditableValue({
+                id: 0,
+                title: "",
+                brandTitle: "",
+              });
             }}
             onSubmit={() => { 
               form.submit();
-              setModalEdit(false) }}
+              setModalEdit(false) 
+            }}
           >
             <Form
               name="basic"
@@ -232,8 +244,8 @@ const ModelPage = () => {
                 rules={[{ required: true, message: "Виберіть модель машини" }]}
               >
                 <AntdSelect
-                  value={selectedBrand}
-                  onChange={handleBrandChange}
+                  value={selectedEditBrand}
+                  onChange={handleBrandTitleChange}
                   options={brandsList}
                   placeholder="Select brand"
                   loading={brandLoading}

@@ -2,9 +2,9 @@ import { Select } from "antd";
 const Option = Select.Option;
 
 export interface ISelectProps {
-  value: number | undefined;
+  value: number | string | undefined;
   options: Array<{ title: string; id: number }>;
-  onChange: (value: number) => any;
+  onChange: (value: any) => any;
   placeholder: string | undefined | null;
   loading: boolean;
   disabled: boolean;
