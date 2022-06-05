@@ -1,0 +1,241 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200&display=swap');
+
+.register-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: $primary;
+}
+
+.register-header-container {
+    height: 25%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.register-title {
+    height: 50%;
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 38px;
+    color: $accent-light;
+}
+
+.register-go-back-container {
+    height: 50%;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    margin-top: 3vh;
+
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+
+    color: rgba($accent-light, 0.5);;
+
+    &:hover {
+        color: rgba($accent-light, 0.5);
+    }
+}
+
+.register-go-back-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.register-go-back-title {
+    margin-top: 1vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.register-form-container {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.register-form {
+    width: 65%;
+}
+
+.register-form-item {
+    margin: 0;
+    margin-top: 1.8%;
+    width: 100%;
+}
+ 
+.register-form-button {
+    width: 100%;
+    height: 4.5vh;
+    border-radius: 5px;
+    
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+
+    background-color: rgba($accent-dark, 0.9);
+    color: $accent-light;
+    border-radius: 5px;
+    border-color: transparent;
+
+    &:hover {
+        background-color: $accent-light;
+        color: $primary;
+    }
+
+    &:focus {
+        background-color: $accent-light;
+        color: $primary;
+    }
+
+    &:active {
+        background-color: $accent-light;
+        color: $primary;
+    }
+}
+
+.register-form-input {
+    height: 4.5vh;
+    border-radius: 5px;
+    border-color: rgba($accent-light, 0.5);
+    background-color: rgba($accent-light, 0.5);
+
+    &::placeholder {
+        color: rgba($accent-dark, 0.5);
+    }
+    
+    &:active {
+        border-color: rgba($accent-dark, 0.3);
+    }
+    
+    &:focus {
+        border-color: rgba($accent-dark, 0.3);
+    }
+}
+
+.register-form-checkbox {
+    color: $accent-light;
+}
+
+.register-form-button-external-google {
+    width: 50%;
+    margin-right: 0.25vw;
+    height: 4.8vh;
+
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+
+    background-color: rgba($accent-light, 0.2);
+    color: $accent-light;
+    border-radius: 5px;
+    border-color: transparent;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+        background-color: $accent-light;
+        color: $primary;
+        
+    }
+
+    &:focus {
+        background-color: $accent-light;
+        color: $primary;
+    }
+
+    &:active {
+        background-color: $accent-light;
+        color: $primary;
+    }
+
+    &:hover .register-external-logo {
+        fill: $primary;   
+        animation: fill-animation 0.3s ease;
+    }
+
+    &:focus .register-external-logo {
+        fill: $primary; 
+    }
+
+    &:active .register-external-logo {
+        fill: $primary; 
+    }
+}
+
+.register-form-button-external-facebook {
+    width: 50%;
+    margin-left: 0.25vw;
+    height: 4.8vh;
+
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+
+    background-color: rgba($accent-light, 0.2);
+    color: $accent-light;
+    border-radius: 5px;
+    border-color: transparent;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+        background-color: $accent-light;
+        color: $primary;
+    }
+
+    &:focus {
+        background-color: $accent-light;
+        color: $primary;
+    }
+
+    &:active {
+        background-color: $accent-light;
+        color: $primary;
+    }
+    
+    &:hover .register-external-logo {
+        fill: $primary;   
+        animation: fill-animation 0.3s ease;
+    }
+
+    &:focus .register-external-logo {
+        fill: $primary; 
+    }
+
+    &:active .register-external-logo {
+        fill: $primary; 
+    }
+}
+
+.register-external-logo {
+    fill: $accent-light;
+}

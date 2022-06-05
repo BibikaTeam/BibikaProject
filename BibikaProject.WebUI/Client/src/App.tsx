@@ -4,8 +4,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import AdminLayout from "./components/containers/adminLayout";
 
-const RegisterPage = lazy(() => import("./components/authorization/register"));
-const LoginPage = lazy(() => import("./components/authorization/login"));
+import RegisterPage from "./components/authorization/register";
+import LoginPage from "./components/authorization/login";
 const AddPost = lazy(() => import("./components/posts/add"));
 
 function App() {

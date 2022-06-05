@@ -93,17 +93,11 @@ const LoginPage: FC = () => {
   return (
     <AuthorizationLayout>
       <div className="login-container">
-
         <div className="login-header-container">
-
           <div className="login-form-title-container">
-
             <span>Login</span>            
-
           </div>
-
           <div className="login-form-container">
-
             <Form
               className="login-form"
               initialValues={{ remember: true }}
@@ -113,49 +107,36 @@ const LoginPage: FC = () => {
                 className="login-form-item"
                 name="email"
                 rules={[{ type:'email', validateTrigger: ['onBlur', 'onChange'], required: true, message: 'Please input your Email!' }]}>
-
                 <Input 
                   className="login-form-input"
                   type="email"
                   placeholder="Email" />
-
               </Form.Item>
-
               <Form.Item
                 className="login-form-item"
                 name="password"
                 rules={[{ required: true, message: 'Please input your Password!' }]}>
-
                 <Input
                   className="login-form-input"
                   type="password"
                   placeholder="Password"
                 />
-
               </Form.Item>
-
               <Form.Item
                 className="login-form-item login-form-forgot-password">
-
                 <a>
                   Forgot password
                 </a>
-
               </Form.Item>
-
               <Form.Item
                 className="login-form-item">
-
                 <Button
                   className="login-form-button"
                   htmlType="submit">
                   Login
                 </Button>
-
               </Form.Item>
-
               <div className="login-form-external-container">
-
                 <Button
                   className="login-form-button-external-google">
                   <svg className="login-external-logo" width="25" height="27" viewBox="0 0 33 34" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -163,8 +144,7 @@ const LoginPage: FC = () => {
                   </svg>
                   &ensp;
                   Login with Google        
-                </Button>
-                
+                </Button>                
                 <Button
                   className="login-form-button-external-facebook">
                   <svg className="login-external-logo" width="25" height="27" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -173,31 +153,18 @@ const LoginPage: FC = () => {
                   &ensp;
                   Login with Facebook
                 </Button>
-
               </div>     
-
             </Form>
-
-          </div>
-          
+          </div>       
         </div>
-
         <div className="login-footer">
-
           <div className="login-footer-title-container">
-
             <span>Do you wanna join Bibika?</span>
-
           </div>
-
           <div className="login-footer-button-container">
-
-            <Button className="login-footer-button">Create Account</Button>
-
+            <Button className="login-footer-button"><Link to="/register">Create Account</Link></Button>
           </div>
-
         </div>
-
       </div>   
     </AuthorizationLayout>
   );
