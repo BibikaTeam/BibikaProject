@@ -6,7 +6,8 @@ import {
   ModelErrorType,
   IPaginationModel,
   IPaginationModelRequest,
-  IBrandModel
+  IBrandModel,
+  IUpdateModelModel
 } from "../types";
 
 import {
@@ -51,7 +52,6 @@ const ModelPage = () => {
     data: [],
   })
   const [selectedBrand, setSelectedBrand] = useState<number>(0);
-  const [selectedEditBrand, setSelectedEditBrand] = useState<string>("");
   const [editableValue, setEditableValue] = useState<IModelModel>({
     id: 0,
     title: "",
@@ -111,14 +111,13 @@ const ModelPage = () => {
   };
 
   const handleUpdateModel = async (value: IModelModel) => {
+    const updatedModel: IUpdateModelModel = {id: value.id, title: value.title}
     console.log("edit value", value);
-    console.log("select edit brand", selectedEditBrand);
+    console.log("upd model", updatedModel);
     
-    value.brandTitle = selectedEditBrand;
-    console.log("edit value update", value);
     setLoading(true);
     try {
-      await updateModel(value);
+      await updateModel(updatedModel);
       toast.success(`Model ${value.title} are successfully update`);
     } catch (error) {
       const errorType = error as ModelErrorType;
@@ -153,12 +152,6 @@ const ModelPage = () => {
 
   const handleBrandChange = (value: number) => {
     setSelectedBrand(value);
-  };
-
-  const handleBrandTitleChange = (value: string) => {
-    setSelectedEditBrand(value);
-    console.log("value brand title", value);
-    
   };
 
   const handleEditClick = async (record: IModelModel) => {
@@ -213,14 +206,15 @@ const ModelPage = () => {
             }}
             onSubmit={() => { 
               form.submit();
-              setModalEdit(false) 
+              setModalEdit(false);
+              handleUpdateModel(record); 
             }}
           >
             <Form
               name="basic"
               labelCol={{ span: 10 }}
               wrapperCol={{ span: 16 }}
-              onFinish={handleUpdateModel}
+              //onFinish={() => handleUpdateModel(record)}
               autoComplete="off"
               form={form}
             >
@@ -244,12 +238,12 @@ const ModelPage = () => {
                 rules={[{ required: true, message: "Виберіть модель машини" }]}
               >
                 <AntdSelect
-                  value={selectedEditBrand}
-                  onChange={handleBrandTitleChange}
+                  value={selectedBrand}
+                  onChange={handleBrandChange}
                   options={brandsList}
                   placeholder="Select brand"
                   loading={brandLoading}
-                  disabled={false}
+                  disabled={true}
                 />
               </Form.Item>
             </Form>

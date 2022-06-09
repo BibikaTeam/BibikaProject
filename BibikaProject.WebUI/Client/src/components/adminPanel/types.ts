@@ -24,6 +24,11 @@ export interface IAddModelModel {
   brandId: number;
 }
 
+export interface IUpdateModelModel {
+  id: number;
+  title: string;
+}
+
 export interface ModelErrorType {
   errorsString: Array<string>;
 }

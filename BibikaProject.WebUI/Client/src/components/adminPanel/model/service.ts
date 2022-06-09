@@ -1,4 +1,4 @@
-import { IModelModel, ModelErrorType, IPaginationModel, IPaginationModelRequest, IAddModelModel } from "../types"
+import { IModelModel, ModelErrorType, IPaginationModel, IPaginationModelRequest, IAddModelModel, IUpdateModelModel } from "../types"
 import http from "../../../http_common"
 import axios from "axios";
 import qs from "qs";
@@ -57,7 +57,8 @@ export const addModel = async (data: IAddModelModel) => {
     });
 };
 
-export const updateModel = async (data: IModelModel) => {
+export const updateModel = async (data: IUpdateModelModel) => {
+  console.log("service data", data);
   const response = await http
     .put("api/model/update", data)
     .catch(function (error) {
