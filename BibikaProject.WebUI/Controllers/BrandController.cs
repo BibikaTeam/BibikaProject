@@ -19,7 +19,7 @@ namespace BibikaProject.WebUI.Controllers
         public readonly IBrandService brandService;
 
         [HttpPost("add")]
-        [Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Administrator")]
         public async Task<IActionResult> AddBrand([FromBody] AddBrandDTO model)
         {
             await brandService.AddBrandAsync(model);
@@ -28,7 +28,7 @@ namespace BibikaProject.WebUI.Controllers
         }
 
         [HttpPut("update")]
-        [Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Administrator")]
         public async Task<IActionResult> UpdateBrand([FromBody] UpdateBrandDTO model)
         {
             await brandService.UpdateBrandAsync(model);
@@ -37,7 +37,7 @@ namespace BibikaProject.WebUI.Controllers
         }
 
         [HttpDelete("delete/{id}")]
-        [Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteBrand(int id)
         {
             await brandService.DeleteBrandAsync(id);
