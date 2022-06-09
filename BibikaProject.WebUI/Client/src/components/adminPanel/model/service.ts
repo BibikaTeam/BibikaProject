@@ -1,4 +1,9 @@
-import { IModelModel, ModelErrorType, IPaginationModel, IPaginationModelRequest, IAddModelModel, IUpdateModelModel } from "../types"
+import {
+  ModelErrorType, 
+  IPaginationModelModel, 
+  IPaginationModelRequest, 
+  IAddModelModel 
+} from "../types"
 import http from "../../../http_common"
 import axios from "axios";
 import qs from "qs";
@@ -22,7 +27,7 @@ export const getAllModel = async () => {
   return response;
 }
 
-export const getPaginatedModels = async (paginationModel: IPaginationModel) => {
+export const getPaginatedModels = async (paginationModel: IPaginationModelModel) => {
   const response = await http
     .get<IPaginationModelRequest>(`api/model/get?` + qs.stringify(paginationModel))
     .then((response) => {
@@ -57,21 +62,21 @@ export const addModel = async (data: IAddModelModel) => {
     });
 };
 
-export const updateModel = async (data: IUpdateModelModel) => {
-  console.log("service data", data);
-  const response = await http
-    .put("api/model/update", data)
-    .catch(function (error) {
-      if (axios.isAxiosError(error)) {
-        const serverError: ModelErrorType = {
-          errorsString: error.response?.data as Array<string>,
-        };
-        if (serverError) {
-          throw serverError;
-        }
-      }
-    });
-}
+// export const updateModel = async (data: IUpdateModelModel) => {
+//   console.log("service data", data);
+//   const response = await http
+//     .put("api/model/update", data)
+//     .catch(function (error) {
+//       if (axios.isAxiosError(error)) {
+//         const serverError: ModelErrorType = {
+//           errorsString: error.response?.data as Array<string>,
+//         };
+//         if (serverError) {
+//           throw serverError;
+//         }
+//       }
+//     });
+// }
 
 export const deleteModal = async (data: number) => {
   const response = await http

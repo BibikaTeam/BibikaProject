@@ -1,7 +1,7 @@
 import {
   IBrandModel,
   BrandErrorType,
-  IPaginationModel,
+  IPaginationBrandModel,
   IPaginationBrandRequest,
 } from "../types";
 import http from "../../../http_common";
@@ -27,7 +27,7 @@ export const getAllBrands = async () => {
   return response;
 };
 
-export const getPaginatedBrands = async (paginationModel: IPaginationModel) => {
+export const getPaginatedBrands = async (paginationModel: IPaginationBrandModel) => {
   const response = await http
     .get<IPaginationBrandRequest>(`api/brand/get?` + qs.stringify(paginationModel))
     .then((response) => {
@@ -62,21 +62,21 @@ export const addBrand = async (data: IBrandModel) => {
     });
 };
 
-export const updateBrand = async (data: IBrandModel) => {
-  const response = await http
-    .put("api/brand/update", data)
-    .catch(function (error) {
-      if (axios.isAxiosError(error)) {
-        const serverError: BrandErrorType = {
-          errorsString: error.response?.data as Array<string>,
-        };
-        if (serverError) {
-          throw serverError;
-        }
-      }
-    });
-  return response;
-};
+// export const updateBrand = async (data: IBrandModel) => {
+//   const response = await http
+//     .put("api/brand/update", data)
+//     .catch(function (error) {
+//       if (axios.isAxiosError(error)) {
+//         const serverError: BrandErrorType = {
+//           errorsString: error.response?.data as Array<string>,
+//         };
+//         if (serverError) {
+//           throw serverError;
+//         }
+//       }
+//     });
+//   return response;
+// };
 
 export const deleteBrand = async (data: number) => {
   const response = await http

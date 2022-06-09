@@ -1,13 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
   IModelModel,
   IAddModelModel,
   ModelErrorType,
-  IPaginationModel,
+  IPaginationModelModel,
   IPaginationModelRequest,
   IBrandModel,
-  IUpdateModelModel
 } from "../types";
 
 import {
@@ -21,16 +20,13 @@ import {
   Button,
   Popconfirm,
   Table,
-  Pagination,
   Select,
   Row,
   Col,
 } from "antd";
 
 import {
-  getAllModel,
   addModel,
-  updateModel,
   deleteModal,
   getPaginatedModels
 } from "./service";
@@ -38,6 +34,7 @@ import {
 import {
   getAllBrands
 } from "../brand/service"
+import { number } from "yup/lib/locale";
 
 const { Option } = Select;
 
@@ -45,18 +42,12 @@ const ModelPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [brandLoading, setBrandLoading] = useState<boolean>(false);
   const [isModalAdd, setModalAdd] = useState(false);
-  const [isModalEdit, setModalEdit] = useState(false);
   const [paginatedModels, setPaginatedModels] = useState<IPaginationModelRequest>({
     allPages: 0,
     currentPage: 0,
     data: [],
   })
   const [selectedBrand, setSelectedBrand] = useState<number>(0);
-  const [editableValue, setEditableValue] = useState<IModelModel>({
-    id: 0,
-    title: "",
-    brandTitle: "",
-  })
   const [brandsList, setBrandsList] = useState<Array<IBrandModel>>([]);
   const countOnPage: number = 3;
   const [form] = Form.useForm();
@@ -77,7 +68,8 @@ const ModelPage = () => {
   const handleGetAllModels = async () => {
     setLoading(true);
     try {
-      const paginationModel: IPaginationModel = {
+      const paginationModel: IPaginationModelModel = {
+        brandId: 0,
         search: "",
         page: 1,
         countOnPage: countOnPage,
@@ -100,25 +92,6 @@ const ModelPage = () => {
     try {
       await addModel(values);
       toast.success(`Model ${values.title} are successfully added`);
-    } catch (error) {
-      const errorType = error as ModelErrorType;
-      errorType.errorsString.forEach((el) => {
-        toast.error(el);
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleUpdateModel = async (value: IModelModel) => {
-    const updatedModel: IUpdateModelModel = {id: value.id, title: value.title}
-    console.log("edit value", value);
-    console.log("upd model", updatedModel);
-    
-    setLoading(true);
-    try {
-      await updateModel(updatedModel);
-      toast.success(`Model ${value.title} are successfully update`);
     } catch (error) {
       const errorType = error as ModelErrorType;
       errorType.errorsString.forEach((el) => {
@@ -154,11 +127,6 @@ const ModelPage = () => {
     setSelectedBrand(value);
   };
 
-  const handleEditClick = async (record: IModelModel) => {
-    setModalEdit(true);
-    setEditableValue(record);
-  };
-
   const columns = [
     {
       title: "Id",
@@ -184,71 +152,7 @@ const ModelPage = () => {
       key: "actions",
       outerWidth: "30%",
       render: (text: string, record: IModelModel) => (
-        <div className="buttonGroup">
-          <Button
-            htmlType="submit"
-            type="default"
-            className="buttonInfo"
-            onClick={() => { handleEditClick(record) }}
-          >
-            Редагувати
-          </Button>
-          <FormModal
-            title="Редагувавання моделі авто"
-            visible={isModalEdit}
-            onCancel={() => {
-              setModalEdit(false)
-              setEditableValue({
-                id: 0,
-                title: "",
-                brandTitle: "",
-              });
-            }}
-            onSubmit={() => { 
-              form.submit();
-              setModalEdit(false);
-              handleUpdateModel(record); 
-            }}
-          >
-            <Form
-              name="basic"
-              labelCol={{ span: 10 }}
-              wrapperCol={{ span: 16 }}
-              //onFinish={() => handleUpdateModel(record)}
-              autoComplete="off"
-              form={form}
-            >
-              <Form.Item
-                label="Зміна назви моделі машини"
-                name="title"
-                initialValue={editableValue.title}
-                rules={[
-                  {
-                    required: true,
-                    message: "Введіть нову назву моделі машини",
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label="Виберіть марку авто"
-                name="brandTitle"
-                initialValue={editableValue.brandTitle}
-                rules={[{ required: true, message: "Виберіть модель машини" }]}
-              >
-                <AntdSelect
-                  value={selectedBrand}
-                  onChange={handleBrandChange}
-                  options={brandsList}
-                  placeholder="Select brand"
-                  loading={brandLoading}
-                  disabled={true}
-                />
-              </Form.Item>
-            </Form>
-          </FormModal>
-          &nbsp;
+        <div>
           <Popconfirm
             title={`Ви впевнені що хочете видалити цю модель?`}
             onConfirm={() => handleDeleteModel(record)}
@@ -279,7 +183,8 @@ const ModelPage = () => {
   };
 
   const onHandlePaginationChanged = async (page: number, pageSize: number) => {
-    const paginationModel: IPaginationModel = {
+    const paginationModel: IPaginationModelModel = {
+      brandId: 0,
       search: "",
       page: page,
       countOnPage: pageSize,
@@ -289,7 +194,8 @@ const ModelPage = () => {
     });
   };
   const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const paginationModel: IPaginationModel = {
+    const paginationModel: IPaginationModelModel = {
+      brandId: 0,
       search: e.target.value,
       page: 1,
       countOnPage: countOnPage,
@@ -298,7 +204,21 @@ const ModelPage = () => {
       setPaginatedModels(data as IPaginationModelRequest);
     });
   };
-
+///////////////////////////////////////////////////////////////////////////////////////////
+  const handleSearchBrandChange = async(e: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log("brandId select: ", parseInt(e.target.value));
+    
+    const paginationModel: IPaginationModelModel = {
+      brandId: parseInt(e.target.value),
+      search: "",
+      page: 1,
+      countOnPage: countOnPage,
+    };
+    await getPaginatedModels(paginationModel).then((data) => {
+      setPaginatedModels(data as IPaginationModelRequest);
+    });
+  };
+////////////////////////////////////////////////////////////////////////////////////////////
   return (
     <div>
       {loading}
@@ -313,7 +233,7 @@ const ModelPage = () => {
           &nbsp;
           <AntdSelect
             value={undefined}
-            onChange={handleBrandChange}
+            onChange={handleSearchBrandChange}
             options={brandsList}
             placeholder="Select brand"
             loading={brandLoading}

@@ -39,7 +39,14 @@ export interface IGenerationModel {
   modelTitle: string;
 }
 
-export interface IPaginationModel {
+export interface IPaginationBrandModel {
+  page: number;
+  countOnPage: number;
+  search: string;
+}
+
+export interface IPaginationModelModel {
+  brandId: number;
   page: number;
   countOnPage: number;
   search: string;
