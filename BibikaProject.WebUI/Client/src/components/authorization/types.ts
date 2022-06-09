@@ -3,11 +3,9 @@ export enum AuthActionTypes {
   AUTH_LOGOUT = "AUTH_LOGOUT",
 }
 export interface IRegisterModel {
-  username: string;
+  userName: string;
   email: string;
-  phoneNumber: string;
   password: string;
-  confirmPassword: string;
 }
 export interface ILoginModel {
   email: string;
