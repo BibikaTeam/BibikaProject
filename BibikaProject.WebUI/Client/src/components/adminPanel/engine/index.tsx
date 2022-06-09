@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Id, toast } from "react-toastify";
 import {
   BrandErrorType,
-  IBrandModel,
+  IEngineModel,
   IPaginationModel,
   IPaginationRequest,
 } from "../types";
@@ -19,21 +19,22 @@ import {
   Pagination,
   Row,
   Col,
+  Select,
 } from "antd";
 import {
-  getAllBrands,
-  addBrand,
-  updateBrand,
-  deleteBrand,
-  getPaginatedBrands,
+  getAllEngines,
+  addEngine,
+  getPaginatedEngines,
+  deleteEngine,
 } from "./service";
+const Option = Select.Option;
 
-const BrandPage = () => {
+const EnginePage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isModalAdd, setModalAdd] = useState(false);
   const [isModalEdit, setModalEdit] = useState(false);
-  const [paginatedBrands, setPaginatedBrands] = useState<
-    IPaginationRequest<IBrandModel>
+  const [paginatedEngines, setPaginatedEngines] = useState<
+    IPaginationRequest<IEngineModel>
   >({
     allPages: 0,
     currentPage: 0,
@@ -41,19 +42,24 @@ const BrandPage = () => {
   });
   const countOnPage: number = 3;
   const [form] = Form.useForm();
-  const [editableValue, setEditableValue] = useState<IBrandModel>({
+  const defaultValue: IEngineModel = {
+    capacity: "",
+    fuel: "",
     id: 0,
+    kWPower: 0,
     title: "",
-  });
+  };
+  const [editableValue, setEditableValue] =
+    useState<IEngineModel>(defaultValue);
 
   useEffect(() => {
     const init = async () => {
-      await handleGetAllBrands();
+      await handleGetAllEngines();
     };
     init();
   }, []);
 
-  const handleGetAllBrands = async () => {
+  const handleGetAllEngines = async () => {
     setLoading(true);
     try {
       const paginationModel: IPaginationModel = {
@@ -61,8 +67,8 @@ const BrandPage = () => {
         page: 1,
         countOnPage: countOnPage,
       };
-      await getPaginatedBrands(paginationModel).then((data) => {
-        setPaginatedBrands(data as IPaginationRequest<IBrandModel>);
+      await getPaginatedEngines(paginationModel).then((data) => {
+        setPaginatedEngines(data as IPaginationRequest<IEngineModel>);
       });
     } catch (error) {
       const errorType = error as BrandErrorType;
@@ -74,10 +80,10 @@ const BrandPage = () => {
     }
   };
 
-  const handleAddBrand = async (values: IBrandModel) => {
+  const handleAddEngine = async (values: IEngineModel) => {
     setLoading(true);
     try {
-      await addBrand(values);
+      await addEngine(values);
       toast.success(`Brand ${values.title} are successfully added`);
     } catch (error) {
       const errorType = error as BrandErrorType;
@@ -88,39 +94,16 @@ const BrandPage = () => {
       setLoading(false);
     }
   };
-  const handleUpdateBrand = async (value: IBrandModel) => {
-    value.id = editableValue.id;
-    setLoading(true);
-    try {
-      await updateBrand(value);
-      toast.success(`Brand ${value.title} are successfully update`);
-      setModalEdit(false);
-
-      const tmpArr = paginatedBrands.data.slice();
-      tmpArr[tmpArr.findIndex((x) => x.id === value.id)].title = value.title;
-      setPaginatedBrands({
-        ...paginatedBrands,
-        data: tmpArr,
-      });
-    } catch (error) {
-      const errorType = error as BrandErrorType;
-      errorType.errorsString.forEach((el) => {
-        toast.error(el);
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-  const handleDeleteBrand = async (value: IBrandModel) => {
+  const handleDeleteEngine = async (value: IEngineModel) => {
     console.log("value: ", value);
     setLoading(true);
     try {
-      await deleteBrand(value.id);
+      await deleteEngine(value.id);
       toast.success(`Brand ${value.title} are successfully deleted`);
 
-      setPaginatedBrands({
-        ...paginatedBrands,
-        data: paginatedBrands.data.filter((x) => x.id != value.id),
+      setPaginatedEngines({
+        ...paginatedEngines,
+        data: paginatedEngines.data.filter((x) => x.id != value.id),
       });
     } catch (error) {
       const errorType = error as BrandErrorType;
@@ -131,7 +114,7 @@ const BrandPage = () => {
       setLoading(false);
     }
   };
-  const handleEditClick = async (record: IBrandModel) => {
+  const handleEditClick = async (record: IEngineModel) => {
     setModalEdit(true);
     setEditableValue(record);
   };
@@ -150,11 +133,29 @@ const BrandPage = () => {
       outerWidth: "50%",
     },
     {
+      title: "Назва",
+      dataIndex: "capacity",
+      key: "capacity",
+      outerWidth: "50%",
+    },
+    {
+      title: "Назва",
+      dataIndex: "kWPower",
+      key: "kWPower",
+      outerWidth: "50%",
+    },
+    {
+      title: "Назва",
+      dataIndex: "fuel",
+      key: "fuel",
+      outerWidth: "50%",
+    },
+    {
       title: "Дії",
       dataIndex: "actions",
       key: "actions",
       outerWidth: "40%",
-      render: (text: string, record: IBrandModel) => (
+      render: (text: string, record: IEngineModel) => (
         <div className="buttonGroup">
           <Button
             htmlType="submit"
@@ -164,45 +165,10 @@ const BrandPage = () => {
           >
             Редагувати
           </Button>
-          <FormModal
-            title="Редагувавання марки авто"
-            visible={isModalEdit}
-            onCancel={() => {
-              setModalEdit(false);
-              setEditableValue({ id: 0, title: "" });
-            }}
-            onSubmit={() => {
-              form.submit();
-            }}
-          >
-            <Form
-              name="basic"
-              labelCol={{ span: 10 }}
-              wrapperCol={{ span: 16 }}
-              onFinish={handleUpdateBrand}
-              autoComplete="off"
-              form={form}
-            >
-              <Form.Item
-                label="Зміна назви марки машини"
-                name="title"
-                initialValue={editableValue.title}
-                rules={[
-                  {
-                    required: true,
-                    message: "Введіть нову назву марки машини",
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item wrapperCol={{ offset: 8, span: 16 }}></Form.Item>
-            </Form>
-          </FormModal>
           &nbsp;
           <Popconfirm
             title={`Ви впевнені що хочете видалити цю марку?`}
-            onConfirm={() => handleDeleteBrand(record)}
+            onConfirm={() => handleDeleteEngine(record)}
           >
             <Button type="primary" htmlType="submit" className="danger">
               Видалити
@@ -213,16 +179,16 @@ const BrandPage = () => {
     },
   ];
 
-  const showModalAddNewBrand = () => {
+  const showModalAddNewEngine = () => {
     setModalAdd(true);
   };
 
-  const handleOkModalAddNewBrand = () => {
+  const handleOkModalAddNewEngine = () => {
     form.submit();
     setModalAdd(false);
   };
-  const handleFormSubmit = (value: IBrandModel) => {
-    handleAddBrand(value);
+  const handleFormSubmit = (value: IEngineModel) => {
+    handleAddEngine(value);
   };
   const onHandlePaginationChanged = async (page: number, pageSize: number) => {
     const paginationModel: IPaginationModel = {
@@ -230,8 +196,8 @@ const BrandPage = () => {
       page: page,
       countOnPage: pageSize,
     };
-    await getPaginatedBrands(paginationModel).then((data) => {
-      setPaginatedBrands(data as IPaginationRequest<IBrandModel>);
+    await getPaginatedEngines(paginationModel).then((data) => {
+      setPaginatedEngines(data as IPaginationRequest<IEngineModel>);
     });
   };
   const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -240,8 +206,8 @@ const BrandPage = () => {
       page: 1,
       countOnPage: countOnPage,
     };
-    await getPaginatedBrands(paginationModel).then((data) => {
-      setPaginatedBrands(data as IPaginationRequest<IBrandModel>);
+    await getPaginatedEngines(paginationModel).then((data) => {
+      setPaginatedEngines(data as IPaginationRequest<IEngineModel>);
     });
   };
 
@@ -262,7 +228,7 @@ const BrandPage = () => {
             htmlType="button"
             type="default"
             className="buttonPrimary"
-            onClick={showModalAddNewBrand}
+            onClick={showModalAddNewEngine}
           >
             Додати нову марку авто
           </Button>
@@ -273,7 +239,7 @@ const BrandPage = () => {
         title="Додавання нової марки авто"
         visible={isModalAdd}
         onCancel={() => setModalAdd(false)}
-        onSubmit={handleOkModalAddNewBrand}
+        onSubmit={handleOkModalAddNewEngine}
       >
         <Form
           name="basic"
@@ -284,23 +250,52 @@ const BrandPage = () => {
           form={form}
         >
           <Form.Item
-            label="Назва марки"
+            label="Назва двигуна"
             name="title"
             rules={[{ required: true, message: "Введіть нову марку машини" }]}
           >
             <Input />
+          </Form.Item>
+          <Form.Item
+            label="Об'єм двигуна (см³)"
+            name="capacity"
+            rules={[{ required: true, message: "Введіть нову марку машини" }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Потужність у kw"
+            name="kWPower"
+            rules={[{ required: true, message: "Введіть нову марку машини" }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="fuel"
+            label="Тип палива"
+            rules={[{ required: true }]}
+          >
+            <Select
+              placeholder="Select a option and change input text above"
+              allowClear
+            >
+              <Option value="Дизель">Дизель</Option>
+              <Option value="Бензин">Бензин</Option>
+              <Option value="Газ">Газ</Option>
+              <Option value="Електричний">Електричний</Option>
+            </Select>
           </Form.Item>
         </Form>
       </FormModal>
       <Table
         className="adminTable"
         size="large"
-        dataSource={paginatedBrands.data}
+        dataSource={paginatedEngines.data}
         columns={columns}
         rowKey="id"
         pagination={{
           pageSize: countOnPage,
-          total: paginatedBrands.allPages * countOnPage,
+          total: paginatedEngines.allPages * countOnPage,
           onChange: onHandlePaginationChanged,
         }}
       />
@@ -308,4 +303,4 @@ const BrandPage = () => {
   );
 };
 
-export default BrandPage;
+export default EnginePage;

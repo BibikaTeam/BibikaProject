@@ -8,6 +8,7 @@ import LoginPage from "./components/authorization/login";
 
 const AddPost = lazy(() => import("./components/posts/add"));
 const BrandPage = lazy(() => import("./components/adminPanel/brand"));
+const EnginePage = lazy(() => import("./components/adminPanel/engine"));
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="/admin/brand" element={<BrandPage />} />
+            <Route path="/admin/engine" element={<EnginePage />} />
           </Route>
         </Route>
       </Routes>

@@ -18,7 +18,7 @@ namespace BibikaProject.WebUI.Controllers
         private readonly IEngineService engineService;
 
         [HttpPost("add")]
-        [Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Administrator")]
         public async Task<IActionResult> AddEngine([FromBody] AddEngineDTO model)
         {
             await engineService.AddEngineAsync(model);
@@ -27,7 +27,7 @@ namespace BibikaProject.WebUI.Controllers
         }
 
         [HttpPut("update")]
-        [Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Administrator")]
         public async Task<IActionResult> UpdateEngine([FromBody] UpdateEngineDTO model)
         {
             await engineService.UpdateEngineAsync(model);
@@ -36,7 +36,7 @@ namespace BibikaProject.WebUI.Controllers
         }
 
         [HttpDelete("delete/{id}")]
-        [Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteEngine(int id)
         {
             await engineService.DeleteEngineAsync(id);
