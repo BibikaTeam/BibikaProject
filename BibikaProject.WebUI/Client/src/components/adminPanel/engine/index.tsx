@@ -130,25 +130,25 @@ const EnginePage = () => {
       title: "Назва",
       dataIndex: "title",
       key: "title",
-      outerWidth: "50%",
+      outerWidth: "80%",
     },
     {
-      title: "Назва",
+      title: "Об'єм (см³)",
       dataIndex: "capacity",
       key: "capacity",
-      outerWidth: "50%",
+      outerWidth: "20%",
     },
     {
-      title: "Назва",
-      dataIndex: "kWPower",
-      key: "kWPower",
-      outerWidth: "50%",
+      title: "Потужність у kw",
+      dataIndex: "kwPower",
+      key: "kwPower",
+      outerWidth: "30%",
     },
     {
-      title: "Назва",
+      title: "Тип палива",
       dataIndex: "fuel",
       key: "fuel",
-      outerWidth: "50%",
+      outerWidth: "20%",
     },
     {
       title: "Дії",
@@ -157,7 +157,7 @@ const EnginePage = () => {
       outerWidth: "40%",
       render: (text: string, record: IEngineModel) => (
         <div className="buttonGroup">
-          <Button
+          {/* <Button
             htmlType="submit"
             type="default"
             className="buttonInfo"
@@ -165,9 +165,9 @@ const EnginePage = () => {
           >
             Редагувати
           </Button>
-          &nbsp;
+          &nbsp; */}
           <Popconfirm
-            title={`Ви впевнені що хочете видалити цю марку?`}
+            title={`Ви впевнені що хочете видалити цей двигун?`}
             onConfirm={() => handleDeleteEngine(record)}
           >
             <Button type="primary" htmlType="submit" className="danger">
@@ -218,7 +218,7 @@ const EnginePage = () => {
       <Row>
         <Col span={12}>
           <Input
-            placeholder="Input brand name"
+            placeholder="Input engine title"
             onChange={handleSearchChange}
             style={{ width: "300px" }}
           />
@@ -230,13 +230,13 @@ const EnginePage = () => {
             className="buttonPrimary"
             onClick={showModalAddNewEngine}
           >
-            Додати нову марку авто
+            Додати новий двигун
           </Button>
         </Col>
       </Row>
 
       <FormModal
-        title="Додавання нової марки авто"
+        title="Додавання нового двигуна"
         visible={isModalAdd}
         onCancel={() => setModalAdd(false)}
         onSubmit={handleOkModalAddNewEngine}
@@ -252,21 +252,21 @@ const EnginePage = () => {
           <Form.Item
             label="Назва двигуна"
             name="title"
-            rules={[{ required: true, message: "Введіть нову марку машини" }]}
+            rules={[{ required: true, message: "Введіть назву двигуна" }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
             label="Об'єм двигуна (см³)"
             name="capacity"
-            rules={[{ required: true, message: "Введіть нову марку машини" }]}
+            rules={[{ required: true, message: "Введіть об'єм двигуна" }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
             label="Потужність у kw"
             name="kWPower"
-            rules={[{ required: true, message: "Введіть нову марку машини" }]}
+            rules={[{ required: true, message: "Введіть потужність двигуна" }]}
           >
             <Input />
           </Form.Item>
@@ -276,7 +276,7 @@ const EnginePage = () => {
             rules={[{ required: true }]}
           >
             <Select
-              placeholder="Select a option and change input text above"
+              placeholder="Select type fuel"
               allowClear
             >
               <Option value="Дизель">Дизель</Option>

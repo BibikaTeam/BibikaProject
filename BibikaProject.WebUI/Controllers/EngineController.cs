@@ -1,4 +1,5 @@
 ﻿using BibikaProject.Application.Core.DTO.Engine;
+using BibikaProject.Application.Core.Requests;
 using BibikaProject.Application.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +43,14 @@ namespace BibikaProject.WebUI.Controllers
             await engineService.DeleteEngineAsync(id);
 
             return Ok();
+        }
+
+        [HttpGet("get")]
+        public async Task<IActionResult> GetEngines([FromQuery] PagedEngineRequest request)
+        {
+            var result = await engineService.GetPagedEnginesAsync(request);
+
+            return Ok(result);
         }
 
         [HttpGet("get/all")]

@@ -21,10 +21,13 @@ const SiderLayout: FC = () => {
             <Link to={"/admin/brand"}>Brand</Link>
           </Menu.Item>
           <Menu.Item>
+            <Link to={"/admin/model"}>Model</Link>
+          </Menu.Item>
+          <Menu.Item>
             <Link to={"/admin/generation"}>Generation</Link>
           </Menu.Item>
           <Menu.Item>
-            <Link to={"/admin/model"}>Model</Link>
+            <Link to={"/admin/engine"}>Engine</Link>
           </Menu.Item>
           <Menu.Item>
             <Link to={"/admin/car"}>Car</Link>

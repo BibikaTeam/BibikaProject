@@ -33,7 +33,7 @@ namespace BibikaProject.Infrastructure.Core.Services.Helpers
                 return queryable;
             }
 
-           return queryable = queryable.Where($"{property}.Contains(@0)", search); ;
+           return queryable.Where($"{property}.Contains(@0)", search);
         }
     }
 }
