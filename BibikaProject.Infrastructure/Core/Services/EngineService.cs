@@ -2,9 +2,13 @@
 using BibikaProject.Application.Core.Commands;
 using BibikaProject.Application.Core.DTO.Engine;
 using BibikaProject.Application.Core.Queries;
+using BibikaProject.Application.Core.Requests;
+using BibikaProject.Application.Core.Responses;
 using BibikaProject.Application.Core.Services;
 using BibikaProject.Domain.Entities.Core;
+using BibikaProject.Infrastructure.Core.Services.Helpers;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,7 +40,7 @@ namespace BibikaProject.Infrastructure.Core.Services
             command.Delete(id);
 
             await command.SaveChangesAsync();
-        }
+        }    
 
         public async Task<List<EngineDTO>> GetAllEnginesAsync()
         {
@@ -57,6 +61,23 @@ namespace BibikaProject.Infrastructure.Core.Services
             engines = engines.Where(x => x.Cars.Any(x => x.GenerationId == generationId));
 
             return await engines.Select(x => mapper.Map<EngineDTO>(x)).ToListAsync();
+        }
+
+        public async Task<PagedList<EngineDTO>> GetPagedEnginesAsync(PagedEngineRequest pagedEngineRequest)
+        {
+            IQueryable<Engine> engines = query.GetAll();
+
+            var response = new PagedList<EngineDTO> { CurrentPage = pagedEngineRequest.Page };
+
+            engines = engines.Search(pagedEngineRequest.Search, "Title");
+
+            response.AllPages = (int)Math.Ceiling((double)await engines.CountAsync() / (double)pagedEngineRequest.CountOnPage);
+
+            engines = engines.GetPage(pagedEngineRequest.Page, pagedEngineRequest.CountOnPage).AsNoTracking();
+
+            response.Data = await engines.Select(x => mapper.Map<EngineDTO>(x)).ToListAsync();
+
+            return response;
         }
     }
 }
