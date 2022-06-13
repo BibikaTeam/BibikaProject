@@ -15,7 +15,7 @@ namespace BibikaProject.Infrastructure.Core.Commands
         {
             if (await context.Models.FindAsync(entity.ModelId) == null)
             {
-                throw new BadRequestException("There is no model with this Id.");
+                throw new BadRequestException("There is no Model with this Id.");
             }
 
             return await base.AddAsync(entity);

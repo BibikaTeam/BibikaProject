@@ -15,7 +15,7 @@ namespace BibikaProject.Infrastructure.Core.Commands
         {
             if (await context.Brands.FindAsync(entity.BrandId) == null)
             {
-                throw new BadRequestException("There is no brand with this Id.");
+                throw new BadRequestException("There is no Brand with this Id.");
             }
 
             return await base.AddAsync(entity);
