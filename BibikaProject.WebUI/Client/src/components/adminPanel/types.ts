@@ -69,3 +69,12 @@ export interface IBrandResponse {
 
   //isAuth: boolean;
 }
+
+//Errors
+export interface IFluentValidationError {
+  type: string;
+  title: string;
+  status: number;
+  traceId: string;
+  errors: Array<string>;
+}

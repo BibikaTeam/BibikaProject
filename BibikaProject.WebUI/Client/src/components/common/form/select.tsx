@@ -8,6 +8,7 @@ export interface ISelectProps {
   placeholder: string | undefined | null;
   loading: boolean;
   disabled: boolean;
+  allowClear: boolean;
 }
 
 const AntdSelect = ({
@@ -17,6 +18,7 @@ const AntdSelect = ({
   placeholder = "",
   loading = false,
   disabled = false,
+  allowClear = false,
 }: ISelectProps) => {
   return (
     <Select
@@ -27,6 +29,7 @@ const AntdSelect = ({
       onChange={onChange}
       loading={loading}
       disabled={disabled}
+      allowClear={allowClear}
     >
       {options.map((element, id) => {
         return (
@@ -38,5 +41,5 @@ const AntdSelect = ({
     </Select>
   );
 };
-
+AntdSelect.defaultProps = { allowClear: false };
 export default AntdSelect;

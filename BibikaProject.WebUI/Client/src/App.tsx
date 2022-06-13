@@ -4,10 +4,15 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import AdminLayout from "./components/containers/adminLayout";
 
-const RegisterPage = lazy(() => import("./components/authorization/register"));
-const LoginPage = lazy(() => import("./components/authorization/login"));
-const BrandPage = lazy(() => import("./components/adminPanel/brand"));
-const ModelPage = lazy(() => import("./components/adminPanel/model"));
+// const RegisterPage = lazy(() => import("./components/authorization/register"));
+// const LoginPage = lazy(() => import("./components/authorization/login"));
+// const BrandPage = lazy(() => import("./components/adminPanel/brand"));
+// const ModelPage = lazy(() => import("./components/adminPanel/model"));
+
+import ModelPage from "./components/adminPanel/model";
+import RegisterPage from "./components/authorization/register";
+import LoginPage from "./components/authorization/login";
+import BrandPage from "./components/adminPanel/brand";
 
 function App() {
   return (

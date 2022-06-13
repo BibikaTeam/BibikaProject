@@ -17,23 +17,28 @@ import {
   Table,
   Row,
   Col,
+  notification,
 } from "antd";
-import {
-  addBrand,
-  deleteBrand,
-  getPaginatedBrands,
-} from "./service";
+import { addBrand, deleteBrand, getPaginatedBrands } from "./service";
+
+import type { NotificationPlacement } from "antd/lib/notification";
+const Context = React.createContext({ name: "Default" });
 
 const BrandPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isModalAdd, setModalAdd] = useState(false);
-  const [paginatedBrands, setPaginatedBrands] = useState<IPaginationBrandRequest>({
-    allPages: 0,
-    currentPage: 0,
-    data: [],
-  });
-  const countOnPage: number = 3;
+  const [paginatedBrands, setPaginatedBrands] =
+    useState<IPaginationBrandRequest>({
+      allPages: 0,
+      currentPage: 0,
+      data: [],
+    });
+  const countOnPage: number = 10;
   const [form] = Form.useForm();
+
+  let key = ``;
+
+  const [api, contextHolder] = notification.useNotification();
 
   useEffect(() => {
     const init = async () => {
@@ -44,23 +49,33 @@ const BrandPage = () => {
 
   const handleGetAllBrands = async () => {
     setLoading(true);
-    try {
-      const paginationModel: IPaginationBrandModel = {
-        search: "",
-        page: 1,
-        countOnPage: countOnPage,
-      };
-      await getPaginatedBrands(paginationModel).then((data) => {
+    const paginationModel: IPaginationBrandModel = {
+      search: "",
+      page: 1,
+      countOnPage: countOnPage,
+    };
+    await getPaginatedBrands(paginationModel)
+      .then((data) => {
         setPaginatedBrands(data as IPaginationBrandRequest);
+      })
+      .catch((error) => {
+        if (error instanceof String) {
+          toast.error(error);
+        } else {
+          toast.error(
+            `${error.errorsString.title} (${error.errorsString.status})`
+          );
+          // const errorType = error as BrandErrorType;
+          // if (errorType) console.log("Error type: ", errorType);
+          // errorType.errorsString.forEach((el) => {
+          // toast.error(el);
+          // });
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+        notification.close(key);
       });
-    } catch (error) {
-      const errorType = error as BrandErrorType;
-      errorType.errorsString.forEach((el) => {
-        toast.error(el);
-      });
-    } finally {
-      setLoading(false);
-    }
   };
 
   const handleAddBrand = async (values: IBrandModel) => {
@@ -68,6 +83,7 @@ const BrandPage = () => {
     try {
       await addBrand(values);
       toast.success(`Brand ${values.title} are successfully added`);
+      openNotification("bottomRight");
     } catch (error) {
       const errorType = error as BrandErrorType;
       errorType.errorsString.forEach((el) => {
@@ -75,9 +91,10 @@ const BrandPage = () => {
       });
     } finally {
       setLoading(false);
+      form.resetFields();
     }
   };
-  
+
   const handleDeleteBrand = async (value: IBrandModel) => {
     console.log("value: ", value);
     setLoading(true);
@@ -99,6 +116,53 @@ const BrandPage = () => {
     }
   };
 
+  const showModalAddNewBrand = () => {
+    setModalAdd(true);
+  };
+  const handleOkModalAddNewBrand = () => {
+    form.submit();
+    setModalAdd(false);
+  };
+  const handleFormSubmit = (value: IBrandModel) => {
+    handleAddBrand(value);
+  };
+  const onHandlePaginationChanged = async (page: number, pageSize: number) => {
+    const paginationModel: IPaginationBrandModel = {
+      search: "",
+      page: page,
+      countOnPage: pageSize,
+    };
+    await getPaginatedBrands(paginationModel).then((data) => {
+      setPaginatedBrands(data as IPaginationBrandRequest);
+    });
+  };
+  const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const paginationModel: IPaginationBrandModel = {
+      search: e.target.value,
+      page: 1,
+      countOnPage: countOnPage,
+    };
+    await getPaginatedBrands(paginationModel).then((data) => {
+      setPaginatedBrands(data as IPaginationBrandRequest);
+    });
+  };
+  const openNotification = (placement: NotificationPlacement) => {
+    key = `open${Date.now()}`;
+    api.warning({
+      message: `Notification ${placement}`,
+      description: (
+        <Context.Consumer>{({ name }) => `Hello, ${name}!`}</Context.Consumer>
+      ),
+      placement,
+      duration: 0,
+      key: key,
+      onClick: () => {
+        console.log("key: ", key);
+        notification.close(key);
+        handleGetAllBrands();
+      },
+    });
+  };
   const columns = [
     {
       title: "Id",
@@ -131,41 +195,9 @@ const BrandPage = () => {
       ),
     },
   ];
-
-  const showModalAddNewBrand = () => {
-    setModalAdd(true);
-  };
-
-  const handleOkModalAddNewBrand = () => {
-    form.submit();
-    setModalAdd(false);
-  };
-  const handleFormSubmit = (value: IBrandModel) => {
-    handleAddBrand(value);
-  };
-  const onHandlePaginationChanged = async (page: number, pageSize: number) => {
-    const paginationModel: IPaginationBrandModel = {
-      search: "",
-      page: page,
-      countOnPage: pageSize,
-    };
-    await getPaginatedBrands(paginationModel).then((data) => {
-      setPaginatedBrands(data as IPaginationBrandRequest);
-    });
-  };
-  const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const paginationModel: IPaginationBrandModel = {
-      search: e.target.value,
-      page: 1,
-      countOnPage: countOnPage,
-    };
-    await getPaginatedBrands(paginationModel).then((data) => {
-      setPaginatedBrands(data as IPaginationBrandRequest);
-    });
-  };
-
   return (
-    <div>
+    <Context.Provider value={{ name: "Ant Design" }}>
+      {contextHolder}
       {loading}
 
       <Row>
@@ -177,6 +209,17 @@ const BrandPage = () => {
           />
         </Col>
         <Col span={12} style={{ textAlign: "right" }}>
+          <Button
+            htmlType="button"
+            type="default"
+            className="buttonPrimary"
+            style={{ marginRight: 20 }}
+            onClick={() => {
+              handleGetAllBrands();
+            }}
+          >
+            Обновити таблицю
+          </Button>
           <Button
             htmlType="button"
             type="default"
@@ -217,13 +260,14 @@ const BrandPage = () => {
         dataSource={paginatedBrands.data}
         columns={columns}
         rowKey="id"
+        loading={loading}
         pagination={{
           pageSize: countOnPage,
           total: paginatedBrands.allPages * countOnPage,
           onChange: onHandlePaginationChanged,
         }}
       />
-    </div>
+    </Context.Provider>
   );
 };
 

@@ -9,10 +9,7 @@ import {
   IBrandModel,
 } from "../types";
 
-import {
-  FormModal,
-  AntdSelect
-} from "../../common/form";
+import { FormModal, AntdSelect } from "../../common/form";
 
 import {
   Input,
@@ -23,18 +20,15 @@ import {
   Select,
   Row,
   Col,
+  notification,
 } from "antd";
 
-import {
-  addModel,
-  deleteModal,
-  getPaginatedModels
-} from "./service";
+import { addModel, deleteModal, getPaginatedModels } from "./service";
 
-import {
-  getAllBrands
-} from "../brand/service"
-import { number } from "yup/lib/locale";
+import { getAllBrands } from "../brand/service";
+
+import type { NotificationPlacement } from "antd/lib/notification";
+const Context = React.createContext({ name: "Default" });
 
 const { Option } = Select;
 
@@ -42,15 +36,20 @@ const ModelPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [brandLoading, setBrandLoading] = useState<boolean>(false);
   const [isModalAdd, setModalAdd] = useState(false);
-  const [paginatedModels, setPaginatedModels] = useState<IPaginationModelRequest>({
-    allPages: 0,
-    currentPage: 0,
-    data: [],
-  })
+  const [paginatedModels, setPaginatedModels] =
+    useState<IPaginationModelRequest>({
+      allPages: 0,
+      currentPage: 0,
+      data: [],
+    });
   const [selectedBrand, setSelectedBrand] = useState<number>(0);
   const [brandsList, setBrandsList] = useState<Array<IBrandModel>>([]);
   const countOnPage: number = 3;
   const [form] = Form.useForm();
+
+  const [api, contextHolder] = notification.useNotification();
+
+  let key = ``;
 
   useEffect(() => {
     const init = async () => {
@@ -59,8 +58,8 @@ const ModelPage = () => {
     const initBrandsList = async () => {
       await getAllBrands().then((data) => {
         setBrandsList(data);
-      })
-    }
+      });
+    };
     init();
     initBrandsList();
   }, []);
@@ -92,6 +91,7 @@ const ModelPage = () => {
     try {
       await addModel(values);
       toast.success(`Model ${values.title} are successfully added`);
+      openNotification("bottomRight");
     } catch (error) {
       const errorType = error as ModelErrorType;
       errorType.errorsString.forEach((el) => {
@@ -111,7 +111,7 @@ const ModelPage = () => {
 
       setPaginatedModels({
         ...paginatedModels,
-        data: paginatedModels.data.filter((x) => x.id != value.id)
+        data: paginatedModels.data.filter((x) => x.id != value.id),
       });
     } catch (error) {
       const errorType = error as ModelErrorType;
@@ -125,6 +125,75 @@ const ModelPage = () => {
 
   const handleBrandChange = (value: number) => {
     setSelectedBrand(value);
+  };
+
+  const showModalAddNewModal = () => {
+    setModalAdd(true);
+  };
+
+  const handleOkModalAddNewModel = () => {
+    form.submit();
+    setModalAdd(false);
+  };
+  const handleFormSubmit = (value: IModelModel) => {
+    const newModel: IAddModelModel = {
+      title: value.title,
+      brandId: selectedBrand,
+    };
+    handleAddModel(newModel);
+  };
+
+  const onHandlePaginationChanged = async (page: number, pageSize: number) => {
+    const paginationModel: IPaginationModelModel = {
+      brandId: 0,
+      search: "",
+      page: page,
+      countOnPage: pageSize,
+    };
+    await getPaginatedModels(paginationModel).then((data) => {
+      setPaginatedModels(data as IPaginationModelRequest);
+    });
+  };
+  const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const paginationModel: IPaginationModelModel = {
+      brandId: 0,
+      search: e.target.value,
+      page: 1,
+      countOnPage: countOnPage,
+    };
+    await getPaginatedModels(paginationModel).then((data) => {
+      setPaginatedModels(data as IPaginationModelRequest);
+    });
+  };
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  const handleSearchBrandChange = async (e: number) => {
+    const paginationModel: IPaginationModelModel = {
+      brandId: e,
+      search: "",
+      page: 1,
+      countOnPage: countOnPage,
+    };
+    await getPaginatedModels(paginationModel).then((data) => {
+      setPaginatedModels(data as IPaginationModelRequest);
+    });
+  };
+
+  const openNotification = (placement: NotificationPlacement) => {
+    key = `open${Date.now()}`;
+    api.warning({
+      message: `Notification ${placement}`,
+      description: (
+        <Context.Consumer>{({ name }) => `Hello, ${name}!`}</Context.Consumer>
+      ),
+      placement,
+      duration: 0,
+      key: key,
+      onClick: () => {
+        console.log("key: ", key);
+        notification.close(key);
+        handleGetAllModels();
+      },
+    });
   };
 
   const columns = [
@@ -165,62 +234,10 @@ const ModelPage = () => {
       ),
     },
   ];
-
-  const showModalAddNewModal = () => {
-    setModalAdd(true);
-  };
-
-  const handleOkModalAddNewModel = () => {
-    form.submit();
-    setModalAdd(false);
-  };
-  const handleFormSubmit = (value: IModelModel) => {
-    const newModel: IAddModelModel = {
-      title: value.title,
-      brandId: selectedBrand,
-    }
-    handleAddModel(newModel);
-  };
-
-  const onHandlePaginationChanged = async (page: number, pageSize: number) => {
-    const paginationModel: IPaginationModelModel = {
-      brandId: 0,
-      search: "",
-      page: page,
-      countOnPage: pageSize,
-    };
-    await getPaginatedModels(paginationModel).then((data) => {
-      setPaginatedModels(data as IPaginationModelRequest);
-    });
-  };
-  const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const paginationModel: IPaginationModelModel = {
-      brandId: 0,
-      search: e.target.value,
-      page: 1,
-      countOnPage: countOnPage,
-    };
-    await getPaginatedModels(paginationModel).then((data) => {
-      setPaginatedModels(data as IPaginationModelRequest);
-    });
-  };
-///////////////////////////////////////////////////////////////////////////////////////////
-  const handleSearchBrandChange = async(e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log("brandId select: ", parseInt(e.target.value));
-    
-    const paginationModel: IPaginationModelModel = {
-      brandId: parseInt(e.target.value),
-      search: "",
-      page: 1,
-      countOnPage: countOnPage,
-    };
-    await getPaginatedModels(paginationModel).then((data) => {
-      setPaginatedModels(data as IPaginationModelRequest);
-    });
-  };
-////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////
   return (
-    <div>
+    <Context.Provider value={{ name: "Ant Design" }}>
+      {contextHolder}
       {loading}
 
       <Row>
@@ -237,13 +254,22 @@ const ModelPage = () => {
             options={brandsList}
             placeholder="Select brand"
             loading={brandLoading}
-            disabled={false} 
-            // filterOption={(input, option) =>
-            //   (option!.children as unknown as string).toLowerCase().includes(input.toLowerCase())
-            // }
+            disabled={false}
+            allowClear={true}
           />
         </Col>
         <Col span={12} style={{ textAlign: "right" }}>
+          <Button
+            htmlType="button"
+            type="default"
+            className="buttonPrimary"
+            style={{ marginRight: 20 }}
+            onClick={() => {
+              handleGetAllModels();
+            }}
+          >
+            Обновити таблицю
+          </Button>
           <Button
             htmlType="button"
             type="default"
@@ -298,13 +324,14 @@ const ModelPage = () => {
         dataSource={paginatedModels.data}
         columns={columns}
         rowKey="id"
+        loading={loading}
         pagination={{
           pageSize: countOnPage,
           total: paginatedModels.allPages * countOnPage,
           onChange: onHandlePaginationChanged,
         }}
       />
-    </div>
+    </Context.Provider>
   );
 };
 

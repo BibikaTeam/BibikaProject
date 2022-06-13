@@ -1,35 +1,48 @@
 import { FC, useState } from "react";
 import { Outlet } from "react-router";
 import { Layout, Menu } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const { Header, Content, Footer, Sider } = Layout;
 
 const SiderLayout: FC = () => {
+  const navigate = useNavigate();
+
   const [collapsed, setCollapsed] = useState<boolean>(true);
 
   function onCollapse(): void {
     setCollapsed(!collapsed);
   }
 
+  const menuItems = [
+    {
+      key: "/brand",
+      label: "Brands",
+    },
+    {
+      key: "/model",
+      label: "Models",
+    },
+    {
+      key: "/generation",
+      label: "Generation",
+    },
+  ];
+
+  const handleMenuChange = (value: any) => {
+    navigate(`/admin${value.key}`, { replace: false });
+  };
+
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
-        <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
-          <div style={{ height: 32, margin: 16 }}></div>
-          <Menu.Item>
-            <Link to={"/admin/brand"}>Brand</Link>
-          </Menu.Item>
-          <Menu.Item>
-            <Link to={"/admin/generation"}>Generation</Link>
-          </Menu.Item>
-          <Menu.Item>
-            <Link to={"/admin/model"}>Model</Link>
-          </Menu.Item>
-          <Menu.Item>
-            <Link to={"/admin/car"}>Car</Link>
-          </Menu.Item>
-        </Menu>
+        <Menu
+          theme="dark"
+          defaultSelectedKeys={["1"]}
+          mode="inline"
+          items={menuItems}
+          onClick={handleMenuChange}
+        />
       </Sider>
       <Layout className="site-layout">
         <Header
