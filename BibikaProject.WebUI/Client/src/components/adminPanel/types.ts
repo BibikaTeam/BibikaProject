@@ -10,6 +10,7 @@ export interface IBrandModel {
   id: number;
   title: string;
 }
+
 export interface IEngineModel {
   id: number;
   title: string;
@@ -23,6 +24,7 @@ export interface BrandErrorType {
 }
 
 export interface IModelModel {
+  id: number
   title: string;
   brandTitle: string;
 }
@@ -61,8 +63,38 @@ export interface IPaginationModel {
   countOnPage: number;
   search: string;
 }
+
 export interface IPaginationRequest<type> {
   data: Array<type>;
   currentPage: number;
   allPages: number;
+}
+
+export interface IGenerationModel {
+  id: number;
+  title: string;
+  brandTitle: string;
+  modelTitle: string;
+}
+
+export interface IGenerationAddModel {
+  id: number;
+  title: string;
+  modelId: number;
+}
+
+export interface GenerationErrorType {
+  errorsString: Array<string>;
+}
+
+export interface ModelErrorType {
+  errorsString: Array<string>;
+}
+
+export interface IPaginationGenerationModel {
+  page: number;
+  countOnPage: number;
+  search: string;
+  brandId: number;
+  modelId: number;
 }

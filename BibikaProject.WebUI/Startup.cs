@@ -92,10 +92,10 @@ namespace BibikaProject.WebUI
             {
                 spa.Options.SourcePath = "Client";
 
-                if (env.IsDevelopment())
-                {
-                    spa.UseReactDevelopmentServer(npmScript: "start");
-                }
+                //if (env.IsDevelopment())
+                //{
+                //    spa.UseReactDevelopmentServer(npmScript: "start");
+                //}
             });
         }
     }

@@ -19,7 +19,7 @@ namespace BibikaProject.WebUI.Controllers
         private readonly IModelService modelService;
 
         [HttpPost("add")]
-        [Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Administrator")]
         public async Task<IActionResult> AddModel([FromBody] AddModelDTO model)
         {
             await modelService.AddModelAsync(model);
@@ -28,7 +28,7 @@ namespace BibikaProject.WebUI.Controllers
         }
 
         [HttpPut("update")]
-        [Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Administrator")]
         public async Task<IActionResult> UpdateModel([FromBody] UpdateModelDTO model)
         {
             await modelService.UpdateModelAsync(model);
@@ -37,7 +37,7 @@ namespace BibikaProject.WebUI.Controllers
         }
 
         [HttpDelete("delete/{id}")]
-        [Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteModel(int id)
         {
             await modelService.DeleteModelAsync(id);
