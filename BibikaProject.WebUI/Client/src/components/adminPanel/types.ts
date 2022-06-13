@@ -1,12 +1,4 @@
-import { type } from "os";
 import { List } from "reselect/es/types";
-
-export enum AdminPanelActionTypes {
-  ADMIN_PANEL_CAR = " ADMIN_PANEL_CAR",
-  BRAND_ADD = "BRAND_ADD",
-  ADMIN_PANEL_MODEL = "ADMIN_PANEL_MODEL",
-  ADMIN_PANEL_GENERATION = "ADMIN_PANEL_GENERATION",
-}
 
 export interface ICarModel {
   engineTitle: string;
@@ -17,6 +9,13 @@ export interface ICarModel {
 export interface IBrandModel {
   id: number;
   title: string;
+}
+export interface IEngineModel {
+  id: number;
+  title: string;
+  capacity: string;
+  kWPower: number;
+  fuel: string;
 }
 
 export interface BrandErrorType {
@@ -57,26 +56,13 @@ export interface IGenerationState {
   generation: null | IGenerationModel;
 }
 
-export interface BrandAddAction {
-  type: AdminPanelActionTypes.BRAND_ADD;
-  payload: IBrandModel;
-}
-
 export interface IPaginationModel {
   page: number;
   countOnPage: number;
   search: string;
 }
-export interface IPaginationRequest {
-  data: Array<IBrandModel>;
+export interface IPaginationRequest<type> {
+  data: Array<type>;
   currentPage: number;
   allPages: number;
 }
-
-export interface IBrandResponse {
-  data: null | Array<IBrandModel> | boolean | undefined;
-
-  //isAuth: boolean;
-}
-
-export type BrandAction = BrandAddAction;
