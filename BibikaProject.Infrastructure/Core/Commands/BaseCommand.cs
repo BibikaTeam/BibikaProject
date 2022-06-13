@@ -14,31 +14,31 @@ namespace BibikaProject.Infrastructure.Core.Commands
 
         protected readonly ApplicationDbContext context;
 
-        public async Task<TEntity> AddAsync(TEntity entity)
+        public virtual async Task<TEntity> AddAsync(TEntity entity)
         {
             await context.AddAsync(entity);
 
             return entity;
         }
 
-        public void Delete(TIdType id)
+        public virtual void Delete(TIdType id)
         {
             var entity = context.Set<TEntity>().Find(id);
 
             if (entity == null)
             {
-                throw new NotFoundException("There is no entity with this id.");
+                throw new BadRequestException("There is no entity with this id.");
             }
 
             context.Remove(entity);
         }
 
-        public async Task SaveChangesAsync()
+        public virtual async Task SaveChangesAsync()
         {
             await context.SaveChangesAsync();
         }
 
-        public void Update(TEntity entity)
+        public virtual void Update(TEntity entity)
         {
             if (context.Find<TEntity>(entity.Id) == null)
             {
