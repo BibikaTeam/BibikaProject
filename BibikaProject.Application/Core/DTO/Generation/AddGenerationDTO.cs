@@ -14,7 +14,7 @@ namespace BibikaProject.Application.Core.DTO.Generation
         public AddGenerationDTOValidator()
         {
             RuleFor(x => x.Title).NotEmpty();
-            RuleFor(x => x.ModelId).NotNull();
+            RuleFor(x => x.ModelId).NotNull().GreaterThanOrEqualTo(1);
         }
     }
 }

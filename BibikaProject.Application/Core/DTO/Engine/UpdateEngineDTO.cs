@@ -19,7 +19,7 @@ namespace BibikaProject.Application.Core.DTO.Engine
     {
         public UpdateEngineDTOValidator()
         {
-            RuleFor(x => x.Id).NotNull();
+            RuleFor(x => x.Id).NotNull().GreaterThanOrEqualTo(1);
             RuleFor(x => x.Title).NotEmpty();
             RuleFor(x => x.Capacity).NotEmpty();
             RuleFor(x => x.KWPower).NotNull();

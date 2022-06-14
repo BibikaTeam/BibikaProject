@@ -19,11 +19,11 @@ namespace BibikaProject.Application.Core.DTO.Car
     {
         public AddCarDTOValidator()
         {
-            RuleFor(x => x.GenerationId).NotNull();
-            RuleFor(x => x.EngineId).NotNull();
-            RuleFor(x => x.CarBodyId).NotNull();
-            RuleFor(x => x.CompleteSetId).NotNull();
-            RuleFor(x => x.GearBoxId).NotNull();
+            RuleFor(x => x.GenerationId).NotNull().GreaterThanOrEqualTo(1);
+            RuleFor(x => x.EngineId).NotNull().GreaterThanOrEqualTo(1);
+            RuleFor(x => x.CarBodyId).NotNull().GreaterThanOrEqualTo(1);
+            RuleFor(x => x.CompleteSetId).NotNull().GreaterThanOrEqualTo(1);
+            RuleFor(x => x.GearBoxId).NotNull().GreaterThanOrEqualTo(1);
         }
     }
 }
