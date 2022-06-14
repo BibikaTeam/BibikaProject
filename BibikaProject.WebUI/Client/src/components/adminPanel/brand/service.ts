@@ -33,9 +33,8 @@ export const getPaginatedBrands = async (
   paginationModel: IPaginationBrandModel
 ) => {
   const response = await http
-    .get<IPaginationBrandRequest>(
-      `api/brand/get?` + qs.stringify(paginationModel)
-    )
+    .get<IPaginationRequest<IBrandModel>>(`api/brand/get?` + qs.stringify(paginationModel))
+
     .then((response) => {
       return response.data;
     })

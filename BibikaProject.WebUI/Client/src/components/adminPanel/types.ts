@@ -8,6 +8,13 @@ export interface IBrandModel {
   id: number;
   title: string;
 }
+export interface IEngineModel {
+  id: number;
+  title: string;
+  capacity: string;
+  kWPower: number;
+  fuel: string;
+}
 
 export interface BrandErrorType {
   errorsString: Array<string>;
@@ -39,6 +46,7 @@ export interface IGenerationModel {
   modelTitle: string;
 }
 
+
 export interface IPaginationBrandModel {
   page: number;
   countOnPage: number;
@@ -47,6 +55,8 @@ export interface IPaginationBrandModel {
 
 export interface IPaginationModelModel {
   brandId: number;
+}
+export interface IPaginationModel {
   page: number;
   countOnPage: number;
   search: string;
@@ -78,3 +88,10 @@ export interface IFluentValidationError {
   traceId: string;
   errors: Array<string>;
 }
+
+export interface IPaginationRequest<type> {
+  data: Array<type>;
+  currentPage: number;
+  allPages: number;
+}
+

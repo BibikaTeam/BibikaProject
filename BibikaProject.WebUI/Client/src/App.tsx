@@ -3,16 +3,14 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import AdminLayout from "./components/containers/adminLayout";
-
-// const RegisterPage = lazy(() => import("./components/authorization/register"));
-// const LoginPage = lazy(() => import("./components/authorization/login"));
-// const BrandPage = lazy(() => import("./components/adminPanel/brand"));
-// const ModelPage = lazy(() => import("./components/adminPanel/model"));
+import RegisterPage from "./components/authorization/register";
+import LoginPage from "./components/authorization/login";
 
 import ModelPage from "./components/adminPanel/model";
 import RegisterPage from "./components/authorization/register";
 import LoginPage from "./components/authorization/login";
 import BrandPage from "./components/adminPanel/brand";
+
 
 function App() {
   return (
@@ -24,6 +22,7 @@ function App() {
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="/admin/brand" element={<BrandPage />} />
             <Route path="/admin/model" element={<ModelPage />} />
+            <Route path="/admin/engine" element={<EnginePage />} />
           </Route>
         </Route>
       </Routes>

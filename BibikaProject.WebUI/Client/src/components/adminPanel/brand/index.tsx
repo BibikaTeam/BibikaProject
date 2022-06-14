@@ -34,6 +34,7 @@ const BrandPage = () => {
       data: [],
     });
   const countOnPage: number = 10;
+
   const [form] = Form.useForm();
 
   let key = ``;
@@ -49,6 +50,7 @@ const BrandPage = () => {
 
   const handleGetAllBrands = async () => {
     setLoading(true);
+
     const paginationModel: IPaginationBrandModel = {
       search: "",
       page: 1,
@@ -75,6 +77,7 @@ const BrandPage = () => {
       .finally(() => {
         setLoading(false);
         notification.close(key);
+
       });
   };
 
@@ -195,6 +198,39 @@ const BrandPage = () => {
       ),
     },
   ];
+
+  const showModalAddNewBrand = () => {
+    setModalAdd(true);
+  };
+
+  const handleOkModalAddNewBrand = () => {
+    form.submit();
+    setModalAdd(false);
+  };
+  const handleFormSubmit = (value: IBrandModel) => {
+    handleAddBrand(value);
+  };
+  const onHandlePaginationChanged = async (page: number, pageSize: number) => {
+    const paginationModel: IPaginationModel = {
+      search: "",
+      page: page,
+      countOnPage: pageSize,
+    };
+    await getPaginatedBrands(paginationModel).then((data) => {
+      setPaginatedBrands(data as IPaginationRequest<IBrandModel>);
+    });
+  };
+  const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const paginationModel: IPaginationModel = {
+      search: e.target.value,
+      page: 1,
+      countOnPage: countOnPage,
+    };
+    await getPaginatedBrands(paginationModel).then((data) => {
+      setPaginatedBrands(data as IPaginationRequest<IBrandModel>);
+    });
+  };
+
   return (
     <Context.Provider value={{ name: "Ant Design" }}>
       {contextHolder}

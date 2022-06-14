@@ -36,6 +36,7 @@ const SiderLayout: FC = () => {
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
+
         <Menu
           theme="dark"
           defaultSelectedKeys={["1"]}
@@ -43,6 +44,7 @@ const SiderLayout: FC = () => {
           items={menuItems}
           onClick={handleMenuChange}
         />
+
       </Sider>
       <Layout className="site-layout">
         <Header

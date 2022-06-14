@@ -1,0 +1,278 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200&display=swap');
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.login-header-container {
+    height: 72.3%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-form-title-container {
+    height: 30%;
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 36px;
+}
+
+.login-form-container {
+    height: 45%;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-form {
+    width: 65%;
+    
+}
+
+.login-form-item {
+    margin: 0;
+    margin-top: 1.8%;
+    width: 100%;
+}
+
+.login-form-button {
+    width: 100%;
+    height: 4.3vh;
+    border-radius: 5px;
+    
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+
+    background-color: rgba($accent-dark, 0.9);
+    color: $accent-light;
+    border-radius: 5px;
+
+
+    &:hover {
+        background-color: $primary;
+        color: $accent-light;
+    }
+
+    &:focus {
+        background-color: $primary;
+        color: $accent-light;
+    }
+
+    &:active {
+        background-color: $primary;
+        color: $accent-light;
+    }
+}
+
+.login-form-input {
+    height: 4.5vh;
+    border-radius: 5px;
+    border-color: rgba($accent-dark, 0.3);
+
+    &:active {
+        border-color: rgba($accent-dark, 0.3);
+    }
+    
+    &:focus {
+        border-color: rgba($accent-dark, 0.3);
+    }
+}
+
+.login-form-external-container {
+    margin-top: 1.8%;
+    display: flex;
+    flex-direction: row;
+}
+
+@keyframes fill-animation {
+	0% {
+		fill-opacity: 0%;
+	}
+	50% {
+		fill-opacity: 50%;
+	}
+	100% {
+		fill-opacity: 100%;
+	}
+}
+
+.login-form-button-external-google {
+    width: 50%;
+    margin-right: 0.25vw;
+    height: 4.8vh;
+
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+
+    background-color: rgba($primary, 0.3);
+    color: $accent-dark;
+    border-radius: 5px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+        background-color: $primary;
+        color: $accent-light;
+        
+    }
+
+    &:focus {
+        background-color: $primary;
+        color: $accent-light;
+    }
+
+    &:active {
+        background-color: $primary;
+        color: $accent-light;
+    }
+
+    &:hover .login-external-logo {
+        fill: $accent-light;   
+        animation: fill-animation 0.3s ease;
+    }
+
+    &:focus .login-external-logo {
+        fill: $accent-light; 
+    }
+
+    &:active .login-external-logo {
+        fill: $accent-light; 
+    }
+}
+
+.login-form-button-external-facebook {
+    width: 50%;
+    margin-left: 0.25vw;
+    height: 4.8vh;
+
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+
+    background-color: rgba($primary, 0.3);
+    color: $accent-dark;
+    border-radius: 5px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+        background-color: $primary;
+        color: $accent-light;
+    }
+
+    &:focus {
+        background-color: $primary;
+        color: $accent-light;
+    }
+
+    &:active {
+        background-color: $primary;
+        color: $accent-light;
+    }
+    
+    &:hover .login-external-logo {
+        fill: $accent-light;   
+        animation: fill-animation 0.3s ease;
+    }
+
+    &:focus .login-external-logo {
+        fill: $accent-light; 
+    }
+
+    &:active .login-external-logo {
+        fill: $accent-light; 
+    }
+}
+
+.login-form-forgot-password {
+    color: $accent-dark;
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    margin: 0;
+}
+
+.login-external-logo {
+    fill: $primary;
+}
+
+
+.login-footer {
+    background: rgba($primary, 0.2);
+    height: 27.7%;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-footer-title-container {
+    color: $primary;
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    margin-bottom: 5vh;
+}
+
+.login-footer-button-container {
+    width: 70%;
+    height: 20%;
+}
+
+.login-footer-button {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    color: $primary;
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 800;
+    font-size: 20px;
+    border-radius: 5px;
+    border-width: 2px;
+    border-color: $primary;
+
+    &:hover {
+        background-color: $primary;
+        color: $accent-light;
+    }
+
+    &:focus {
+        background-color: $primary;
+        color: $accent-light;
+    }
+
+    &:active {
+        background-color: $primary;
+        color: $accent-light;
+    }
+}
+
