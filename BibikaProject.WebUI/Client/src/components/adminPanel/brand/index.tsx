@@ -1,12 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Id, toast } from "react-toastify";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import {
   BrandErrorType,
   IBrandModel,
-  IPaginationModel,
-  IPaginationRequest,
+  IPaginationBrandModel,
+  IPaginationBrandRequest,
 } from "../types";
-import { Link } from "react-router-dom";
 
 import { FormModal } from "../../common/form";
 
@@ -16,35 +15,31 @@ import {
   Button,
   Popconfirm,
   Table,
-  Pagination,
   Row,
   Col,
+  notification,
 } from "antd";
-import {
-  getAllBrands,
-  addBrand,
-  updateBrand,
-  deleteBrand,
-  getPaginatedBrands,
-} from "./service";
+import { addBrand, deleteBrand, getPaginatedBrands } from "./service";
+
+import type { NotificationPlacement } from "antd/lib/notification";
+const Context = React.createContext({ name: "Default" });
 
 const BrandPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isModalAdd, setModalAdd] = useState(false);
-  const [isModalEdit, setModalEdit] = useState(false);
-  const [paginatedBrands, setPaginatedBrands] = useState<
-    IPaginationRequest<IBrandModel>
-  >({
-    allPages: 0,
-    currentPage: 0,
-    data: [],
-  });
-  const countOnPage: number = 3;
+  const [paginatedBrands, setPaginatedBrands] =
+    useState<IPaginationBrandRequest>({
+      allPages: 0,
+      currentPage: 0,
+      data: [],
+    });
+  const countOnPage: number = 10;
+
   const [form] = Form.useForm();
-  const [editableValue, setEditableValue] = useState<IBrandModel>({
-    id: 0,
-    title: "",
-  });
+
+  let key = ``;
+
+  const [api, contextHolder] = notification.useNotification();
 
   useEffect(() => {
     const init = async () => {
@@ -55,23 +50,35 @@ const BrandPage = () => {
 
   const handleGetAllBrands = async () => {
     setLoading(true);
-    try {
-      const paginationModel: IPaginationModel = {
-        search: "",
-        page: 1,
-        countOnPage: countOnPage,
-      };
-      await getPaginatedBrands(paginationModel).then((data) => {
-        setPaginatedBrands(data as IPaginationRequest<IBrandModel>);
+
+    const paginationModel: IPaginationBrandModel = {
+      search: "",
+      page: 1,
+      countOnPage: countOnPage,
+    };
+    await getPaginatedBrands(paginationModel)
+      .then((data) => {
+        setPaginatedBrands(data as IPaginationBrandRequest);
+      })
+      .catch((error) => {
+        if (error instanceof String) {
+          toast.error(error);
+        } else {
+          toast.error(
+            `${error.errorsString.title} (${error.errorsString.status})`
+          );
+          // const errorType = error as BrandErrorType;
+          // if (errorType) console.log("Error type: ", errorType);
+          // errorType.errorsString.forEach((el) => {
+          // toast.error(el);
+          // });
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+        notification.close(key);
+
       });
-    } catch (error) {
-      const errorType = error as BrandErrorType;
-      errorType.errorsString.forEach((el) => {
-        toast.error(el);
-      });
-    } finally {
-      setLoading(false);
-    }
   };
 
   const handleAddBrand = async (values: IBrandModel) => {
@@ -79,6 +86,7 @@ const BrandPage = () => {
     try {
       await addBrand(values);
       toast.success(`Brand ${values.title} are successfully added`);
+      openNotification("bottomRight");
     } catch (error) {
       const errorType = error as BrandErrorType;
       errorType.errorsString.forEach((el) => {
@@ -86,31 +94,10 @@ const BrandPage = () => {
       });
     } finally {
       setLoading(false);
+      form.resetFields();
     }
   };
-  const handleUpdateBrand = async (value: IBrandModel) => {
-    value.id = editableValue.id;
-    setLoading(true);
-    try {
-      await updateBrand(value);
-      toast.success(`Brand ${value.title} are successfully update`);
-      setModalEdit(false);
 
-      const tmpArr = paginatedBrands.data.slice();
-      tmpArr[tmpArr.findIndex((x) => x.id === value.id)].title = value.title;
-      setPaginatedBrands({
-        ...paginatedBrands,
-        data: tmpArr,
-      });
-    } catch (error) {
-      const errorType = error as BrandErrorType;
-      errorType.errorsString.forEach((el) => {
-        toast.error(el);
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
   const handleDeleteBrand = async (value: IBrandModel) => {
     console.log("value: ", value);
     setLoading(true);
@@ -131,11 +118,54 @@ const BrandPage = () => {
       setLoading(false);
     }
   };
-  const handleEditClick = async (record: IBrandModel) => {
-    setModalEdit(true);
-    setEditableValue(record);
-  };
 
+  const showModalAddNewBrand = () => {
+    setModalAdd(true);
+  };
+  const handleOkModalAddNewBrand = () => {
+    form.submit();
+    setModalAdd(false);
+  };
+  const handleFormSubmit = (value: IBrandModel) => {
+    handleAddBrand(value);
+  };
+  const onHandlePaginationChanged = async (page: number, pageSize: number) => {
+    const paginationModel: IPaginationBrandModel = {
+      search: "",
+      page: page,
+      countOnPage: pageSize,
+    };
+    await getPaginatedBrands(paginationModel).then((data) => {
+      setPaginatedBrands(data as IPaginationBrandRequest);
+    });
+  };
+  const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const paginationModel: IPaginationBrandModel = {
+      search: e.target.value,
+      page: 1,
+      countOnPage: countOnPage,
+    };
+    await getPaginatedBrands(paginationModel).then((data) => {
+      setPaginatedBrands(data as IPaginationBrandRequest);
+    });
+  };
+  const openNotification = (placement: NotificationPlacement) => {
+    key = `open${Date.now()}`;
+    api.warning({
+      message: `Notification ${placement}`,
+      description: (
+        <Context.Consumer>{({ name }) => `Hello, ${name}!`}</Context.Consumer>
+      ),
+      placement,
+      duration: 0,
+      key: key,
+      onClick: () => {
+        console.log("key: ", key);
+        notification.close(key);
+        handleGetAllBrands();
+      },
+    });
+  };
   const columns = [
     {
       title: "Id",
@@ -156,50 +186,6 @@ const BrandPage = () => {
       outerWidth: "40%",
       render: (text: string, record: IBrandModel) => (
         <div className="buttonGroup">
-          <Button
-            htmlType="submit"
-            type="default"
-            className="buttonInfo"
-            onClick={() => handleEditClick(record)}
-          >
-            Редагувати
-          </Button>
-          <FormModal
-            title="Редагувавання марки авто"
-            visible={isModalEdit}
-            onCancel={() => {
-              setModalEdit(false);
-              setEditableValue({ id: 0, title: "" });
-            }}
-            onSubmit={() => {
-              form.submit();
-            }}
-          >
-            <Form
-              name="basic"
-              labelCol={{ span: 10 }}
-              wrapperCol={{ span: 16 }}
-              onFinish={handleUpdateBrand}
-              autoComplete="off"
-              form={form}
-            >
-              <Form.Item
-                label="Зміна назви марки машини"
-                name="title"
-                initialValue={editableValue.title}
-                rules={[
-                  {
-                    required: true,
-                    message: "Введіть нову назву марки машини",
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item wrapperCol={{ offset: 8, span: 16 }}></Form.Item>
-            </Form>
-          </FormModal>
-          &nbsp;
           <Popconfirm
             title={`Ви впевнені що хочете видалити цю марку?`}
             onConfirm={() => handleDeleteBrand(record)}
@@ -246,7 +232,8 @@ const BrandPage = () => {
   };
 
   return (
-    <div>
+    <Context.Provider value={{ name: "Ant Design" }}>
+      {contextHolder}
       {loading}
 
       <Row>
@@ -258,6 +245,17 @@ const BrandPage = () => {
           />
         </Col>
         <Col span={12} style={{ textAlign: "right" }}>
+          <Button
+            htmlType="button"
+            type="default"
+            className="buttonPrimary"
+            style={{ marginRight: 20 }}
+            onClick={() => {
+              handleGetAllBrands();
+            }}
+          >
+            Обновити таблицю
+          </Button>
           <Button
             htmlType="button"
             type="default"
@@ -298,13 +296,14 @@ const BrandPage = () => {
         dataSource={paginatedBrands.data}
         columns={columns}
         rowKey="id"
+        loading={loading}
         pagination={{
           pageSize: countOnPage,
           total: paginatedBrands.allPages * countOnPage,
           onChange: onHandlePaginationChanged,
         }}
       />
-    </div>
+    </Context.Provider>
   );
 };
 

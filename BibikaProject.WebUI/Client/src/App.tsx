@@ -6,9 +6,11 @@ import AdminLayout from "./components/containers/adminLayout";
 import RegisterPage from "./components/authorization/register";
 import LoginPage from "./components/authorization/login";
 
-const AddPost = lazy(() => import("./components/posts/add"));
-const BrandPage = lazy(() => import("./components/adminPanel/brand"));
-const EnginePage = lazy(() => import("./components/adminPanel/engine"));
+import ModelPage from "./components/adminPanel/model";
+import RegisterPage from "./components/authorization/register";
+import LoginPage from "./components/authorization/login";
+import BrandPage from "./components/adminPanel/brand";
+
 
 function App() {
   return (
@@ -19,6 +21,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="/admin/brand" element={<BrandPage />} />
+            <Route path="/admin/model" element={<ModelPage />} />
             <Route path="/admin/engine" element={<EnginePage />} />
           </Route>
         </Route>
