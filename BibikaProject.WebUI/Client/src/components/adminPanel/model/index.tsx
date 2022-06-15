@@ -3,10 +3,10 @@ import { toast } from "react-toastify";
 import {
   IModelModel,
   IAddModelModel,
-  ModelErrorType,
   IPaginationModelModel,
   IPaginationModelRequest,
   IBrandModel,
+  IRequestError,
 } from "../types";
 
 import { FormModal, AntdSelect } from "../../common/form";
@@ -23,14 +23,12 @@ import {
   notification,
 } from "antd";
 
-import { addModel, deleteModal, getPaginatedModels } from "./service";
+import { addModel, deleteModel, getPaginatedModels } from "./service";
 
 import { getAllBrands } from "../brand/service";
 
 import type { NotificationPlacement } from "antd/lib/notification";
 const Context = React.createContext({ name: "Default" });
-
-const { Option } = Select;
 
 const ModelPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -76,10 +74,27 @@ const ModelPage = () => {
       await getPaginatedModels(paginationModel).then((data) => {
         setPaginatedModels(data as IPaginationModelRequest);
       });
-    } catch (error) {
-      const errorType = error as ModelErrorType;
-      errorType.errorsString.forEach((el) => {
-        toast.error(el);
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleGetAllModelsByPaginatedModel = async (
+    paginationModel: IPaginationModelModel
+  ) => {
+    setLoading(true);
+    try {
+      await getPaginatedModels(paginationModel).then((data) => {
+        setPaginatedModels(data as IPaginationModelRequest);
+      });
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
       });
     } finally {
       setLoading(false);
@@ -92,31 +107,30 @@ const ModelPage = () => {
       await addModel(values);
       toast.success(`Model ${values.title} are successfully added`);
       openNotification("bottomRight");
-    } catch (error) {
-      const errorType = error as ModelErrorType;
-      errorType.errorsString.forEach((el) => {
-        toast.error(el);
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
       });
     } finally {
       setLoading(false);
     }
   };
-
   const handleDeleteModel = async (value: IModelModel) => {
     console.log("value: ", value);
     setLoading(true);
     try {
-      await deleteModal(value.id);
+      await deleteModel(value.id);
       toast.success(`Model ${value.title} are successfully deleted`);
 
       setPaginatedModels({
         ...paginatedModels,
         data: paginatedModels.data.filter((x) => x.id != value.id),
       });
-    } catch (error) {
-      const errorType = error as ModelErrorType;
-      errorType.errorsString.forEach((el) => {
-        toast.error(el);
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
       });
     } finally {
       setLoading(false);
@@ -150,9 +164,7 @@ const ModelPage = () => {
       page: page,
       countOnPage: pageSize,
     };
-    await getPaginatedModels(paginationModel).then((data) => {
-      setPaginatedModels(data as IPaginationModelRequest);
-    });
+    handleGetAllModelsByPaginatedModel(paginationModel);
   };
   const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const paginationModel: IPaginationModelModel = {
@@ -161,9 +173,7 @@ const ModelPage = () => {
       page: 1,
       countOnPage: countOnPage,
     };
-    await getPaginatedModels(paginationModel).then((data) => {
-      setPaginatedModels(data as IPaginationModelRequest);
-    });
+    handleGetAllModelsByPaginatedModel(paginationModel);
   };
   ///////////////////////////////////////////////////////////////////////////////////////////
   const handleSearchBrandChange = async (e: number) => {
@@ -173,9 +183,7 @@ const ModelPage = () => {
       page: 1,
       countOnPage: countOnPage,
     };
-    await getPaginatedModels(paginationModel).then((data) => {
-      setPaginatedModels(data as IPaginationModelRequest);
-    });
+    handleGetAllModelsByPaginatedModel(paginationModel);
   };
 
   const openNotification = (placement: NotificationPlacement) => {
@@ -329,6 +337,7 @@ const ModelPage = () => {
           pageSize: countOnPage,
           total: paginatedModels.allPages * countOnPage,
           onChange: onHandlePaginationChanged,
+          current: paginatedModels.currentPage,
         }}
       />
     </Context.Provider>

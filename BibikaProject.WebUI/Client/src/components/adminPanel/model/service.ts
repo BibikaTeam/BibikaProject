@@ -1,74 +1,93 @@
 import {
-  ModelErrorType, 
-  IPaginationModelModel, 
-  IPaginationModelRequest, 
-  IAddModelModel 
-} from "../types"
-import http from "../../../http_common"
+  IPaginationModelModel,
+  IPaginationModelRequest,
+  IAddModelModel,
+  IRequestError,
+  IModelModel,
+  IPaginationRequest,
+} from "../types";
+import http from "../../../http_common";
 import axios from "axios";
 import qs from "qs";
+import { ErrorStrings } from "../../../constants";
 
-export const getAllModel = async () => {
-  const response = await http
-    .get("api/model/get/all")
-    .then((response) => {
-      return response.data;
-    })
-    .catch(function (error) {
-      if (axios.isAxiosError(error)) {
-        const serverError: ModelErrorType = {
-          errorsString: error.response?.data as Array<string>,
+export const getAllModels = async () => {
+  try {
+    const response = await http.get(`api/model/get/all`);
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.request.status == 0 || error.request.status == 500) {
+        const unknownError: IRequestError = {
+          code: error.request.status,
+          errors: new Array<string>(ErrorStrings.backendNotResponse()),
         };
-        if (serverError) {
-          throw serverError;
-        }
+        throw unknownError;
       }
-    });
-  return response;
-}
+      let serverError: IRequestError = {
+        errors: error.response?.data.Errors,
+        code: error.response?.data.Code,
+      };
+      throw serverError;
+    }
+  }
+};
 
-export const getPaginatedModels = async (paginationModel: IPaginationModelModel) => {
-  const response = await http
-    .get<IPaginationModelRequest>(`api/model/get?` + qs.stringify(paginationModel))
-    .then((response) => {
-      return response.data;
-    })
-    .catch(function (error) {
-      if (axios.isAxiosError(error)) {
-        const serverError: ModelErrorType = {
-          errorsString: error.response?.data as Array<string>,
+export const getPaginatedModels = async (
+  paginationModel: IPaginationModelModel
+) => {
+  try {
+    const response = await http.get<IPaginationRequest<IModelModel>>(
+      `api/model/get?` + qs.stringify(paginationModel)
+    );
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.request.status == 0 || error.request.status == 500) {
+        const unknownError: IRequestError = {
+          code: error.request.status,
+          errors: new Array<string>(ErrorStrings.backendNotResponse()),
         };
-        if (serverError) {
-          throw serverError;
-        }
+        throw unknownError;
       }
-    });
-
-  return response;
+      let serverError: IRequestError = {
+        errors: error.response?.data.Errors,
+        code: error.response?.data.Code,
+      };
+      throw serverError;
+    }
+  }
 };
 
 export const addModel = async (data: IAddModelModel) => {
-  const response = await http
-    .post("api/model/add", data)
-    .catch(function (error) {
-      if (axios.isAxiosError(error)) {
-        const serverError: ModelErrorType = {
-          errorsString: error.response?.data as Array<string>,
+  try {
+    const response = await http.post("api/model/add", data);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.request.status == 0 || error.request.status == 500) {
+        const unknownError: IRequestError = {
+          code: error.request.status,
+          errors: new Array<string>(ErrorStrings.backendNotResponse()),
         };
-        if (serverError) {
-          throw serverError;
-        }
+        throw unknownError;
       }
-    });
+      let serverError: IRequestError = {
+        errors: error.response?.data.Errors,
+        code: error.response?.data.Code,
+      };
+      throw serverError;
+    }
+  }
 };
 
-// export const updateModel = async (data: IUpdateModelModel) => {
-//   console.log("service data", data);
+// export const updateBrand = async (data: IBrandModel) => {
 //   const response = await http
-//     .put("api/model/update", data)
+//     .put("api/brand/update", data)
 //     .catch(function (error) {
 //       if (axios.isAxiosError(error)) {
-//         const serverError: ModelErrorType = {
+//         const serverError: BrandErrorType = {
 //           errorsString: error.response?.data as Array<string>,
 //         };
 //         if (serverError) {
@@ -76,19 +95,26 @@ export const addModel = async (data: IAddModelModel) => {
 //         }
 //       }
 //     });
-// }
+//   return response;
+// };
 
-export const deleteModal = async (data: number) => {
-  const response = await http
-    .delete(`api/model/delete/${data}`)
-    .catch(function (error) {
-      if (axios.isAxiosError(error)) {
-        const serverError: ModelErrorType = {
-          errorsString: error.response?.data as Array<string>,
+export const deleteModel = async (data: number) => {
+  try {
+    const response = await http.delete(`api/model/delete/${465465}`);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.request.status == 0 || error.request.status == 500) {
+        const unknownError: IRequestError = {
+          code: error.request.status,
+          errors: new Array<string>(ErrorStrings.backendNotResponse()),
         };
-        if (serverError) {
-          throw serverError;
-        }
+        throw unknownError;
       }
-    });
-}
+      let serverError: IRequestError = {
+        errors: error.response?.data.Errors,
+        code: error.response?.data.Code,
+      };
+      throw serverError;
+    }
+  }
+};

@@ -1,11 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Id, toast } from "react-toastify";
-import {
-  BrandErrorType,
-  IEngineModel,
-  IPaginationModel,
-  IPaginationRequest,
-} from "../types";
+import { IEngineModel, IPaginationModel, IPaginationRequest } from "../types";
 import { Link } from "react-router-dom";
 
 import { FormModal } from "../../common/form";
@@ -71,10 +66,6 @@ const EnginePage = () => {
         setPaginatedEngines(data as IPaginationRequest<IEngineModel>);
       });
     } catch (error) {
-      const errorType = error as BrandErrorType;
-      errorType.errorsString.forEach((el) => {
-        toast.error(el);
-      });
     } finally {
       setLoading(false);
     }
@@ -86,10 +77,6 @@ const EnginePage = () => {
       await addEngine(values);
       toast.success(`Brand ${values.title} are successfully added`);
     } catch (error) {
-      const errorType = error as BrandErrorType;
-      errorType.errorsString.forEach((el) => {
-        toast.error(el);
-      });
     } finally {
       setLoading(false);
     }
@@ -106,10 +93,6 @@ const EnginePage = () => {
         data: paginatedEngines.data.filter((x) => x.id != value.id),
       });
     } catch (error) {
-      const errorType = error as BrandErrorType;
-      errorType.errorsString.forEach((el) => {
-        toast.error(el);
-      });
     } finally {
       setLoading(false);
     }
@@ -275,10 +258,7 @@ const EnginePage = () => {
             label="Тип палива"
             rules={[{ required: true }]}
           >
-            <Select
-              placeholder="Select type fuel"
-              allowClear
-            >
+            <Select placeholder="Select type fuel" allowClear>
               <Option value="Дизель">Дизель</Option>
               <Option value="Бензин">Бензин</Option>
               <Option value="Газ">Газ</Option>

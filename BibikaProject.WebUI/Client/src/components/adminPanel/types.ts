@@ -16,10 +16,6 @@ export interface IEngineModel {
   fuel: string;
 }
 
-export interface BrandErrorType {
-  errorsString: Array<string>;
-}
-
 export interface IModelModel {
   id: number;
   title: string;
@@ -34,10 +30,6 @@ export interface IAddModelModel {
 export interface IUpdateModelModel {
   id: number;
   title: string;
-}
-
-export interface ModelErrorType {
-  errorsString: Array<string>;
 }
 
 export interface IGenerationModel {
@@ -83,16 +75,14 @@ export interface IBrandResponse {
 }
 
 //Errors
-export interface IFluentValidationError {
-  type: string;
-  title: string;
-  status: number;
-  traceId: string;
-  errors: Array<string>;
-}
 
 export interface IPaginationRequest<type> {
   data: Array<type>;
   currentPage: number;
   allPages: number;
 }
+
+export type IRequestError = {
+  code: number;
+  errors: Array<string>;
+};

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
-  BrandErrorType,
   IBrandModel,
   IPaginationBrandModel,
   IPaginationBrandRequest,
   IPaginationModel,
   IPaginationRequest,
+  IRequestError,
 } from "../types";
 
 import { FormModal } from "../../common/form";
@@ -50,57 +50,61 @@ const BrandPage = () => {
     init();
   }, []);
 
+  //Service calling
   const handleGetAllBrands = async () => {
     setLoading(true);
-
-    const paginationModel: IPaginationBrandModel = {
-      search: "",
-      page: 1,
-      countOnPage: countOnPage,
-    };
-    await getPaginatedBrands(paginationModel)
-      .then((data) => {
-        setPaginatedBrands(data as IPaginationBrandRequest);
-      })
-      .catch((error) => {
-        if (error instanceof String) {
-          toast.error(error);
-        } else {
-          toast.error(
-            `${error.errorsString.title} (${error.errorsString.status})`
-          );
-          // const errorType = error as BrandErrorType;
-          // if (errorType) console.log("Error type: ", errorType);
-          // errorType.errorsString.forEach((el) => {
-          // toast.error(el);
-          // });
-        }
-      })
-      .finally(() => {
-        setLoading(false);
-        notification.close(key);
+    try {
+      const paginationModel: IPaginationBrandModel = {
+        search: "",
+        page: 1,
+        countOnPage: countOnPage,
+      };
+      let data = await getPaginatedBrands(paginationModel);
+      setPaginatedBrands(data as IPaginationBrandRequest);
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
       });
+    } finally {
+      setLoading(false);
+      notification.close(key);
+    }
   };
-
+  const handleGetAllBrandsByModel = async (
+    paginationModel: IPaginationModel
+  ) => {
+    setLoading(true);
+    try {
+      let data = await getPaginatedBrands(paginationModel);
+      setPaginatedBrands(data as IPaginationBrandRequest);
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
+    } finally {
+      setLoading(false);
+      notification.close(key);
+    }
+  };
   const handleAddBrand = async (values: IBrandModel) => {
     setLoading(true);
     try {
       await addBrand(values);
       toast.success(`Brand ${values.title} are successfully added`);
       openNotification("bottomRight");
-    } catch (error) {
-      const errorType = error as BrandErrorType;
-      errorType.errorsString.forEach((el) => {
-        toast.error(el);
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
       });
     } finally {
       setLoading(false);
       form.resetFields();
     }
   };
-
   const handleDeleteBrand = async (value: IBrandModel) => {
-    console.log("value: ", value);
     setLoading(true);
     try {
       await deleteBrand(value.id);
@@ -110,16 +114,17 @@ const BrandPage = () => {
         ...paginatedBrands,
         data: paginatedBrands.data.filter((x) => x.id != value.id),
       });
-    } catch (error) {
-      const errorType = error as BrandErrorType;
-      errorType.errorsString.forEach((el) => {
-        toast.error(el);
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
       });
     } finally {
       setLoading(false);
     }
   };
 
+  //Handles
   const handleOkModalAddNewBrand = () => {
     form.submit();
     setModalAdd(false);
@@ -144,6 +149,27 @@ const BrandPage = () => {
       },
     });
   };
+
+  const showModalAddNewBrand = () => {
+    setModalAdd(true);
+  };
+  const onHandlePaginationChanged = async (page: number, pageSize: number) => {
+    const paginationModel: IPaginationModel = {
+      search: "",
+      page: page,
+      countOnPage: pageSize,
+    };
+    await handleGetAllBrandsByModel(paginationModel);
+  };
+  const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const paginationModel: IPaginationModel = {
+      search: e.target.value,
+      page: 1,
+      countOnPage: countOnPage,
+    };
+    await handleGetAllBrandsByModel(paginationModel);
+  };
+
   const columns = [
     {
       title: "Id",
@@ -176,30 +202,6 @@ const BrandPage = () => {
       ),
     },
   ];
-
-  const showModalAddNewBrand = () => {
-    setModalAdd(true);
-  };
-  const onHandlePaginationChanged = async (page: number, pageSize: number) => {
-    const paginationModel: IPaginationModel = {
-      search: "",
-      page: page,
-      countOnPage: pageSize,
-    };
-    await getPaginatedBrands(paginationModel).then((data) => {
-      setPaginatedBrands(data as IPaginationRequest<IBrandModel>);
-    });
-  };
-  const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const paginationModel: IPaginationModel = {
-      search: e.target.value,
-      page: 1,
-      countOnPage: countOnPage,
-    };
-    await getPaginatedBrands(paginationModel).then((data) => {
-      setPaginatedBrands(data as IPaginationRequest<IBrandModel>);
-    });
-  };
 
   return (
     <Context.Provider value={{ name: "Ant Design" }}>
@@ -271,6 +273,7 @@ const BrandPage = () => {
           pageSize: countOnPage,
           total: paginatedBrands.allPages * countOnPage,
           onChange: onHandlePaginationChanged,
+          current: paginatedBrands.currentPage,
         }}
       />
     </Context.Provider>
