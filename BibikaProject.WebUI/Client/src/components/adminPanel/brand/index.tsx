@@ -5,6 +5,8 @@ import {
   IBrandModel,
   IPaginationBrandModel,
   IPaginationBrandRequest,
+  IPaginationModel,
+  IPaginationRequest,
 } from "../types";
 
 import { FormModal } from "../../common/form";
@@ -77,7 +79,6 @@ const BrandPage = () => {
       .finally(() => {
         setLoading(false);
         notification.close(key);
-
       });
   };
 
@@ -119,35 +120,12 @@ const BrandPage = () => {
     }
   };
 
-  const showModalAddNewBrand = () => {
-    setModalAdd(true);
-  };
   const handleOkModalAddNewBrand = () => {
     form.submit();
     setModalAdd(false);
   };
   const handleFormSubmit = (value: IBrandModel) => {
     handleAddBrand(value);
-  };
-  const onHandlePaginationChanged = async (page: number, pageSize: number) => {
-    const paginationModel: IPaginationBrandModel = {
-      search: "",
-      page: page,
-      countOnPage: pageSize,
-    };
-    await getPaginatedBrands(paginationModel).then((data) => {
-      setPaginatedBrands(data as IPaginationBrandRequest);
-    });
-  };
-  const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const paginationModel: IPaginationBrandModel = {
-      search: e.target.value,
-      page: 1,
-      countOnPage: countOnPage,
-    };
-    await getPaginatedBrands(paginationModel).then((data) => {
-      setPaginatedBrands(data as IPaginationBrandRequest);
-    });
   };
   const openNotification = (placement: NotificationPlacement) => {
     key = `open${Date.now()}`;
@@ -201,14 +179,6 @@ const BrandPage = () => {
 
   const showModalAddNewBrand = () => {
     setModalAdd(true);
-  };
-
-  const handleOkModalAddNewBrand = () => {
-    form.submit();
-    setModalAdd(false);
-  };
-  const handleFormSubmit = (value: IBrandModel) => {
-    handleAddBrand(value);
   };
   const onHandlePaginationChanged = async (page: number, pageSize: number) => {
     const paginationModel: IPaginationModel = {

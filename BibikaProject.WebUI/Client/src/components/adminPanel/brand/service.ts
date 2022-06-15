@@ -4,6 +4,7 @@ import {
   IPaginationBrandModel,
   IPaginationBrandRequest,
   IFluentValidationError,
+  IPaginationRequest,
 } from "../types";
 import http from "../../../http_common";
 import axios from "axios";

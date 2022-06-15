@@ -7,10 +7,8 @@ import RegisterPage from "./components/authorization/register";
 import LoginPage from "./components/authorization/login";
 
 import ModelPage from "./components/adminPanel/model";
-import RegisterPage from "./components/authorization/register";
-import LoginPage from "./components/authorization/login";
 import BrandPage from "./components/adminPanel/brand";
-
+import EnginePage from "./components/adminPanel/engine";
 
 function App() {
   return (

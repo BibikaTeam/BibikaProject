@@ -46,7 +46,6 @@ export interface IGenerationModel {
   modelTitle: string;
 }
 
-
 export interface IPaginationBrandModel {
   page: number;
   countOnPage: number;
@@ -54,6 +53,9 @@ export interface IPaginationBrandModel {
 }
 
 export interface IPaginationModelModel {
+  page: number;
+  countOnPage: number;
+  search: string;
   brandId: number;
 }
 export interface IPaginationModel {
@@ -94,4 +96,3 @@ export interface IPaginationRequest<type> {
   currentPage: number;
   allPages: number;
 }
-
