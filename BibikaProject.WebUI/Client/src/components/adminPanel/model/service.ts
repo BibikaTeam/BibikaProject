@@ -1,18 +1,19 @@
 import {
-  IBrandModel,
-  IPaginationBrandModel,
-  IPaginationBrandRequest,
-  IPaginationRequest,
+  IPaginationModelModel,
+  IPaginationModelRequest,
+  IAddModelModel,
   IRequestError,
+  IModelModel,
+  IPaginationRequest,
 } from "../types";
 import http from "../../../http_common";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import qs from "qs";
 import { ErrorStrings } from "../../../constants";
 
-export const getAllBrands = async () => {
+export const getAllModels = async () => {
   try {
-    const response = await http.get(`api/brand/get/all`);
+    const response = await http.get(`api/model/get/all`);
 
     return response.data;
   } catch (error) {
@@ -33,12 +34,12 @@ export const getAllBrands = async () => {
   }
 };
 
-export const getPaginatedBrands = async (
-  paginationModel: IPaginationBrandModel
+export const getPaginatedModels = async (
+  paginationModel: IPaginationModelModel
 ) => {
   try {
-    const response = await http.get<IPaginationRequest<IBrandModel>>(
-      `api/brand/get?` + qs.stringify(paginationModel)
+    const response = await http.get<IPaginationRequest<IModelModel>>(
+      `api/model/get?` + qs.stringify(paginationModel)
     );
 
     return response.data;
@@ -60,9 +61,9 @@ export const getPaginatedBrands = async (
   }
 };
 
-export const addBrand = async (data: IBrandModel) => {
+export const addModel = async (data: IAddModelModel) => {
   try {
-    const response = await http.post("api/brand/add", data);
+    const response = await http.post("api/model/add", data);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.request.status == 0 || error.request.status == 500) {
@@ -97,9 +98,9 @@ export const addBrand = async (data: IBrandModel) => {
 //   return response;
 // };
 
-export const deleteBrand = async (data: number) => {
+export const deleteModel = async (data: number) => {
   try {
-    const response = await http.delete(`api/brand/delete/${465465}`);
+    const response = await http.delete(`api/model/delete/${465465}`);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.request.status == 0 || error.request.status == 500) {

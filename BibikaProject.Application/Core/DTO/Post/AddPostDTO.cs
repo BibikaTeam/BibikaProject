@@ -28,7 +28,7 @@ namespace BibikaProject.Application.Core.DTO.Post
             RuleFor(x => x.Color).NotEmpty();
             RuleFor(x => x.Year).NotNull();
             RuleFor(x => x.SellerId).NotEmpty();
-            RuleFor(x => x.CarId).NotNull();
+            RuleFor(x => x.CarId).NotNull().GreaterThanOrEqualTo(1);
         }
     }
 }

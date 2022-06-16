@@ -5,10 +5,13 @@ namespace BibikaProject.Infrastructure.Errors
 {
     public abstract class BaseException : Exception
     {
-        public BaseException(string message) : base(message)
+        public BaseException(string[] errors) : base(" ")
         {
+            Errors = errors;
         }
 
         public HttpStatusCode Code { get; protected set; }
+
+        public string[] Errors { get; set; }
     }
 }

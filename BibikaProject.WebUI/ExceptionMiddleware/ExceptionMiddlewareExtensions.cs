@@ -32,8 +32,8 @@ namespace BibikaProject.WebUI.ExceptionMiddleware
 
                         await context.Response.WriteAsync(new ErrorDetails()
                         {
-                            StatusCode = context.Response.StatusCode,
-                            Message = error.Message
+                            Code = context.Response.StatusCode,
+                            Errors = error.Errors
 
                         }.ToString());
                     }
@@ -43,8 +43,8 @@ namespace BibikaProject.WebUI.ExceptionMiddleware
 
                         await context.Response.WriteAsync(new ErrorDetails()
                         {
-                            StatusCode = context.Response.StatusCode,
-                            Message = "Internal Server Error."
+                            Code = context.Response.StatusCode,
+                            Errors = new string[] { "Internal Server Error." }
 
 
                         }.ToString());

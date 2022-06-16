@@ -9,7 +9,10 @@ import GenerationPage from "./components/adminPanel/generation";
 import EnginePage from "./components/adminPanel/engine";
 import BrandPage from "./components/adminPanel/brand";
 
-const AddPost = lazy(() => import("./components/posts/add"));
+
+import ModelPage from "./components/adminPanel/model";
+import BrandPage from "./components/adminPanel/brand";
+import EnginePage from "./components/adminPanel/engine";
 
 function App() {
   return (
@@ -20,6 +23,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="/admin/brand" element={<BrandPage />} />
+            <Route path="/admin/model" element={<ModelPage />} />
             <Route path="/admin/engine" element={<EnginePage />} />
             <Route path="/admin/generation" element={<GenerationPage />} />
           </Route>

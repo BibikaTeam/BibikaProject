@@ -3,12 +3,17 @@ using BibikaProject.WebUI.ExceptionMiddleware;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 
 namespace BibikaProject.WebUI
 {
@@ -24,7 +29,26 @@ namespace BibikaProject.WebUI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers()
-                    .AddFluentValidation();
+                    .AddFluentValidation()
+                    .ConfigureApiBehaviorOptions(options =>
+                    {
+                        options.InvalidModelStateResponseFactory = context =>
+                        {
+                            var errors = new List<string>();
+
+                            foreach (var val in context.ModelState.Values)
+                            {
+                                foreach (var err in val.Errors)
+                                {
+                                    errors.Add(err.ErrorMessage);
+                                }
+                            }
+
+                            var result = new { Code = HttpStatusCode.BadRequest, Errors = errors };
+
+                            return new BadRequestObjectResult(result);
+                        };
+                    });
 
             services.AddSwaggerGen(c =>
             {
@@ -58,6 +82,11 @@ namespace BibikaProject.WebUI
             services.ConfigureGearBoxService();
             services.ConfigureCompleteSetService();
             services.ConfigureCarBodyService();
+        }
+
+        private IEnumerable<object> SelectMany(Func<object, object> p)
+        {
+            throw new NotImplementedException();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)

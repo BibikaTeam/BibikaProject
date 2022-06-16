@@ -1,9 +1,4 @@
-import {
-  IEngineModel,
-  BrandErrorType,
-  IPaginationModel,
-  IPaginationRequest,
-} from "../types";
+import { IEngineModel, IPaginationModel, IPaginationRequest } from "../types";
 import http from "../../../http_common";
 import axios from "axios";
 import qs from "qs";
@@ -15,14 +10,14 @@ export const getAllEngines = async () => {
       return response.data;
     })
     .catch(function (error) {
-      if (axios.isAxiosError(error)) {
-        const serverError: BrandErrorType = {
-          errorsString: error.response?.data as Array<string>,
-        };
-        if (serverError) {
-          throw serverError;
-        }
-      }
+      // if (axios.isAxiosError(error)) {
+      //   const serverError: BrandErrorType = {
+      //     errorsString: error.response?.data as Array<string>,
+      //   };
+      //   if (serverError) {
+      //     throw serverError;
+      //   }
+      // }
     });
   return response;
 };
@@ -38,14 +33,14 @@ export const getPaginatedEngines = async (
       return response.data;
     })
     .catch(function (error) {
-      if (axios.isAxiosError(error)) {
-        const serverError: BrandErrorType = {
-          errorsString: error.response?.data as Array<string>,
-        };
-        if (serverError) {
-          throw serverError;
-        }
-      }
+      // if (axios.isAxiosError(error)) {
+      //   const serverError: BrandErrorType = {
+      //     errorsString: error.response?.data as Array<string>,
+      //   };
+      //   if (serverError) {
+      //     throw serverError;
+      //   }
+      // }
     });
 
   return response;
@@ -55,14 +50,14 @@ export const addEngine = async (data: IEngineModel) => {
   const response = await http
     .post("api/engine/add", data)
     .catch(function (error) {
-      if (axios.isAxiosError(error)) {
-        const serverError: BrandErrorType = {
-          errorsString: error.response?.data as Array<string>,
-        };
-        if (serverError) {
-          throw serverError;
-        }
-      }
+      // if (axios.isAxiosError(error)) {
+      //   const serverError: BrandErrorType = {
+      //     errorsString: error.response?.data as Array<string>,
+      //   };
+      //   if (serverError) {
+      //     throw serverError;
+      //   }
+      // }
     });
 };
 
@@ -70,13 +65,13 @@ export const deleteEngine = async (data: number) => {
   const response = await http
     .delete(`api/engine/delete/${data}`)
     .catch(function (error) {
-      if (axios.isAxiosError(error)) {
-        const serverError: BrandErrorType = {
-          errorsString: error.response?.data as Array<string>,
-        };
-        if (serverError) {
-          throw serverError;
-        }
-      }
+      // if (axios.isAxiosError(error)) {
+      //   const serverError: BrandErrorType = {
+      //     errorsString: error.response?.data as Array<string>,
+      //   };
+      //   if (serverError) {
+      //     throw serverError;
+      //   }
+      // }
     });
 };

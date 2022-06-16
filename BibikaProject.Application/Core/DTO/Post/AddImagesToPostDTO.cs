@@ -14,7 +14,7 @@ namespace BibikaProject.Application.Core.DTO.Post
     {
         public AddImagesToPostDTOValidator()
         {
-            RuleFor(x => x.PostId).NotNull();
+            RuleFor(x => x.PostId).NotNull().GreaterThanOrEqualTo(1);
             RuleFor(x => x.ImagesId).NotEmpty();
         }
     }
