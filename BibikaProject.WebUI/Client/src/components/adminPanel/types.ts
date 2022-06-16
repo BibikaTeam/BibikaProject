@@ -16,6 +16,13 @@ export interface IEngineModel {
   kWPower: number;
   fuel: string;
 }
+export interface ICompleteSetModel {
+  id: number;
+  title: string;
+}
+export interface ICompleteSetAddDTO {
+  title: string;
+}
 
 export interface IModelModel {
   id: number;

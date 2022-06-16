@@ -51,5 +51,12 @@ namespace BibikaProject.WebUI.Controllers
 
             return Ok(result);
         }
+        [HttpGet("get/by-generation/{id}")]
+        public async Task<IActionResult> GetEnginesByGeneration(int id)
+        {
+            var result = await completeSetService.GetAllEnginesByGenerationAsync(id);
+
+            return Ok(result);
+        }
     }
 }

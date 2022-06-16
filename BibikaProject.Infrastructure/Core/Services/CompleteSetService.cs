@@ -42,7 +42,14 @@ namespace BibikaProject.Infrastructure.Core.Services
         {
             return query.GetAll().Select(x => mapper.Map<CompleteSetDTO>(x)).ToListAsync();
         }
+        public async Task<List<CompleteSetDTO>> GetAllEnginesByGenerationAsync(int generationId)
+        {
+            IQueryable<CompleteSet> completeSets = query.GetAll().Include(x => x.Cars);
 
+            completeSets = completeSets.Where(x => x.Cars.Any(x => x.GenerationId == generationId));
+
+            return await completeSets.Select(x => mapper.Map<CompleteSetDTO>(x)).ToListAsync();
+        }
         public async Task UpdateCompleteSetAsync(UpdateCompleteSetDTO updateCompleteSetDTO)
         {
             command.Update(mapper.Map<CompleteSet>(updateCompleteSetDTO));

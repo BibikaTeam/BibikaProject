@@ -11,7 +11,7 @@ namespace BibikaProject.Application.Core.Services
         Task UpdateCompleteSetAsync(UpdateCompleteSetDTO updateCompleteSetDTO);
 
         Task DeleteCompleteSetAsync(int id);
-
         Task<List<CompleteSetDTO>> GetAllCompleteSets();
+        Task<List<CompleteSetDTO>> GetAllEnginesByGenerationAsync(int generationId);
     }
 }

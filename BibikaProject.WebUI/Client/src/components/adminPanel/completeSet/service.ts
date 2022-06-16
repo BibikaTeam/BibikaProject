@@ -1,7 +1,6 @@
 import {
-  IBrandModel,
-  IPaginationBrandModel,
-  IPaginationBrandRequest,
+  ICompleteSetAddDTO,
+  ICompleteSetModel,
   IPaginationRequest,
   IRequestError,
 } from "../types";
@@ -10,7 +9,7 @@ import axios, { AxiosError } from "axios";
 import qs from "qs";
 import { ErrorStrings } from "../../../constants";
 
-export const getAllBrands = async () => {
+export const getAllCompleteSets = async () => {
   try {
     const response = await http.get(`api/brand/get/all`);
 
@@ -33,12 +32,10 @@ export const getAllBrands = async () => {
   }
 };
 
-export const getPaginatedBrands = async (
-  paginationModel: IPaginationBrandModel
-) => {
+export const getCompleteSetsByGeneration = async (data: number) => {
   try {
-    const response = await http.get<IPaginationRequest<IBrandModel>>(
-      `api/brand/get?` + qs.stringify(paginationModel)
+    const response = await http.get<Array<ICompleteSetModel>>(
+      `api/completeSet/get/${data}`
     );
 
     return response.data;
@@ -60,9 +57,9 @@ export const getPaginatedBrands = async (
   }
 };
 
-export const addBrand = async (data: IBrandModel) => {
+export const addCompleteSet = async (data: ICompleteSetAddDTO) => {
   try {
-    const response = await http.post("api/brand/add", data);
+    const response = await http.post("api/completeSet/add", data);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.request.status == 0 || error.request.status == 500) {
@@ -81,25 +78,9 @@ export const addBrand = async (data: IBrandModel) => {
   }
 };
 
-// export const updateBrand = async (data: IBrandModel) => {
-//   const response = await http
-//     .put("api/brand/update", data)
-//     .catch(function (error) {
-//       if (axios.isAxiosError(error)) {
-//         const serverError: BrandErrorType = {
-//           errorsString: error.response?.data as Array<string>,
-//         };
-//         if (serverError) {
-//           throw serverError;
-//         }
-//       }
-//     });
-//   return response;
-// };
-
-export const deleteBrand = async (data: number) => {
+export const deleteCompleteSet = async (data: number) => {
   try {
-    const response = await http.delete(`api/brand/delete/${465465}`);
+    const response = await http.delete(`api/completeSet/delete/${465465}`);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.request.status == 0 || error.request.status == 500) {
