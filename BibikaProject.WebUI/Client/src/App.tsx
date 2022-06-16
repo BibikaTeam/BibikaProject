@@ -5,14 +5,13 @@ import { ToastContainer } from "react-toastify";
 import AdminLayout from "./components/containers/adminLayout";
 import RegisterPage from "./components/authorization/register";
 import LoginPage from "./components/authorization/login";
+
+//admin pages
+import BrandPage from "./components/adminPanel/brand";
+import ModelPage from "./components/adminPanel/model";
 import GenerationPage from "./components/adminPanel/generation";
 import EnginePage from "./components/adminPanel/engine";
-import BrandPage from "./components/adminPanel/brand";
-
-
-import ModelPage from "./components/adminPanel/model";
-import BrandPage from "./components/adminPanel/brand";
-import EnginePage from "./components/adminPanel/engine";
+import CompleteSetPage from "./components/adminPanel/completeSet";
 
 function App() {
   return (
@@ -24,8 +23,9 @@ function App() {
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="/admin/brand" element={<BrandPage />} />
             <Route path="/admin/model" element={<ModelPage />} />
-            <Route path="/admin/engine" element={<EnginePage />} />
             <Route path="/admin/generation" element={<GenerationPage />} />
+            <Route path="/admin/engine" element={<EnginePage />} />
+            <Route path="/admin/complete-set" element={<CompleteSetPage />} />
           </Route>
         </Route>
       </Routes>

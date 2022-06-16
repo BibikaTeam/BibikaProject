@@ -1,6 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Id, toast } from "react-toastify";
-import { IEngineModel, IPaginationModel, IPaginationRequest } from "../types";
+import {
+  IEngineModel,
+  IPaginationModel,
+  IPaginationRequest,
+  IRequestError,
+} from "../types";
 import { Link } from "react-router-dom";
 
 import { FormModal } from "../../common/form";
@@ -15,6 +20,7 @@ import {
   Row,
   Col,
   Select,
+  notification,
 } from "antd";
 import {
   getAllEngines,
@@ -22,6 +28,10 @@ import {
   getPaginatedEngines,
   deleteEngine,
 } from "./service";
+
+import type { NotificationPlacement } from "antd/lib/notification";
+
+const Context = React.createContext({ name: "Default" });
 const Option = Select.Option;
 
 const EnginePage = () => {
@@ -46,6 +56,9 @@ const EnginePage = () => {
   };
   const [editableValue, setEditableValue] =
     useState<IEngineModel>(defaultValue);
+  const [api, contextHolder] = notification.useNotification();
+
+  let key = ``;
 
   useEffect(() => {
     const init = async () => {
@@ -65,7 +78,30 @@ const EnginePage = () => {
       await getPaginatedEngines(paginationModel).then((data) => {
         setPaginatedEngines(data as IPaginationRequest<IEngineModel>);
       });
-    } catch (error) {
+      notification.close(key);
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleGetAllEnginesByPaginationModel = async (
+    paginationModel: IPaginationModel
+  ) => {
+    setLoading(true);
+    try {
+      await getPaginatedEngines(paginationModel).then((data) => {
+        setPaginatedEngines(data as IPaginationRequest<IEngineModel>);
+      });
+      notification.close(key);
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
     } finally {
       setLoading(false);
     }
@@ -76,7 +112,13 @@ const EnginePage = () => {
     try {
       await addEngine(values);
       toast.success(`Brand ${values.title} are successfully added`);
-    } catch (error) {
+      form.resetFields();
+      openNotification("bottomRight");
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
     } finally {
       setLoading(false);
     }
@@ -92,7 +134,11 @@ const EnginePage = () => {
         ...paginatedEngines,
         data: paginatedEngines.data.filter((x) => x.id != value.id),
       });
-    } catch (error) {
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
     } finally {
       setLoading(false);
     }
@@ -100,6 +146,52 @@ const EnginePage = () => {
   const handleEditClick = async (record: IEngineModel) => {
     setModalEdit(true);
     setEditableValue(record);
+  };
+
+  const showModalAddNewEngine = () => {
+    setModalAdd(true);
+  };
+
+  const handleOkModalAddNewEngine = () => {
+    form.submit();
+    setModalAdd(false);
+  };
+  const handleFormSubmit = (value: IEngineModel) => {
+    handleAddEngine(value);
+  };
+  const onHandlePaginationChanged = async (page: number, pageSize: number) => {
+    const paginationModel: IPaginationModel = {
+      search: "",
+      page: page,
+      countOnPage: pageSize,
+    };
+    handleGetAllEnginesByPaginationModel(paginationModel);
+  };
+  const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const paginationModel: IPaginationModel = {
+      search: e.target.value,
+      page: 1,
+      countOnPage: countOnPage,
+    };
+    handleGetAllEnginesByPaginationModel(paginationModel);
+  };
+
+  const openNotification = (placement: NotificationPlacement) => {
+    key = `open${Date.now()}`;
+    api.warning({
+      message: `Notification ${placement}`,
+      description: (
+        <Context.Consumer>{({ name }) => `Hello, ${name}!`}</Context.Consumer>
+      ),
+      placement,
+      duration: 0,
+      key: key,
+      onClick: () => {
+        console.log("key: ", key);
+        notification.close(key);
+        handleGetAllEngines();
+      },
+    });
   };
 
   const columns = [
@@ -140,15 +232,6 @@ const EnginePage = () => {
       outerWidth: "40%",
       render: (text: string, record: IEngineModel) => (
         <div className="buttonGroup">
-          {/* <Button
-            htmlType="submit"
-            type="default"
-            className="buttonInfo"
-            onClick={() => handleEditClick(record)}
-          >
-            Редагувати
-          </Button>
-          &nbsp; */}
           <Popconfirm
             title={`Ви впевнені що хочете видалити цей двигун?`}
             onConfirm={() => handleDeleteEngine(record)}
@@ -162,40 +245,9 @@ const EnginePage = () => {
     },
   ];
 
-  const showModalAddNewEngine = () => {
-    setModalAdd(true);
-  };
-
-  const handleOkModalAddNewEngine = () => {
-    form.submit();
-    setModalAdd(false);
-  };
-  const handleFormSubmit = (value: IEngineModel) => {
-    handleAddEngine(value);
-  };
-  const onHandlePaginationChanged = async (page: number, pageSize: number) => {
-    const paginationModel: IPaginationModel = {
-      search: "",
-      page: page,
-      countOnPage: pageSize,
-    };
-    await getPaginatedEngines(paginationModel).then((data) => {
-      setPaginatedEngines(data as IPaginationRequest<IEngineModel>);
-    });
-  };
-  const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const paginationModel: IPaginationModel = {
-      search: e.target.value,
-      page: 1,
-      countOnPage: countOnPage,
-    };
-    await getPaginatedEngines(paginationModel).then((data) => {
-      setPaginatedEngines(data as IPaginationRequest<IEngineModel>);
-    });
-  };
-
   return (
-    <div>
+    <Context.Provider value={{ name: "Ant Design" }}>
+      {contextHolder}
       {loading}
 
       <Row>
@@ -207,6 +259,17 @@ const EnginePage = () => {
           />
         </Col>
         <Col span={12} style={{ textAlign: "right" }}>
+          <Button
+            htmlType="button"
+            type="default"
+            className="buttonPrimary"
+            style={{ marginRight: 20 }}
+            onClick={() => {
+              handleGetAllEngines();
+            }}
+          >
+            Обновити таблицю
+          </Button>
           <Button
             htmlType="button"
             type="default"
@@ -277,9 +340,11 @@ const EnginePage = () => {
           pageSize: countOnPage,
           total: paginatedEngines.allPages * countOnPage,
           onChange: onHandlePaginationChanged,
+          current: paginatedEngines.currentPage,
         }}
+        loading={loading}
       />
-    </div>
+    </Context.Provider>
   );
 };
 

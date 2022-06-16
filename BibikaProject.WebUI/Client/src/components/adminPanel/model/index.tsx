@@ -81,6 +81,7 @@ const ModelPage = () => {
       });
     } finally {
       setLoading(false);
+      notification.close(key);
     }
   };
   const handleGetAllModelsByPaginatedModel = async (
@@ -91,6 +92,7 @@ const ModelPage = () => {
       await getPaginatedModels(paginationModel).then((data) => {
         setPaginatedModels(data as IPaginationModelRequest);
       });
+      notification.close(key);
     } catch (_error) {
       const error: IRequestError = _error as IRequestError;
       error.errors.forEach((e) => {
@@ -104,9 +106,11 @@ const ModelPage = () => {
   const handleAddModel = async (values: IAddModelModel) => {
     setLoading(true);
     try {
-      await addModel(values);
-      toast.success(`Model ${values.title} are successfully added`);
-      openNotification("bottomRight");
+      await addModel(values).then(() => {
+        toast.success(`Model ${values.title} are successfully added`);
+        openNotification("bottomRight");
+        form.resetFields();
+      });
     } catch (_error) {
       const error: IRequestError = _error as IRequestError;
       error.errors.forEach((e) => {
@@ -253,9 +257,8 @@ const ModelPage = () => {
           <Input
             placeholder="Input model name"
             onChange={handleSearchChange}
-            style={{ width: "300px" }}
+            style={{ width: "300px", marginRight: 20 }}
           />
-          &nbsp;
           <AntdSelect
             value={undefined}
             onChange={handleSearchBrandChange}

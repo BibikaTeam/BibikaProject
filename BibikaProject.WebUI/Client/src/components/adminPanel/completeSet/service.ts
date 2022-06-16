@@ -1,19 +1,18 @@
 import {
-  IPaginationModelModel,
-  IPaginationModelRequest,
-  IAddModelModel,
-  IRequestError,
-  IModelModel,
+  IBrandModel,
+  IPaginationBrandModel,
+  IPaginationBrandRequest,
   IPaginationRequest,
+  IRequestError,
 } from "../types";
 import http from "../../../http_common";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import qs from "qs";
 import { ErrorStrings } from "../../../constants";
 
-export const getAllModels = async () => {
+export const getAllBrands = async () => {
   try {
-    const response = await http.get(`api/model/get/all`);
+    const response = await http.get(`api/brand/get/all`);
 
     return response.data;
   } catch (error) {
@@ -34,12 +33,12 @@ export const getAllModels = async () => {
   }
 };
 
-export const getPaginatedModels = async (
-  paginationModel: IPaginationModelModel
+export const getPaginatedBrands = async (
+  paginationModel: IPaginationBrandModel
 ) => {
   try {
-    const response = await http.get<IPaginationRequest<IModelModel>>(
-      `api/model/get?` + qs.stringify(paginationModel)
+    const response = await http.get<IPaginationRequest<IBrandModel>>(
+      `api/brand/get?` + qs.stringify(paginationModel)
     );
 
     return response.data;
@@ -61,34 +60,9 @@ export const getPaginatedModels = async (
   }
 };
 
-export const getModelsByBrand = async (id: number) => {
+export const addBrand = async (data: IBrandModel) => {
   try {
-    const response = await http.get<Array<IModelModel>>(
-      `api/model/get/by-brand/${id}`
-    );
-
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      if (error.request.status == 0 || error.request.status == 500) {
-        const unknownError: IRequestError = {
-          code: error.request.status,
-          errors: new Array<string>(ErrorStrings.backendNotResponse()),
-        };
-        throw unknownError;
-      }
-      let serverError: IRequestError = {
-        errors: error.response?.data.Errors,
-        code: error.response?.data.Code,
-      };
-      throw serverError;
-    }
-  }
-};
-
-export const addModel = async (data: IAddModelModel) => {
-  try {
-    const response = await http.post("api/model/add", data);
+    const response = await http.post("api/brand/add", data);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.request.status == 0 || error.request.status == 500) {
@@ -123,9 +97,9 @@ export const addModel = async (data: IAddModelModel) => {
 //   return response;
 // };
 
-export const deleteModel = async (data: number) => {
+export const deleteBrand = async (data: number) => {
   try {
-    const response = await http.delete(`api/model/delete/${465465}`);
+    const response = await http.delete(`api/brand/delete/${465465}`);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.request.status == 0 || error.request.status == 500) {

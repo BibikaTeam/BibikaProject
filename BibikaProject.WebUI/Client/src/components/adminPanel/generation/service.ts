@@ -1,73 +1,82 @@
-import { BrandErrorType, GenerationErrorType, IBrandModel, IGenerationAddModel, IGenerationModel, IModelModel, IPaginationModel, IPaginationRequest, ModelErrorType } from "../types";
+import {
+  IBrandModel,
+  IGenerationAddModel,
+  IGenerationModel,
+  IModelModel,
+  IPaginationModel,
+  IPaginationRequest,
+  IRequestError,
+} from "../types";
 import http from "../../../http_common";
 import axios from "axios";
 import qs from "qs";
+import { ErrorStrings } from "../../../constants";
 
-export const getModelsByBrand = async (id: number) => {
-  const response = await http
-    .get<Array<IModelModel>>(`api/model/get/by-brand/${id}`)
-    .then((response) => {
-      return response.data;
-    })
-    .catch(function (error) {
-      if (axios.isAxiosError(error)) {
-        const serverError: ModelErrorType = {
-          errorsString: error.response?.data as Array<string>,
+export const getPaginatedGenerations = async (
+  paginationModel: IPaginationModel
+) => {
+  try {
+    const response = await http.get<IPaginationRequest<IGenerationModel>>(
+      `api/generation/get?` + qs.stringify(paginationModel)
+    );
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.request.status == 0 || error.request.status == 500) {
+        const unknownError: IRequestError = {
+          code: error.request.status,
+          errors: new Array<string>(ErrorStrings.backendNotResponse()),
         };
-        if (serverError) {
-          throw serverError;
-        }
+        throw unknownError;
       }
-    });
-  return response;
-};
-
-export const getPaginatedGenerations = async (paginationModel: IPaginationModel) => {
-    const response = await http
-      .get<IPaginationRequest<IGenerationModel>>(`api/generation/get?` + qs.stringify(paginationModel))
-      .then((response) => {
-        return response.data;
-      })
-      .catch(function (error) {
-        if (axios.isAxiosError(error)) {
-          const serverError: GenerationErrorType = {
-            errorsString: error.response?.data as Array<string>,
-          };
-          if (serverError) {
-            throw serverError;
-          }
-        }
-      });
-  
-    return response;
+      let serverError: IRequestError = {
+        errors: error.response?.data.Errors,
+        code: error.response?.data.Code,
+      };
+      throw serverError;
+    }
+  }
 };
 
 export const deleteGeneration = async (data: number) => {
-    const response = await http
-      .delete(`api/generation/delete/${data}`)
-      .catch(function (error) {
-        if (axios.isAxiosError(error)) {
-          const serverError: GenerationErrorType = {
-            errorsString: error.response?.data as Array<string>,
+  try {
+    const response = await http.delete(`api/generation/delete/${data}`);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.request.status == 0 || error.request.status == 500) {
+        const unknownError: IRequestError = {
+          code: error.request.status,
+          errors: new Array<string>(ErrorStrings.backendNotResponse()),
         };
-        if (serverError) {
-            throw serverError;
-        }
+        throw unknownError;
+      }
+      let serverError: IRequestError = {
+        errors: error.response?.data.Errors,
+        code: error.response?.data.Code,
+      };
+      throw serverError;
     }
-    });
+  }
 };
 
-  export const addGeneration = async (data: IGenerationAddModel) => {
-    const response = await http
-      .post("api/generation/add", data)
-      .catch(function (error) {
-        if (axios.isAxiosError(error)) {
-          const serverError: GenerationErrorType = {
-            errorsString: error.response?.data as Array<string>,
-          };
-          if (serverError) {
-            throw serverError;
-          }
-        }
-      });
-  };
+export const addGeneration = async (data: IGenerationAddModel) => {
+  try {
+    const response = await http.post("api/generation/add", data);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.request.status == 0 || error.request.status == 500) {
+        const unknownError: IRequestError = {
+          code: error.request.status,
+          errors: new Array<string>(ErrorStrings.backendNotResponse()),
+        };
+        throw unknownError;
+      }
+      let serverError: IRequestError = {
+        errors: error.response?.data.Errors,
+        code: error.response?.data.Code,
+      };
+      throw serverError;
+    }
+  }
+};
