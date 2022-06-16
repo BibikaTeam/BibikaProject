@@ -8,6 +8,7 @@ export interface IBrandModel {
   id: number;
   title: string;
 }
+
 export interface IEngineModel {
   id: number;
   title: string;
@@ -80,6 +81,27 @@ export interface IPaginationRequest<type> {
   data: Array<type>;
   currentPage: number;
   allPages: number;
+}
+
+export interface IGenerationModel {
+  id: number;
+  title: string;
+  brandTitle: string;
+  modelTitle: string;
+}
+
+export interface IGenerationAddModel {
+  id: number;
+  title: string;
+  modelId: number;
+}
+
+export interface IPaginationGenerationModel {
+  page: number;
+  countOnPage: number;
+  search: string;
+  brandId: number;
+  modelId: number;
 }
 
 export type IRequestError = {
