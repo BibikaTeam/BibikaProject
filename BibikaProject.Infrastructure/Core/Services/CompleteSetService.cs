@@ -42,11 +42,27 @@ namespace BibikaProject.Infrastructure.Core.Services
         {
             return query.GetAll().Select(x => mapper.Map<CompleteSetDTO>(x)).ToListAsync();
         }
-        public async Task<List<CompleteSetDTO>> GetAllEnginesByGenerationAsync(int generationId)
+        public async Task<List<CompleteSetDTO>> GetAllCompletSetsByGenerationAsync(int generationId)
         {
             IQueryable<CompleteSet> completeSets = query.GetAll().Include(x => x.Cars);
 
             completeSets = completeSets.Where(x => x.Cars.Any(x => x.GenerationId == generationId));
+
+            return await completeSets.Select(x => mapper.Map<CompleteSetDTO>(x)).ToListAsync();
+        }
+        public async Task<List<CompleteSetDTO>> GetAllCompletSetsByModelAsync(int modelId)
+        {
+            IQueryable<CompleteSet> completeSets = query.GetAll().Include(x => x.Cars);
+
+            completeSets = completeSets.Where(x => x.Cars.Any(x => x.Generation.ModelId == modelId));
+
+            return await completeSets.Select(x => mapper.Map<CompleteSetDTO>(x)).ToListAsync();
+        }
+        public async Task<List<CompleteSetDTO>> GetAllCompletSetsByBrandAsync(int brandId)
+        {
+            IQueryable<CompleteSet> completeSets = query.GetAll().Include(x => x.Cars);
+
+            completeSets = completeSets.Where(x => x.Cars.Any(x => x.Generation.Model.BrandId == brandId));
 
             return await completeSets.Select(x => mapper.Map<CompleteSetDTO>(x)).ToListAsync();
         }

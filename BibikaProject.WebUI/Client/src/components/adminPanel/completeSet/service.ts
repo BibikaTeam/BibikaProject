@@ -35,7 +35,7 @@ export const getAllCompleteSets = async () => {
 export const getCompleteSetsByGeneration = async (data: number) => {
   try {
     const response = await http.get<Array<ICompleteSetModel>>(
-      `api/completeSet/get/${data}`
+      `api/completeSet/get/by-generation/${data}`
     );
 
     return response.data;

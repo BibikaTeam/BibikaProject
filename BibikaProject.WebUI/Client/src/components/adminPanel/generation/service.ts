@@ -38,6 +38,30 @@ export const getPaginatedGenerations = async (
     }
   }
 };
+export const getGenerationsByModelId = async (id: number) => {
+  try {
+    const response = await http.get<Array<IGenerationModel>>(
+      `api/generation/get/by-model/${id}`
+    );
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.request.status == 0 || error.request.status == 500) {
+        const unknownError: IRequestError = {
+          code: error.request.status,
+          errors: new Array<string>(ErrorStrings.backendNotResponse()),
+        };
+        throw unknownError;
+      }
+      let serverError: IRequestError = {
+        errors: error.response?.data.Errors,
+        code: error.response?.data.Code,
+      };
+      throw serverError;
+    }
+  }
+};
 
 export const deleteGeneration = async (data: number) => {
   try {
