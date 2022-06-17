@@ -28,12 +28,15 @@ import {
   getCompleteSetsByGeneration,
   addCompleteSet,
   deleteCompleteSet,
+  getCompleteSetsByBrand,
+  getCompleteSetsByModel,
 } from "./service";
 
 import type { NotificationPlacement } from "antd/lib/notification";
 import { getAllBrands } from "../brand/service";
 import { getModelsByBrand } from "../model/service";
 import { getGenerationsByModelId } from "../generation/service";
+import FullAdminSearchPanel from "../../common/form/admin/fullSearchPanel";
 
 const Context = React.createContext({ name: "Default" });
 const Option = Select.Option;
@@ -48,41 +51,29 @@ const CompleteSetPage = () => {
   const [api, contextHolder] = notification.useNotification();
 
   const [currentGenerationId, setCurrentGeneration] = useState<number>(-1);
-  const [currentBrand, setCurrentBrand] = useState<number>(-1);
-  const [currentModel, setCurrentModel] = useState<number>(-1);
-
-  const [brands, setBrands] = useState<Array<IBrandModel>>([]);
-  const [models, setModels] = useState<Array<IModelModel>>([]);
-  const [generations, setGenerations] = useState<Array<IGenerationModel>>([]);
 
   let key = ``;
-
-  useEffect(() => {
-    (async () => {
-      await handleGetAllBrands();
-    })();
-  }, []);
 
   const clearCompleteSets = () => {
     setCompleteSets([]);
   };
 
-  const handleGetCompleteSets = async (generationId: number) => {
-    setLoading(true);
-    try {
-      await getCompleteSetsByGeneration(generationId).then((x) =>
-        setCompleteSets(x as ICompleteSetModel[])
-      );
-      notification.close(key);
-    } catch (_error) {
-      const error: IRequestError = _error as IRequestError;
-      error.errors.forEach((e) => {
-        toast.error(e);
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const handleGetCompleteSetsByGeneration = async (generationId: number) => {
+  //   setLoading(true);
+  //   try {
+  //     await getCompleteSetsByGeneration(generationId).then((x) =>
+  //       setCompleteSets(x as ICompleteSetModel[])
+  //     );
+  //     notification.close(key);
+  //   } catch (_error) {
+  //     const error: IRequestError = _error as IRequestError;
+  //     error.errors.forEach((e) => {
+  //       toast.error(e);
+  //     });
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const handleAddCompleteSet = async (values: ICompleteSetAddDTO) => {
     setLoading(true);
@@ -147,59 +138,6 @@ const CompleteSetPage = () => {
     });
   };
 
-  const handleGetAllBrands = async () => {
-    try {
-      await getAllBrands().then((data) => {
-        setBrands(data as Array<IBrandModel>);
-      });
-    } catch (_error) {
-      const error: IRequestError = _error as IRequestError;
-      error.errors.forEach((e) => {
-        toast.error(e);
-      });
-    }
-  };
-  const handleGetModelsByBrands = async (value: number) => {
-    try {
-      await getModelsByBrand(value).then((data) => {
-        setModels(data as Array<IModelModel>);
-      });
-    } catch (_error) {
-      const error: IRequestError = _error as IRequestError;
-      error.errors.forEach((e) => {
-        toast.error(e);
-      });
-    }
-  };
-  const handleGetGenerationsByModel = async (value: number) => {
-    try {
-      await getGenerationsByModelId(value).then((data) => {
-        setGenerations(data as Array<IGenerationModel>);
-      });
-    } catch (_error) {
-      const error: IRequestError = _error as IRequestError;
-      error.errors.forEach((e) => {
-        toast.error(e);
-      });
-    }
-  };
-
-  const onBrandHandleChange = async (value: number) => {
-    setCurrentBrand(value);
-    handleGetModelsByBrands(value);
-  };
-  const onModelHandleChange = async (value: number) => {
-    setCurrentModel(value);
-    handleGetGenerationsByModel(value);
-  };
-  const onGenerationHandleChange = async (value: number) => {
-    setCurrentGeneration(value);
-    getCompleteSetsByGeneration(value);
-  };
-  const onBrandHandleClear = async () => {};
-  const onModelHandleClear = async () => {};
-  const onGenerationHandleClear = async () => {};
-
   const columns = [
     {
       title: "Id",
@@ -240,54 +178,25 @@ const CompleteSetPage = () => {
 
       <Row>
         <Col span={16}>
-          <Select
-            style={{ width: 200, marginRight: 20 }}
-            placeholder="Select Brand"
-            allowClear
-            onChange={onBrandHandleChange}
-            onClear={onBrandHandleClear}
-          >
-            {brands.map((brand: IBrandModel) => (
-              <Select.Option key={brand.id}>{brand.title}</Select.Option>
-            ))}
-          </Select>
-          <Select
-            style={{ width: 200, marginRight: 20 }}
-            placeholder="Select Model"
-            allowClear
-            onChange={onModelHandleChange}
-            onClear={onModelHandleClear}
-            disabled={currentBrand === -1}
-          >
-            {models.map((model: IModelModel) => (
-              <Select.Option key={model.id}>{model.title}</Select.Option>
-            ))}
-          </Select>
-          <Select
-            style={{ width: 200, marginRight: 20 }}
-            placeholder="Select Generation"
-            allowClear
-            onChange={onGenerationHandleChange}
-            onClear={onGenerationHandleClear}
-            disabled={currentModel === -1}
-          >
-            {generations.map((model: IGenerationModel) => (
-              <Select.Option key={model.id}>{model.title}</Select.Option>
-            ))}
-          </Select>
+          <FullAdminSearchPanel
+            getDataByBrand={getCompleteSetsByBrand}
+            getDataByGeneration={getCompleteSetsByGeneration}
+            getDataByModel={getCompleteSetsByModel}
+            clearData={clearCompleteSets}
+          />
         </Col>
         <Col span={8} style={{ textAlign: "right" }}>
-          <Button
+          {/* <Button
             htmlType="button"
             type="default"
             className="buttonPrimary"
             style={{ marginRight: 20 }}
             onClick={() => {
-              handleGetCompleteSets(currentGenerationId);
+              handleGetCompleteSetsByGeneration(currentGenerationId);
             }}
           >
             Обновити таблицю
-          </Button>
+          </Button> */}
           <Button
             htmlType="button"
             type="default"
