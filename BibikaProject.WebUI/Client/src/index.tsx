@@ -10,16 +10,21 @@ import "./index.css";
 
 import { createBrowserHistory } from "history";
 import configureStore from "./store/configureStore";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const history = createBrowserHistory();
 const store = configureStore(history);
 
 let root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 
+const CLIENT_ID: string = "676935891822-mgvu9drphgo301unh2v5j1cvotfgci7r.apps.googleusercontent.com";
+
 root.render(
   // <React.StrictMode>
   <Provider store={store}>
-    <App />
+    <GoogleOAuthProvider clientId={CLIENT_ID}>
+      <App />
+    </GoogleOAuthProvider>   
   </Provider>
   // </React.StrictMode>
 );

@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { Form, Input, Button, Checkbox, Space, Spin } from 'antd';
@@ -8,10 +8,12 @@ import { useActions } from "../../../hooks/useActions";
 import { toast } from "react-toastify";
 
 import AuthorizationLayout from "../../containers/authorizationLayout";
+import { CredentialResponse, GoogleLogin, GoogleOAuthProvider, useGoogleLogin} from "@react-oauth/google";
 
 const LoginPage: FC = () => {
 
   const { loginUser } = useActions();
+  const { loginGoogleUser } = useActions();
   const [loading, setLoading] = useState<boolean>(false);
 
   const initialValues: ILoginModel = {
@@ -31,6 +33,19 @@ const LoginPage: FC = () => {
        setLoading(false);
      }
   };
+
+  const onGoogle = async (values: CredentialResponse) => {
+    setLoading(true);
+     try {
+       await loginGoogleUser(values);
+       toast.success("Successfully login");
+     } catch (error) {
+       if (!error || !(error as LoginErrorType)) toast.error("Some error");
+       else toast.error((error as LoginErrorType).errorString);
+     } finally {
+       setLoading(false);
+     }
+  }
 
   return (
     <Spin tip="Loading..." spinning={loading} size="large">
@@ -80,14 +95,21 @@ const LoginPage: FC = () => {
                   </Button>
                 </Form.Item>
                 <div className="login-form-external-container">
-                  <Button
-                    className="login-form-button-external-google">
+                  {/* <Button
+                    className="login-form-button-external-google"
+                    onClick={() => googleLogin()}>
                     <svg className="login-external-logo" width="25" height="27" viewBox="0 0 33 34" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M32.16 13.9364C32.3503 15.0774 32.4452 16.2335 32.4436 17.3915C32.4436 22.5636 30.6685 26.9367 27.5795 29.8968H27.5836C24.8823 32.4956 21.1689 34 16.766 34C12.437 34 8.28535 32.209 5.22431 29.021C2.16328 25.833 0.443604 21.5091 0.443604 17.0006C0.443604 12.492 2.16328 8.16816 5.22431 4.98014C8.28535 1.79213 12.437 0.00112172 16.766 0.00112172C20.8179 -0.0483006 24.731 1.53709 27.6856 4.42523L23.0256 9.27857C21.3411 7.60619 19.0929 6.69038 16.766 6.72865C12.5079 6.72865 8.89042 9.72055 7.60096 13.7494C6.91727 15.8605 6.91727 18.1469 7.60096 20.2581H7.60708C8.90267 24.2806 12.514 27.2725 16.7721 27.2725C18.9715 27.2725 20.8608 26.686 22.3258 25.649H22.3196C23.1703 25.0621 23.8979 24.3018 24.4586 23.414C25.0193 22.5262 25.4015 21.5292 25.5821 20.4833H16.766V13.9385H32.16V13.9364Z"/>
                     </svg>
                     &ensp;
                     Login with Google        
-                  </Button>                
+                  </Button>    */}
+                  <GoogleLogin
+                    onSuccess={onGoogle}
+                    size="large"
+                    theme="filled_blue"
+                    // type="icon"  
+                  />                       
                   <Button
                     className="login-form-button-external-facebook">
                     <svg className="login-external-logo" width="25" height="27" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">

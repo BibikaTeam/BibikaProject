@@ -39,5 +39,13 @@ namespace BibikaProject.WebUI.Controllers
 
             return Ok(result);
         }
+
+        [HttpPost("google-login")]
+        public async Task<IActionResult> GoogleLogin([FromBody] GoogleLoginRequest request)
+        {
+            var result = await authService.GoogleLoginAsync(request);
+
+            return Ok(result);
+        }
     }
 }

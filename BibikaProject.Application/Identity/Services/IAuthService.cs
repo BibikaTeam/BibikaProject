@@ -9,8 +9,10 @@ namespace BibikaProject.Application.Identity.Services
     {
         Task<TokenResponse> LoginAsync(UserLoginRequest request);
 
-        Task<List<string>> RegisterAsync(UserRegisterRequest request);
+        Task RegisterAsync(UserRegisterRequest request);
 
         Task<TokenResponse> RefreshAsync(RefreshTokenRequest request);
+
+        Task<TokenResponse> GoogleLoginAsync(GoogleLoginRequest request);
     }
 }

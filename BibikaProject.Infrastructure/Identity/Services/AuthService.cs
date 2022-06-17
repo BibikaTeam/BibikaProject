@@ -17,6 +17,7 @@ using BibikaProject.Application.Identity.Requests;
 using BibikaProject.Application.Identity.Claims;
 using BibikaProject.Infrastructure.Identity.Errors;
 using System.Net;
+using Google.Apis.Auth;
 
 namespace BibikaProject.Infrastructure.Identity.Services
 {
@@ -63,7 +64,7 @@ namespace BibikaProject.Infrastructure.Identity.Services
             };
         }
 
-        public async Task<List<string>> RegisterAsync(UserRegisterRequest request)
+        public async Task RegisterAsync(UserRegisterRequest request)
         {
             var user = new ApplicationUser
             {
@@ -82,12 +83,10 @@ namespace BibikaProject.Infrastructure.Identity.Services
                     errors.Add(item.Description);
                 }
 
-                return errors;
+                throw new IdentityException(errors.ToArray(), HttpStatusCode.BadRequest);
             }
 
-            await userManager.AddToRoleAsync(user, "User");
-
-            return null;
+            //await userManager.AddToRoleAsync(user, "User");
         }
 
         public async Task<TokenResponse> RefreshAsync(RefreshTokenRequest request)
@@ -233,5 +232,48 @@ namespace BibikaProject.Infrastructure.Identity.Services
             return tokenOptions;
         }
 
+        public async Task<TokenResponse> GoogleLoginAsync(GoogleLoginRequest request)
+        {
+            var settings = new GoogleJsonWebSignature.ValidationSettings()
+            {
+                Audience = new List<string>() { request.ClientId }
+            };
+
+            var payload = await GoogleJsonWebSignature.ValidateAsync(request.Credential, settings);
+
+            if (payload == null)
+            {
+                throw new IdentityException("Bad Credentials", HttpStatusCode.BadRequest);
+            }
+
+            var user = await userManager.FindByEmailAsync(payload.Email);
+
+            if (user == null)
+            {
+                await RegisterAsync(new UserRegisterRequest
+                {
+                    Email = payload.Email,
+                    UserName = payload.Email,
+                    Password = Guid.NewGuid().ToString()
+                });
+
+                user = await userManager.FindByEmailAsync(payload.Email);
+
+                if (user == null)
+                {
+                    throw new IdentityException("Bad Credentials", HttpStatusCode.BadRequest);
+                }
+            }
+
+            var JWT = await CreateTokenAsync(user);
+
+            var refresh = await CreateRefreshToken(user, GetPrincipalFromToken(JWT));
+
+            return new TokenResponse
+            {
+                Token = JWT,
+                RefreshToken = refresh
+            };
+        }
     }
 }
