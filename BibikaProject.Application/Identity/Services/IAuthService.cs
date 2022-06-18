@@ -14,5 +14,7 @@ namespace BibikaProject.Application.Identity.Services
         Task<TokenResponse> RefreshAsync(RefreshTokenRequest request);
 
         Task<TokenResponse> GoogleLoginAsync(GoogleLoginRequest request);
+
+        Task<TokenResponse> FacebookLoginAsync(FacebookLoginRequest request);
     }
 }

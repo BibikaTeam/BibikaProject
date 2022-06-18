@@ -44,3 +44,9 @@ export interface LoginResponseType {
   refreshToken: string;
   error: string;
 }
+
+export interface FacebookLoginModel {
+  name?: string;
+  email?: string;
+  id: string;
+}

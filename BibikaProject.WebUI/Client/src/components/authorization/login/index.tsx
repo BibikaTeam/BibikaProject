@@ -9,11 +9,17 @@ import { toast } from "react-toastify";
 
 import AuthorizationLayout from "../../containers/authorizationLayout";
 import { CredentialResponse, GoogleLogin, GoogleOAuthProvider, useGoogleLogin} from "@react-oauth/google";
+import { GOOGLE_CLIENT_ID } from "../../../constants";
+
+//import FacebookLogin from 'react-facebook-login';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
+import { ReactFacebookLoginInfo } from "react-facebook-login";
 
 const LoginPage: FC = () => {
 
   const { loginUser } = useActions();
   const { loginGoogleUser } = useActions();
+  const { loginFacebookUser } = useActions();
   const [loading, setLoading] = useState<boolean>(false);
 
   const initialValues: ILoginModel = {
@@ -34,7 +40,7 @@ const LoginPage: FC = () => {
      }
   };
 
-  const onGoogle = async (values: CredentialResponse) => {
+  const responseGoogle = async (values: CredentialResponse) => {
     setLoading(true);
      try {
        await loginGoogleUser(values);
@@ -46,6 +52,20 @@ const LoginPage: FC = () => {
        setLoading(false);
      }
   }
+
+  
+    const responseFacebook = async (values: ReactFacebookLoginInfo) => {
+      setLoading(true);
+      try {
+        await loginFacebookUser({name: values.name, email: values.email, id: values.id});
+        toast.success("Successfully login");
+      } catch (error) {
+        if (!error || !(error as LoginErrorType)) toast.error("Some error");
+        else toast.error((error as LoginErrorType).errorString);
+      } finally {
+        setLoading(false);
+      }
+    }
 
   return (
     <Spin tip="Loading..." spinning={loading} size="large">
@@ -104,20 +124,30 @@ const LoginPage: FC = () => {
                     &ensp;
                     Login with Google        
                   </Button>    */}
-                  <GoogleLogin
-                    onSuccess={onGoogle}
-                    size="large"
-                    theme="filled_blue"
-                    // type="icon"  
-                  />                       
-                  <Button
-                    className="login-form-button-external-facebook">
-                    <svg className="login-external-logo" width="25" height="27" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M32.7664 16.098C32.7664 7.2071 25.6033 0 16.7684 0C7.92946 0.00199975 0.766357 7.2071 0.766357 16.1C0.766357 24.133 6.61763 30.7922 14.2647 32V20.7514H10.2052V16.1H14.2687V12.5504C14.2687 8.51694 16.6584 6.28921 20.3119 6.28921C22.0637 6.28921 23.8935 6.60318 23.8935 6.60318V10.5627H21.8757C19.89 10.5627 19.27 11.8045 19.27 13.0784V16.098H23.7055L22.9976 20.7494H19.268V31.998C26.9151 30.7902 32.7664 24.131 32.7664 16.098Z"/>
-                    </svg>
-                    &ensp;
-                    Login with Facebook
-                  </Button>
+                  <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+                    <GoogleLogin                  
+                      onSuccess={responseGoogle}
+                      size="large"
+                      theme="outline"
+                      type="icon"  
+                    />           
+                  </GoogleOAuthProvider>       
+                  <FacebookLogin
+                    appId="726151955105336"
+                    autoLoad={true}
+                    fields="name,email"
+                    callback={responseFacebook}
+                    render={renderProps => (
+                      <Button
+                        className="login-form-button-external-facebook"
+                        onClick={renderProps.onClick}>
+                        <svg className="login-external-logo" width="25" height="27" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M32.7664 16.098C32.7664 7.2071 25.6033 0 16.7684 0C7.92946 0.00199975 0.766357 7.2071 0.766357 16.1C0.766357 24.133 6.61763 30.7922 14.2647 32V20.7514H10.2052V16.1H14.2687V12.5504C14.2687 8.51694 16.6584 6.28921 20.3119 6.28921C22.0637 6.28921 23.8935 6.60318 23.8935 6.60318V10.5627H21.8757C19.89 10.5627 19.27 11.8045 19.27 13.0784V16.098H23.7055L22.9976 20.7494H19.268V31.998C26.9151 30.7902 32.7664 24.131 32.7664 16.098Z"/>
+                        </svg>
+                        &ensp;
+                        Login with Facebook
+                      </Button>
+                  )}/>                
                 </div>     
               </Form>
             </div>       

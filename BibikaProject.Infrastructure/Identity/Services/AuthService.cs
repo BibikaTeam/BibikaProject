@@ -275,5 +275,42 @@ namespace BibikaProject.Infrastructure.Identity.Services
                 RefreshToken = refresh
             };
         }
+
+        public async Task<TokenResponse> FacebookLoginAsync(FacebookLoginRequest request)
+        {
+            var user = await userManager.FindByEmailAsync(request.Email);
+
+            if (user == null)
+            {
+                await RegisterAsync(new UserRegisterRequest
+                {
+                    Email = request.Email,
+                    UserName = request.Email,
+                    Password = request.Id
+                });
+
+                user = await userManager.FindByEmailAsync(request.Email);
+
+                if (user == null)
+                {
+                    throw new IdentityException("Bad Data", HttpStatusCode.BadRequest);
+                }
+            }
+
+            if(await userManager.CheckPasswordAsync(user, request.Id))
+            {
+                throw new IdentityException("Bad Data", HttpStatusCode.BadRequest);
+            }
+
+            var JWT = await CreateTokenAsync(user);
+
+            var refresh = await CreateRefreshToken(user, GetPrincipalFromToken(JWT));
+
+            return new TokenResponse
+            {
+                Token = JWT,
+                RefreshToken = refresh
+            };
+        }
     }
 }

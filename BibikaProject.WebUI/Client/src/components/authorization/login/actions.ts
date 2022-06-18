@@ -6,6 +6,7 @@ import {
   IUser,
   LoginResponseType,
   LoginErrorType,
+  FacebookLoginModel,
 } from "../types";
 
 import http from "../../../http_common"; //axios
@@ -54,6 +55,41 @@ export const loginGoogleUser = (data: CredentialResponse) => {
     try {
       const response = await http
         .post<LoginResponseType>("/api/google-login", data)
+        .then((data) => {
+          const { token, refreshToken } = (data as AxiosResponse).data;
+
+          localStorage.token = token;
+          localStorage.refreshToken = refreshToken;
+
+          const user = jwt_decode(token) as IUser;
+
+          //Write to redux
+          dispatch({
+            type: AuthActionTypes.AUTH_LOGIN,
+            payload: user,
+          });
+        });
+
+      return Promise.resolve();
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const serverError: LoginErrorType = {
+          errorString: error.response?.data as string,
+        };
+        if (serverError) {
+          return Promise.reject(serverError);
+        }
+      }
+      return Promise.reject();
+    }
+  };
+}
+
+export const loginFacebookUser = (data: FacebookLoginModel) => {
+  return async (dispatch: React.Dispatch<AuthAction>) => {
+    try {
+      const response = await http
+        .post<LoginResponseType>("/api/facebook-login", data)
         .then((data) => {
           const { token, refreshToken } = (data as AxiosResponse).data;
 

@@ -47,5 +47,13 @@ namespace BibikaProject.WebUI.Controllers
 
             return Ok(result);
         }
+
+        [HttpPost("facebook-login")]
+        public async Task<IActionResult> FacebookLogin([FromBody] FacebookLoginRequest request)
+        {
+            var result = await authService.FacebookLoginAsync(request);
+
+            return Ok(result);
+        }
     }
 }
