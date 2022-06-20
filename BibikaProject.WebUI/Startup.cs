@@ -63,8 +63,11 @@ namespace BibikaProject.WebUI
 
             services.ConfigureJWT(Configuration);
 
+            services.ConfigureFacebookSettings(Configuration);
+            services.ConfigureGoogleSettings(Configuration);
+
             services.ConfigureIdentity();
-          
+
             services.ConfigureLogger();
 
             services.ConfigureFluentValidators();
@@ -81,7 +84,7 @@ namespace BibikaProject.WebUI
             services.ConfigureEngineService();
             services.ConfigureGearBoxService();
             services.ConfigureCompleteSetService();
-            services.ConfigureCarBodyService();
+            services.ConfigureCarBodyService();         
         }
 
         private IEnumerable<object> SelectMany(Func<object, object> p)

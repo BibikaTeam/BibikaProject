@@ -10,6 +10,7 @@ import "./index.css";
 
 import { createBrowserHistory } from "history";
 import configureStore from "./store/configureStore";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const history = createBrowserHistory();
 const store = configureStore(history);
@@ -18,8 +19,8 @@ let root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 
 root.render(
   // <React.StrictMode>
-  <Provider store={store}>
-    <App />
+  <Provider store={store}>  
+      <App />
   </Provider>
   // </React.StrictMode>
 );
