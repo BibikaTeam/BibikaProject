@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 
 import AuthorizationLayout from "../../containers/authorizationLayout";
 import { CredentialResponse, GoogleLogin, GoogleOAuthProvider, useGoogleLogin} from "@react-oauth/google";
-import { GOOGLE_CLIENT_ID } from "../../../constants";
+import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID } from "../../../constants";
 
 //import FacebookLogin from 'react-facebook-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
@@ -53,19 +53,18 @@ const LoginPage: FC = () => {
      }
   }
 
-  
-    const responseFacebook = async (values: ReactFacebookLoginInfo) => {
-      setLoading(true);
-      try {
-        await loginFacebookUser({name: values.name, email: values.email, id: values.id});
-        toast.success("Successfully login");
-      } catch (error) {
-        if (!error || !(error as LoginErrorType)) toast.error("Some error");
-        else toast.error((error as LoginErrorType).errorString);
-      } finally {
-        setLoading(false);
-      }
+  const responseFacebook = async (values: ReactFacebookLoginInfo) => {
+    setLoading(true);
+    try {
+      await loginFacebookUser({facebookToken: values.accessToken});
+      toast.success("Successfully login");
+    } catch (error) {
+      if (!error || !(error as LoginErrorType)) toast.error("Some error");
+      else toast.error((error as LoginErrorType).errorString);
+    } finally {
+      setLoading(false);
     }
+  }
 
   return (
     <Spin tip="Loading..." spinning={loading} size="large">
@@ -133,8 +132,8 @@ const LoginPage: FC = () => {
                     />           
                   </GoogleOAuthProvider>       
                   <FacebookLogin
-                    appId="726151955105336"
-                    autoLoad={true}
+                    appId={FACEBOOK_APP_ID}
+                    autoLoad={false}
                     fields="name,email"
                     callback={responseFacebook}
                     render={renderProps => (

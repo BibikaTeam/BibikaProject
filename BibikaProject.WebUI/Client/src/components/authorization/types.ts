@@ -46,7 +46,5 @@ export interface LoginResponseType {
 }
 
 export interface FacebookLoginModel {
-  name?: string;
-  email?: string;
-  id: string;
+  facebookToken: string;
 }
