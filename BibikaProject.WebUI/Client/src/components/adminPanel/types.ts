@@ -1,7 +1,10 @@
 export interface ICarModel {
-  engineTitle: string;
+  id: number;
+  engine: IEngineModel;
   carBodyTitle: string;
   completeSetTitle: string;
+  gearBoxTitle: string;
+  title: string;
 }
 
 export interface IBrandModel {
@@ -82,8 +85,6 @@ export interface IBrandResponse {
   //isAuth: boolean;
 }
 
-//Errors
-
 export interface IPaginationRequest<type> {
   data: Array<type>;
   currentPage: number;
@@ -115,3 +116,18 @@ export type IRequestError = {
   code: number;
   errors: Array<string>;
 };
+
+export interface IPaginationCarModel {
+  page: number;
+  search: string;
+  countOnPage: number;
+  generationId: number | null;
+  engineId: number | null;
+  carBodyId: number | null;
+  gearboxId: number | null;
+  completeSetId: number | null;
+}
+export interface ICarBodyModel {
+  id: number;
+  title: string;
+}

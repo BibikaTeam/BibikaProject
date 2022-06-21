@@ -128,7 +128,7 @@ export const addCompleteSet = async (data: ICompleteSetAddDTO) => {
 
 export const deleteCompleteSet = async (data: number) => {
   try {
-    const response = await http.delete(`api/completeSet/delete/${465465}`);
+    const response = await http.delete(`api/completeSet/delete/${data}`);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.request.status == 0 || error.request.status == 500) {
