@@ -1,30 +1,280 @@
-.addPostStep1 {
-    h1{
-        font-size: 40px;
-        font-size: 400;
-        line-height: 54.64px;
-        margin-bottom: 15px;
-        span {
-            font-weight: 700;
-        }
+.steps-container {
+    display: flex;
+    flex-direction: column;
+    height: 88%;
+}
+
+.steps-header {
+    display: flex;  
+    height: 14%;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 2vh;
+    padding-left: 10vh;
+    padding-right: 10vh;
+}
+
+.steps-title-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.steps-title {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 35px;
+}
+
+.steps-description {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.steps-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5vw;
+    margin: 0;
+}
+
+.steps-action-button-done {
+    width: 4.5vw;
+    height: 4vh;
+    border-radius: 8px;
+
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 19px;
+    color: $accent-light;
+    background-color: $primary;
+
+    &:hover {
+        color: $accent-light;
+        background-color: $primary;
     }
-    h6 {
-        font-size: 20px;
-        line-height: 27.32px;
-        color: rgba($color: #414141, $alpha: 0.7);
-        margin-top: 0;
+
+    &:active {
+        color: $accent-light;
+        background-color: $primary;
     }
-    .emptyImagesArray{
-        width: 100%;
-        min-height: 600px; 
-        border: 1px rgba($color: $mainColor, $alpha: 0.5) dashed;
+
+    &:focus {
+        color: $accent-light;
+        background-color: $primary;
     }
-    .emptyArrAlt {
-        color: $mainColor;
-        font-size: 32px;
-        font-weight: 500;
-        
-        display: inline-block;
-        
+}
+
+.steps-action-button-back {
+    width: 4.5vw;
+    height: 4vh;
+    border-radius: 8px;
+
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 19px;
+    color: $accent-light;
+    background-color: rgba($accent-dark, 0.3);
+
+    &:hover {
+        color: $accent-light;
+        background-color: rgba($accent-dark, 0.3);
     }
+
+    &:active {
+        color: $accent-light;
+        background-color: rgba($accent-dark, 0.3);
+    }
+
+    &:focus {
+        color: $accent-light;
+        background-color: rgba($accent-dark, 0.3);
+    }
+}
+
+.steps-body {
+    display: flex;
+    height: 72%;
+    padding-top: 2vh;
+    padding-left: 10vh;
+    padding-right: 10vh;
+}
+
+.steps-drag-photo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 90%;
+    width: 100%;
+
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 32px;
+
+    color: $primary;
+
+    border: 3px dashed rgba($primary, 0.5);
+}
+
+@keyframes blur {
+    0% { filter: grayscale(0%); }
+    100%  { filter: grayscale(100%); }
+  }
+
+.steps-image {
+    height: 20vh;
+    width: 14.7vw;
+    position: absolute;  
+}
+
+.steps-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;   
+    height: 20vh;
+    width: 15vw;
+
+    z-index: 2;
+
+    &:hover {
+        animation: blur 0.3s forwards;
+
+        .steps-cross {
+            fill: rgba($accent-dark, 1);
+            filter: none;
+        }   
+    }
+}
+
+.steps-images-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.steps-cross {
+    height: 6vh;
+    width: 6vw;
+    transform: rotateZ(45deg);
+    fill: rgba($accent-dark, 0);
+}
+
+.steps-add-image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 20vh;
+    width: 14.7vw;
+
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 32px;
+
+    color: $primary;
+
+    border: 3px dashed rgba($primary, 0.5);
+}
+
+.steps-footer {
+    display: flex;
+    flex-direction: row;
+    position: fixed;
+    bottom: 0;
+    height: 14%;   
+    margin-top: 2vh;
+
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+
+    width: 100%;
+
+    background-color: white;
+
+    z-index: 3;
+}
+
+.steps-footer-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba($primary, 0.4);
+    background-color: rgba($primary, 0.2);
+    width: 33.3%;
+}
+
+.steps-footer-block-active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 33.3%;
+    background-color: $primary;
+    color: $accent-light;
+}
+
+.radiogroup-container {
+    width: 100%;
+    height: 12vh;
+
+    display: flex;
+    flex-direction: column;
+
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.radiogroup-title {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    margin: 1vh;
+}
+
+.radiogroup-button {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    background: rgba($accent-dark, 0.2);
+    color: rgba(0, 0, 0, 0.5);
+
+    border-radius: 5px;
+
+    margin: 1vh;
+
+    &::before {
+        background-color: none;
+        border: none;
+    }
+}
+
+.radiogroup-container .ant-radio-button-wrapper-checked {
+    background-color: $primary;
+    color: $accent-light;
+}
+
+.ant-radio-button-wrapper:not(:first-child)::before {
+    background-color: transparent;
+}
+
+.ant-radio-button-wrapper:first-child {
+    border-radius: 5px;
+}
+
+.ant-radio-button-wrapper:last-child {
+    border-radius: 5px;
 }

@@ -9,6 +9,7 @@ import LoginPage from "./components/authorization/login";
 import ModelPage from "./components/adminPanel/model";
 import BrandPage from "./components/adminPanel/brand";
 import EnginePage from "./components/adminPanel/engine";
+import PostAdd from "./components/posts/add";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/">
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="add-post" element={<PostAdd />}/>
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="/admin/brand" element={<BrandPage />} />
             <Route path="/admin/model" element={<ModelPage />} />
