@@ -35,6 +35,10 @@ const SiderLayout: FC = () => {
       key: "/complete-set",
       label: "Complete sets",
     },
+    {
+      key: "/car",
+      label: "Cars",
+    },
   ];
 
   const handleMenuChange = (value: any) => {

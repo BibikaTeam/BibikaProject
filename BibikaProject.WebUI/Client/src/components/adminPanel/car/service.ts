@@ -13,7 +13,7 @@ import qs from "qs";
 export const getCarsByPaginationModel = async (data: IPaginationCarModel) => {
   try {
     const response = await http.get<IPaginationRequest<ICarModel>>(
-      "/api/car/get?" + qs.stringify(data)
+      "/api/car/get?" + qs.stringify(data, { skipNulls: true })
     );
 
     return response.data;

@@ -12,6 +12,7 @@ import ModelPage from "./components/adminPanel/model";
 import GenerationPage from "./components/adminPanel/generation";
 import EnginePage from "./components/adminPanel/engine";
 import CompleteSetPage from "./components/adminPanel/completeSet";
+import CarPage from "./components/adminPanel/car";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path="/admin/generation" element={<GenerationPage />} />
             <Route path="/admin/engine" element={<EnginePage />} />
             <Route path="/admin/complete-set" element={<CompleteSetPage />} />
+            <Route path="/admin/car" element={<CarPage />} />
           </Route>
         </Route>
       </Routes>

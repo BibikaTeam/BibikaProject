@@ -39,7 +39,6 @@ import { getGenerationsByModelId } from "../generation/service";
 import FullAdminSearchPanel from "../../common/form/admin/fullSearchPanel";
 
 const Context = React.createContext({ name: "Default" });
-const Option = Select.Option;
 
 const CompleteSetPage = () => {
   const [loading, setLoading] = useState<boolean>(false);

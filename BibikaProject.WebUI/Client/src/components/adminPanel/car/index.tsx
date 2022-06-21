@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { getAllBrands } from "../brand/service";
 import { getGenerationsByModelId } from "../generation/service";
@@ -21,15 +21,15 @@ import {
   getCarsByPaginationModel,
 } from "./service";
 
-import { Table, notification, Popconfirm, Button } from "antd";
+import { Table, notification, Popconfirm, Button, Select } from "antd";
 import type { NotificationPlacement } from "antd/lib/notification";
 import { getAllEngines } from "../engine/service";
 
 const Context = React.createContext({ name: "Default" });
-const [api, contextHolder] = notification.useNotification();
 
-const AdminPanelPage = () => {
+const CarPage = () => {
   const pageSize = 3;
+  const [api, contextHolder] = notification.useNotification();
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -38,6 +38,9 @@ const AdminPanelPage = () => {
   const [generations, setGenerations] = useState<Array<IGenerationModel>>([]);
   const [engines, setEngines] = useState<Array<IEngineModel>>([]);
   const [carBodies, setCarBodies] = useState<Array<ICarBodyModel>>([]);
+
+  const [currentBrand, setCurrentBrand] = useState<number>(0);
+  const [currentModel, setCurrentModel] = useState<number>(0);
 
   const defaultPaginationModel = {
     page: 1,
@@ -60,8 +63,38 @@ const AdminPanelPage = () => {
     (async () => {
       await setAllBrands();
       await updateCars();
+      await setAllEngines();
+      await setAllCarBodies();
     })();
-  });
+  }, []);
+
+  //main
+  const updateCars = async () => {
+    try {
+      await getCarsByPaginationModel(paginationModel).then((data) => {
+        setPaginatedCars(data);
+      });
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      console.log("Error: ", error);
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
+    }
+  };
+  const updateCarsByProp = async (paginationModel: IPaginationCarModel) => {
+    try {
+      await getCarsByPaginationModel(paginationModel).then((data) => {
+        setPaginatedCars(data);
+      });
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      console.log("Error: ", error);
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
+    }
+  };
 
   const setAllBrands = async () => {
     try {
@@ -87,7 +120,7 @@ const AdminPanelPage = () => {
       });
     }
   };
-  const setGenerationsByBrand = async (id: number) => {
+  const setGenerationsByModel = async (id: number) => {
     try {
       await getGenerationsByModelId(id).then((data) => {
         setGenerations(data as IGenerationModel[]);
@@ -123,20 +156,8 @@ const AdminPanelPage = () => {
       });
     }
   };
-  const updateCars = async () => {
-    try {
-      await getCarsByPaginationModel(
-        paginationModel as IPaginationCarModel
-      ).then((data) => {
-        setPaginatedCars(data);
-      });
-    } catch (_error) {
-      const error: IRequestError = _error as IRequestError;
-      error.errors.forEach((e) => {
-        toast.error(e);
-      });
-    }
-  };
+
+  //Delete
   const handleCompleteSetDelete = async (record: ICarModel) => {
     try {
       await deleteCar(record.id);
@@ -147,6 +168,56 @@ const AdminPanelPage = () => {
         toast.error(e);
       });
     }
+  };
+
+  //handles
+  const handleBrandChange = async (value: number) => {
+    if (value !== undefined) {
+      setCurrentBrand(value);
+      setModelsByBrand(value);
+    }
+  };
+  const handleModelChange = async (value: number) => {
+    if (value !== undefined) {
+      setCurrentModel(value);
+      setGenerationsByModel(value);
+    }
+  };
+  const handleGenerationChange = async (value: number) => {
+    if (value !== undefined) {
+      const tmpModel = { ...paginationModel, generationId: value };
+      setPaginationModel(tmpModel);
+      await updateCarsByProp(tmpModel);
+    }
+  };
+  const handleEngineChange = async (value: number) => {
+    const tmp = { ...paginationModel, engineId: value };
+    setPaginationModel(tmp);
+    await updateCarsByProp(tmp);
+  };
+
+  const handleBrandClear = async () => {
+    setCurrentBrand(0);
+    setCurrentModel(0);
+    const tmp = { ...paginationModel, generationId: 0 };
+    setPaginationModel(tmp);
+    await updateCarsByProp(tmp);
+    setModels([]);
+    setGenerations([]);
+  };
+  const handleModelClear = async () => {
+    setCurrentModel(0);
+    const tmp = { ...paginationModel, generationId: 0 };
+    setPaginationModel(tmp);
+    await updateCarsByProp(tmp);
+    setModels([]);
+    setGenerations([]);
+  };
+  const handleGenerationClear = async () => {
+    const tmp = { ...paginationModel, generationId: 0 };
+    setPaginationModel(tmp);
+    await updateCarsByProp(tmp);
+    setGenerations([]);
   };
 
   const columns = [
@@ -206,10 +277,58 @@ const AdminPanelPage = () => {
     },
   ];
 
-  return () => {
+  return (
     <Context.Provider value={{ name: "Ant Design" }}>
       {contextHolder}
       {loading}
+      <>
+        <Select
+          style={{ width: 200, marginRight: 20 }}
+          placeholder="Select Brand"
+          allowClear
+          onChange={handleBrandChange}
+          onClear={handleBrandClear}
+        >
+          {brands.map((brand: IBrandModel) => (
+            <Select.Option key={brand.id}>{brand.title}</Select.Option>
+          ))}
+        </Select>
+        <Select
+          style={{ width: 200, marginRight: 20 }}
+          placeholder="Select Model"
+          allowClear
+          onChange={handleModelChange}
+          onClear={handleModelClear}
+          disabled={currentBrand === 0 || currentBrand === undefined}
+        >
+          {models.map((model: IModelModel) => (
+            <Select.Option key={model.id}>{model.title}</Select.Option>
+          ))}
+        </Select>
+        <Select
+          style={{ width: 200, marginRight: 20 }}
+          placeholder="Select Generation"
+          allowClear
+          onChange={handleGenerationChange}
+          onClear={handleGenerationClear}
+          disabled={currentModel === 0 || currentModel === undefined}
+        >
+          {generations.map((model: IGenerationModel) => (
+            <Select.Option key={model.id}>{model.title}</Select.Option>
+          ))}
+        </Select>
+        {/* ---- */}
+        <Select
+          style={{ width: 200, marginRight: 20 }}
+          placeholder="Select Engine"
+          allowClear
+          onChange={handleEngineChange}
+        >
+          {engines.map((model: IEngineModel) => (
+            <Select.Option key={model.id}>{model.title}</Select.Option>
+          ))}
+        </Select>
+      </>
 
       <Table
         className="adminTable"
@@ -219,8 +338,8 @@ const AdminPanelPage = () => {
         rowKey="id"
         loading={loading}
       />
-    </Context.Provider>;
-  };
+    </Context.Provider>
+  );
 };
 
-export default AdminPanelPage;
+export default CarPage;
