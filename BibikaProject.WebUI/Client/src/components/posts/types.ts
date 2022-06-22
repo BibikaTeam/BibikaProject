@@ -12,6 +12,7 @@ export interface AddPostModel {
     description: string,
     year: Date,
     location: string,
+    mileage: number,
     color: string,
     sellerId: string,
     carId: number,
