@@ -26,6 +26,8 @@ export const loginUser = (data: ILoginModel) => {
 
           const user = jwt_decode(token) as IUser;
 
+          console.log(user);
+
           //Write to redux
           dispatch({
             type: AuthActionTypes.AUTH_LOGIN,
