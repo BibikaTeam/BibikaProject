@@ -1,26 +1,67 @@
-import { Radio } from "antd";
-import { FC } from "react"
+import { Button, Radio, RadioChangeEvent } from "antd";
+import { FC, useState } from "react"
 
 interface RadioGroupProps {
     data: string[];
     countBeforeHide: number;
     title: string;
-    onChange: (value: string) => void;
+    onChange: (value: RadioChangeEvent) => void;
 }
 
 const RadioGroup: FC<RadioGroupProps> = (props) => {
 
-    console.log(props.data);
-    
+    const [count, setCount]  = useState<number>(props.countBeforeHide);
+
+    const [buttonText, setButtonText] = useState<string>("Other");
+    const [collapsed, setCollapsed] = useState<boolean>(true);
+
+    const onOtherClick = () => {
+
+        if (collapsed == true)
+        {
+            setCount(props.data.length);
+            setButtonText("Collapse");
+            setCollapsed(false);
+        } else {
+            setCount(props.countBeforeHide);
+            setButtonText("Other");
+            setCollapsed(true);
+        }
+    }
+
+    if (props.countBeforeHide == 0 )
+    {
+        return(
+            <div className="radiogroup-container">
+                <div className="radiogroup-title">
+                    {props.title}
+                </div>
+                <Radio.Group
+                    onChange={props.onChange}>
+                    {
+                        props.data.map((value, index) => (
+                            <Radio.Button 
+                                className="radiogroup-button"
+                                key={index} 
+                                value={value}>
+                                {value}
+                            </Radio.Button>
+                        ))
+                    }
+                </Radio.Group>          
+            </div>
+        )
+    }
 
     return(
         <div className="radiogroup-container">
             <div className="radiogroup-title">
                 {props.title}
             </div>
-            <Radio.Group>
+            <Radio.Group
+                onChange={props.onChange}>
                 {
-                    props.data.map((value, index) => (
+                    props.data.slice(0, count).map((value, index) => (
                         <Radio.Button 
                             className="radiogroup-button"
                             key={index} 
@@ -29,7 +70,13 @@ const RadioGroup: FC<RadioGroupProps> = (props) => {
                         </Radio.Button>
                     ))
                 }
+
+                <Button className="radiogroup-button"
+                        onClick={onOtherClick}>
+                    {buttonText}
+                </Button>
             </Radio.Group>
+            
         </div>
     )
 }

@@ -9,28 +9,28 @@ interface ThirdStepProps {
 const ThirdStep: FC<ThirdStepProps> = (props) => {
     return(     
         <div className="steps-container">
-            <div className="steps-header">
-                <div className="steps-title-container">
-                    <div className="steps-title">
-                        3. Your contacts
-                    </div>
-                    <div className="steps-description">
-                        &emsp;
-                        Enter the seller's contacts
-                    </div>
-                </div>         
-
-                <div className="steps-actions">
-                    <Button className="steps-action-button-back" onClick={() => { props.onBack() }}>
-                        Back
-                    </Button>
-                    <Button className="steps-action-button-done" onClick={() => { props.onFinish("On Finish from ThirdStep") }}>
-                        Done
-                    </Button>
-                </div>
-            </div>
-
+            
             <div className="steps-body">
+                <div className="steps-header">
+                    <div className="steps-title-container">
+                        <div className="steps-title">
+                            3. Your contacts
+                        </div>
+                        <div className="steps-description">
+                            &emsp;
+                            Enter the seller's contacts
+                        </div>
+                    </div>         
+
+                    <div className="steps-actions">
+                        <Button className="steps-action-button-back" onClick={() => { props.onBack() }}>
+                            Back
+                        </Button>
+                        <Button className="steps-action-button-done" onClick={() => { props.onFinish("On Finish from ThirdStep") }}>
+                            Done
+                        </Button>
+                    </div>
+                </div>
                 Third step body
             </div>
 

@@ -1,4 +1,6 @@
-import { Button } from "antd";
+import { Button, DatePicker, Select } from "antd";
+import TextArea from "antd/lib/input/TextArea";
+import { RadioChangeEvent } from "antd/lib/radio";
 import { FC, useState } from "react"
 import RadioGroup from "./radioGroup";
 
@@ -19,7 +21,7 @@ const SecondStep: FC<SecondStepProps> = (props) => {
     ])
     
     const [brands, setBrands] = useState<string[]>([
-        "BMV",
+        "BMW",
         "Audi",
         "Tesla", 
         "Porsche",
@@ -32,39 +34,85 @@ const SecondStep: FC<SecondStepProps> = (props) => {
         "Mazda",
         "Pontiac",
         "Alfa Romero",
-        "Volkswagen",
         "Volvo",
-        "Mitsubishi"
+        "Mitsubishi",
+        "MAN",
+        "Scania",
+        "Buick",
+        "Ford",
+        "Opel",
     ]);
+
+    const [selectedBrand, setSelectedBrand] = useState<string>("");
+    const [selectedCarBody, setSelectedCarBody] = useState<string>("");
+    const [description, setDescription] = useState<string>("");
 
     return(     
         <div className="steps-container">
-            <div className="steps-header">
-                <div className="steps-title-container">
-                    <div className="steps-title">
-                        2. Basic information
-                    </div>
-                    <div className="steps-description">
-                        &emsp;
-                        Describe your car
-                    </div>
-                </div>         
-
-                <div className="steps-actions">
-                    <Button className="steps-action-button-back" onClick={() => { props.onBack() }}>
-                        Back
-                    </Button>
-                    <Button className="steps-action-button-done" onClick={() => { props.onFinish("On Finish from SecondStep") }}>
-                        Done
-                    </Button>
-                </div>
-            </div>
-
             <div className="steps-body">
-                <RadioGroup data={carBodies} 
-                            title={"Car body"} 
-                            countBeforeHide={5} 
-                            onChange={(value: string) => {console.log(value);}}/>
+                <div className="steps-header">
+                    <div className="steps-title-container">
+                        <div className="steps-title">
+                            2. Basic information
+                        </div>
+                        <div className="steps-description">
+                            &emsp;
+                            Describe your car
+                        </div>
+                    </div>         
+
+                    <div className="steps-actions">
+                        <Button className="steps-action-button-back" onClick={() => { props.onBack() }}>
+                            Back
+                        </Button>
+                        <Button className="steps-action-button-done" onClick={() => { props.onFinish("On Finish from SecondStep") }}>
+                            Done
+                        </Button>
+                    </div>
+                </div>
+
+                <div className="steps-radio-container">
+                    <RadioGroup 
+
+                                data={brands} 
+                                title={"Brand"} 
+                                countBeforeHide={16} 
+                                onChange={(value: RadioChangeEvent) => {console.log(value);}}/>
+
+                    <RadioGroup 
+                                data={carBodies} 
+                                title={"Car body"} 
+                                countBeforeHide={0} 
+                                onChange={(value: RadioChangeEvent) => {console.log(value);}}/>
+                </div>    
+                <div className="steps-secondstep-description">
+                    <span className="steps-secondstep-description-title">
+                        Car description
+                    </span>
+                    <TextArea
+                        className="steps-textarea"
+                        value={description}
+                        onChange={e => setDescription(e.target.value)}
+                        placeholder="Description"
+                        autoSize={{ minRows: 17, maxRows: 17 }}
+                    />
+                </div>
+                <div className="steps-selects-container">
+                    <div className="steps-select">
+                        Year of manufacture 
+                        <DatePicker className="steps-datepicker" onChange={(value) => {console.log(value);} } picker="year" />
+                    </div>
+                    <div className="steps-select">
+                        Model 
+                        <Select>
+                        </Select>
+                    </div>
+                    <div className="steps-select">
+                        Generation 
+                        <Select>
+                        </Select>
+                    </div>
+                </div>
             </div>
 
             <div className="steps-footer">

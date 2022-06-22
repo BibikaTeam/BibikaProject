@@ -6,7 +6,7 @@ import ThirdStep from "./ThirdStep";
 
 const StepsContainer: FC = () => {
     
-    const [currentStep, setCurrentStep] = useState<CurrentStep>(CurrentStep.SecondStep);
+    const [currentStep, setCurrentStep] = useState<CurrentStep>(CurrentStep.FirstStep);
 
     const onFirstStepFinish = (values: any) => {
         console.log(values);
