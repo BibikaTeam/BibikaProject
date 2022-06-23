@@ -97,15 +97,13 @@ export const getModelsByBrandId = async (brandId: number ) => {
                     });
                 });
             }
-        });
-        console.log("response getModelsByBrandId", response);
-        
+        }); 
     return response;
 }
 
 export const getGenerationByModelId = async (modelId: number) => {
     const response = await http 
-        .get<Array<IGenerationModel>>(`api/generation/get/by_model/${modelId}`)
+        .get<Array<IGenerationModel>>(`api/generation/get/by-model/${modelId}`)
         .then((response) => { return response.data })
         .catch(function (error) {
             if (axios.isAxiosError(error)) {
