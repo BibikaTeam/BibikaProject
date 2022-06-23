@@ -69,11 +69,6 @@ const BrandPage = () => {
           toast.error(
             `${error.errorsString.title} (${error.errorsString.status})`
           );
-          // const errorType = error as BrandErrorType;
-          // if (errorType) console.log("Error type: ", errorType);
-          // errorType.errorsString.forEach((el) => {
-          // toast.error(el);
-          // });
         }
       })
       .finally(() => {

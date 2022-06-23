@@ -16,5 +16,4 @@ export interface AddPostModel {
     color: string,
     sellerId: string,
     carId: number,
-
 }

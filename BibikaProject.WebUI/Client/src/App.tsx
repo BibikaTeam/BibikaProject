@@ -6,6 +6,8 @@ import AdminLayout from "./components/containers/adminLayout";
 import RegisterPage from "./components/authorization/register";
 import LoginPage from "./components/authorization/login";
 
+import AddPostPage from "./components/posts/add"
+
 import ModelPage from "./components/adminPanel/model";
 import BrandPage from "./components/adminPanel/brand";
 import EnginePage from "./components/adminPanel/engine";
@@ -17,6 +19,7 @@ function App() {
         <Route path="/">
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/post/add" element={<AddPostPage />} />
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="/admin/brand" element={<BrandPage />} />
             <Route path="/admin/model" element={<ModelPage />} />
