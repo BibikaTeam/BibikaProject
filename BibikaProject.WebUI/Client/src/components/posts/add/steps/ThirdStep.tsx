@@ -1,12 +1,84 @@
-import { Button } from "antd"
-import { FC } from "react"
+import { Status, Wrapper } from "@googlemaps/react-wrapper";
+import { isLatLngBoundsLiteral } from "@googlemaps/typescript-guards";
+import { Button, Input, InputRef } from "antd";
+import { FC, useEffect, useRef, useState } from "react";
+import { GOOGLE_API_KEY } from "../../../../constants";
+import Map from "./map";
+import Marker from "./map/marker";
 
 interface ThirdStepProps {
     onFinish: (values: any) => void;
     onBack: () => void;
 }
 
+const geocodeJson = 'https://maps.googleapis.com/maps/api/geocode/json';
+
+const formatAddress = (place: any) => {
+    let address: string = "";
+
+    place.address_components.forEach((component: any) => {
+        if (component.types.includes("locality")) {
+            address = address + component.long_name + ", ";
+        }
+        if (component.types.includes("country")) {
+            address = address + component.long_name;
+        }
+    });
+
+    return address;
+}
+
 const ThirdStep: FC<ThirdStepProps> = (props) => {
+    const [address, setAddress] = useState<string>();
+    const [marker, setMarker] = useState<google.maps.LatLng>();
+    const [zoom, setZoom] = useState(3); 
+    const [center, setCenter] = useState<google.maps.LatLngLiteral>({
+        lat: 0,
+        lng: 0,
+    });
+
+  const onClick = (e: google.maps.MapMouseEvent) => {
+    setMarker(e.latLng!);
+    reverseGeocode(e.latLng!);
+  };
+
+  const onIdle = (m: google.maps.Map) => {
+    console.log("onIdle");
+    setZoom(m.getZoom()!); 
+    setCenter(m.getCenter()!.toJSON());
+  };
+
+    const render = (status: Status) => {
+        return <>{status}</>
+    };
+      
+    let bounds: google.maps.MapRestriction = {
+        latLngBounds: {
+            north: 85, 
+            south: -85, 
+            west: -180, 
+            east: 180
+        }
+    }
+
+    const reverseGeocode = (coords: google.maps.LatLng) => {
+        const url = `${geocodeJson}?key=${GOOGLE_API_KEY}&latlng=${coords.lat()},${coords.lng()}`;
+        fetch(url)
+            .then(response => response.json())
+            .then(location => {
+              const place = location.results[0];
+             
+              let address: string = formatAddress(place);
+              
+                if(address) {
+                    setAddress(address);
+                } else {
+                    setAddress("Try to set marker closer to your city...");
+                }
+
+            })
+      }
+
     return(     
         <div className="steps-container">
             
@@ -31,7 +103,40 @@ const ThirdStep: FC<ThirdStepProps> = (props) => {
                         </Button>
                     </div>
                 </div>
-                Third step body
+                <div className="steps-selects-container">
+                    <div className="steps-input-container">
+                        Сontact person
+                        <Input className="steps-input"/>
+                    </div>
+                    <div className="steps-input-container">
+                            Phone number
+                        <Input className="steps-input"/>
+                    </div>
+                </div>
+
+                <div className="steps-map-container">  
+                    Location
+                    <div className="steps-map-input">
+                        {address}
+                    </div>
+                    <div className="steps-wrapper">    
+                        <Wrapper apiKey={GOOGLE_API_KEY} render={render} libraries={["places"]}>
+                            <Map                 
+                                onClick={onClick} 
+                                onIdle={onIdle} 
+                                center={center} 
+                                zoom={zoom} 
+                                maxZoom={10}
+                                minZoom={2}
+                                restriction={bounds}
+                                mapTypeControl={false}
+                                style={{ flexGrow: "1", height: "100%"  }}
+                                fullscreenControl={false}>                       
+                                <Marker position={marker} />
+                            </Map>
+                        </Wrapper>
+                    </div>
+                </div>             
             </div>
 
             <div className="steps-footer">

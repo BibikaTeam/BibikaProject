@@ -98,18 +98,18 @@ const SecondStep: FC<SecondStepProps> = (props) => {
                     />
                 </div>
                 <div className="steps-selects-container">
-                    <div className="steps-select">
+                    <div className="steps-select-container">
                         Year of manufacture 
                         <DatePicker className="steps-datepicker" onChange={(value) => {console.log(value);} } picker="year" />
                     </div>
-                    <div className="steps-select">
+                    <div className="steps-select-container">
                         Model 
-                        <Select>
+                        <Select className="steps-select">
                         </Select>
                     </div>
-                    <div className="steps-select">
+                    <div className="steps-select-container">
                         Generation 
-                        <Select>
+                        <Select className="steps-select">
                         </Select>
                     </div>
                 </div>

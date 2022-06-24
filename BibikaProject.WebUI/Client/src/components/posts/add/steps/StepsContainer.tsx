@@ -30,26 +30,17 @@ const StepsContainer: FC = () => {
         setCurrentStep(CurrentStep.SecondStep);
     }
 
-    if (currentStep == CurrentStep.FirstStep)
+    switch (currentStep)
     {
-        return(
-            <FirstStep onFinish={onFirstStepFinish}/>  
-        );
-    }
-    else if (currentStep == CurrentStep.SecondStep)
-    {
-        return(
-            <SecondStep onFinish={onSecondStepFinish} onBack={onSecondStepBack}/>  
-        );
-    }
-    else if (currentStep == CurrentStep.ThirdStep)
-    {
-        return(
-            <ThirdStep onFinish={onThirdStepFinish} onBack={onThirdStepBack}/>  
-        );
-    }
+        case CurrentStep.FirstStep: 
+            return ( <FirstStep onFinish={onFirstStepFinish}/> );
+        
+        case CurrentStep.SecondStep:
+            return( <SecondStep onFinish={onSecondStepFinish} onBack={onSecondStepBack}/> );
 
-    return(<></>)
+        case CurrentStep.ThirdStep:
+            return( <ThirdStep onFinish={onThirdStepFinish} onBack={onThirdStepBack}/>  );
+    }
 }
 
 export default StepsContainer;
