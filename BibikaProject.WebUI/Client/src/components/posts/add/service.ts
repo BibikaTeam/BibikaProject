@@ -1,12 +1,20 @@
-<<<<<<< HEAD
 import { AddImagesToPostModel, AddOptionsToPostModel, AddPostModel } from "../types";
 import http from "../../../http_common";
 import axios from "axios";
 import { IEngineModel, IFluentValidationError, IGenerationModel, IModelModel } from "../../adminPanel/types";
 
 export const loadImage = async (base64: string) => {
+    console.log("load image");
+    //@ts-ignore
+    console.log(localStorage.getItem('token'));
+    
     const response = await http
-        .post("api/image/add", base64)
+        .post(
+            "api/image/add", 
+            base64, 
+            {headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }})
         .catch(function (error) {
             if (axios.isAxiosError(error)) {
                 const serverError: IFluentValidationError = Object.assign(
@@ -21,6 +29,7 @@ export const loadImage = async (base64: string) => {
                 });
             }
         });
+
     return response;
 }
 
@@ -126,14 +135,14 @@ export const getGenerationByModelId = async (modelId: number) => {
 export const getEngineByGenerationId = async (generationId: number) => {
     const response = await http
         .get<Array<IEngineModel>>(`api/engine/get/by-generation/${generationId}`)
-        .then((response) => { return response.data})
+        .then((response) => { return response.data })
         .catch(function (error) {
-            if(axios.isAxiosError(error)) {
+            if (axios.isAxiosError(error)) {
                 const serverError: IFluentValidationError = Object.assign(
                     {},
                     error.response?.data
                 );
-                serverError.errors=[];
+                serverError.errors = [];
                 Object.keys(error.response?.data.errors).forEach((el1) => {
                     error.response?.data.errors[el1].forEach((el2: string) => {
                         serverError.errors.push(el2);
@@ -142,3 +151,4 @@ export const getEngineByGenerationId = async (generationId: number) => {
             }
         });
     return response;
+}

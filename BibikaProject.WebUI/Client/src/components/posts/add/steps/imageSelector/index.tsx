@@ -2,6 +2,7 @@ import { Modal, Upload, UploadProps } from "antd"
 import { FC, useState } from "react"
 import { PlusOutlined, InboxOutlined  } from '@ant-design/icons';
 import { ItemRender, RcFile, UploadFile } from "antd/lib/upload/interface";
+import { loadImage } from "../../service";
 import Dragger from "antd/lib/upload/Dragger";
 
 const ImageSelector: FC = () => {
@@ -23,17 +24,29 @@ const ImageSelector: FC = () => {
         if (!file.url && !file.preview) {
         file.preview = await getBase64(file.originFileObj as RcFile);
         }
-
+        
         setPreviewImage(file.url || (file.preview as string));
         setPreviewVisible(true);
         setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
     };
 
     const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
+        
         setFileList(newFileList);
+        
     }
 
-    const handleBeforeUpload: UploadProps["beforeUpload"] = (file: RcFile) => {
+    const handleBeforeUpload: UploadProps["beforeUpload"] = async (file: RcFile) => {
+        const foto = await (await getBase64(file)).slice(23);
+        
+        
+        console.log("Upload Foto file", foto);
+
+        const idFoto = await loadImage(foto);
+
+        console.log("return foto id", idFoto);
+        
+        
         return false;
     }
 
