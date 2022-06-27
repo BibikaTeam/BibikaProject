@@ -2,14 +2,16 @@ import { Modal, Upload, UploadProps } from "antd"
 import { FC, useState } from "react"
 import { PlusOutlined, InboxOutlined  } from '@ant-design/icons';
 import { ItemRender, RcFile, UploadFile } from "antd/lib/upload/interface";
-import { loadImage } from "../../service";
+import { loadImage , addImagesToPost } from "../../service";
 import Dragger from "antd/lib/upload/Dragger";
+import { AddImagesToPostModel } from "../../types";
 
 const ImageSelector: FC = () => {
     const [previewVisible, setPreviewVisible] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
     const [previewTitle, setPreviewTitle] = useState('');
     const [fileList, setFileList] = useState<UploadFile[]>([]);
+    const [imageList, setImageList] = useState<Array<number>[]>([]);
 
     const getBase64 = (file: RcFile): Promise<string> => new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -33,20 +35,20 @@ const ImageSelector: FC = () => {
     const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
         
         setFileList(newFileList);
-        
     }
 
     const handleBeforeUpload: UploadProps["beforeUpload"] = async (file: RcFile) => {
-        const foto = await (await getBase64(file)).slice(23);
-        
-        
-        console.log("Upload Foto file", foto);
+        const foto = await (await getBase64(file)).split(',')[1];
 
         const idFoto = await loadImage(foto);
 
-        console.log("return foto id", idFoto);
+        console.log("id foto", idFoto);
+
+        setImageList(idFoto);
+
+        console.log("image list", imageList);
         
-        
+
         return false;
     }
 

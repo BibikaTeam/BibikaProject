@@ -2,11 +2,9 @@ import { AddImagesToPostModel, AddOptionsToPostModel, AddPostModel } from "../ty
 import http from "../../../http_common";
 import axios from "axios";
 import { IEngineModel, IFluentValidationError, IGenerationModel, IModelModel } from "../../adminPanel/types";
+import { date } from "yup";
 
 export const loadImage = async (base64: string) => {
-    console.log("load image");
-    //@ts-ignore
-    console.log(localStorage.getItem('token'));
     
     const response = await http
         .post(
@@ -15,6 +13,7 @@ export const loadImage = async (base64: string) => {
             {headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }})
+        .then((response) => { return response.data})
         .catch(function (error) {
             if (axios.isAxiosError(error)) {
                 const serverError: IFluentValidationError = Object.assign(
@@ -31,6 +30,25 @@ export const loadImage = async (base64: string) => {
         });
 
     return response;
+}
+
+export const deleteImage = async (imageId: number) => {
+    const response = await http
+        .delete(`api/image/delete/${imageId}`)
+        .catch(function (error) {
+            if (axios.isAxiosError(error)) {
+                const serverError: IFluentValidationError = Object.assign(
+                    {},
+                    error.response?.data
+                );
+                serverError.errors = [];
+                Object.keys(error.response?.data.errors).forEach((el1) => {
+                    error.response?.data.errors[el1].forEach((el2: string) => {
+                        serverError.errors.push(el2);
+                    });
+                });
+            }
+        });
 }
 
 export const addPost = async (data: AddPostModel) => {
