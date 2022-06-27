@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { AddImagesToPostModel, AddOptionsToPostModel, AddPostModel } from "../types";
 import http from "../../../http_common";
 import axios from "axios";
@@ -141,4 +142,3 @@ export const getEngineByGenerationId = async (generationId: number) => {
             }
         });
     return response;
-}

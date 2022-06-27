@@ -1,14 +1,17 @@
-import { useState } from "react";
-import { Button } from "antd";
+import { FC, useState } from "react"
+import StepsContainer from "./steps/StepsContainer";
 
-import { loadImage, addImagesToPost, getModelsByBrandId, getGenerationByModelId, getEngineByGenerationId } from "./service";
+const PostAdd: FC = () => {
 
-const AddPostPage = () => {
-  
-  return (
-    <>
-    </>
-  );
-};
+    return( 
+        <>
+            {/* Header */}
+            <div style={{height: "12%", background: "white"}}>
+            </div>
 
-export default AddPostPage;
+            <StepsContainer />     
+        </>
+    )
+}
+
+export default PostAdd;
