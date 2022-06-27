@@ -6,6 +6,8 @@ import AdminLayout from "./components/containers/adminLayout";
 import RegisterPage from "./components/authorization/register";
 import LoginPage from "./components/authorization/login";
 
+import AddPostPage from "./components/posts/add"
+
 import ModelPage from "./components/adminPanel/model";
 import BrandPage from "./components/adminPanel/brand";
 import EnginePage from "./components/adminPanel/engine";
