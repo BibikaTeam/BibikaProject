@@ -9,6 +9,11 @@ export interface AddImagesToPostModel {
     imagesId: Array<number>
 }
 
+export interface ImageSrcIdModel {
+    imageSrc: string,
+    imageId: number,
+}
+
 export interface AddOptionsToPostModel {
     id: number,
     optionsId: Array<number>

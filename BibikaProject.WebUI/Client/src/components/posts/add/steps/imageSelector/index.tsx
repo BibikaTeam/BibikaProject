@@ -4,15 +4,17 @@ import { PlusOutlined, InboxOutlined  } from '@ant-design/icons';
 import { ItemRender, RcFile, UploadFile } from "antd/lib/upload/interface";
 import { loadImage , addImagesToPost } from "../../service";
 import Dragger from "antd/lib/upload/Dragger";
-import { AddImagesToPostModel } from "../../types";
+import { AddImagesToPostModel, ImageSrcIdModel } from "../../types";
 
 const ImageSelector: FC = () => {
     const [previewVisible, setPreviewVisible] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
     const [previewTitle, setPreviewTitle] = useState('');
     const [fileList, setFileList] = useState<UploadFile[]>([]);
-    const [imageList, setImageList] = useState<Array<number>[]>([]);
+    const [imageList, setImageList] = useState<ImageSrcIdModel[]>([]);
+    //const [imageIdList, setImageIdList] = useState<number[]>([]);
 
+    
     const getBase64 = (file: RcFile): Promise<string> => new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -26,6 +28,7 @@ const ImageSelector: FC = () => {
         if (!file.url && !file.preview) {
         file.preview = await getBase64(file.originFileObj as RcFile);
         }
+        console.log("file preview", file.preview);
         
         setPreviewImage(file.url || (file.preview as string));
         setPreviewVisible(true);
@@ -37,31 +40,29 @@ const ImageSelector: FC = () => {
         setFileList(newFileList);
     }
 
+    const handleRemove: UploadProps['onRemove'] = (file: UploadFile) => {
+
+        console.log("image list handle change", imageList);
+        
+    }
+
     const handleBeforeUpload: UploadProps["beforeUpload"] = async (file: RcFile) => {
         const foto = await (await getBase64(file)).split(',')[1];
 
-        const idFoto = await loadImage(foto);
+        const idFoto: number = await loadImage(foto);
 
-        console.log("id foto", idFoto);
+        const imageIdSrc: ImageSrcIdModel = { imageId: idFoto, imageSrc: file.uid}
 
-        setImageList(idFoto);
+        const tmpIdArr = imageList.slice();
+
+        tmpIdArr.push(imageIdSrc);
+
+        setImageList(tmpIdArr);
 
         console.log("image list", imageList);
         
 
         return false;
-    }
-
-    const itemRender: ItemRender<RcFile> = (originNode: React.ReactElement, file: UploadFile, fileList: Array<UploadFile<RcFile>>, actions: {
-        download: () => void;
-        preview: () => void;
-        remove: () => void;
-    }) => {
-        return(
-            <div className="imageSelector-image-container">
-                <img className="imageSelector-image" src={file.thumbUrl}/>
-            </div>
-        )
     }
 
     const uploadButton = (
@@ -100,10 +101,11 @@ const ImageSelector: FC = () => {
                 fileList={fileList}
                 onPreview={handlePreview}
                 onChange={handleChange}
+                //onRemove={handleRemove}
                 beforeUpload={handleBeforeUpload}
-                //itemRender={itemRender}
                 >
                 {uploadButton}
+                
             </Upload>
             <Modal visible={previewVisible} title={previewTitle} footer={null} onCancel={handleCancel}>
                 <img alt="example" style={{ width: '100%' }} src={previewImage} />
