@@ -2,7 +2,7 @@ import { Modal, Upload, UploadProps } from "antd"
 import { FC, useState } from "react"
 import { PlusOutlined, InboxOutlined  } from '@ant-design/icons';
 import { ItemRender, RcFile, UploadFile } from "antd/lib/upload/interface";
-import { loadImage , addImagesToPost } from "../../service";
+import { loadImage , addImagesToPost, deleteImage } from "../../service";
 import Dragger from "antd/lib/upload/Dragger";
 import { AddImagesToPostModel, ImageSrcIdModel } from "../../types";
 
@@ -41,17 +41,25 @@ const ImageSelector: FC = () => {
     }
 
     const handleRemove: UploadProps['onRemove'] = (file: UploadFile) => {
-
-        console.log("image list handle change", imageList);
+        const image = imageList.find((img) => file.uid)
+        console.log("image", image);
         
+        //deleteImage(image?.imageId);
+
     }
 
     const handleBeforeUpload: UploadProps["beforeUpload"] = async (file: RcFile) => {
-        const foto = await (await getBase64(file)).split(',')[1];
+        const image = await (await getBase64(file)).split(',')[1];
 
-        const idFoto: number = await loadImage(foto);
+        console.log("image uid", file.uid);
+        
 
-        const imageIdSrc: ImageSrcIdModel = { imageId: idFoto, imageSrc: file.uid}
+        const idImage: number = await loadImage(image);
+
+        const imageIdSrc: ImageSrcIdModel = { imageId: idImage, imageSrc: file.uid}
+
+        console.log("image src", imageIdSrc);
+        
 
         const tmpIdArr = imageList.slice();
 
@@ -101,7 +109,7 @@ const ImageSelector: FC = () => {
                 fileList={fileList}
                 onPreview={handlePreview}
                 onChange={handleChange}
-                //onRemove={handleRemove}
+                onRemove={handleRemove}
                 beforeUpload={handleBeforeUpload}
                 >
                 {uploadButton}

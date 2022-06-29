@@ -129,6 +129,7 @@ const ThirdStep: FC<ThirdStepProps> = (props) => {
                                 maxZoom={10}
                                 minZoom={2}
                                 restriction={bounds}
+                                streetViewControl={false}
                                 mapTypeControl={false}
                                 style={{ flexGrow: "1", height: "100%"  }}
                                 fullscreenControl={false}>                       
