@@ -45,31 +45,15 @@ const ImageSelector: FC = () => {
         console.log("image", image);
         
         //deleteImage(image?.imageId);
-
     }
 
     const handleBeforeUpload: UploadProps["beforeUpload"] = async (file: RcFile) => {
         const image = await (await getBase64(file)).split(',')[1];
-
-        console.log("image uid", file.uid);
-        
-
         const idImage: number = await loadImage(image);
-
         const imageIdSrc: ImageSrcIdModel = { imageId: idImage, imageSrc: file.uid}
-
-        console.log("image src", imageIdSrc);
-        
-
         const tmpIdArr = imageList.slice();
-
         tmpIdArr.push(imageIdSrc);
-
         setImageList(tmpIdArr);
-
-        console.log("image list", imageList);
-        
-
         return false;
     }
 

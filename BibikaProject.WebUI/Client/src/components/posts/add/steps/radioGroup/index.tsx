@@ -1,8 +1,9 @@
 import { Button, Radio, RadioChangeEvent } from "antd";
 import { FC, useState } from "react"
+import { IBrandModel } from "../../../../adminPanel/types";
 
 interface RadioGroupProps {
-    data: string[];
+    data: IBrandModel[];
     countBeforeHide: number;
     title: string;
     onChange: (value: RadioChangeEvent) => void;
@@ -44,7 +45,7 @@ const RadioGroup: FC<RadioGroupProps> = (props) => {
                                 className="radiogroup-button"
                                 key={index} 
                                 value={value}>
-                                {value}
+                                {value.title}
                             </Radio.Button>
                         ))
                     }
@@ -66,7 +67,7 @@ const RadioGroup: FC<RadioGroupProps> = (props) => {
                             className="radiogroup-button"
                             key={index} 
                             value={value}>
-                            {value}
+                            {value.title}
                         </Radio.Button>
                     ))
                 }
