@@ -1,83 +1,84 @@
 import {
   IBrandModel,
-  BrandErrorType,
   IPaginationBrandModel,
   IPaginationBrandRequest,
-  IFluentValidationError,
   IPaginationRequest,
+  IRequestError,
 } from "../types";
 import http from "../../../http_common";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import qs from "qs";
 import { ErrorStrings } from "../../../constants";
 
 export const getAllBrands = async () => {
-  const response = await http
-    .get("api/brand/get/all")
-    .then((response) => {
-      return response.data;
-    })
-    .catch(function (error) {
-      if (axios.isAxiosError(error)) {
-        const serverError: BrandErrorType = {
-          errorsString: error.response?.data as Array<string>,
+  try {
+    const response = await http.get(`api/brand/get/all`);
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.request.status == 0 || error.request.status == 500) {
+        const unknownError: IRequestError = {
+          code: error.request.status,
+          errors: new Array<string>(ErrorStrings.backendNotResponse()),
         };
-        if (serverError) {
-          throw serverError;
-        }
+        throw unknownError;
       }
-    });
-  return response;
+      let serverError: IRequestError = {
+        errors: error.response?.data.Errors,
+        code: error.response?.data.Code,
+      };
+      throw serverError;
+    }
+  }
 };
 
 export const getPaginatedBrands = async (
   paginationModel: IPaginationBrandModel
 ) => {
-  const response = await http
-    .get<IPaginationRequest<IBrandModel>>(`api/brand/get?` + qs.stringify(paginationModel))
+  try {
+    const response = await http.get<IPaginationRequest<IBrandModel>>(
+      `api/brand/get?` + qs.stringify(paginationModel)
+    );
 
-    .then((response) => {
-      return response.data;
-    })
-    .catch(function (error) {
-      if (error.request.status == 0) {
-        throw ErrorStrings.backendNotResponse;
-      }
-      if (axios.isAxiosError(error)) {
-        const serverError: BrandErrorType = {
-          errorsString: error.response?.data as Array<string>,
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.request.status == 0 || error.request.status == 500) {
+        const unknownError: IRequestError = {
+          code: error.request.status,
+          errors: new Array<string>(ErrorStrings.backendNotResponse()),
         };
-        if (serverError) {
-          throw serverError;
-        }
+        throw unknownError;
       }
-    });
-
-  return response;
+      let serverError: IRequestError = {
+        errors: error.response?.data.Errors,
+        code: error.response?.data.Code,
+      };
+      throw serverError;
+    }
+  }
 };
 
 export const addBrand = async (data: IBrandModel) => {
-  data.title = "";
-  const response = await http
-    .post("api/brand/add", data)
-    .catch(function (error) {
-      if (axios.isAxiosError(error)) {
-        const serverError: IFluentValidationError = Object.assign(
-          {},
-          error.response?.data
-        );
-        serverError.errors = [];
-
-        Object.keys(error.response?.data.errors).forEach((el1) => {
-          error.response?.data.errors[el1].forEach((el2: string) => {
-            serverError.errors.push(el2);
-          });
-        });
-        // if (serverError) {
-        //   throw serverError;
-        // }
+  try {
+    const response = await http.post("api/brand/add", data);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.request.status == 0 || error.request.status == 500) {
+        const unknownError: IRequestError = {
+          code: error.request.status,
+          errors: new Array<string>(ErrorStrings.backendNotResponse()),
+        };
+        throw unknownError;
       }
-    });
+      let serverError: IRequestError = {
+        errors: error.response?.data.Errors,
+        code: error.response?.data.Code,
+      };
+      throw serverError;
+    }
+  }
 };
 
 // export const updateBrand = async (data: IBrandModel) => {
@@ -97,16 +98,22 @@ export const addBrand = async (data: IBrandModel) => {
 // };
 
 export const deleteBrand = async (data: number) => {
-  const response = await http
-    .delete(`api/brand/delete/${data}`)
-    .catch(function (error) {
-      if (axios.isAxiosError(error)) {
-        const serverError: BrandErrorType = {
-          errorsString: error.response?.data as Array<string>,
+  try {
+    const response = await http.delete(`api/brand/delete/${465465}`);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.request.status == 0 || error.request.status == 500) {
+        const unknownError: IRequestError = {
+          code: error.request.status,
+          errors: new Array<string>(ErrorStrings.backendNotResponse()),
         };
-        if (serverError) {
-          throw serverError;
-        }
+        throw unknownError;
       }
-    });
+      let serverError: IRequestError = {
+        errors: error.response?.data.Errors,
+        code: error.response?.data.Code,
+      };
+      throw serverError;
+    }
+  }
 };

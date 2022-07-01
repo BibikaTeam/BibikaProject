@@ -2,14 +2,22 @@ import { FC, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { flushSync } from "react-dom";
 
-import { Form, Input, Button, Checkbox, Space, Spin } from 'antd';
+
+import { Form, Input, Button, Checkbox, Space, Spin } from "antd";
+
 import { FacebookOutlined } from '@ant-design/icons';
+
 import { ILoginModel, LoginErrorType } from "../types";
 
 import { useActions } from "../../../hooks/useActions";
 import { toast } from "react-toastify";
 
+import { useNavigate } from "react-router-dom";
+
 import AuthorizationLayout from "../../containers/authorizationLayout";
+
+import { IRequestError } from "../../adminPanel/types";
+
 import { CredentialResponse, GoogleLogin, GoogleOAuthProvider, useGoogleLogin} from "@react-oauth/google";
 import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID } from "../../../constants";
 
@@ -17,12 +25,14 @@ import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID } from "../../../constants";
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 import { ReactFacebookLoginInfo } from "react-facebook-login";
 
-const LoginPage: FC = () => {
 
+const LoginPage: FC = () => {
   const { loginUser } = useActions();
   const { loginGoogleUser } = useActions();
   const { loginFacebookUser } = useActions();
   const [loading, setLoading] = useState<boolean>(false);
+  const navigator = useNavigate();
+  const [errorStr, setErrorStr] = useState<string>();
 
   const initialValues: ILoginModel = {
     email: "",
@@ -31,15 +41,19 @@ const LoginPage: FC = () => {
 
   const onFinish = async (values: ILoginModel) => {
     setLoading(true);
-     try {
-       await loginUser(values);
-       toast.success("Successfully login");
-     } catch (error) {
-       if (!error || !(error as LoginErrorType)) toast.error("Some error");
-       else toast.error((error as LoginErrorType).errorString);
-     } finally {
-       setLoading(false);
-     }
+    try {
+      await loginUser(values);
+      navigator("/");
+      //  toast.success("Successfully login");
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
+      setErrorStr(error.errors[0]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const responseGoogle = async (values: CredentialResponse) => {
@@ -75,8 +89,9 @@ const LoginPage: FC = () => {
         <div className="login-container">
           <div className="login-header-container">
             <div className="login-form-title-container">
-              <span>Login</span>            
+              <span>Login</span>
             </div>
+            {errorStr && <h3 className="error-string-login">{errorStr}</h3>}
             <div className="login-form-container">
               <Form
                 className="login-form"
@@ -86,37 +101,47 @@ const LoginPage: FC = () => {
                 <Form.Item
                   className="login-form-item"
                   name="email"
-                  rules={[{ type:'email', validateTrigger: ['onBlur', 'onChange'], required: true, message: 'Please input your Email!' }]}>
-                  <Input 
+                  rules={[
+                    {
+                      type: "email",
+                      validateTrigger: ["onBlur", "onChange"],
+                      required: true,
+                      message: "Please input your Email!",
+                    },
+                  ]}
+                >
+                  <Input
                     className="login-form-input"
                     type="email"
-                    placeholder="Email" />
+                    placeholder="Email"
+                  />
                 </Form.Item>
                 <Form.Item
                   className="login-form-item"
                   name="password"
-                  rules={[{ required: true, message: 'Please input your Password!' }]}>
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Password!",
+                    },
+                  ]}
+                >
                   <Input
                     className="login-form-input"
                     type="password"
                     placeholder="Password"
                   />
                 </Form.Item>
-                <Form.Item
-                  className="login-form-item login-form-forgot-password">
-                  <a>
-                    Forgot password
-                  </a>
+                <Form.Item className="login-form-item login-form-forgot-password">
+                  <a>Forgot password</a>
                 </Form.Item>
-                <Form.Item
-                  className="login-form-item">
-                  <Button
-                    className="login-form-button"
-                    htmlType="submit">
+                <Form.Item className="login-form-item">
+                  <Button className="login-form-button" htmlType="submit">
                     Login
                   </Button>
                 </Form.Item>
                 <div className="login-form-external-container">
+
                   {/* <Button
                     className="login-form-button-external-google"
                     onClick={() => googleLogin()}>
@@ -161,18 +186,21 @@ const LoginPage: FC = () => {
                       </Button>
                   )}/>                
                 </div>     
+
               </Form>
-            </div>       
+            </div>
           </div>
           <div className="login-footer">
             <div className="login-footer-title-container">
               <span>Do you wanna join Bibika?</span>
             </div>
             <div className="login-footer-button-container">
-              <Button className="login-footer-button"><Link to="/register">Create Account</Link></Button>
+              <Button className="login-footer-button">
+                <Link to="/register">Create Account</Link>
+              </Button>
             </div>
           </div>
-        </div>   
+        </div>
       </AuthorizationLayout>
     </Spin>
   );

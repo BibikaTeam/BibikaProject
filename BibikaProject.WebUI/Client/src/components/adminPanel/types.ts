@@ -1,13 +1,17 @@
 export interface ICarModel {
-  engineTitle: string;
+  id: number;
+  engine: IEngineModel;
   carBodyTitle: string;
   completeSetTitle: string;
+  gearBoxTitle: string;
+  title: string;
 }
 
 export interface IBrandModel {
   id: number;
   title: string;
 }
+
 export interface IEngineModel {
   id: number;
   title: string;
@@ -15,9 +19,12 @@ export interface IEngineModel {
   kWPower: number;
   fuel: string;
 }
-
-export interface BrandErrorType {
-  errorsString: Array<string>;
+export interface ICompleteSetModel {
+  id: number;
+  title: string;
+}
+export interface ICompleteSetAddDTO {
+  title: string;
 }
 
 export interface IModelModel {
@@ -34,10 +41,6 @@ export interface IAddModelModel {
 export interface IUpdateModelModel {
   id: number;
   title: string;
-}
-
-export interface ModelErrorType {
-  errorsString: Array<string>;
 }
 
 export interface IGenerationModel {
@@ -82,17 +85,49 @@ export interface IBrandResponse {
   //isAuth: boolean;
 }
 
-//Errors
-export interface IFluentValidationError {
-  type: string;
-  title: string;
-  status: number;
-  traceId: string;
-  errors: Array<string>;
-}
-
 export interface IPaginationRequest<type> {
   data: Array<type>;
   currentPage: number;
   allPages: number;
+}
+
+export interface IGenerationModel {
+  id: number;
+  title: string;
+  brandTitle: string;
+  modelTitle: string;
+}
+
+export interface IGenerationAddModel {
+  id: number;
+  title: string;
+  modelId: number;
+}
+
+export interface IPaginationGenerationModel {
+  page: number;
+  countOnPage: number;
+  search: string;
+  brandId: number;
+  modelId: number;
+}
+
+export type IRequestError = {
+  code: number;
+  errors: Array<string>;
+};
+
+export interface IPaginationCarModel {
+  page: number;
+  search: string;
+  countOnPage: number;
+  generationId: number | null;
+  engineId: number | null;
+  carBodyId: number | null;
+  gearboxId: number | null;
+  completeSetId: number | null;
+}
+export interface ICarBodyModel {
+  id: number;
+  title: string;
 }

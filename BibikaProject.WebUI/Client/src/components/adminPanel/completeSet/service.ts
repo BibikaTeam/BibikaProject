@@ -1,19 +1,17 @@
 import {
-  IPaginationModelModel,
-  IPaginationModelRequest,
-  IAddModelModel,
-  IRequestError,
-  IModelModel,
+  ICompleteSetAddDTO,
+  ICompleteSetModel,
   IPaginationRequest,
+  IRequestError,
 } from "../types";
 import http from "../../../http_common";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import qs from "qs";
 import { ErrorStrings } from "../../../constants";
 
-export const getAllModels = async () => {
+export const getAllCompleteSets = async () => {
   try {
-    const response = await http.get(`api/model/get/all`);
+    const response = await http.get(`api/brand/get/all`);
 
     return response.data;
   } catch (error) {
@@ -34,12 +32,58 @@ export const getAllModels = async () => {
   }
 };
 
-export const getPaginatedModels = async (
-  paginationModel: IPaginationModelModel
-) => {
+export const getCompleteSetsByGeneration = async (data: number) => {
   try {
-    const response = await http.get<IPaginationRequest<IModelModel>>(
-      `api/model/get?` + qs.stringify(paginationModel)
+    const response = await http.get<Array<ICompleteSetModel>>(
+      `api/completeSet/get/by-generation/${data}`
+    );
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.request.status == 0 || error.request.status == 500) {
+        const unknownError: IRequestError = {
+          code: error.request.status,
+          errors: new Array<string>(ErrorStrings.backendNotResponse()),
+        };
+        throw unknownError;
+      }
+      let serverError: IRequestError = {
+        errors: error.response?.data.Errors,
+        code: error.response?.data.Code,
+      };
+      throw serverError;
+    }
+  }
+};
+export const getCompleteSetsByBrand = async (data: number) => {
+  try {
+    const response = await http.get<Array<ICompleteSetModel>>(
+      `api/completeSet/get/by-brand/${data}`
+    );
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.request.status == 0 || error.request.status == 500) {
+        const unknownError: IRequestError = {
+          code: error.request.status,
+          errors: new Array<string>(ErrorStrings.backendNotResponse()),
+        };
+        throw unknownError;
+      }
+      let serverError: IRequestError = {
+        errors: error.response?.data.Errors,
+        code: error.response?.data.Code,
+      };
+      throw serverError;
+    }
+  }
+};
+export const getCompleteSetsByModel = async (data: number) => {
+  try {
+    const response = await http.get<Array<ICompleteSetModel>>(
+      `api/completeSet/get/by-model/${data}`
     );
 
     return response.data;
@@ -61,13 +105,9 @@ export const getPaginatedModels = async (
   }
 };
 
-export const getModelsByBrand = async (id: number) => {
+export const addCompleteSet = async (data: ICompleteSetAddDTO) => {
   try {
-    const response = await http.get<Array<IModelModel>>(
-      `api/model/get/by-brand/${id}`
-    );
-
-    return response.data;
+    await http.post("api/completeSet/add", data);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.request.status == 0 || error.request.status == 500) {
@@ -86,46 +126,9 @@ export const getModelsByBrand = async (id: number) => {
   }
 };
 
-export const addModel = async (data: IAddModelModel) => {
+export const deleteCompleteSet = async (data: number) => {
   try {
-    const response = await http.post("api/model/add", data);
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      if (error.request.status == 0 || error.request.status == 500) {
-        const unknownError: IRequestError = {
-          code: error.request.status,
-          errors: new Array<string>(ErrorStrings.backendNotResponse()),
-        };
-        throw unknownError;
-      }
-      let serverError: IRequestError = {
-        errors: error.response?.data.Errors,
-        code: error.response?.data.Code,
-      };
-      throw serverError;
-    }
-  }
-};
-
-// export const updateBrand = async (data: IBrandModel) => {
-//   const response = await http
-//     .put("api/brand/update", data)
-//     .catch(function (error) {
-//       if (axios.isAxiosError(error)) {
-//         const serverError: BrandErrorType = {
-//           errorsString: error.response?.data as Array<string>,
-//         };
-//         if (serverError) {
-//           throw serverError;
-//         }
-//       }
-//     });
-//   return response;
-// };
-
-export const deleteModel = async (data: number) => {
-  try {
-    const response = await http.delete(`api/model/delete/${465465}`);
+    const response = await http.delete(`api/completeSet/delete/${data}`);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.request.status == 0 || error.request.status == 500) {
