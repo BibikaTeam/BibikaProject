@@ -46,6 +46,7 @@ namespace BibikaProject.WebUI.ExceptionMiddleware
                             Code = context.Response.StatusCode,
                             Errors = new string[] { "Internal Server Error." }
 
+
                         }.ToString());
 
                     }

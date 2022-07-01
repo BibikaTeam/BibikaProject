@@ -16,8 +16,6 @@ import { useNavigate } from "react-router-dom";
 
 import AuthorizationLayout from "../../containers/authorizationLayout";
 
-import { IRequestError } from "../../adminPanel/types";
-
 import { CredentialResponse, GoogleLogin, GoogleOAuthProvider, useGoogleLogin} from "@react-oauth/google";
 import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID } from "../../../constants";
 
@@ -32,7 +30,6 @@ const LoginPage: FC = () => {
   const { loginFacebookUser } = useActions();
   const [loading, setLoading] = useState<boolean>(false);
   const navigator = useNavigate();
-  const [errorStr, setErrorStr] = useState<string>();
 
   const initialValues: ILoginModel = {
     email: "",
@@ -45,12 +42,9 @@ const LoginPage: FC = () => {
       await loginUser(values);
       navigator("/");
       //  toast.success("Successfully login");
-    } catch (_error) {
-      const error: IRequestError = _error as IRequestError;
-      error.errors.forEach((e) => {
-        toast.error(e);
-      });
-      setErrorStr(error.errors[0]);
+    } catch (error) {
+      if (!error || !(error as LoginErrorType)) toast.error("Some error");
+      else toast.error((error as LoginErrorType).errorString);
     } finally {
       setLoading(false);
     }
@@ -91,7 +85,6 @@ const LoginPage: FC = () => {
             <div className="login-form-title-container">
               <span>Login</span>
             </div>
-            {errorStr && <h3 className="error-string-login">{errorStr}</h3>}
             <div className="login-form-container">
               <Form
                 className="login-form"
@@ -120,10 +113,7 @@ const LoginPage: FC = () => {
                   className="login-form-item"
                   name="password"
                   rules={[
-                    {
-                      required: true,
-                      message: "Please input your Password!",
-                    },
+                    { required: true, message: "Please input your Password!" },
                   ]}
                 >
                   <Input

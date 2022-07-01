@@ -16,7 +16,6 @@ import GenerationPage from "./components/adminPanel/generation";
 import EnginePage from "./components/adminPanel/engine";
 import CompleteSetPage from "./components/adminPanel/completeSet";
 import CarPage from "./components/adminPanel/car";
-import AdminBasedRoute from "./routing/adminBasedRoute";
 
 
 function App() {

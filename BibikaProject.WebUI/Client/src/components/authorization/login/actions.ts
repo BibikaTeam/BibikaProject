@@ -14,9 +14,6 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 
 import jwt_decode from "jwt-decode";
 
-import { IRequestError } from "../../adminPanel/types";
-import { ErrorStrings } from "../../../constants";
-
 export const loginUser = (data: ILoginModel) => {
   return async (dispatch: React.Dispatch<AuthAction>) => {
     try {
@@ -30,6 +27,8 @@ export const loginUser = (data: ILoginModel) => {
 
           const user = jwt_decode(token) as IUser;
 
+          console.log(user);
+
           //Write to redux
           dispatch({
             type: AuthActionTypes.AUTH_LOGIN,
@@ -40,18 +39,12 @@ export const loginUser = (data: ILoginModel) => {
       return Promise.resolve();
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        if (error.request.status == 0 || error.request.status == 500) {
-          const unknownError: IRequestError = {
-            code: error.request.status,
-            errors: new Array<string>(ErrorStrings.backendNotResponse()),
-          };
-          throw unknownError;
-        }
-        let serverError: IRequestError = {
-          errors: error.response?.data.Errors,
-          code: error.response?.data.Code,
+        const serverError: LoginErrorType = {
+          errorString: error.response?.data as string,
         };
-        throw serverError;
+        if (serverError) {
+          return Promise.reject(serverError);
+        }
       }
       return Promise.reject();
     }
