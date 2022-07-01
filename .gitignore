@@ -15,3 +15,4 @@ bld/
 internal_logs/
 logs/
 images/
+package-lock.json
