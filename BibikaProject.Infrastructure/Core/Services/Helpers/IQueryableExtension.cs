@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using BibikaProject.Domain.Entities.Core;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Linq.Dynamic.Core;
 
 namespace BibikaProject.Infrastructure.Core.Services.Helpers
@@ -34,6 +36,22 @@ namespace BibikaProject.Infrastructure.Core.Services.Helpers
             }
 
            return queryable.Where($"{property}.Contains(@0)", search);
+        }
+
+        public static IQueryable<T> IncldueAllPostProperties<T>(this IQueryable<T> queryable) where T : Post
+        {
+            return queryable.Include(x => x.Car)
+                            .ThenInclude(x => x.Generation)
+                            .ThenInclude(x => x.Model)
+                            .ThenInclude(x => x.Brand)
+                            .Include(x => x.Car)
+                            .ThenInclude(x => x.CarBodyId)
+                            .Include(x => x.Car)
+                            .ThenInclude(x => x.EngineId)
+                            .Include(x => x.Car)
+                            .ThenInclude(x => x.GearBoxId)
+                            .Include(x => x.Car)
+                            .ThenInclude(x => x.CompleteSetId);
         }
     }
 }

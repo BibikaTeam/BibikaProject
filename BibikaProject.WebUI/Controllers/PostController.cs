@@ -1,4 +1,5 @@
 ﻿using BibikaProject.Application.Core.DTO.Post;
+using BibikaProject.Application.Core.Requests;
 using BibikaProject.Application.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -44,8 +45,16 @@ namespace BibikaProject.WebUI.Controllers
             return Ok();
         }
 
-        [HttpGet("get")]
+        [HttpGet("get/all")]
         public async Task<IActionResult> GetAllPosts()
+        {
+            var result = await postService.GetAllPosts();
+
+            return Ok(result);
+        }
+
+        [HttpGet("get")]
+        public async Task<IActionResult> GetPagedPosts(PagedPostRequest pagedPostRequest)
         {
             var result = await postService.GetAllPosts();
 
