@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using System;
-using System.Collections.Generic;
 
 namespace BibikaProject.Application.Core.DTO.Post
 {
@@ -11,6 +10,8 @@ namespace BibikaProject.Application.Core.DTO.Post
         public DateTime Year { get; set; }
 
         public string Location { get; set; }
+
+        public int Mileage { get; set; }
 
         public string Color { get; set; }
 
@@ -26,6 +27,7 @@ namespace BibikaProject.Application.Core.DTO.Post
             RuleFor(x => x.Description).NotEmpty();
             RuleFor(x => x.Location).NotEmpty();
             RuleFor(x => x.Color).NotEmpty();
+            RuleFor(x => x.Mileage).NotNull();
             RuleFor(x => x.Year).NotNull();
             RuleFor(x => x.SellerId).NotEmpty();
             RuleFor(x => x.CarId).NotNull().GreaterThanOrEqualTo(1);

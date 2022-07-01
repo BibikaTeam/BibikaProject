@@ -8,7 +8,6 @@ using BibikaProject.Application.Core.DTO.Brand;
 using BibikaProject.Application.Core.DTO.Car;
 using BibikaProject.Application.Core.DTO.Generation;
 using BibikaProject.Application.Core.DTO.Model;
-using BibikaProject.Infrastructure.Identity;
 using BibikaProject.Infrastructure.Identity.Commands;
 using BibikaProject.Infrastructure.Identity.Queries;
 using BibikaProject.Infrastructure.Identity.Services;
@@ -28,6 +27,7 @@ using BibikaProject.Infrastructure.Core.Commands;
 using BibikaProject.Infrastructure.Core.Queries;
 using BibikaProject.Application.Core.Queries;
 using BibikaProject.Application.Core.DTO.Post;
+using BibikaProject.Infrastructure.Identity.Services.Settings;
 
 namespace BibikaProject.WebUI
 {
@@ -211,6 +211,20 @@ namespace BibikaProject.WebUI
 
             services.AddTransient<ICarBodyCommand, CarBodyCommand>();
             services.AddTransient<ICarBodyQuery, CarBodyQuery>();
+        }
+
+        public static void ConfigureFacebookSettings(this IServiceCollection services, IConfiguration configuration)
+        {
+            var settings = configuration.GetSection("Facebook");
+
+            services.Configure<FacebookAuthSettings>(settings);
+        }
+
+        public static void ConfigureGoogleSettings(this IServiceCollection services, IConfiguration configuration)
+        {
+            var settings = configuration.GetSection("Google");
+
+            services.Configure<GoogleAuthSettings>(settings);
         }
     }
 }

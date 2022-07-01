@@ -6,7 +6,10 @@ import AdminLayout from "./components/containers/adminLayout";
 import RegisterPage from "./components/authorization/register";
 import LoginPage from "./components/authorization/login";
 
+
 //admin pages
+import AddPostPage from "./components/posts/add"
+import ModelPage from "./components/adminPanel/model";
 import BrandPage from "./components/adminPanel/brand";
 import ModelPage from "./components/adminPanel/model";
 import GenerationPage from "./components/adminPanel/generation";
@@ -14,6 +17,7 @@ import EnginePage from "./components/adminPanel/engine";
 import CompleteSetPage from "./components/adminPanel/completeSet";
 import CarPage from "./components/adminPanel/car";
 import AdminBasedRoute from "./routing/adminBasedRoute";
+
 
 function App() {
   return (
@@ -31,6 +35,7 @@ function App() {
               <Route path="/admin/complete-set" element={<CompleteSetPage />} />
               <Route path="/admin/car" element={<CarPage />} />
             </Route>
+
           </Route>
         </Route>
       </Routes>

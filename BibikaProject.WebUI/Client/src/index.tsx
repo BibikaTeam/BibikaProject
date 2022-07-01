@@ -10,8 +10,12 @@ import "./index.css";
 
 import { createBrowserHistory } from "history";
 import configureStore from "./store/configureStore";
+
 import { AuthUser } from "./components/authorization/login/service";
 const token = localStorage.getItem("token");
+
+import { GoogleOAuthProvider } from "@react-oauth/google";
+
 
 const history = createBrowserHistory();
 const store = configureStore(history);
@@ -24,8 +28,8 @@ if (token) {
 
 root.render(
   // <React.StrictMode>
-  <Provider store={store}>
-    <App />
+  <Provider store={store}>  
+      <App />
   </Provider>
   // </React.StrictMode>
 );
