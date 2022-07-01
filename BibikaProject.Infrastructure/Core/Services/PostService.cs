@@ -2,9 +2,13 @@
 using BibikaProject.Application.Core.Commands;
 using BibikaProject.Application.Core.DTO.Post;
 using BibikaProject.Application.Core.Queries;
+using BibikaProject.Application.Core.Requests;
+using BibikaProject.Application.Core.Responses;
 using BibikaProject.Application.Core.Services;
 using BibikaProject.Domain.Entities.Core;
+using BibikaProject.Infrastructure.Core.Services.Helpers;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -56,6 +60,38 @@ namespace BibikaProject.Infrastructure.Core.Services
             await command.AddOptionsToPost(optionsToPostDTO.PostId, optionsToPostDTO.OptionsId);
 
             await command.SaveChangesAsync();
+        }
+
+        public async Task<PagedList<PostDTO>> GetPagedPosts(PagedPostRequest pagedPostRequest)
+        {
+            IQueryable<Post> posts = query.GetAll()
+                                          .IncldueAllPostProperties();
+
+            var response = new PagedList<PostDTO> { CurrentPage = pagedPostRequest.Page };
+
+            posts = posts.Search(pagedPostRequest.Search, "Description");
+
+            foreach (var filter in pagedPostRequest.Filters)
+            {
+                posts = posts.Where(x => x.Year <= filter.YearMax && x.Year >= filter.YearMin)
+                             .Where(x => x.Location == filter.Location)
+                             .Where(x => x.Color == filter.Color)
+                             .Where(x => x.Car.GenerationId == filter.GenerationId)
+                             .Where(x => x.Car.Generation.ModelId == filter.ModelId)
+                             .Where(x => x.Car.Generation.Model.BrandId == filter.BrandId)
+                             .Where(x => x.Car.EngineId == filter.EngineId)
+                             .Where(x => x.Car.CarBodyId == filter.CarBodyId)
+                             .Where(x => x.Car.CompleteSetId == filter.CompleteSetId)
+                             .Where(x => x.Car.GearBoxId == filter.GearBoxId); 
+            }
+
+            response.AllPages = (int)Math.Ceiling((double)await posts.CountAsync() / (double)pagedPostRequest.CountOnPage);
+
+            posts = posts.GetPage(pagedPostRequest.Page, pagedPostRequest.CountOnPage).AsNoTracking();
+
+            response.Data = await posts.Select(x => mapper.Map<PostDTO>(x)).ToListAsync();
+
+            return response;
         }
     }
 }
