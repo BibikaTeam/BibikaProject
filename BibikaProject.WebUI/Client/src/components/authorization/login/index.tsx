@@ -10,11 +10,13 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 import AuthorizationLayout from "../../containers/authorizationLayout";
+import { IRequestError } from "../../adminPanel/types";
 
 const LoginPage: FC = () => {
   const { loginUser } = useActions();
   const [loading, setLoading] = useState<boolean>(false);
   const navigator = useNavigate();
+  const [errorStr, setErrorStr] = useState<string>();
 
   const initialValues: ILoginModel = {
     email: "",
@@ -27,9 +29,12 @@ const LoginPage: FC = () => {
       await loginUser(values);
       navigator("/");
       //  toast.success("Successfully login");
-    } catch (error) {
-      if (!error || !(error as LoginErrorType)) toast.error("Some error");
-      else toast.error((error as LoginErrorType).errorString);
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
+      setErrorStr(error.errors[0]);
     } finally {
       setLoading(false);
     }
@@ -43,6 +48,7 @@ const LoginPage: FC = () => {
             <div className="login-form-title-container">
               <span>Login</span>
             </div>
+            {errorStr && <h3 className="error-string-login">{errorStr}</h3>}
             <div className="login-form-container">
               <Form
                 className="login-form"
@@ -71,7 +77,10 @@ const LoginPage: FC = () => {
                   className="login-form-item"
                   name="password"
                   rules={[
-                    { required: true, message: "Please input your Password!" },
+                    {
+                      required: true,
+                      message: "Please input your Password!",
+                    },
                   ]}
                 >
                   <Input
