@@ -15,6 +15,9 @@ import CompleteSetPage from "./components/adminPanel/completeSet";
 import CarPage from "./components/adminPanel/car";
 import AdminBasedRoute from "./routing/adminBasedRoute";
 
+import UserProfile from "./components/userCabinet";
+import AuthorizedBasedRoute from "./routing/authorizedBasedRoute";
+
 function App() {
   return (
     <Router>
@@ -22,6 +25,9 @@ function App() {
         <Route path="/">
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route element={<AuthorizedBasedRoute />}>
+            <Route path="/user-profile" element={<UserProfile />}></Route>
+          </Route>
           <Route path="/admin" element={<AdminBasedRoute />}>
             <Route path="/admin" element={<AdminLayout />}>
               <Route path="/admin/brand" element={<BrandPage />} />

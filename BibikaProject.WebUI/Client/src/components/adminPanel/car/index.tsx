@@ -158,7 +158,7 @@ const CarPage = () => {
   };
 
   //Delete
-  const handleCompleteSetDelete = async (record: ICarModel) => {
+  const handleCarDelete = async (record: ICarModel) => {
     try {
       await deleteCar(record.id);
       toast.success("Deleted");
@@ -266,7 +266,7 @@ const CarPage = () => {
         <div className="buttonGroup">
           <Popconfirm
             title={`Ви впевнені що хочете видалити цю комплектацію?`}
-            onConfirm={() => handleCompleteSetDelete(record)}
+            onConfirm={() => handleCarDelete(record)}
           >
             <Button type="primary" htmlType="submit" className="danger">
               Видалити

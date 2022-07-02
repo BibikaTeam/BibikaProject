@@ -44,12 +44,12 @@ namespace BibikaProject.Infrastructure.Identity.Services
 
             if (user == null)
             {
-                throw new IdentityException("Wrong password or email", HttpStatusCode.NotFound);
+                throw new IdentityException("Wrong password or email", HttpStatusCode.BadRequest);
             }
 
             if (!await userManager.CheckPasswordAsync(user, request.Password))
             {
-                throw new IdentityException("Wrong password or email", HttpStatusCode.NotFound);
+                throw new IdentityException("Wrong password or email", HttpStatusCode.BadRequest);
             }
 
             var JWT = await CreateTokenAsync(user);
