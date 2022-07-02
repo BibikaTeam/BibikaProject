@@ -114,15 +114,15 @@ namespace BibikaProject.WebUI
                 endpoints.MapControllers();
             });
 
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "Client";
+            //app.UseSpa(spa =>
+            //{
+            //    spa.Options.SourcePath = "Client";
 
-                //if (env.IsDevelopment())
-                //{
-                //    spa.UseReactDevelopmentServer(npmScript: "start");
-                //}
-            });
+            //    //if (env.IsDevelopment())
+            //    //{
+            //    //    spa.UseReactDevelopmentServer(npmScript: "start");
+            //    //}
+            //});
         }
     }
 }
