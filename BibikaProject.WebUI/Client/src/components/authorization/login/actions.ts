@@ -16,6 +16,7 @@ import jwt_decode from "jwt-decode";
 
 import { IRequestError } from "../../adminPanel/types";
 import { ErrorStrings } from "../../../constants";
+import { CredentialResponse } from "@react-oauth/google";
 
 export const loginUser = (data: ILoginModel) => {
   return async (dispatch: React.Dispatch<AuthAction>) => {
@@ -91,7 +92,7 @@ export const loginGoogleUser = (data: CredentialResponse) => {
       return Promise.reject();
     }
   };
-}
+};
 
 export const loginFacebookUser = (data: FacebookLoginModel) => {
   return async (dispatch: React.Dispatch<AuthAction>) => {
@@ -106,7 +107,7 @@ export const loginFacebookUser = (data: FacebookLoginModel) => {
 
           const user = jwt_decode(token) as IUser;
 
-          console.log(1);      
+          console.log(1);
           //Write to redux
           dispatch({
             type: AuthActionTypes.AUTH_LOGIN,
@@ -114,8 +115,8 @@ export const loginFacebookUser = (data: FacebookLoginModel) => {
           });
         });
 
-        console.log(2);
-      
+      console.log(2);
+
       return Promise.resolve();
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -129,4 +130,4 @@ export const loginFacebookUser = (data: FacebookLoginModel) => {
       return Promise.reject();
     }
   };
-}
+};
