@@ -45,13 +45,13 @@ namespace BibikaProject.Infrastructure.Core.Services.Helpers
                             .ThenInclude(x => x.Model)
                             .ThenInclude(x => x.Brand)
                             .Include(x => x.Car)
-                            .ThenInclude(x => x.CarBodyId)
+                            .ThenInclude(x => x.CarBody)
                             .Include(x => x.Car)
-                            .ThenInclude(x => x.EngineId)
+                            .ThenInclude(x => x.Engine)
                             .Include(x => x.Car)
-                            .ThenInclude(x => x.GearBoxId)
+                            .ThenInclude(x => x.GearBox)
                             .Include(x => x.Car)
-                            .ThenInclude(x => x.CompleteSetId);
+                            .ThenInclude(x => x.CompleteSet);
         }
     }
 }
