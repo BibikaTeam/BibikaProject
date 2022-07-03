@@ -49,10 +49,10 @@ namespace BibikaProject.WebUI.Controllers
             return Ok(result);
         }
 
-        [HttpGet("get")]
-        public async Task<IActionResult> GetPagedPosts(PagedPostRequest pagedPostRequest)
+        [HttpPost("get")]
+        public async Task<IActionResult> GetPagedPosts([FromBody] PagedPostRequest pagedPostRequest)
         {
-            var result = await postService.GetAllPosts();
+            var result = await postService.GetPagedPosts(pagedPostRequest);
 
             return Ok(result);
         }
