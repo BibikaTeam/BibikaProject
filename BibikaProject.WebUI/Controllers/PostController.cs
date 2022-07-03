@@ -1,4 +1,5 @@
 ﻿using BibikaProject.Application.Core.DTO.Post;
+using BibikaProject.Application.Core.Requests;
 using BibikaProject.Application.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -40,10 +41,18 @@ namespace BibikaProject.WebUI.Controllers
             return Ok();
         }
 
-        [HttpGet("get")]
+        [HttpGet("get/all")]
         public async Task<IActionResult> GetAllPosts()
         {
             var result = await postService.GetAllPosts();
+
+            return Ok(result);
+        }
+
+        [HttpPost("get")]
+        public async Task<IActionResult> GetPagedPosts([FromBody] PagedPostRequest pagedPostRequest)
+        {
+            var result = await postService.GetPagedPosts(pagedPostRequest);
 
             return Ok(result);
         }
