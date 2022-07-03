@@ -1,4 +1,4 @@
-﻿namespace BibikaProject.Infrastructure.Identity
+﻿namespace BibikaProject.Infrastructure.Identity.Services.Settings
 {
     public class JWTSettings
     {
