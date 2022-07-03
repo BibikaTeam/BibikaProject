@@ -59,6 +59,22 @@ namespace BibikaProject.Infrastructure.Core.Services
             {
                 cars = cars.Where(x => x.GenerationId == pagedCarRequest.GenerationId);
             }
+            if (pagedCarRequest.CarBodyId != 0)
+            {
+                cars = cars.Where(x => x.CarBodyId == pagedCarRequest.CarBodyId);
+            }
+            if (pagedCarRequest.EngineId != 0)
+            {
+                cars = cars.Where(x => x.EngineId == pagedCarRequest.EngineId);
+            }
+            if (pagedCarRequest.GearboxId != 0)
+            {
+                cars = cars.Where(x => x.GearBoxId == pagedCarRequest.GearboxId);
+            }
+            if (pagedCarRequest.CompleteSetId != 0)
+            {
+                cars = cars.Where(x => x.CompleteSetId == pagedCarRequest.CompleteSetId);
+            }
 
             response.AllPages = (int)Math.Ceiling((double)await cars.CountAsync() / (double)pagedCarRequest.CountOnPage);
 

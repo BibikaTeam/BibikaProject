@@ -1,28 +1,37 @@
 import { FC, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { flushSync } from "react-dom";
+import { Form, Input, Button, Checkbox, Space, Spin } from "antd";
+import { FacebookOutlined } from "@ant-design/icons";
 
-import { Form, Input, Button, Checkbox, Space, Spin } from 'antd';
-import { FacebookOutlined } from '@ant-design/icons';
 import { ILoginModel, LoginErrorType } from "../types";
 
 import { useActions } from "../../../hooks/useActions";
 import { toast } from "react-toastify";
 
+import { useNavigate } from "react-router-dom";
+
 import AuthorizationLayout from "../../containers/authorizationLayout";
-import { CredentialResponse, GoogleLogin, GoogleOAuthProvider, useGoogleLogin} from "@react-oauth/google";
+import { IRequestError } from "../../adminPanel/types";
+import {
+  CredentialResponse,
+  GoogleLogin,
+  GoogleOAuthProvider,
+  useGoogleLogin,
+} from "@react-oauth/google";
 import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID } from "../../../constants";
 
 //import FacebookLogin from 'react-facebook-login';
-import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
+import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { ReactFacebookLoginInfo } from "react-facebook-login";
 
 const LoginPage: FC = () => {
-
   const { loginUser } = useActions();
   const { loginGoogleUser } = useActions();
   const { loginFacebookUser } = useActions();
   const [loading, setLoading] = useState<boolean>(false);
+  const navigator = useNavigate();
+  const [errorStr, setErrorStr] = useState<string>();
 
   const initialValues: ILoginModel = {
     email: "",
@@ -31,35 +40,25 @@ const LoginPage: FC = () => {
 
   const onFinish = async (values: ILoginModel) => {
     setLoading(true);
-     try {
-       await loginUser(values);
-       toast.success("Successfully login");
-     } catch (error) {
-       if (!error || !(error as LoginErrorType)) toast.error("Some error");
-       else toast.error((error as LoginErrorType).errorString);
-     } finally {
-       setLoading(false);
-     }
+    try {
+      await loginUser(values);
+      navigator("/");
+      //  toast.success("Successfully login");
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
+      setErrorStr(error.errors[0]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const responseGoogle = async (values: CredentialResponse) => {
     setLoading(true);
-     try {
-       await loginGoogleUser(values);
-       toast.success("Successfully login");
-     } catch (error) {
-       if (!error || !(error as LoginErrorType)) toast.error("Some error");
-       else toast.error((error as LoginErrorType).errorString);
-     } finally {
-       setLoading(false);
-     }
-  }
-
-  const responseFacebook = async (values: ReactFacebookLoginInfo) => {
-    flushSync(() => {});
-    setLoading(true);
     try {
-      await loginFacebookUser({facebookToken: values.accessToken});
+      await loginGoogleUser(values);
       toast.success("Successfully login");
     } catch (error) {
       if (!error || !(error as LoginErrorType)) toast.error("Some error");
@@ -67,7 +66,21 @@ const LoginPage: FC = () => {
     } finally {
       setLoading(false);
     }
-  }
+  };
+
+  const responseFacebook = async (values: ReactFacebookLoginInfo) => {
+    flushSync(() => {});
+    setLoading(true);
+    try {
+      await loginFacebookUser({ facebookToken: values.accessToken });
+      toast.success("Successfully login");
+    } catch (error) {
+      if (!error || !(error as LoginErrorType)) toast.error("Some error");
+      else toast.error((error as LoginErrorType).errorString);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Spin tip="Loading..." spinning={loading} size="large">
@@ -75,8 +88,9 @@ const LoginPage: FC = () => {
         <div className="login-container">
           <div className="login-header-container">
             <div className="login-form-title-container">
-              <span>Login</span>            
+              <span>Login</span>
             </div>
+            {errorStr && <h3 className="error-string-login">{errorStr}</h3>}
             <div className="login-form-container">
               <Form
                 className="login-form"
@@ -86,33 +100,42 @@ const LoginPage: FC = () => {
                 <Form.Item
                   className="login-form-item"
                   name="email"
-                  rules={[{ type:'email', validateTrigger: ['onBlur', 'onChange'], required: true, message: 'Please input your Email!' }]}>
-                  <Input 
+                  rules={[
+                    {
+                      type: "email",
+                      validateTrigger: ["onBlur", "onChange"],
+                      required: true,
+                      message: "Please input your Email!",
+                    },
+                  ]}
+                >
+                  <Input
                     className="login-form-input"
                     type="email"
-                    placeholder="Email" />
+                    placeholder="Email"
+                  />
                 </Form.Item>
                 <Form.Item
                   className="login-form-item"
                   name="password"
-                  rules={[{ required: true, message: 'Please input your Password!' }]}>
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Password!",
+                    },
+                  ]}
+                >
                   <Input
                     className="login-form-input"
                     type="password"
                     placeholder="Password"
                   />
                 </Form.Item>
-                <Form.Item
-                  className="login-form-item login-form-forgot-password">
-                  <a>
-                    Forgot password
-                  </a>
+                <Form.Item className="login-form-item login-form-forgot-password">
+                  <a>Forgot password</a>
                 </Form.Item>
-                <Form.Item
-                  className="login-form-item">
-                  <Button
-                    className="login-form-button"
-                    htmlType="submit">
+                <Form.Item className="login-form-item">
+                  <Button className="login-form-button" htmlType="submit">
                     Login
                   </Button>
                 </Form.Item>
@@ -127,19 +150,19 @@ const LoginPage: FC = () => {
                     Login with Google        
                   </Button>    */}
                   <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-                    <GoogleLogin                  
+                    <GoogleLogin
                       onSuccess={responseGoogle}
                       size="large"
                       theme="outline"
-                      type="icon"  
-                    />           
-                  </GoogleOAuthProvider>       
+                      type="icon"
+                    />
+                  </GoogleOAuthProvider>
                   <FacebookLogin
                     appId={FACEBOOK_APP_ID}
                     autoLoad={false}
                     fields="name,email"
                     callback={responseFacebook}
-                    render={renderProps => (
+                    render={(renderProps) => (
                       // <Button
                       //   className="login-form-button-external-facebook"
                       //   onClick={renderProps.onClick}>
@@ -150,29 +173,41 @@ const LoginPage: FC = () => {
                       //   Login with Facebook
                       // </Button>
 
-                      <Button 
-                        className="login-form-button-external-facebook-small"          
-                        size="large" 
-                        onClick={renderProps.onClick} /*icon={<FacebookOutlined />}*/>
-
-                        <svg className="login-external-logo" width="25" height="25" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M32.7664 16.098C32.7664 7.2071 25.6033 0 16.7684 0C7.92946 0.00199975 0.766357 7.2071 0.766357 16.1C0.766357 24.133 6.61763 30.7922 14.2647 32V20.7514H10.2052V16.1H14.2687V12.5504C14.2687 8.51694 16.6584 6.28921 20.3119 6.28921C22.0637 6.28921 23.8935 6.60318 23.8935 6.60318V10.5627H21.8757C19.89 10.5627 19.27 11.8045 19.27 13.0784V16.098H23.7055L22.9976 20.7494H19.268V31.998C26.9151 30.7902 32.7664 24.131 32.7664 16.098Z"/>
+                      <Button
+                        className="login-form-button-external-facebook-small"
+                        size="large"
+                        onClick={
+                          renderProps.onClick
+                        } /*icon={<FacebookOutlined />}*/
+                      >
+                        <svg
+                          className="login-external-logo"
+                          width="25"
+                          height="25"
+                          viewBox="0 0 33 32"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path d="M32.7664 16.098C32.7664 7.2071 25.6033 0 16.7684 0C7.92946 0.00199975 0.766357 7.2071 0.766357 16.1C0.766357 24.133 6.61763 30.7922 14.2647 32V20.7514H10.2052V16.1H14.2687V12.5504C14.2687 8.51694 16.6584 6.28921 20.3119 6.28921C22.0637 6.28921 23.8935 6.60318 23.8935 6.60318V10.5627H21.8757C19.89 10.5627 19.27 11.8045 19.27 13.0784V16.098H23.7055L22.9976 20.7494H19.268V31.998C26.9151 30.7902 32.7664 24.131 32.7664 16.098Z" />
                         </svg>
                       </Button>
-                  )}/>                
-                </div>     
+                    )}
+                  />
+                </div>
               </Form>
-            </div>       
+            </div>
           </div>
           <div className="login-footer">
             <div className="login-footer-title-container">
               <span>Do you wanna join Bibika?</span>
             </div>
             <div className="login-footer-button-container">
-              <Button className="login-footer-button"><Link to="/register">Create Account</Link></Button>
+              <Button className="login-footer-button">
+                <Link to="/register">Create Account</Link>
+              </Button>
             </div>
           </div>
-        </div>   
+        </div>
       </AuthorizationLayout>
     </Spin>
   );
