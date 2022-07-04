@@ -10,12 +10,12 @@ namespace BibikaProject.WebUI.Controllers
     [ApiController]
     public class PostController : ControllerBase
     {
-        private readonly IPostService postService;
-
         public PostController(IPostService postService)
         {
             this.postService = postService;
         }
+
+        private readonly IPostService postService;
 
         [HttpPost("add")]
         public async Task<IActionResult> AddNewPost(AddPostDTO postDTO)

@@ -38,6 +38,7 @@ namespace BibikaProject.Infrastructure.Core.Services
         public async Task<List<PostDTO>> GetAllPosts()
         {
             IQueryable<Post> posts = query.GetAll()
+                                          .Include(x => x.Likes)
                                           .Include(x => x.Seller)
                                           .Include(x => x.Car).ThenInclude(x => x.Engine)
                                           .Include(x => x.Car).ThenInclude(x => x.CompleteSet)

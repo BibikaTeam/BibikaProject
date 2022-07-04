@@ -29,6 +29,8 @@ namespace BibikaProject.Domain.Entities.Core
 
         public ICollection<Option> Options { get; set; }
 
+        public ICollection<ApplicationUser> Likes { get; set; }
+
         [Required]
         public Car Car { get; set; }
     }
