@@ -5,16 +5,18 @@ import { ToastContainer } from "react-toastify";
 import AdminLayout from "./components/containers/adminLayout";
 import RegisterPage from "./components/authorization/register";
 import LoginPage from "./components/authorization/login";
+import 'bootstrap/dist/css/bootstrap.css';
 
 import ModelPage from "./components/adminPanel/model";
 import BrandPage from "./components/adminPanel/brand";
 import EnginePage from "./components/adminPanel/engine";
+import DefaultLayout from "./components/containers/mainLayout/DefaultLayout";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/">
+        <Route path="/" element={<DefaultLayout/>}>
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/admin" element={<AdminLayout />}>
