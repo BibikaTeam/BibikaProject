@@ -1,0 +1,13 @@
+.layout-container{
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    align-items: center;
+
+ 
+}
+.button{
+    align-items: center;
+    padding: 20px;
+    background-color: blue;
+}

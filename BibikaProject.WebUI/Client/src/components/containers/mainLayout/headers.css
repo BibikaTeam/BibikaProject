@@ -1,0 +1,27 @@
+.imgNavbar {
+    max-height: 50px;
+    width: 50px;
+    color: black;
+    
+
+  }
+
+  .container{
+    background-color: rgb(2, 106, 106);
+  
+  }
+  .pad {
+    padding-top: 5rem;
+    background-color: #f7f7f6;
+    text-decoration: aqua;
+    flood-color: "red";
+    
+  }
+  
+  .defaultPositions {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: space-between;
+  }
+  
