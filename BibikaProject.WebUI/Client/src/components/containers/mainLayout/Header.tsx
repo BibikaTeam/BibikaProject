@@ -12,12 +12,12 @@ const DefaultHeader = () => {
 
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark  container" >
+    <nav className="navbar navbar-expand-lg navbar-light bg-light" >
       <div className="container" >
         
    
-        <Link className="navbar-brand"  to="/">
-          Bibika
+        <Link className="navbar-brand"   to="/">
+         <span style={{ color: "cyan" }}>Bibika</span>
         </Link>
         <button
           className="navbar-toggler"

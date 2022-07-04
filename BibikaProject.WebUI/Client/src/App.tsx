@@ -5,7 +5,7 @@ import { ToastContainer } from "react-toastify";
 import AdminLayout from "./components/containers/adminLayout";
 import RegisterPage from "./components/authorization/register";
 import LoginPage from "./components/authorization/login";
-import 'bootstrap/dist/css/bootstrap.css';
+
 
 import ModelPage from "./components/adminPanel/model";
 import BrandPage from "./components/adminPanel/brand";

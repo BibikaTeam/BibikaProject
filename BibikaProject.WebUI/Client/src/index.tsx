@@ -6,14 +6,15 @@ import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 
 import "./styles/theme.scss";
-import "./index.css";
+import "./index.scss";
 
-import { createBrowserHistory } from "history";
+
+// import { createBrowserHistory } from "history";
 import configureStore from "./store/configureStore";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
-const history = createBrowserHistory();
-const store = configureStore(history);
+// const history = createBrowserHistory();
+const store = configureStore();
 
 let root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 

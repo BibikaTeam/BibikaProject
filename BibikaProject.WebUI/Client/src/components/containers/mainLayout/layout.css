@@ -8,6 +8,16 @@
 }
 .button{
     align-items: center;
+    padding: 80px,40px;
+    text-align: center;
+    margin: 40px;
+}
+.carcontainer{
+    display: flex;
+    justify-content: center;
     padding: 20px;
-    background-color: blue;
+    align-items: center;
+    margin: 20px;
+
+ 
 }

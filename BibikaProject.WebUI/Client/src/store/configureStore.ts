@@ -13,10 +13,10 @@ const rootReducer = combineReducers({
 });
 
 export default function configureStore(
-  history: History,
+ 
   initialState?: ApplicationState
 ) {
-  const middleware = [thunk, routerMiddleware(history)];
+  const middleware = [thunk];
 
   const enhancers = [];
   const windowIfDefined =

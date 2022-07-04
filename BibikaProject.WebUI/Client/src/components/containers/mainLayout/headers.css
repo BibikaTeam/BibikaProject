@@ -6,14 +6,10 @@
 
   }
 
-  .container{
-    background-color: rgb(2, 106, 106);
-  
-  }
   .pad {
-    padding-top: 5rem;
+    padding-top: 2rem;
     background-color: #f7f7f6;
-    text-decoration: aqua;
+    text-decoration: rgb(211, 215, 215);
     flood-color: "red";
     
   }

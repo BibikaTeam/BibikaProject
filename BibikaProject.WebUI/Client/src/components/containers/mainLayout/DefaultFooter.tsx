@@ -4,7 +4,7 @@ import "./footer.css";
 
 const DefaultFooter = () => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid container footer-container" >
           <button
             className="navbar-toggler"
