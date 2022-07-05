@@ -3,7 +3,7 @@ import { Radio, Select } from "antd";
 import React from "react";
 import DefaultFooter from "./DefaultFooter";
 import Header from "./Header";
-import SearchPanel from "./SearchPanel"
+import SearchPanel from "./SearchPanel";
 import "./headers.css";
 import "./layout.css";
 import { Carousel, Col, Row } from "antd";
@@ -14,26 +14,24 @@ import { Image } from "antd";
 import { Button, Dropdown, Menu, message, Space, Tooltip } from "antd";
 import { DownOutlined, UserOutlined } from "@ant-design/icons";
 
-
 const DefaultLayout = () => {
   return (
     <div className="defaultPositions">
-      
       <div>
-        <Header /></div>
+        <Header />
+      </div>
 
-        <div>
-          <Outlet />
-         </div>
-
-          <div><SearchPanel/></div>
-
-         
-
-      
       <div>
-      <DefaultFooter />
-    </div>
+        <Outlet />
+      </div>
+
+      <div>
+        <SearchPanel />
+      </div>
+
+      <div>
+        <DefaultFooter />
+      </div>
     </div>
   );
 };
