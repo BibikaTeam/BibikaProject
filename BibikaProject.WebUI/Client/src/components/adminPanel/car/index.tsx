@@ -10,7 +10,9 @@ import {
   IBrandModel,
   ICarBodyModel,
   ICarModel,
+  ICompleteSetModel,
   IEngineModel,
+  IGearboxModel,
   IGenerationModel,
   IModelModel,
   IPaginationCarModel,
@@ -21,12 +23,14 @@ import {
   addCar,
   deleteCar,
   getAllCarBodies,
+  getAllGearboxes,
   getCarsByPaginationModel,
 } from "./service";
 
 import { Table, notification, Popconfirm, Button, Select, Row, Col, Form } from "antd";
 import type { NotificationPlacement } from "antd/lib/notification";
 import { getAllEngines } from "../engine/service";
+import { getAllCompleteSets } from "../completeSet/service";
 
 const Context = React.createContext({ name: "Default" });
 
@@ -42,6 +46,8 @@ const CarPage = () => {
   const [generations, setGenerations] = useState<Array<IGenerationModel>>([]);
   const [engines, setEngines] = useState<Array<IEngineModel>>([]);
   const [carBodies, setCarBodies] = useState<Array<ICarBodyModel>>([]);
+  const [comleteSets, setComleteSets] = useState<Array<ICompleteSetModel>>([]);
+  const [gearboxes, setGearboxes] = useState<Array<IGearboxModel>>([]);
 
   const [currentBrand, setCurrentBrand] = useState<number>(0);
   const [currentModel, setCurrentModel] = useState<number>(0);
@@ -73,6 +79,8 @@ const CarPage = () => {
       await updateCars();
       await setAllEngines();
       await setAllCarBodies();
+      await setAllCopleteSets();
+      await setAllGearboxes();
     })();
   }, []);
 
@@ -165,7 +173,33 @@ const CarPage = () => {
     }
   };
 
-  const handleAddCar = async (values: IAddCarModel) => {
+  const setAllCopleteSets = async () => {
+    try {
+      await getAllCompleteSets().then((data) => {
+        setComleteSets(data as ICompleteSetModel[]);
+      })
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
+    }
+  }
+
+  const setAllGearboxes = async () => {
+    try {
+      await getAllGearboxes().then((data) => {
+        setGearboxes(data as IGearboxModel[]);
+      });
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
+    }
+  }
+
+  const handleAddCar = async (values: ICarModel) => {
     setLoading(true);
     try {
       await addCar(values);
@@ -250,7 +284,7 @@ const CarPage = () => {
     setModalAdd(false);
   };
 
-  const handleFormSubmit = (value: IAddCarModel) => {
+  const handleFormSubmit = (value: ICarModel) => {
     handleAddCar(value);
   }
 
@@ -316,7 +350,7 @@ const CarPage = () => {
       render: (text: string, record: ICarModel) => (
         <div className="buttonGroup">
           <Popconfirm
-            title={`Ви впевнені що хочете видалити цю комплектацію?`}
+            title={`Ви впевнені що хочете видалити цю машину?`}
             onConfirm={() => handleDeleteCar(record)}
           >
             <Button type="primary" htmlType="submit" className="danger">
@@ -404,7 +438,7 @@ const CarPage = () => {
         </Col>
       </Row>
       <FormModal
-        title="Додавання нової генерації авто"
+        title="Додавання нової збірки авто"
         visible={isModalAdd}
         onCancel={() => setModalAdd(false)}
         onSubmit={handleOkModalAddNewCar}
@@ -417,6 +451,34 @@ const CarPage = () => {
           autoComplete="off"
           form={form}
         >
+          <Form.Item
+            label="Brand"
+            name="brandId"
+            rules={[{ required: true, message: "Виберіть марку машини" }]}
+          >
+            <Select
+              placeholder="Select brand"
+              //onChange={handleBrandModalSelect}
+            >
+              {brands.map((model: IBrandModel) => (
+              <Select.Option key={model.id}>{model.title}</Select.Option>
+            ))}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            label="Model"
+            name="modelId"
+            rules={[{ required: true, message: "Виберіть модель машини" }]}
+          >
+            <Select
+              placeholder="Select model"
+              //onChange={handleBrandModalSelect}
+            >
+              {models.map((model: IModelModel) => (
+              <Select.Option key={model.id}>{model.title}</Select.Option>
+            ))}
+            </Select>
+          </Form.Item>
           <Form.Item
             label="Generation"
             name="generationId"
@@ -432,12 +494,45 @@ const CarPage = () => {
             </Select>
           </Form.Item>
           <Form.Item
-            label="Model"
-            name="modelId"
-            rules={[{ required: true, message: "Введіть модель для машини" }]}
+            label="Engine"
+            name="engineId"
+            rules={[{ required: true, message: "Виберіть двигун для машини" }]}
           >
-            <Select placeholder="Select Model">
-              {models.map((model: IModelModel) => (
+            <Select placeholder="Select engine">
+              {engines.map((model: IEngineModel) => (
+                <Select.Option key={model.id}>{model.title}</Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            label="Car body"
+            name="carBodyId"
+            rules={[{ required: true, message: "Виберіть тип кузова для машини" }]}
+          >
+            <Select placeholder="Select car body">
+              {carBodies.map((model: ICarBodyModel) => (
+                <Select.Option key={model.id}>{model.title}</Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            label="Complete set"
+            name="completeSetId"
+            rules={[{ required: true, message: "Виберіть комплектацію для машини" }]}
+          >
+            <Select placeholder="Select complete set">
+              {comleteSets.map((model: ICompleteSetModel) => (
+                <Select.Option key={model.id}>{model.title}</Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            label="Gear box"
+            name="gearBoxId"
+            rules={[{ required: true, message: "Виберіть тип коробки передач для машини" }]}
+          >
+            <Select placeholder="Select gear box">
+              {gearboxes.map((model: IGearboxModel) => (
                 <Select.Option key={model.id}>{model.title}</Select.Option>
               ))}
             </Select>
