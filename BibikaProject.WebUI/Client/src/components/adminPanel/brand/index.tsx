@@ -207,7 +207,6 @@ const BrandPage = () => {
     <Context.Provider value={{ name: "Ant Design" }}>
       {contextHolder}
       {loading}
-
       <Row>
         <Col span={12}>
           <Input

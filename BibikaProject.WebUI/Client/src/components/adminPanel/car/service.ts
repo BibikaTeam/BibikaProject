@@ -17,7 +17,6 @@ export const getCarsByPaginationModel = async (data: IPaginationCarModel) => {
     const response = await http.get<IPaginationRequest<ICarModel>>(
       "/api/car/get?" + qs.stringify(data, { skipNulls: true })
     );
-    console.log("response", response.data);
     
     return response.data;
   } catch (error) {

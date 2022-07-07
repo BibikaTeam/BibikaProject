@@ -205,15 +205,15 @@ const CarPage = () => {
       await addCar(values);
       toast.success("Car are successfully added");
       openNotification("bottomRight");
-          form.resetFields();
-        } catch (_error) {
-          const error: IRequestError = _error as IRequestError;
-          error.errors.forEach((e) => {
-            toast.error(e);
-          });
-        } finally {
-          setLoading(false);
-        }
+      form.resetFields();
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   //Delete
@@ -230,6 +230,28 @@ const CarPage = () => {
   };
 
   //handles
+  const handleBrandAddCar = async (value: number) => {
+    if (value !== undefined) {
+      setModelsByBrand(value);
+    }
+  };
+  const handleModelAddCar = async (value: number) => {
+    if (value !== undefined) {
+      setGenerationsByModel(value);
+    }
+  };
+  const handleGenerationAddCar = async (value: number) => {
+    if (value !== undefined) {
+      const tmpModel = { ...paginationModel, generationId: value };
+      setPaginationModel(tmpModel);
+      //await updateCarsByProp(tmpModel);
+    }
+  };
+  const handleEngineAddCar = async (value: number) => {
+    const tmp = { ...paginationModel, engineId: value };
+    setPaginationModel(tmp);
+  };
+  //handles changes
   const handleBrandChange = async (value: number) => {
     if (value !== undefined) {
       setCurrentBrand(value);
@@ -458,11 +480,11 @@ const CarPage = () => {
           >
             <Select
               placeholder="Select brand"
-              //onChange={handleBrandModalSelect}
+              onChange={handleBrandAddCar}
             >
               {brands.map((model: IBrandModel) => (
-              <Select.Option key={model.id}>{model.title}</Select.Option>
-            ))}
+                <Select.Option key={model.id}>{model.title}</Select.Option>
+              ))}
             </Select>
           </Form.Item>
           <Form.Item
@@ -472,11 +494,11 @@ const CarPage = () => {
           >
             <Select
               placeholder="Select model"
-              //onChange={handleBrandModalSelect}
+              onChange={handleModelAddCar}
             >
               {models.map((model: IModelModel) => (
-              <Select.Option key={model.id}>{model.title}</Select.Option>
-            ))}
+                <Select.Option key={model.id}>{model.title}</Select.Option>
+              ))}
             </Select>
           </Form.Item>
           <Form.Item
@@ -486,11 +508,11 @@ const CarPage = () => {
           >
             <Select
               placeholder="Select generation"
-              //onChange={handleBrandModalSelect}
+              onChange={handleGenerationAddCar}
             >
               {generations.map((model: IGenerationModel) => (
-              <Select.Option key={model.id}>{model.title}</Select.Option>
-            ))}
+                <Select.Option key={model.id}>{model.title}</Select.Option>
+              ))}
             </Select>
           </Form.Item>
           <Form.Item
@@ -500,7 +522,7 @@ const CarPage = () => {
           >
             <Select placeholder="Select engine">
               {engines.map((model: IEngineModel) => (
-                <Select.Option key={model.id}>{model.title}</Select.Option>
+                <Select.Option key={model.id}>{model.capacity} см³, {model.kWPower}kw</Select.Option>
               ))}
             </Select>
           </Form.Item>
