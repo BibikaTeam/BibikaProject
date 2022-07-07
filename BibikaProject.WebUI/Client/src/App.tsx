@@ -5,9 +5,9 @@ import { ToastContainer } from "react-toastify";
 import AdminLayout from "./components/containers/adminLayout";
 import RegisterPage from "./components/authorization/register";
 import LoginPage from "./components/authorization/login";
+import AddPostPage from "./components/posts/add";
 
 //admin pages
-import AddPostPage from "./components/posts/add";
 import BrandPage from "./components/adminPanel/brand";
 import ModelPage from "./components/adminPanel/model";
 import GenerationPage from "./components/adminPanel/generation";
@@ -33,7 +33,7 @@ function App() {
               <Route path="/admin/car" element={<CarPage />} />
             </Route>
           </Route>
-          <Route path="/post-add" element={<AddPostPage />} />
+          <Route path="/post/add" element={<AddPostPage />} />
         </Route>
       </Routes>
       <ToastContainer pauseOnHover={false} pauseOnFocusLoss={false} />

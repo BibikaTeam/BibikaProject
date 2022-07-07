@@ -1,8 +1,3 @@
-import {
-  AddImagesToPostModel,
-  AddOptionsToPostModel,
-  AddPostModel,
-} from "../types";
 import http from "../../../http_common";
 import axios from "axios";
 import {
@@ -13,6 +8,7 @@ import {
 } from "../../adminPanel/types";
 import { date } from "yup";
 import { ErrorStrings } from "../../../constants";
+import { AddImagesToPostModel, AddOptionsToPostModel, AddPostModel } from "./types";
 
 export const loadImage = async (base64: string) => {
   try {

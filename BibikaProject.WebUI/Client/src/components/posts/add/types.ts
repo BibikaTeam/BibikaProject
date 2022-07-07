@@ -28,3 +28,18 @@ export interface AddPostModel {
     sellerId: string,
     carId: number,
 }
+
+export interface AddImagesToPostModel {
+    id: number,
+    imagesId: Array<number>
+}
+
+export interface AddOptionsToPostModel {
+    id: number,
+    optionsId: Array<number>
+}
+
+export interface IRadioGroupDataType {
+    id: number;
+    title: string;
+}

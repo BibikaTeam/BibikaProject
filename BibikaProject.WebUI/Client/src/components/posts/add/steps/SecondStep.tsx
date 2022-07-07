@@ -6,6 +6,7 @@ import { FC, useEffect, useState } from "react";
 import { getAllBrands } from "../../../adminPanel/brand/service";
 import {
   IBrandModel,
+  IGenerationModel,
   IModelModel,
   IRequestError,
 } from "../../../adminPanel/types";
@@ -13,6 +14,7 @@ import AntdSelect from "../../../common/form/select";
 import RadioGroup from "./radioGroup";
 import { getModelsByBrand } from "../../../adminPanel/model/service";
 import { toast } from "react-toastify";
+import { getGenerationsByModelId } from "../../../adminPanel/generation/service";
 const { TextArea } = Input;
 
 interface SecondStepProps {
@@ -21,43 +23,13 @@ interface SecondStepProps {
 }
 
 const SecondStep: FC<SecondStepProps> = (props) => {
-  const [carBodies, setCarBodies] = useState<string[]>([
-    "Sedan",
-    "Coupe",
-    "Sport car",
-    "Wagon",
-    "Hatchback",
-    "Minivan",
-    "Pickup",
-  ]);
-
-  // const [brands, setBrands] = useState<string[]>([
-  //     "BMW",
-  //     "Audi",
-  //     "Tesla",
-  //     "Porsche",
-  //     "Toyota",
-  //     "Volkswagen",
-  //     "Ferrari",
-  //     "Honda",
-  //     "Subaru",
-  //     "Nissan",
-  //     "Mazda",
-  //     "Pontiac",
-  //     "Alfa Romero",
-  //     "Volvo",
-  //     "Mitsubishi",
-  //     "MAN",
-  //     "Scania",
-  //     "Buick",
-  //     "Ford",
-  //     "Opel",
-  // ]);
-
   const [brandsList, setBrandsList] = useState<IBrandModel[]>([]);
   const [selectedBrand, setSelectedBrand] = useState<number>(0);
   const [modelsList, setModelsList] = useState<IModelModel[]>([]);
+  const [generationList, setGenerationList] = useState<IGenerationModel[]>([]);
   const [selectedModel, setSelectedModel] = useState<number>(0);
+  const [selectedGeneration, setSelectedGeneration] = useState<number>(0);
+  const [selectedYear, setSelectedYear] = useState<string>("");
   const [modelLoading, setModelLoading] = useState<boolean>(false);
   //const [selectedBrand, setSelectedBrand] = useState<string>("");
   const [selectedCarBody, setSelectedCarBody] = useState<string>("");
@@ -79,6 +51,7 @@ const SecondStep: FC<SecondStepProps> = (props) => {
       });
     }
   };
+
   const setModelsByBrand = async (brandId: number) => {
     try {
       await getModelsByBrand(brandId).then((data) => {
@@ -92,21 +65,56 @@ const SecondStep: FC<SecondStepProps> = (props) => {
     }
   };
 
-  const handleBrandChange = async (value: any) => {
-    setSelectedBrand(value.target.value.id);
-    setModelsByBrand(value.target.value.id);
+  const setGenerationByModel = async (modelId: number) => {
+    try {
+      await getGenerationsByModelId(modelId).then((data) => {
+        setGenerationList(data as IGenerationModel[]);
+      });
+    }  catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      })
+    }
+  }
+
+  const handleBrandChange = async (value: number) => {
+    setSelectedBrand(value);
+    setSelectedModel(0);
+    setModelsByBrand(value);
   };
 
-  const handleGetModelsByBrandId = async () => {
-    const models = await getModelsByBrand(selectedBrand);
-    console.log("models", models);
-  };
+  const handleModelChange = async (value: number) => {
+    setSelectedModel(value);
+    setSelectedGeneration(0);
+    setGenerationByModel(value);
+  }
 
-  const handleGetModelChange = (model: IModelModel) => {
-    console.log("model", model);
-  };
+  const handleYearChange = (date: any, dateString: string) => {
+    setSelectedYear(dateString);
+  }
 
-  console.log("brandsList: ", brandsList);
+  const handleGenerationChange = (value: number) => {
+    setSelectedGeneration(value);
+  }
+
+  const handleDescriptionChange = (value: any) => {
+    setDescription(value.target.value);
+  }
+
+  const ifModelSelected = () => {
+    if (selectedModel == 0) {
+      return "visibility-hidden";
+  }
+    return "steps-selects-container"
+  }
+
+  const ifYearAndGenerationSelected = () => {
+    if (selectedGeneration == 0 || selectedYear == "") {
+     return "visibility-hidden";
+    }
+     return "steps-secondstep-description"
+ }
 
   return (
     <div className="steps-container">
@@ -149,33 +157,40 @@ const SecondStep: FC<SecondStepProps> = (props) => {
           <RadioGroup
             data={modelsList}
             title={"Models"}
-            countBeforeHide={16}
-            onChange={handleBrandChange}
+            countBeforeHide={0}
+            onChange={handleModelChange}
           />
         </div>
-        <div className="steps-selects-container">
+        <div className={ifModelSelected()}>
           <div className="steps-select-container">
             Year of manufacture
             <DatePicker
               className="steps-datepicker"
-              onChange={(value) => {
-                console.log(value);
-              }}
+              onChange={handleYearChange}
+              mode="year"
               picker="year"
+              format="YYYY"
             />
           </div>
           <div className="steps-select-container">
             Generation
-            <Select className="steps-select"></Select>
+            <Select className="steps-select"
+             onChange={handleGenerationChange}>
+              {generationList.map((generation: IGenerationModel) => (
+                <Select.Option key={generation.id}>
+                  {generation.title}
+                </Select.Option>
+              ))}
+            </Select>
           </div>
         </div>
-        <div className="steps-secondstep-description">
+        <div className={ifYearAndGenerationSelected()}>
           <span className="steps-secondstep-description-title">
             Car description
           </span>
           <Input.TextArea
             value={description}
-            onChange={(e: any) => setDescription(e.target.value)}
+            onChange={handleDescriptionChange}
             placeholder="Description"
             autoSize={{ minRows: 17, maxRows: 17 }}
             className="steps-textarea"
