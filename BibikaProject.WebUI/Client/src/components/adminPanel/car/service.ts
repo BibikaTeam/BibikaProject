@@ -37,7 +37,7 @@ export const getCarsByPaginationModel = async (data: IPaginationCarModel) => {
   }
 };
 
-export const addCar = async (data: ICarModel) => {
+export const addCar = async (data: IAddCarModel) => {
   try {
     const response = await http.post("api/car/add", data);
   } catch (error) {

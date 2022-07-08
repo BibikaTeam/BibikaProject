@@ -199,7 +199,7 @@ const CarPage = () => {
     }
   }
 
-  const handleAddCar = async (values: ICarModel) => {
+  const handleAddCar = async (values: IAddCarModel) => {
     setLoading(true);
     try {
       await addCar(values);
@@ -306,7 +306,7 @@ const CarPage = () => {
     setModalAdd(false);
   };
 
-  const handleFormSubmit = (value: ICarModel) => {
+  const handleFormSubmit = (value: IAddCarModel) => {
     handleAddCar(value);
   }
 
