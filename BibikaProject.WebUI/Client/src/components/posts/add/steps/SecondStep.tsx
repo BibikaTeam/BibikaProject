@@ -6,6 +6,7 @@ import { FC, useEffect, useState } from "react";
 import { getAllBrands } from "../../../adminPanel/brand/service";
 import {
   IBrandModel,
+  IEngineModel,
   IGenerationModel,
   IModelModel,
   IRequestError,
@@ -15,6 +16,7 @@ import RadioGroup from "./radioGroup";
 import { getModelsByBrand } from "../../../adminPanel/model/service";
 import { toast } from "react-toastify";
 import { getGenerationsByModelId } from "../../../adminPanel/generation/service";
+import { getEnginesByGenerationId } from "../service";
 const { TextArea } = Input;
 
 interface SecondStepProps {
@@ -27,6 +29,8 @@ const SecondStep: FC<SecondStepProps> = (props) => {
   const [selectedBrand, setSelectedBrand] = useState<number>(0);
   const [modelsList, setModelsList] = useState<IModelModel[]>([]);
   const [generationList, setGenerationList] = useState<IGenerationModel[]>([]);
+  const [enginesList, setEnginesList] = useState<IEngineModel[]>([]);
+  const [selectedEngine, setSelectedEngine] = useState<number>(0);
   const [selectedModel, setSelectedModel] = useState<number>(0);
   const [selectedGeneration, setSelectedGeneration] = useState<number>(0);
   const [selectedYear, setSelectedYear] = useState<string>("");
@@ -65,10 +69,23 @@ const SecondStep: FC<SecondStepProps> = (props) => {
     }
   };
 
-  const setGenerationByModel = async (modelId: number) => {
+  const setGenerationsByModel = async (modelId: number) => {
     try {
       await getGenerationsByModelId(modelId).then((data) => {
         setGenerationList(data as IGenerationModel[]);
+      });
+    }  catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      })
+    }
+  }
+
+  const setEnginesByGenerationId = async (generationId: number) => {
+    try {
+      await getEnginesByGenerationId(generationId).then((data) => {
+        setEnginesList(data as IEngineModel[]);
       });
     }  catch (_error) {
       const error: IRequestError = _error as IRequestError;
@@ -87,7 +104,7 @@ const SecondStep: FC<SecondStepProps> = (props) => {
   const handleModelChange = async (value: number) => {
     setSelectedModel(value);
     setSelectedGeneration(0);
-    setGenerationByModel(value);
+    setGenerationsByModel(value);
   }
 
   const handleYearChange = (date: any, dateString: string) => {
@@ -96,6 +113,12 @@ const SecondStep: FC<SecondStepProps> = (props) => {
 
   const handleGenerationChange = (value: number) => {
     setSelectedGeneration(value);
+    setSelectedEngine(0);
+    setEnginesByGenerationId(value);
+  }
+
+  const handleEngineChange = (value: number) => {
+    setSelectedEngine(value);
   }
 
   const handleDescriptionChange = (value: any) => {
@@ -113,7 +136,14 @@ const SecondStep: FC<SecondStepProps> = (props) => {
     if (selectedGeneration == 0 || selectedYear == "") {
      return "visibility-hidden";
     }
-     return "steps-secondstep-description"
+     return "steps-select-container"
+ }
+
+ const ifEngineSelected = () => {
+  if (selectedEngine == 0) {
+    return "visibility-hidden";
+   }
+    return "steps-secondstep-description"
  }
 
   return (
@@ -183,8 +213,19 @@ const SecondStep: FC<SecondStepProps> = (props) => {
               ))}
             </Select>
           </div>
+          <div className={ifYearAndGenerationSelected()}>
+            Engines
+            <Select className="steps-select"
+             onChange={handleEngineChange}>
+              {enginesList.map((engine: IEngineModel) => (
+                <Select.Option key={engine.id}>
+                  {engine.title}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
         </div>
-        <div className={ifYearAndGenerationSelected()}>
+        <div className={ifEngineSelected()}>
           <span className="steps-secondstep-description-title">
             Car description
           </span>
