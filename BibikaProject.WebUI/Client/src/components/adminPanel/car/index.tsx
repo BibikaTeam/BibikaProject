@@ -6,7 +6,6 @@ import { getGenerationsByModelId } from "../generation/service";
 import { getModelsByBrand } from "../model/service";
 import { FormModal } from "../../common/form";
 import {
-  IAddCarModel,
   IBrandModel,
   ICarBodyModel,
   ICarModel,
@@ -35,7 +34,7 @@ import { getAllCompleteSets } from "../completeSet/service";
 const Context = React.createContext({ name: "Default" });
 
 const CarPage = () => {
-  const pageSize = 3;
+  const countOnPage: number = 10;
   const [api, contextHolder] = notification.useNotification();
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -57,7 +56,7 @@ const CarPage = () => {
   const defaultPaginationModel = {
     page: 1,
     search: "",
-    countOnPage: pageSize,
+    countOnPage: countOnPage,
     engineId: null,
     gearboxId: null,
     generationId: null,
@@ -92,7 +91,6 @@ const CarPage = () => {
       });
     } catch (_error) {
       const error: IRequestError = _error as IRequestError;
-      console.log("Error: ", error);
       error.errors.forEach((e) => {
         toast.error(e);
       });
@@ -105,7 +103,6 @@ const CarPage = () => {
       });
     } catch (_error) {
       const error: IRequestError = _error as IRequestError;
-      console.log("Error: ", error);
       error.errors.forEach((e) => {
         toast.error(e);
       });
@@ -199,7 +196,22 @@ const CarPage = () => {
     }
   }
 
-  const handleAddCar = async (values: IAddCarModel) => {
+  const handleUpdateCars = async () => {
+    setLoading(true);
+    try {
+      await getCarsByPaginationModel(defaultPaginationModel).then((data) => {
+      setPaginatedCars(data)});
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddCar = async (values: ICarModel) => {
     setLoading(true);
     try {
       await addCar(values);
@@ -220,7 +232,8 @@ const CarPage = () => {
   const handleDeleteCar = async (record: ICarModel) => {
     try {
       await deleteCar(record.id);
-      toast.success("Deleted");
+      toast.success("Deleted car");
+      handleUpdateCars();
     } catch (_error) {
       const error: IRequestError = _error as IRequestError;
       error.errors.forEach((e) => {
@@ -244,13 +257,12 @@ const CarPage = () => {
     if (value !== undefined) {
       const tmpModel = { ...paginationModel, generationId: value };
       setPaginationModel(tmpModel);
-      //await updateCarsByProp(tmpModel);
     }
   };
-  const handleEngineAddCar = async (value: number) => {
-    const tmp = { ...paginationModel, engineId: value };
-    setPaginationModel(tmp);
-  };
+  // const handleEngineAddCar = async (value: number) => {
+  //   const tmp = { ...paginationModel, engineId: value };
+  //   setPaginationModel(tmp);
+  // };
   //handles changes
   const handleBrandChange = async (value: number) => {
     if (value !== undefined) {
@@ -306,7 +318,7 @@ const CarPage = () => {
     setModalAdd(false);
   };
 
-  const handleFormSubmit = (value: IAddCarModel) => {
+  const handleFormSubmit = (value: ICarModel) => {
     handleAddCar(value);
   }
 
@@ -322,7 +334,7 @@ const CarPage = () => {
       key: key,
       onClick: () => {
         notification.close(key);
-        updateCars();
+        handleUpdateCars();
       },
     });
   };
@@ -433,7 +445,7 @@ const CarPage = () => {
             onChange={handleEngineChange}
           >
             {engines.map((model: IEngineModel) => (
-              <Select.Option key={model.id}>{model.title}</Select.Option>
+              <Select.Option key={model.id}>{model.capacity} см³, {model.fuel}</Select.Option>
             ))}
           </Select>
         </Col>
@@ -444,7 +456,7 @@ const CarPage = () => {
             className="buttonPrimary"
             style={{ marginRight: 20 }}
             onClick={() => {
-              updateCars();
+              handleUpdateCars();
             }}
           >
             Обновити таблицю
@@ -522,7 +534,7 @@ const CarPage = () => {
           >
             <Select placeholder="Select engine">
               {engines.map((model: IEngineModel) => (
-                <Select.Option key={model.id}>{model.capacity} см³, {model.kWPower}kw</Select.Option>
+                <Select.Option key={model.id}>{model.capacity} см³, {model.fuel}</Select.Option>
               ))}
             </Select>
           </Form.Item>
@@ -568,6 +580,12 @@ const CarPage = () => {
         columns={columns}
         rowKey="id"
         loading={loading}
+        // pagination={{
+        //   pageSize: countOnPage,
+        //   total: paginatedCars?.allPages * countOnPage,
+        //   onChange: updateCars,
+        //   current: paginatedCars?.currentPage,
+        // }}
       />
     </Context.Provider>
   );

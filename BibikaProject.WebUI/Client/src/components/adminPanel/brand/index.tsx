@@ -5,7 +5,6 @@ import {
   IPaginationBrandModel,
   IPaginationBrandRequest,
   IPaginationModel,
-  IPaginationRequest,
   IRequestError,
 } from "../types";
 
@@ -143,7 +142,6 @@ const BrandPage = () => {
       duration: 0,
       key: key,
       onClick: () => {
-        console.log("key: ", key);
         notification.close(key);
         handleGetAllBrands();
       },

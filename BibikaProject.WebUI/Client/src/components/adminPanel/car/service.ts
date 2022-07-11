@@ -1,5 +1,4 @@
 import {
-  IAddCarModel,
   ICarBodyModel,
   ICarModel,
   IGearboxModel,
@@ -37,7 +36,7 @@ export const getCarsByPaginationModel = async (data: IPaginationCarModel) => {
   }
 };
 
-export const addCar = async (data: IAddCarModel) => {
+export const addCar = async (data: ICarModel) => {
   try {
     const response = await http.post("api/car/add", data);
   } catch (error) {

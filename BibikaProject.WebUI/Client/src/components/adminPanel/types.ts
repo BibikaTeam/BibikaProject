@@ -116,14 +116,6 @@ export interface IPaginationCarModel {
   completeSetId: number | null;
 }
 
-export interface IAddCarModel {
-  generationId: number;
-  engineId: number;
-  carBodyId: number;
-  completeSetId: number;
-  gearboxId: number;
-}
-
 export interface ICarBodyModel {
   id: number;
   title: string;
