@@ -16,22 +16,27 @@ import CompleteSetPage from "./components/adminPanel/completeSet";
 import CarPage from "./components/adminPanel/car";
 import AdminBasedRoute from "./routing/adminBasedRoute";
 
+//default
+import HomePage from "./components/home";
+import DefaultLayout from "./components/containers/defaultLayout";
+
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/">
+        <Route path="/" element={<DefaultLayout />}>
+          <Route index element={<HomePage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/admin" element={<AdminBasedRoute />}>
-            <Route path="/admin" element={<AdminLayout />}>
-              <Route path="/admin/brand" element={<BrandPage />} />
-              <Route path="/admin/model" element={<ModelPage />} />
-              <Route path="/admin/generation" element={<GenerationPage />} />
-              <Route path="/admin/engine" element={<EnginePage />} />
-              <Route path="/admin/complete-set" element={<CompleteSetPage />} />
-              <Route path="/admin/car" element={<CarPage />} />
-            </Route>
+        </Route>
+        <Route path="/admin" element={<AdminBasedRoute />}>
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route path="/admin/brand" element={<BrandPage />} />
+            <Route path="/admin/model" element={<ModelPage />} />
+            <Route path="/admin/generation" element={<GenerationPage />} />
+            <Route path="/admin/engine" element={<EnginePage />} />
+            <Route path="/admin/complete-set" element={<CompleteSetPage />} />
+            <Route path="/admin/car" element={<CarPage />} />
           </Route>
           <Route path="/post/add" element={<AddPostPage />} />
         </Route>
