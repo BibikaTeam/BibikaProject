@@ -34,7 +34,7 @@ import { getAllCompleteSets } from "../completeSet/service";
 const Context = React.createContext({ name: "Default" });
 
 const CarPage = () => {
-  const countOnPage: number = 10;
+  const countOnPage: number = 3;
   const [api, contextHolder] = notification.useNotification();
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -259,10 +259,7 @@ const CarPage = () => {
       setPaginationModel(tmpModel);
     }
   };
-  // const handleEngineAddCar = async (value: number) => {
-  //   const tmp = { ...paginationModel, engineId: value };
-  //   setPaginationModel(tmp);
-  // };
+
   //handles changes
   const handleBrandChange = async (value: number) => {
     if (value !== undefined) {
@@ -288,7 +285,7 @@ const CarPage = () => {
     setPaginationModel(tmp);
     await updateCarsByProp(tmp);
   };
-
+  //handle clear
   const handleBrandClear = async () => {
     setCurrentBrand(0);
     setCurrentModel(0);
@@ -580,12 +577,12 @@ const CarPage = () => {
         columns={columns}
         rowKey="id"
         loading={loading}
-        // pagination={{
-        //   pageSize: countOnPage,
-        //   total: paginatedCars?.allPages * countOnPage,
-        //   onChange: updateCars,
-        //   current: paginatedCars?.currentPage,
-        // }}
+        pagination={{
+          pageSize: countOnPage,
+          total: paginatedCars?.allPages,
+          onChange: handleUpdateCars,
+          current: paginatedCars?.currentPage,
+        }}
       />
     </Context.Provider>
   );
