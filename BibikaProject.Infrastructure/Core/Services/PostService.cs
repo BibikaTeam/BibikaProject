@@ -28,11 +28,13 @@ namespace BibikaProject.Infrastructure.Core.Services
         private readonly IMapper mapper;
         private readonly IPostQuery query;
 
-        public async Task AddPostAsync(AddPostDTO addPostDTO)
+        public async Task<int> AddPostAsync(AddPostDTO addPostDTO)
         {
             var entity = await command.AddAsync(mapper.Map<Post>(addPostDTO));
            
             await command.SaveChangesAsync();
+
+            return entity.Id;
         }
 
         public async Task<List<PostDTO>> GetAllPosts()

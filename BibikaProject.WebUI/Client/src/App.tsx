@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import AdminLayout from "./components/containers/adminLayout";
 import RegisterPage from "./components/authorization/register";
 import LoginPage from "./components/authorization/login";
+import AddPostPage from "./components/posts/add";
 
 //admin pages
 import BrandPage from "./components/adminPanel/brand";
@@ -37,6 +38,7 @@ function App() {
             <Route path="/admin/complete-set" element={<CompleteSetPage />} />
             <Route path="/admin/car" element={<CarPage />} />
           </Route>
+          <Route path="/post/add" element={<AddPostPage />} />
         </Route>
       </Routes>
       <ToastContainer pauseOnHover={false} pauseOnFocusLoss={false} />

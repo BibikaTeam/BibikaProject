@@ -53,6 +53,7 @@ const BrandPage = () => {
   //Service calling
   const handleGetAllBrands = async () => {
     setLoading(true);
+
     try {
       const paginationModel: IPaginationBrandModel = {
         search: "",
@@ -65,6 +66,7 @@ const BrandPage = () => {
       const error: IRequestError = _error as IRequestError;
       error.errors.forEach((e) => {
         toast.error(e);
+
       });
     } finally {
       setLoading(false);

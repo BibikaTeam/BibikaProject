@@ -12,6 +12,8 @@ namespace BibikaProject.Application.Core.Services
 
         Task DeleteGearBoxAsync(int id);
 
+        Task<List<GearBoxDTO>> GetGearBoxesByGenerationId(int id);
+
         Task<List<GearBoxDTO>> GetAllGearBoxesAsync();
     }
 }

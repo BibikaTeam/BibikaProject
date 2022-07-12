@@ -51,5 +51,13 @@ namespace BibikaProject.WebUI.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("get/by-generation/{id}")]
+        public async Task<IActionResult> GetGearBoxesByGenerationId(int id)
+        {
+            var result = await gearBoxService.GetGearBoxesByGenerationId(id);
+
+            return Ok(result);
+        }
     }
 }

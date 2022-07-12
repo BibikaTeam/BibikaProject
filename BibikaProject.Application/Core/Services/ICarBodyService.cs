@@ -12,6 +12,8 @@ namespace BibikaProject.Application.Core.Services
 
         Task DeleteCarBodyAsync(int id);
 
+        Task<List<CarBodyDTO>> GetCarBodiesByGenerationId(int id);
+
         Task<List<CarBodyDTO>> GetAllCarBodies();
     }
 }
