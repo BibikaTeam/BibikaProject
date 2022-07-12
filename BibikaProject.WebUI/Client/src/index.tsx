@@ -16,6 +16,8 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const token = localStorage.getItem("token");
 
+import { GoogleOAuthProvider } from "@react-oauth/google";
+
 const history = createBrowserHistory();
 const store = configureStore(history);
 

@@ -84,6 +84,13 @@ namespace BibikaProject.WebUI
             services.ConfigureGearBoxService();
             services.ConfigureCompleteSetService();
             services.ConfigureCarBodyService();         
+
+        }
+
+        private IEnumerable<object> SelectMany(Func<object, object> p)
+        {
+            throw new NotImplementedException();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
