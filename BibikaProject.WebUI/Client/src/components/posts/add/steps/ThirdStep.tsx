@@ -43,7 +43,6 @@ const ThirdStep: FC<ThirdStepProps> = (props) => {
   };
 
   const onIdle = (m: google.maps.Map) => {
-    console.log("onIdle");
     setZoom(m.getZoom()!); 
     setCenter(m.getCenter()!.toJSON());
   };
@@ -98,7 +97,7 @@ const ThirdStep: FC<ThirdStepProps> = (props) => {
                         <Button className="steps-action-button-back" onClick={() => { props.onBack() }}>
                             Back
                         </Button>
-                        <Button className="steps-action-button-done" onClick={() => { props.onFinish("On Finish from ThirdStep") }}>
+                        <Button className="steps-action-button-done" onClick={() => { props.onFinish(address) }}>
                             Done
                         </Button>
                     </div>

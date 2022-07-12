@@ -23,6 +23,7 @@ namespace BibikaProject.Domain.Entities.Core
         public int Mileage { get; set; }
 
         public int CarId { get; set; }
+
         public string SellerId { get; set; }
 
         [Required]

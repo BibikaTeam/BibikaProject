@@ -1,13 +1,28 @@
 import { Button } from "antd"
-import { FC, useState } from "react"
+import { FC, useRef, useState } from "react"
 import ImageSelector from "./imageSelector";
 
 
 interface FirstStepProps {
-    onFinish: (values: any) => void;
+    onFinish: (values: number[]) => void;
 }
 
 const FirstStep: FC<FirstStepProps> = (props) => {
+    const [images, setImages] = useState<number[]>([]);
+
+    const onUpdate = (value: number[]) => {
+        setImages(value);
+    }
+
+    const doneDisabledCheck = () => {
+        if (images.length >= 3) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
     return(     
         <div className="steps-container">      
             <div className="steps-body">
@@ -27,13 +42,14 @@ const FirstStep: FC<FirstStepProps> = (props) => {
                                 disabled={true}>
                             Back
                         </Button>
-                        <Button className="steps-action-button-done" onClick={() => { props.onFinish("On Finish from FirstStep") }}>
+                        <Button className="steps-action-button-done" onClick={() => { props.onFinish(images); }}
+                                disabled={doneDisabledCheck()}>
                             Done
                         </Button>
                     </div>
                 </div>
 
-               <ImageSelector />
+               <ImageSelector onUpdate={onUpdate} />
             </div>              
 
             <div className="steps-footer">

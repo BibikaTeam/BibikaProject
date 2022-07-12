@@ -42,7 +42,8 @@ namespace BibikaProject.Infrastructure.Core.Services
         {
             return query.GetAll().Select(x => mapper.Map<CompleteSetDTO>(x)).ToListAsync();
         }
-        public async Task<List<CompleteSetDTO>> GetAllCompletSetsByGenerationAsync(int generationId)
+
+        public async Task<List<CompleteSetDTO>> GetCompletSetsByGenerationAsync(int generationId)
         {
             IQueryable<CompleteSet> completeSets = query.GetAll().Include(x => x.Cars);
 
@@ -50,7 +51,8 @@ namespace BibikaProject.Infrastructure.Core.Services
 
             return await completeSets.Select(x => mapper.Map<CompleteSetDTO>(x)).ToListAsync();
         }
-        public async Task<List<CompleteSetDTO>> GetAllCompletSetsByModelAsync(int modelId)
+
+        public async Task<List<CompleteSetDTO>> GetCompletSetsByModelAsync(int modelId)
         {
             IQueryable<CompleteSet> completeSets = query.GetAll().Include(x => x.Cars);
 
@@ -58,7 +60,8 @@ namespace BibikaProject.Infrastructure.Core.Services
 
             return await completeSets.Select(x => mapper.Map<CompleteSetDTO>(x)).ToListAsync();
         }
-        public async Task<List<CompleteSetDTO>> GetAllCompletSetsByBrandAsync(int brandId)
+
+        public async Task<List<CompleteSetDTO>> GetCompletSetsByBrandAsync(int brandId)
         {
             IQueryable<CompleteSet> completeSets = query.GetAll().Include(x => x.Cars);
 
@@ -66,6 +69,7 @@ namespace BibikaProject.Infrastructure.Core.Services
 
             return await completeSets.Select(x => mapper.Map<CompleteSetDTO>(x)).ToListAsync();
         }
+
         public async Task UpdateCompleteSetAsync(UpdateCompleteSetDTO updateCompleteSetDTO)
         {
             command.Update(mapper.Map<CompleteSet>(updateCompleteSetDTO));

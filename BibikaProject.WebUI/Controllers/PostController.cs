@@ -1,5 +1,6 @@
 ﻿using BibikaProject.Application.Core.DTO.Post;
 using BibikaProject.Application.Core.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -17,14 +18,16 @@ namespace BibikaProject.WebUI.Controllers
         }
 
         [HttpPost("add")]
+        [Authorize]
         public async Task<IActionResult> AddNewPost(AddPostDTO postDTO)
         {
-            await postService.AddPostAsync(postDTO);
+            var result = await postService.AddPostAsync(postDTO);
 
-            return Ok();
+            return Ok(result);
         }
 
         [HttpPost("add-images")]
+        [Authorize]
         public async Task<IActionResult> AddImagesToPost(AddImagesToPostDTO addImagesToPostDTO)
         {
             await postService.AddImagesToPost(addImagesToPostDTO);
@@ -33,6 +36,7 @@ namespace BibikaProject.WebUI.Controllers
         }
 
         [HttpPost("add-options")]
+        [Authorize]
         public async Task<IActionResult> AddOptionsToPost(AddOptionsToPostDTO addOptionsToPostDTO)
         {
             await postService.AddOptionsToPost(addOptionsToPostDTO);

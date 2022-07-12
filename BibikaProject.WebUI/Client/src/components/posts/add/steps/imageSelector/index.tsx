@@ -1,107 +1,86 @@
-import { Modal, Upload, UploadProps } from "antd"
-import { FC, useState } from "react"
-import { PlusOutlined, InboxOutlined  } from '@ant-design/icons';
-import { ItemRender, RcFile, UploadFile } from "antd/lib/upload/interface";
-import { loadImage , addImagesToPost, deleteImage } from "../../service";
-import Dragger from "antd/lib/upload/Dragger";
-import { AddImagesToPostModel, ImageSrcIdModel } from "../../types";
+import { FC, FormEvent, useRef, useState } from "react"
+import { loadImage } from "../../service";
+import { ImageSrcIdModel } from "../../types";
+import ImageCard from "./imageCard";
 
-const ImageSelector: FC = () => {
-    const [previewVisible, setPreviewVisible] = useState(false);
-    const [previewImage, setPreviewImage] = useState('');
-    const [previewTitle, setPreviewTitle] = useState('');
-    const [fileList, setFileList] = useState<UploadFile[]>([]);
-    const [imageList, setImageList] = useState<ImageSrcIdModel[]>([]);
-    //const [imageIdList, setImageIdList] = useState<number[]>([]);
+interface ImageSelectorProps {
+    onUpdate: (value: number[]) => void;
+}
 
+const ImageSelector: FC<ImageSelectorProps> = (props) => {
+
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    const [files, setFiles] = useState<ImageSrcIdModel[]>([]);
     
-    const getBase64 = (file: RcFile): Promise<string> => new Promise((resolve, reject) => {
+    const getBase64 = (file: any) => {
+        return new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result as string);
+            reader.onload = () => resolve(reader.result);
             reader.onerror = error => reject(error);
-    });
-
-    const handleCancel = () => setPreviewVisible(false);
-
-    const handlePreview = async (file: UploadFile) => {
-        if (!file.url && !file.preview) {
-        file.preview = await getBase64(file.originFileObj as RcFile);
-        }
-        console.log("file preview", file.preview);
-        
-        setPreviewImage(file.url || (file.preview as string));
-        setPreviewVisible(true);
-        setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
-    };
-
-    const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
-        
-        setFileList(newFileList);
+          });
     }
 
-    const handleRemove: UploadProps['onRemove'] = (file: UploadFile) => {
-        const image = imageList.find((img) => file.uid)
-        console.log("image", image);
-        
-        //deleteImage(image?.imageId);
+    const uploadHandler = (event: FormEvent<HTMLInputElement>) => {
+        getBase64(event.currentTarget.files?.item(0)).then(
+            (data: any) => {          
+                loadImage(data.split(',')[1]).then((id: any) => setFiles([...files, { imageSrc: data, imageId: id }]));
+            });    
+        props.onUpdate(files.map((file) => file.imageId));        
     }
 
-    const handleBeforeUpload: UploadProps["beforeUpload"] = async (file: RcFile) => {
-        const image = await (await getBase64(file)).split(',')[1];
-        const idImage: number = await loadImage(image);
-        const imageIdSrc: ImageSrcIdModel = { imageId: idImage, imageSrc: file.uid}
-        const tmpIdArr = imageList.slice();
-        tmpIdArr.push(imageIdSrc);
-        setImageList(tmpIdArr);
-        return false;
+    const handleClick = () => {
+        inputRef.current?.click();
     }
 
-    const uploadButton = (
-        <div>
-            <PlusOutlined />
-            <div style={{ marginTop: 8 }}>Upload</div>
-        </div>
-    );
-
-    if (fileList.length == 0 )
+    if (files.length == 0) 
     {
-        return(
-            <div className="imageSelector-container">
-                <Dragger
-                    multiple
-                    className="imageSelector-dragger"
-                    onChange={handleChange}
-                    beforeUpload={handleBeforeUpload}
-                >
+        return (
+            <div className="imageSelector-dragger-container" onClick={handleClick}>
                     <p className="ant-upload-drag-icon">
-                        <PlusOutlined />
+                         <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14.7725 34.5V20.2275H0.5V14.7352H14.7725V0.5H20.2648V14.7352H34.5V20.2275H20.2648V34.5H14.7725Z" fill="#219CE1"/>
+                        </svg>
                     </p>
                     <p className="imageSelector-upload-text">
                         Click or drag file to this area to upload
                     </p>
-                </Dragger>
+                    <input 
+                            ref={inputRef}
+                            type="file" 
+                            onChange={uploadHandler}
+                            accept="image/*"
+                            className="imageSelector-input"
+                    /> 
             </div>
         )
     }
 
+    const handleImageCardClick = (id: number) => {
+        props.onUpdate(files.filter((file) => file.imageId !== id).map((file) => file.imageId));   
+        setFiles(files.filter((file) => file.imageId !== id));   
+    }
+
     return(
         <div className="imageSelector-container">
-            <Upload
-                multiple
-                listType="picture-card"
-                fileList={fileList}
-                onPreview={handlePreview}
-                onChange={handleChange}
-                onRemove={handleRemove}
-                beforeUpload={handleBeforeUpload}
-                >
-                {uploadButton}
-                
-            </Upload>
-            <Modal visible={previewVisible} title={previewTitle} footer={null} onCancel={handleCancel}>
-                <img alt="example" style={{ width: '100%' }} src={previewImage} />
-            </Modal>
+                <div className="imageSelector-cards-container">
+                    {files.map((file: ImageSrcIdModel) => (
+                        <ImageCard src={file.imageSrc} id={file.imageId} onClick={handleImageCardClick}/>
+                    ))}
+                    <div className="imageSelector-input-container" onClick={handleClick}>
+                        <input 
+                            ref={inputRef}
+                            type="file" 
+                            onChange={uploadHandler}
+                            accept="image/*"
+                            className="imageSelector-input"
+                        /> 
+                        <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14.7725 34.5V20.2275H0.5V14.7352H14.7725V0.5H20.2648V14.7352H34.5V20.2275H20.2648V34.5H14.7725Z" fill="#219CE1"/>
+                        </svg>
+                    </div>                   
+                </div>                          
         </div>
     )
 }
