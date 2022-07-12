@@ -38,8 +38,8 @@ function App() {
             <Route path="/admin/complete-set" element={<CompleteSetPage />} />
             <Route path="/admin/car" element={<CarPage />} />
           </Route>
-          <Route path="/post/add" element={<AddPostPage />} />
         </Route>
+        <Route path="/post/add" element={<AddPostPage />} />
       </Routes>
       <ToastContainer pauseOnHover={false} pauseOnFocusLoss={false} />
     </Router>

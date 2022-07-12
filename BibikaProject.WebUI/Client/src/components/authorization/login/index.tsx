@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { flushSync } from "react-dom";
 
 import { Form, Input, Button, Checkbox, Space, Spin } from "antd";
-import { FacebookOutlined } from '@ant-design/icons';
+import { FacebookOutlined } from "@ant-design/icons";
 
 import { ILoginModel, LoginErrorType } from "../types";
 
@@ -26,14 +26,6 @@ import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID } from "../../../constants";
 //import FacebookLogin from 'react-facebook-login';
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { ReactFacebookLoginInfo } from "react-facebook-login";
-
-import { CredentialResponse, GoogleLogin, GoogleOAuthProvider, useGoogleLogin} from "@react-oauth/google";
-import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID } from "../../../constants";
-
-//import FacebookLogin from 'react-facebook-login';
-import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
-import { ReactFacebookLoginInfo } from "react-facebook-login";
-
 
 const LoginPage: FC = () => {
   const { loginUser } = useActions();
@@ -68,17 +60,16 @@ const LoginPage: FC = () => {
   const responseGoogle = async (values: CredentialResponse) => {
     setLoading(true);
 
-     try {
-       await loginGoogleUser(values);
-       toast.success("Successfully login");
-     } catch (error) {
-       if (!error || !(error as LoginErrorType)) toast.error("Some error");
-       else toast.error((error as LoginErrorType).errorString);
-     } finally {
-       setLoading(false);
-     }
-  }
-
+    try {
+      await loginGoogleUser(values);
+      toast.success("Successfully login");
+    } catch (error) {
+      if (!error || !(error as LoginErrorType)) toast.error("Some error");
+      else toast.error((error as LoginErrorType).errorString);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const responseFacebook = async (values: ReactFacebookLoginInfo) => {
     flushSync(() => {});
@@ -93,7 +84,6 @@ const LoginPage: FC = () => {
       setLoading(false);
     }
   };
-
 
   return (
     <Spin tip="Loading..." spinning={loading} size="large">
@@ -208,7 +198,6 @@ const LoginPage: FC = () => {
                     )}
                   />
                 </div>
-
               </Form>
             </div>
           </div>
