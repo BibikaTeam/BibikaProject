@@ -29,6 +29,7 @@
     "react-addons-css-transition-group": "^15.6.2",
     "react-dom": "^18.1.0",
     "react-facebook-login": "^4.1.1",
+    "react-history": "^0.18.2",
     "react-redux": "^7.2.8",
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0",

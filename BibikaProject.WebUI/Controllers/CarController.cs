@@ -19,7 +19,7 @@ namespace BibikaProject.WebUI.Controllers
         private readonly ICarService carService;
 
         [HttpPost("add")]
-        [Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Administrator")]
         public async Task<IActionResult> AddCar([FromBody] AddCarDTO model)
         {
             await carService.AddCarAsync(model);
@@ -37,7 +37,7 @@ namespace BibikaProject.WebUI.Controllers
         }
 
         [HttpDelete("delete/{id}")]
-        [Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteCar(int id)
         {
             await carService.DeleteCarAsync(id);

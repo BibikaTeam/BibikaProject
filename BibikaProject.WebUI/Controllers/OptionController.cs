@@ -19,7 +19,7 @@ namespace BibikaProject.WebUI.Controllers
         public readonly IOptionService optionService;
 
         [HttpPost("add")]
-       // [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> AddOption([FromBody] AddOptionDTO model)
         {
             await optionService.AddOptionAsync(model);
