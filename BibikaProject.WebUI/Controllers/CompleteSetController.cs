@@ -51,24 +51,27 @@ namespace BibikaProject.WebUI.Controllers
 
             return Ok(result);
         }
+
         [HttpGet("get/by-brand/{id}")]
         public async Task<IActionResult> GetCompleteSetsByBrand(int id)
         {
-            var result = await completeSetService.GetAllCompletSetsByGenerationAsync(id);
+            var result = await completeSetService.GetCompletSetsByGenerationAsync(id);
 
             return Ok(result);
         }
+
         [HttpGet("get/by-model/{id}")]
         public async Task<IActionResult> GetCompleteSetsByModel(int id)
         {
-            var result = await completeSetService.GetAllCompletSetsByModelAsync(id);
+            var result = await completeSetService.GetCompletSetsByModelAsync(id);
 
             return Ok(result);
         }
+
         [HttpGet("get/by-generation/{id}")]
         public async Task<IActionResult> GetCompleteSetsByGeneration(int id)
         {
-            var result = await completeSetService.GetAllCompletSetsByGenerationAsync(id);
+            var result = await completeSetService.GetCompletSetsByGenerationAsync(id);
 
             return Ok(result);
         }

@@ -1,12 +1,15 @@
 import { Button } from "antd";
 import { Link } from "react-router-dom";
+import AdvMainBanner from "./advMainBanner";
+import SearchPanel from "./searchPanel";
 
 const HomePage = () => {
   return (
     <>
-      {/* <Button>
-        <Link to={"/admin/brand"}>Admin page</Link>
-      </Button> */}
+      <div className="adb-main-container">
+        <AdvMainBanner />
+      </div>
+      <SearchPanel />
     </>
   );
 };
