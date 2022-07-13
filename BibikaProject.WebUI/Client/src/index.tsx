@@ -10,10 +10,11 @@ import "./index.css";
 
 import { createBrowserHistory } from "history";
 import configureStore from "./store/configureStore";
-import { AuthUser } from "./components/authorization/login/service";
-const token = localStorage.getItem("token");
 
-//import { GoogleOAuthProvider } from "@react-oauth/google";
+
+import { AuthUser } from "./components/authorization/login/service";
+
+const token = localStorage.getItem("token");
 
 const history = createBrowserHistory();
 const store = configureStore(history);
