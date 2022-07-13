@@ -11,8 +11,8 @@ import "./index.css";
 import { createBrowserHistory } from "history";
 import configureStore from "./store/configureStore";
 
+
 import { AuthUser } from "./components/authorization/login/service";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const token = localStorage.getItem("token");
 

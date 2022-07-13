@@ -73,18 +73,26 @@ namespace BibikaProject.Infrastructure.Core.Services
 
             posts = posts.Search(pagedPostRequest.Search, "Description");
 
-            foreach (var filter in pagedPostRequest.Filters)
+            /* if (pagedPostRequest.Filters != null)
+             {
+                 foreach (var filter in pagedPostRequest.Filters)
+                 {
+                     posts = posts.Where(x => x.Year <= filter.YearMax && x.Year >= filter.YearMin)
+                                  .Where(x => x.Location == filter.Location)
+                                  .Where(x => x.Color == filter.Color)
+                                  .Where(x => x.Car.GenerationId == filter.GenerationId)
+                                  .Where(x => x.Car.Generation.ModelId == filter.ModelId)
+                                  .Where(x => x.Car.Generation.Model.BrandId == filter.BrandId)
+                                  .Where(x => x.Car.EngineId == filter.EngineId)
+                                  .Where(x => x.Car.CarBodyId == filter.CarBodyId)
+                                  .Where(x => x.Car.CompleteSetId == filter.CompleteSetId)
+                                  .Where(x => x.Car.GearBoxId == filter.GearBoxId);
+                 }
+             } */
+
+            if (pagedPostRequest.GenerationId != 0)
             {
-                posts = posts.Where(x => x.Year <= filter.YearMax && x.Year >= filter.YearMin)
-                             .Where(x => x.Location == filter.Location)
-                             .Where(x => x.Color == filter.Color)
-                             .Where(x => x.Car.GenerationId == filter.GenerationId)
-                             .Where(x => x.Car.Generation.ModelId == filter.ModelId)
-                             .Where(x => x.Car.Generation.Model.BrandId == filter.BrandId)
-                             .Where(x => x.Car.EngineId == filter.EngineId)
-                             .Where(x => x.Car.CarBodyId == filter.CarBodyId)
-                             .Where(x => x.Car.CompleteSetId == filter.CompleteSetId)
-                             .Where(x => x.Car.GearBoxId == filter.GearBoxId); 
+                posts = posts.Where(x => x.Car.GenerationId == pagedPostRequest.GenerationId);
             }
 
             response.AllPages = (int)Math.Ceiling((double)await posts.CountAsync() / (double)pagedPostRequest.CountOnPage);
@@ -94,6 +102,23 @@ namespace BibikaProject.Infrastructure.Core.Services
             response.Data = await posts.Select(x => mapper.Map<PostDTO>(x)).ToListAsync();
 
             return response;
+        }
+
+        public async Task<PostDTO> GetRandomPost()
+        {
+            IQueryable<Post> posts = query.GetAll()
+                                          .Include(x => x.Seller)
+                                          .Include(x => x.Car).ThenInclude(x => x.Engine)
+                                          .Include(x => x.Car).ThenInclude(x => x.CompleteSet)
+                                          .Include(x => x.Car).ThenInclude(x => x.CarBody)
+                                          .Include(x => x.Car).ThenInclude(x => x.GearBox)
+                                          .Include(x => x.Car).ThenInclude(x => x.Generation).ThenInclude(x => x.Model).ThenInclude(x => x.Brand);
+
+            var postsList = await posts.ToListAsync();
+
+            var rand = new Random();
+          
+            return mapper.Map<PostDTO>(postsList[rand.Next(0, postsList.Count())]);
         }
     }
 }

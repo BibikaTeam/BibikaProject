@@ -60,5 +60,13 @@ namespace BibikaProject.WebUI.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("get/random")]
+        public async Task<IActionResult> GetRandomPost()
+        {
+            var result = await postService.GetRandomPost();
+
+            return Ok(result);
+        }
     }
 }

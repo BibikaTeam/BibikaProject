@@ -18,7 +18,7 @@ namespace BibikaProject.WebUI.Controllers
         private readonly ICompleteSetService completeSetService;
 
         [HttpPost("add")]
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> AddCompleteSet([FromBody] AddCompleteSetDTO model)
         {
             await completeSetService.AddCompleteSetAsync(model);
@@ -27,7 +27,7 @@ namespace BibikaProject.WebUI.Controllers
         }
 
         [HttpPut("update")]
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> UpdateCompleteSet([FromBody] UpdateCompleteSetDTO model)
         {
             await completeSetService.UpdateCompleteSetAsync(model); 
@@ -36,7 +36,7 @@ namespace BibikaProject.WebUI.Controllers
         }
 
         [HttpDelete("delete/{id}")]
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteCompleteSet(int id)
         {
             await completeSetService.DeleteCompleteSetAsync(id);

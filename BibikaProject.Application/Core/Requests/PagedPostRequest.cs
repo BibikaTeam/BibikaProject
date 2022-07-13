@@ -29,6 +29,8 @@ namespace BibikaProject.Application.Core.Requests
 
     public class PagedPostRequest : PagedRequest
     {
-        public Filter[] Filters { get; set; }
+        // public Filter[] Filters { get; set; }
+
+        public int GenerationId { get; set; }
     }
 }
