@@ -1,5 +1,6 @@
-import { FC, FormEvent, useRef, useState } from "react"
-import { loadImage } from "../../service";
+import { FC, FormEvent, useEffect, useRef, useState } from "react"
+import { toast } from "react-toastify";
+import { deleteImage, loadImage } from "../../service";
 import { ImageSrcIdModel } from "../../types";
 import ImageCard from "./imageCard";
 
@@ -12,6 +13,10 @@ const ImageSelector: FC<ImageSelectorProps> = (props) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
     const [files, setFiles] = useState<ImageSrcIdModel[]>([]);
+
+    useEffect(() => {
+        props.onUpdate(files.map((file) => file.imageId));   
+    }, [files])
     
     const getBase64 = (file: any) => {
         return new Promise((resolve, reject) => {
@@ -26,8 +31,7 @@ const ImageSelector: FC<ImageSelectorProps> = (props) => {
         getBase64(event.currentTarget.files?.item(0)).then(
             (data: any) => {          
                 loadImage(data.split(',')[1]).then((id: any) => setFiles([...files, { imageSrc: data, imageId: id }]));
-            });    
-        props.onUpdate(files.map((file) => file.imageId));        
+            });           
     }
 
     const handleClick = () => {
@@ -60,6 +64,7 @@ const ImageSelector: FC<ImageSelectorProps> = (props) => {
     const handleImageCardClick = (id: number) => {
         props.onUpdate(files.filter((file) => file.imageId !== id).map((file) => file.imageId));   
         setFiles(files.filter((file) => file.imageId !== id));   
+        deleteImage(id);
     }
 
     return(
