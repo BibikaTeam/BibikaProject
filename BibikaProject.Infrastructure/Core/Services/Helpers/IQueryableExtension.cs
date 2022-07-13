@@ -51,7 +51,8 @@ namespace BibikaProject.Infrastructure.Core.Services.Helpers
                             .Include(x => x.Car)
                             .ThenInclude(x => x.GearBox)
                             .Include(x => x.Car)
-                            .ThenInclude(x => x.CompleteSet);
+                            .ThenInclude(x => x.CompleteSet)
+                            .Include(x => x.Seller);
         }
     }
 }
