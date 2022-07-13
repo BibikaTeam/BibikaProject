@@ -1,5 +1,6 @@
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { addImagesToPost, addPost, getCarIdByParams } from "../service";
 import { AddPostModel, CurrentStep } from "../types";
@@ -58,13 +59,14 @@ const StepsContainer: FC = () => {
         addPostModel.location = values;
         addPostModel.sellerId = userId!;
 
-        addPost(addPostModel).then(data => addImagesToPost({ 
-            id: data,
-            imagesId: images
-        }));
-
-        
-        
+        addPost(addPostModel).then(data => {
+            addImagesToPost({
+                postId: data,
+                imagesId: images
+            });
+                console.log(data);
+                
+        });            
     }
 
     const onThirdStepBack = () => {
