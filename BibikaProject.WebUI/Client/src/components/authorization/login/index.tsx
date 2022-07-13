@@ -15,13 +15,6 @@ import { useNavigate } from "react-router-dom";
 import AuthorizationLayout from "../../containers/authorizationLayout";
 
 import { IRequestError } from "../../adminPanel/types";
-import {
-  CredentialResponse,
-  GoogleLogin,
-  GoogleOAuthProvider,
-  useGoogleLogin,
-} from "@react-oauth/google";
-import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID } from "../../../constants";
 
 //import FacebookLogin from 'react-facebook-login';
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
@@ -29,11 +22,6 @@ import { ReactFacebookLoginInfo } from "react-facebook-login";
 
 import { CredentialResponse, GoogleLogin, GoogleOAuthProvider, useGoogleLogin} from "@react-oauth/google";
 import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID } from "../../../constants";
-
-//import FacebookLogin from 'react-facebook-login';
-import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
-import { ReactFacebookLoginInfo } from "react-facebook-login";
-
 
 const LoginPage: FC = () => {
   const { loginUser } = useActions();

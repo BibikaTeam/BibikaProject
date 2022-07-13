@@ -1,8 +1,9 @@
 .steps-container {
     display: flex;
     flex-direction: column;
-    height: 88%;
+    height: 87.3%;
     justify-content: flex-start;
+    background-color: $accent-light;
 }
 
 .steps-header {
@@ -102,8 +103,8 @@
     flex-direction: column;
     height: 92%;
     overflow: scroll;
-    padding-left: 10vh;
-    padding-right: 10vh;
+    padding-left: 147px;
+    padding-right: 147px;
     padding-bottom: 2vh;
 }
 
