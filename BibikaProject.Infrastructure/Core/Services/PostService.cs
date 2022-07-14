@@ -73,26 +73,65 @@ namespace BibikaProject.Infrastructure.Core.Services
 
             posts = posts.Search(pagedPostRequest.Search, "Description");
 
-            /* if (pagedPostRequest.Filters != null)
-             {
-                 foreach (var filter in pagedPostRequest.Filters)
-                 {
-                     posts = posts.Where(x => x.Year <= filter.YearMax && x.Year >= filter.YearMin)
-                                  .Where(x => x.Location == filter.Location)
-                                  .Where(x => x.Color == filter.Color)
-                                  .Where(x => x.Car.GenerationId == filter.GenerationId)
-                                  .Where(x => x.Car.Generation.ModelId == filter.ModelId)
-                                  .Where(x => x.Car.Generation.Model.BrandId == filter.BrandId)
-                                  .Where(x => x.Car.EngineId == filter.EngineId)
-                                  .Where(x => x.Car.CarBodyId == filter.CarBodyId)
-                                  .Where(x => x.Car.CompleteSetId == filter.CompleteSetId)
-                                  .Where(x => x.Car.GearBoxId == filter.GearBoxId);
-                 }
-             } */
-
-            if (pagedPostRequest.GenerationId != 0)
+            if (pagedPostRequest.Filters != null)
             {
-                posts = posts.Where(x => x.Car.GenerationId == pagedPostRequest.GenerationId);
+                foreach (var filter in pagedPostRequest.Filters)
+                {
+                    if (filter.BrandId != 0) 
+                    {
+                        posts = posts.Where(x => x.Car.Generation.Model.BrandId == filter.BrandId);
+                    }
+
+                    if (filter.ModelId != 0)
+                    {
+                        posts = posts.Where(x => x.Car.Generation.ModelId == filter.ModelId);
+                    }
+
+                    if (filter.GenerationId != 0)
+                    {
+                        posts = posts.Where(x => x.Car.GenerationId == filter.GenerationId);
+                    }
+
+                    if (filter.YearMax != default(DateTime))
+                    {
+                        posts = posts.Where(x => x.Year.Year <= filter.YearMax.Year);
+                    }
+
+                    if (filter.YearMin != default(DateTime))
+                    {
+                        posts = posts.Where(x => x.Year.Year >= filter.YearMax.Year);
+                    }
+
+                    if (filter.CarBodyId != 0)
+                    {
+                        posts = posts.Where(x => x.Car.CarBodyId == filter.CarBodyId);
+                    }
+
+                    if (filter.CompleteSetId != 0)
+                    {
+                        posts = posts.Where(x => x.Car.CompleteSetId == filter.CompleteSetId);
+                    }
+
+                    if (filter.GearBoxId != 0)
+                    {
+                        posts = posts.Where(x => x.Car.GearBoxId == filter.GearBoxId);
+                    }
+
+                    if (filter.EngineId != 0)
+                    {
+                        posts = posts.Where(x => x.Car.EngineId == filter.EngineId);
+                    }
+
+                    if (!string.IsNullOrEmpty(filter.Color))
+                    {
+                        posts = posts.Where(x => x.Color == filter.Color);
+                    }
+
+                    if (!string.IsNullOrEmpty(filter.Location))
+                    {
+                        posts = posts.Where(x => x.Location.Contains(filter.Location));
+                    }
+                }
             }
 
             response.AllPages = (int)Math.Ceiling((double)await posts.CountAsync() / (double)pagedPostRequest.CountOnPage);
