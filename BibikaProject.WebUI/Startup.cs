@@ -73,6 +73,8 @@ namespace BibikaProject.WebUI
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            services.ConfigureEmail(Configuration);
+
             services.ConfigureBrandService();
             services.ConfigurePostService(); 
             services.ConfigureImageService();
@@ -84,7 +86,6 @@ namespace BibikaProject.WebUI
             services.ConfigureGearBoxService();
             services.ConfigureCompleteSetService();
             services.ConfigureCarBodyService();         
-
         }
 
         private IEnumerable<object> SelectMany(Func<object, object> p)

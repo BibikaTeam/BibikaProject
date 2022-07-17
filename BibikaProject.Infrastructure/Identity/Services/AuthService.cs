@@ -23,6 +23,7 @@ using System.Net;
 using Google.Apis.Auth;
 using Newtonsoft.Json;
 using BibikaProject.Infrastructure.Identity.Services.FacebookAuthTypes;
+using BibikaProject.Infrastructure.Identity.Services.Helpers.Email;
 
 namespace BibikaProject.Infrastructure.Identity.Services
 {
@@ -33,7 +34,8 @@ namespace BibikaProject.Infrastructure.Identity.Services
                            IRefreshTokenQuery refreshTokenQuery,
                            IRefreshTokenCommand refreshTokenCommand,
                            IOptions<FacebookAuthSettings> facebookAuthSettings,
-                           IOptions<GoogleAuthSettings> googleAuthSettings)
+                           IOptions<GoogleAuthSettings> googleAuthSettings,
+                           IOptions<EmailConfiguration> emailConfiguration)
         {
             this.userManager = userManager;
             this.jwtSettings = jwtSettings.Value;
@@ -41,6 +43,8 @@ namespace BibikaProject.Infrastructure.Identity.Services
             this.refreshTokenCommand = refreshTokenCommand;
             this.facebookAuthSettings = facebookAuthSettings.Value;
             this.googleAuthSettings = googleAuthSettings.Value;
+            this.emailConfiguration = emailConfiguration.Value;
+            this.emailSender = new EmailSender(this.emailConfiguration);
         }
 
         private readonly UserManager<ApplicationUser> userManager;
@@ -49,6 +53,8 @@ namespace BibikaProject.Infrastructure.Identity.Services
         private readonly IRefreshTokenCommand refreshTokenCommand;
         private readonly FacebookAuthSettings facebookAuthSettings;
         private readonly GoogleAuthSettings googleAuthSettings;
+        private readonly EmailSender emailSender;
+        private readonly EmailConfiguration emailConfiguration;
 
         private static readonly HttpClient Client = new HttpClient();
 
@@ -359,6 +365,8 @@ namespace BibikaProject.Infrastructure.Identity.Services
             }
 
             var token = await userManager.GeneratePasswordResetTokenAsync(user);
+
+            await emailSender.SendAsync(email, "Password Resset", token);
         }
     }
 }
