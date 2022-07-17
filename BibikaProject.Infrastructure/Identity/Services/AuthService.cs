@@ -336,5 +336,29 @@ namespace BibikaProject.Infrastructure.Identity.Services
                 RefreshToken = refresh
             };
         }
+
+        public async Task ResetPassword(ResetPasswordRequest request)
+        {
+            var user = await userManager.FindByEmailAsync(request.Email);
+
+            if (user == null)
+            {
+                throw new IdentityException("User not found", HttpStatusCode.NotFound);
+            }
+
+
+        }
+
+        public async Task ResetPasswordReqauest(string email)
+        {
+            var user = await userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                throw new IdentityException("User not found", HttpStatusCode.NotFound);
+            }
+
+            var token = await userManager.GeneratePasswordResetTokenAsync(user);
+        }
     }
 }
