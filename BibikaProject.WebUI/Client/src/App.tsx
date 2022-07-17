@@ -26,7 +26,7 @@ function App() {
       <Routes>
         <Route path="/" element={<DefaultLayout />}>
           <Route index element={<HomePage />} />
-          <Route path="/post/add" element={<AddPostPage />} />       
+          <Route path="/post/add" element={<AddPostPage />} />
         </Route>
         <Route path="/admin" element={<AdminBasedRoute />}>
           <Route path="/admin" element={<AdminLayout />}>
@@ -38,12 +38,9 @@ function App() {
             <Route path="/admin/car" element={<CarPage />} />
           </Route>
         </Route>
-        <Route path="/post/add" element={<AddPostPage />} />
-          </Route>    
-        </Route> 
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/login" element={<LoginPage />} /> 
 
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
       <ToastContainer pauseOnHover={false} pauseOnFocusLoss={false} />
     </Router>

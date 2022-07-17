@@ -81,7 +81,7 @@ const Header = () => {
           </svg>
         </Dropdown>
 
-        <Link to="add-post" className="add-car-button">
+        <Link to="/post/add" className="add-car-button">
           Sell car
         </Link>
       </div>
