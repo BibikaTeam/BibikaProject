@@ -16,7 +16,7 @@ namespace BibikaProject.Infrastructure.Identity.Services.Helpers.Email
         }
 
         public async Task SendAsync(string to, string subject, string body)
-        {
+        {        
             var message = new MimeMessage();
 
             message.From.Add(MailboxAddress.Parse(emailConfig.From));

@@ -366,7 +366,9 @@ namespace BibikaProject.Infrastructure.Identity.Services
 
             var token = await userManager.GeneratePasswordResetTokenAsync(user);
 
-            await emailSender.SendAsync(email, "Password Resset", $"<a>localhost:3000/user/reset-password/{token}<a/>");
+            var body = TemplateEngine.GetResetPasswordTemplate(user.UserName, token);
+
+            await emailSender.SendAsync(email, "Password Resset", body);
         }
     }
 }
