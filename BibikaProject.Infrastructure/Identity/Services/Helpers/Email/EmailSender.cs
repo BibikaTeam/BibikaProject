@@ -28,10 +28,10 @@ namespace BibikaProject.Infrastructure.Identity.Services.Helpers.Email
             {
                 try
                 {
-                    client.Connect(emailConfig.SmtpServer, emailConfig.Port, true);
+                    await client.ConnectAsync(emailConfig.SmtpServer, emailConfig.Port, true);
                     client.AuthenticationMechanisms.Remove("XOAUTH2");
-                    client.Authenticate(emailConfig.UserName, emailConfig.Password);
-                    client.Send(message);
+                    await client.AuthenticateAsync(emailConfig.UserName, emailConfig.Password);
+                    await client.SendAsync(message);
                 }
                 catch
                 {
