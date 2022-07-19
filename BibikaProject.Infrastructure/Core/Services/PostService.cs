@@ -94,5 +94,15 @@ namespace BibikaProject.Infrastructure.Core.Services
 
             return response;
         }
+
+        public async Task<List<PostDTO>> GetUserPosts(string email)
+        {
+            IQueryable<Post> posts = query.GetAll()
+                                          .IncldueAllPostProperties();
+
+            posts = posts.Where(x => x.Seller.Email == email);
+
+            return await posts.Select(x => mapper.Map<PostDTO>(x)).ToListAsync();
+        }
     }
 }

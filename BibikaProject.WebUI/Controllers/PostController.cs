@@ -1,6 +1,7 @@
 ﻿using BibikaProject.Application.Core.DTO.Post;
 using BibikaProject.Application.Core.Requests;
 using BibikaProject.Application.Core.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -53,6 +54,14 @@ namespace BibikaProject.WebUI.Controllers
         public async Task<IActionResult> GetPagedPosts([FromBody] PagedPostRequest pagedPostRequest)
         {
             var result = await postService.GetPagedPosts(pagedPostRequest);
+
+            return Ok(result);
+        }
+
+        [HttpGet("get/user-posts/{email}")]
+        public async Task<IActionResult> GetUserPosts(string email)
+        {
+            var result = await postService.GetUserPosts(email);
 
             return Ok(result);
         }
