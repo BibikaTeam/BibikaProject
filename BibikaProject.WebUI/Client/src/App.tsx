@@ -24,10 +24,15 @@ function App() {
   return (
     <Router>
       <Routes>
+
         <Route path="/" element={<DefaultLayout />}>
           <Route index element={<HomePage />} />
           <Route path="/post/add" element={<AddPostPage />} />
         </Route>
+
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage />} /> 
+
         <Route path="/admin" element={<AdminBasedRoute />}>
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="/admin/brand" element={<BrandPage />} />
