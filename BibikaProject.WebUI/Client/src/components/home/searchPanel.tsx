@@ -1,14 +1,90 @@
 import { Button, Input, Radio, Select } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ICarBodyModel } from "../adminPanel/types";
+import { toast } from "react-toastify";
+import { getAllBrands } from "../adminPanel/brand/service";
+import { getGenerationsByModelId } from "../adminPanel/generation/service";
+import { getModelsByBrand } from "../adminPanel/model/service";
+import {
+  IBrandModel,
+  ICarBodyModel,
+  IGenerationModel,
+  IModelModel,
+  IRequestError,
+} from "../adminPanel/types";
 
 const SearchPanel = () => {
-  const [carBodiesList, setCarBodiesList] = useState<Array<ICarBodyModel>>([
-    { id: 0, title: "Car" },
-  ]);
+  const [brandList, setBrandList] = useState<Array<IBrandModel>>([]);
+  const [modelList, setModelList] = useState<Array<IModelModel>>([]);
+  const [generationList, setGenerationList] = useState<Array<IGenerationModel>>(
+    []
+  );
 
-  const handleCarBodyChange = () => {};
+  const [brandLoading, setBrandLoading] = useState<boolean>(false);
+  const [modelLoading, setModelLoading] = useState<boolean>(false);
+  const [generationLoading, setGenerationLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    (async () => {
+      await setAllBrands();
+    })();
+  }, []);
+
+  //service reading
+  const setAllBrands = async () => {
+    setBrandLoading(true);
+    try {
+      let data = await getAllBrands();
+      setBrandList(data);
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
+    } finally {
+      setBrandLoading(false);
+    }
+  };
+  const setModelsByBrandId = async (modelId: number) => {
+    setModelLoading(true);
+    try {
+      let data = await getModelsByBrand(modelId);
+      setModelList(data as IModelModel[]);
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
+    } finally {
+      setModelLoading(false);
+    }
+  };
+  const setGenerationsByModelId = async (modelId: number) => {
+    setGenerationLoading(true);
+    try {
+      let data = await getGenerationsByModelId(modelId);
+      setGenerationList(data as IGenerationModel[]);
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
+    } finally {
+      setGenerationLoading(false);
+    }
+  };
+
+  //selects handling
+  const handleBrandChange = async (brandId: number) => {
+    await setModelsByBrandId(brandId);
+  };
+  const handleModelChange = async (modelId: number) => {
+    await setGenerationsByModelId(modelId);
+  };
+  const handleGenerationChange = async (generationId: number) => {
+    console.log("generaiton", generationId);
+  };
+
   const handleRadioChange = () => {};
 
   return (
@@ -26,14 +102,13 @@ const SearchPanel = () => {
           <div className="search-input-container">
             <Select
               className="search-input"
-              onChange={handleCarBodyChange}
+              onChange={handleBrandChange}
               placeholder="Brand"
+              loading={brandLoading}
             >
-              {carBodiesList.map((carBody: ICarBodyModel) => {
+              {brandList.map((brand: IBrandModel) => {
                 return (
-                  <Select.Option key={carBody.id}>
-                    {carBody.title}
-                  </Select.Option>
+                  <Select.Option key={brand.id}>{brand.title}</Select.Option>
                 );
               })}
             </Select>
@@ -41,14 +116,13 @@ const SearchPanel = () => {
           <div className="search-input-container">
             <Select
               className="search-input"
-              onChange={handleCarBodyChange}
+              onChange={handleModelChange}
               placeholder="Model"
+              loading={modelLoading}
             >
-              {carBodiesList.map((carBody: ICarBodyModel) => {
+              {modelList.map((model: IModelModel) => {
                 return (
-                  <Select.Option key={carBody.id}>
-                    {carBody.title}
-                  </Select.Option>
+                  <Select.Option key={model.id}>{model.title}</Select.Option>
                 );
               })}
             </Select>
@@ -56,13 +130,14 @@ const SearchPanel = () => {
           <div className="search-input-container">
             <Select
               className="search-input"
-              onChange={handleCarBodyChange}
+              onChange={handleGenerationChange}
               placeholder="Generation"
+              loading={generationLoading}
             >
-              {carBodiesList.map((carBody: ICarBodyModel) => {
+              {generationList.map((generation: IGenerationModel) => {
                 return (
-                  <Select.Option key={carBody.id}>
-                    {carBody.title}
+                  <Select.Option key={generation.id}>
+                    {generation.title}
                   </Select.Option>
                 );
               })}

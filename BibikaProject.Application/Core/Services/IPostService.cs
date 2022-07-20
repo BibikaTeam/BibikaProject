@@ -14,6 +14,7 @@ namespace BibikaProject.Application.Core.Services
         Task<List<PostDTO>> GetAllPosts();
 
         Task<PagedList<PostDTO>> GetPagedPosts(PagedPostRequest pagedPostRequest);
+        Task<PagedList<PostDTO>> GetPagedPostsByModel(PagedPostRequest pagedPostRequest);
 
         Task AddImagesToPost(AddImagesToPostDTO imagesToPostDTO);
 

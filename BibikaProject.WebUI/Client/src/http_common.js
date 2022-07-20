@@ -1,5 +1,7 @@
 import axios from "axios";
 
+const authHeader = `Bearer ${localStorage.getItem("token")}`
+
 const instance = axios.create({
     baseURL: "https://localhost:5001/",
     //baseURL: "https://localhost:44381/",
@@ -7,15 +9,14 @@ const instance = axios.create({
         "Content-type": "application/json",
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET, PUT, POST, DELETE, OPTIONS",
-        'Authorization' : `Bearer ${localStorage.getItem("token")}`
+        'Authorization' : authHeader
     }
 });
 
 instance.interceptors.request.use(
     (config) => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        config.headers["x-access-token"] = token;
+      if (localStorage.getItem("token")) {
+        config.headers["Authorization"] = authHeader;
       }
       return config;
     },
@@ -35,9 +36,9 @@ instance.interceptors.response.use(
         originalConfig._retry = true;
         try {
           const rs = await refreshToken();
-          const { accessToken } = rs.data;
-          window.localStorage.setItem("accessToken", accessToken);
-          instance.defaults.headers.common["x-access-token"] = accessToken;
+          const { token } = rs.data;
+          window.localStorage.setItem("token", token);
+          instance.defaults.headers.common["Authorization"] = authHeader;
           return instance(originalConfig);
         } catch (_error) {
           if (_error.response && _error.response.data) {
