@@ -10,7 +10,13 @@ import {
 } from "../../adminPanel/types";
 import { date } from "yup";
 import { ErrorStrings } from "../../../constants";
-import { AddImagesToPostModel, AddOptionsToPostModel, AddPostModel, IGearBoxModel, IGetCarDTO } from "./types";
+import {
+  AddImagesToPostModel,
+  AddOptionsToPostModel,
+  AddPostModel,
+  IGearBoxModel,
+  IGetCarDTO,
+} from "./types";
 
 export const loadImage = async (base64: string) => {
   try {
@@ -83,6 +89,7 @@ export const getImage = async (imageId: number) => {
 
 export const addPost = async (data: AddPostModel) => {
   try {
+    console.log(":", localStorage.getItem("token"));
     const response = await http.post("api/post/add", data);
 
     console.log(response.data);

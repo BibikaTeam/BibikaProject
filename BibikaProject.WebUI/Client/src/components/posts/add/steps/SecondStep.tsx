@@ -18,7 +18,11 @@ import RadioGroup from "./radioGroup";
 import { getModelsByBrand } from "../../../adminPanel/model/service";
 import { toast } from "react-toastify";
 import { getGenerationsByModelId } from "../../../adminPanel/generation/service";
-import { getCarBodiesByGeneration, getEnginesByGenerationId, getGearBoxesByGeneration } from "../service";
+import {
+  getCarBodiesByGeneration,
+  getEnginesByGenerationId,
+  getGearBoxesByGeneration,
+} from "../service";
 import { IGearBoxModel } from "../types";
 import { getCompleteSetsByGeneration } from "../../../adminPanel/completeSet/service";
 const { TextArea } = Input;
@@ -29,7 +33,6 @@ interface SecondStepProps {
 }
 
 const SecondStep: FC<SecondStepProps> = (props) => {
-  
   const [brandsList, setBrandsList] = useState<IBrandModel[]>([]);
   const [selectedBrand, setSelectedBrand] = useState<number>(0);
 
@@ -52,9 +55,10 @@ const SecondStep: FC<SecondStepProps> = (props) => {
   const [gearBoxesList, setGearBoxesList] = useState<IGearBoxModel[]>([]);
   const [selectedGearBox, setSelectedGearBox] = useState<number>(0);
 
-  const [comepleteSetsList, setCompleteSetsList] = useState<ICompleteSetModel[]>([]);
+  const [comepleteSetsList, setCompleteSetsList] = useState<
+    ICompleteSetModel[]
+  >([]);
   const [selectedCompleteSet, setSelectedCompleteSet] = useState<number>(0);
-
 
   useEffect(() => {
     setAllBrands();
@@ -91,65 +95,65 @@ const SecondStep: FC<SecondStepProps> = (props) => {
       await getGenerationsByModelId(modelId).then((data) => {
         setGenerationList(data as IGenerationModel[]);
       });
-    }  catch (_error) {
+    } catch (_error) {
       const error: IRequestError = _error as IRequestError;
       error.errors.forEach((e) => {
         toast.error(e);
-      })
+      });
     }
-  }
+  };
 
   const setEnginesByGenerationId = async (generationId: number) => {
     try {
       await getEnginesByGenerationId(generationId).then((data) => {
         setEnginesList(data as IEngineModel[]);
       });
-    }  catch (_error) {
+    } catch (_error) {
       const error: IRequestError = _error as IRequestError;
       error.errors.forEach((e) => {
         toast.error(e);
-      })
+      });
     }
-  }
+  };
 
   const setCompleteSetsByGenerationId = async (generationId: number) => {
     try {
       await getCompleteSetsByGeneration(generationId).then((data) => {
         setCompleteSetsList(data as ICompleteSetModel[]);
       });
-    }  catch (_error) {
+    } catch (_error) {
       const error: IRequestError = _error as IRequestError;
       error.errors.forEach((e) => {
         toast.error(e);
-      })
+      });
     }
-  }
+  };
 
   const setGearBoxesByGenerationId = async (generationId: number) => {
     try {
       await getGearBoxesByGeneration(generationId).then((data) => {
         setGearBoxesList(data as IGearBoxModel[]);
       });
-    }  catch (_error) {
+    } catch (_error) {
       const error: IRequestError = _error as IRequestError;
       error.errors.forEach((e) => {
         toast.error(e);
-      })
+      });
     }
-  }
+  };
 
   const setCarBodiesByGenerationId = async (generationId: number) => {
     try {
       await getCarBodiesByGeneration(generationId).then((data) => {
         setCarBodiesList(data as ICarBodyModel[]);
       });
-    }  catch (_error) {
+    } catch (_error) {
       const error: IRequestError = _error as IRequestError;
       error.errors.forEach((e) => {
         toast.error(e);
-      })
+      });
     }
-  }
+  };
 
   const handleBrandChange = async (value: number) => {
     setSelectedBrand(value);
@@ -161,11 +165,11 @@ const SecondStep: FC<SecondStepProps> = (props) => {
     setSelectedModel(value);
     setSelectedGeneration(0);
     setGenerationsByModel(value);
-  }
+  };
 
   const handleYearChange = (date: any, dateString: string) => {
     setSelectedYear(dateString);
-  }
+  };
 
   const handleGenerationChange = (value: number) => {
     setSelectedGeneration(value);
@@ -177,57 +181,54 @@ const SecondStep: FC<SecondStepProps> = (props) => {
     setCompleteSetsByGenerationId(value);
     setGearBoxesByGenerationId(value);
     setCarBodiesByGenerationId(value);
-  }
+  };
 
   const handleEngineChange = (value: number) => {
     setSelectedEngine(value);
-  }
+  };
 
   const handleGearboxChange = (value: number) => {
     setSelectedGearBox(value);
-  }
+  };
 
   const handleCarBodyChange = (value: number) => {
     setSelectedCarBody(value);
-  }
+  };
 
   const handleCompleteSetChange = (value: number) => {
     setSelectedCompleteSet(value);
-  }
+  };
 
   const handleDescriptionChange = (value: any) => {
     setDescription(value.target.value);
-  }
+  };
 
   const ifModelSelected = () => {
     if (selectedModel == 0) {
       return "visibility-hidden";
-  }
-    return "steps-selects-container"
-  }
+    }
+    return "steps-selects-container";
+  };
 
   const ifYearAndGenerationSelected = () => {
     if (selectedGeneration == 0 || selectedYear == "") {
-     return "visibility-hidden";
+      return "visibility-hidden";
     }
-     return "steps-select-container"
- }
+    return "steps-select-container";
+  };
 
- const ifEngineSelected = (type: number) => {
-  if (selectedEngine == 0) {
-    return "visibility-hidden";
-   }
+  const ifEngineSelected = (type: number) => {
+    if (selectedEngine == 0) {
+      return "visibility-hidden";
+    }
 
-   // temp solution while waiting for design
-   if(type == 1)
-   {
-      return "steps-secondstep-description"
-   }
-   else if (type == 2) {
-      return "steps-selects-container"
-   }
-    
- }
+    // temp solution while waiting for design
+    if (type == 1) {
+      return "steps-secondstep-description";
+    } else if (type == 2) {
+      return "steps-selects-container";
+    }
+  };
 
   return (
     <div className="steps-container">
@@ -257,7 +258,7 @@ const SecondStep: FC<SecondStepProps> = (props) => {
                   selectedYear,
                   selectedCompleteSet,
                   selectedCarBody,
-                  selectedGearBox
+                  selectedGearBox,
                 });
               }}
             >
@@ -293,8 +294,7 @@ const SecondStep: FC<SecondStepProps> = (props) => {
           </div>
           <div className="steps-select-container">
             Generation
-            <Select className="steps-select"
-             onChange={handleGenerationChange}>
+            <Select className="steps-select" onChange={handleGenerationChange}>
               {generationList.map((generation: IGenerationModel) => (
                 <Select.Option key={generation.id}>
                   {generation.title}
@@ -304,12 +304,9 @@ const SecondStep: FC<SecondStepProps> = (props) => {
           </div>
           <div className={ifYearAndGenerationSelected()}>
             Engines
-            <Select className="steps-select"
-             onChange={handleEngineChange}>
+            <Select className="steps-select" onChange={handleEngineChange}>
               {enginesList.map((engine: IEngineModel) => (
-                <Select.Option key={engine.id}>
-                  {engine.title}
-                </Select.Option>
+                <Select.Option key={engine.id}>{engine.title}</Select.Option>
               ))}
             </Select>
           </div>
@@ -317,30 +314,23 @@ const SecondStep: FC<SecondStepProps> = (props) => {
         <div className={ifEngineSelected(2)}>
           <div className="steps-select-container">
             Gearbox
-            <Select className="steps-select"
-             onChange={handleGearboxChange}>
+            <Select className="steps-select" onChange={handleGearboxChange}>
               {gearBoxesList.map((gearBox: IGearBoxModel) => (
-                <Select.Option key={gearBox.id}>
-                  {gearBox.title}
-                </Select.Option>
+                <Select.Option key={gearBox.id}>{gearBox.title}</Select.Option>
               ))}
             </Select>
           </div>
           <div className="steps-select-container">
             Car Body
-            <Select className="steps-select"
-             onChange={handleCarBodyChange}>
+            <Select className="steps-select" onChange={handleCarBodyChange}>
               {carBodiesList.map((carBody: ICarBodyModel) => (
-                <Select.Option key={carBody.id}>
-                  {carBody.title}
-                </Select.Option>
+                <Select.Option key={carBody.id}>{carBody.title}</Select.Option>
               ))}
             </Select>
           </div>
           <div className="steps-select-container">
             Complete Set
-            <Select className="steps-select"
-             onChange={handleCompleteSetChange}>
+            <Select className="steps-select" onChange={handleCompleteSetChange}>
               {comepleteSetsList.map((completeSet: ICompleteSetModel) => (
                 <Select.Option key={completeSet.id}>
                   {completeSet.title}
@@ -375,7 +365,7 @@ const SecondStep: FC<SecondStepProps> = (props) => {
             <path
               d="M4 18.0717L16.6696 31.0425C17.6157 32.0111 19.2306 31.7794 19.8663 30.5839L34 4"
               stroke="#219CE1"
-              stroke-opacity="0.6"
+              strokeOpacity="0.6"
               stroke-width="5"
               stroke-linecap="square"
             />

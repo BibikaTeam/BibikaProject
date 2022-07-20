@@ -80,8 +80,7 @@ const Header = () => {
             </defs>
           </svg>
         </Dropdown>
-
-        <Link to="post/add" className="add-car-button">
+        <Link to="/post/add" className="add-car-button">
           Sell car
         </Link>
       </div>

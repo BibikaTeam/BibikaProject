@@ -9,7 +9,7 @@ const AdvMainBanner = () => {
   const car: IBannerCar = {
     gearboxType: "Automatic",
     engine: "Disel",
-    year: 20222,
+    year: 2022,
     mileage: 2000,
     location: "Lviv",
     title: "Audi Q8",
