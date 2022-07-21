@@ -1,5 +1,6 @@
 ﻿using BibikaProject.Application.Core.Queries;
 using BibikaProject.Domain.Entities.Core;
+using System.Linq;
 
 namespace BibikaProject.Infrastructure.Core.Queries
 {

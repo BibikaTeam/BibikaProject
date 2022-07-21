@@ -40,6 +40,14 @@ namespace BibikaProject.Infrastructure
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<Post>()
+                   .HasMany(x => x.Likes)
+                   .WithMany(x => x.LikedPosts);
+
+            builder.Entity<Post>()
+                   .HasOne(x => x.Seller)
+                   .WithMany(x => x.Posts);
+
             //builder.ApplyConfiguration(new RoleConfiguration());
         }
     }

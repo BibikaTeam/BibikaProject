@@ -4,8 +4,6 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -74,7 +72,7 @@ namespace BibikaProject.WebUI
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.ConfigureBrandService();
-            services.ConfigurePostService(); 
+            services.ConfigurePostService();
             services.ConfigureImageService();
             services.ConfigureModelService();
             services.ConfigureGenerationService();
@@ -83,14 +81,9 @@ namespace BibikaProject.WebUI
             services.ConfigureEngineService();
             services.ConfigureGearBoxService();
             services.ConfigureCompleteSetService();
+            services.ConfigureCarBodyService();
+            services.ConfigureUserService();
             services.ConfigureCarBodyService();         
-
-        }
-
-        private IEnumerable<object> SelectMany(Func<object, object> p)
-        {
-            throw new NotImplementedException();
-
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
