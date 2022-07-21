@@ -6,11 +6,6 @@ export enum CurrentStep {
     ThirdStep
 }
 
-export interface AddImagesToPostModel {
-    id: number,
-    imagesId: Array<number>
-}
-
 export interface ImageSrcIdModel {
     imageSrc: string,
     imageId: number,
@@ -32,7 +27,7 @@ export interface AddPostModel {
 }
 
 export interface AddImagesToPostModel {
-    id: number,
+    postId: number,
     imagesId: Array<number>
 }
 
