@@ -40,6 +40,7 @@ namespace BibikaProject.Infrastructure.Core.Services
         public async Task<List<PostDTO>> GetAllPosts()
         {
             IQueryable<Post> posts = query.GetAll()
+                                          .Include(x => x.Likes)
                                           .Include(x => x.Seller)
                                           .Include(x => x.Car).ThenInclude(x => x.Engine)
                                           .Include(x => x.Car).ThenInclude(x => x.CompleteSet)
@@ -142,7 +143,28 @@ namespace BibikaProject.Infrastructure.Core.Services
 
             return response;
         }
+        
+        public async Task<List<PostDTO>> GetUserPosts(string email)
+        {
+            IQueryable<Post> posts = query.GetAll()
+                                          .IncldueAllPostProperties();
 
+            posts = posts.Where(x => x.Seller.Email == email);
+
+            return await posts.Select(x => mapper.Map<PostDTO>(x)).ToListAsync();
+        }
+
+        public async Task<List<PostDTO>> GetUserLikedPosts(string email)
+        {
+            IQueryable<Post> posts = query.GetAll()
+                                          .Include(x => x.Seller)
+                                          .Include(x => x.Likes);
+
+            posts = posts.Where(x => x.Likes.Any(x => x.Email == email));
+
+            return await posts.Select(x => mapper.Map<PostDTO>(x)).ToListAsync();
+        }
+         
         public async Task<PostDTO> GetRandomPost()
         {
             IQueryable<Post> posts = query.GetAll()

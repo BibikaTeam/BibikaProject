@@ -226,5 +226,10 @@ namespace BibikaProject.WebUI
 
             services.Configure<GoogleAuthSettings>(settings);
         }
+
+        public static void ConfigureUserService(this IServiceCollection services)
+        {
+            services.AddTransient<IUserService, UserService>();
+        }
     }
 }
