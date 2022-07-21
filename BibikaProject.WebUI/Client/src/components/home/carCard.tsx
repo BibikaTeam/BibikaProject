@@ -1,19 +1,27 @@
 import { title } from "process";
+import { useEffect } from "react";
+import { getRandomPost } from "./service";
 import { IBannerCar } from "./types";
 
-const MainPageCarCard = () => {
-  const car: IBannerCar = {
-    title: "Tesla Model S",
-    engine: "Electro",
-    gearboxType: "Automatic",
-    location: "Kyiv",
-    mainImageSrc:
-      "https://tesla-cdn.thron.com/delivery/public/image/tesla/8a74d206-66dc-4386-8c7a-88ff32174e7d/bvlatuR/std/4096x2560/Model-S-Main-Hero-Desktop-LHD",
-    mileage: 24000,
-    price: 67000,
-    year: 2020,
-  };
+export interface IMainPageCarCardProps {
+  car: IBannerCar;
+}
 
+const MainPageCarCard = ({ car }: IMainPageCarCardProps) => {
+  // let car: IBannerCar = {
+  //   title: "Tesla Model S",
+  //   engine: "Electro",
+  //   gearBoxTitle: "Automatic",
+  //   location: "Kyiv",
+  //   mainImageSrc:
+  //     "https://tesla-cdn.thron.com/delivery/public/image/tesla/8a74d206-66dc-4386-8c7a-88ff32174e7d/bvlatuR/std/4096x2560/Model-S-Main-Hero-Desktop-LHD",
+  //   mileage: 24000,
+  //   price: 67000,
+  //   year: 2020,
+  //   id: 0,
+  // };
+
+  console.log("INside: ", car);
   return (
     <div className="main-car-card">
       <img src={car.mainImageSrc} alt="Car src" />

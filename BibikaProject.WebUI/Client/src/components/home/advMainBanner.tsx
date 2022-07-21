@@ -7,7 +7,7 @@ export interface IMainBannerProps {
 
 const AdvMainBanner = () => {
   const car: IBannerCar = {
-    gearboxType: "Automatic",
+    gearBoxTitle: "Automatic",
     engine: "Disel",
     year: 2022,
     mileage: 2000,
@@ -16,6 +16,8 @@ const AdvMainBanner = () => {
     mainImageSrc:
       "https://usaautoonline.azurewebsites.net/media/1256/audi-q8.jpg",
     price: 85000,
+    id: 0,
+    description: "",
   };
 
   return (
@@ -32,7 +34,7 @@ const AdvMainBanner = () => {
           {car.year} | {car.mileage}km
         </span>
         <span>
-          {car.engine} | {car.gearboxType}
+          {car.engine} | {car.gearBoxTitle}
         </span>
         <Link to="#" className="more-btn">
           More
