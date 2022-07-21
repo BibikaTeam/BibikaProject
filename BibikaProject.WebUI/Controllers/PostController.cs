@@ -1,8 +1,10 @@
 ﻿using BibikaProject.Application.Core.DTO.Post;
 using BibikaProject.Application.Core.Requests;
 using BibikaProject.Application.Core.Services;
+using BibikaProject.Application.Identity.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BibikaProject.WebUI.Controllers
@@ -62,6 +64,24 @@ namespace BibikaProject.WebUI.Controllers
         public async Task<IActionResult> GetUserPosts(string email)
         {
             var result = await postService.GetUserPosts(email);
+
+            return Ok(result);
+        }
+
+        [HttpGet("get/user-posts/{email}")]
+        [Authorize]
+        public async Task<IActionResult> GetUserPosts()
+        {
+            var result = await postService.GetUserPosts(HttpContext.User.Claims.First(x => x.Type == UserJWTClaimTypes.Email).Value);
+
+            return Ok(result);
+        }
+
+        [HttpGet("get/user-liked/")]
+        [Authorize]
+        public async Task<IActionResult> GetUserLikedPosts()
+        {
+            var result = await postService.GetUserLikedPosts(HttpContext.User.Claims.First(x => x.Type == UserJWTClaimTypes.Email).Value);
 
             return Ok(result);
         }

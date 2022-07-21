@@ -20,5 +20,7 @@ namespace BibikaProject.Application.Core.Services
         Task AddOptionsToPost(AddOptionsToPostDTO optionsToPostDTO);
 
         Task<List<PostDTO>> GetUserPosts(string email);
+
+        Task<List<PostDTO>> GetUserLikedPosts(string email);
     }
 }
