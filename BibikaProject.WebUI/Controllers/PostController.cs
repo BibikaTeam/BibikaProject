@@ -85,6 +85,8 @@ namespace BibikaProject.WebUI.Controllers
         public async Task<IActionResult> GetUserLikedPosts()
         {
             var result = await postService.GetUserLikedPosts(HttpContext.User.Claims.First(x => x.Type == UserJWTClaimTypes.Email).Value);
+
+            return Ok(result);
         }
         
         [HttpGet("get/random")]
