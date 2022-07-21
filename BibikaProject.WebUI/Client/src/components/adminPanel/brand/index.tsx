@@ -5,7 +5,6 @@ import {
   IPaginationBrandModel,
   IPaginationBrandRequest,
   IPaginationModel,
-  IPaginationRequest,
   IRequestError,
 } from "../types";
 
@@ -53,6 +52,7 @@ const BrandPage = () => {
   //Service calling
   const handleGetAllBrands = async () => {
     setLoading(true);
+
     try {
       const paginationModel: IPaginationBrandModel = {
         search: "",
@@ -65,6 +65,7 @@ const BrandPage = () => {
       const error: IRequestError = _error as IRequestError;
       error.errors.forEach((e) => {
         toast.error(e);
+
       });
     } finally {
       setLoading(false);
@@ -143,7 +144,6 @@ const BrandPage = () => {
       duration: 0,
       key: key,
       onClick: () => {
-        console.log("key: ", key);
         notification.close(key);
         handleGetAllBrands();
       },
@@ -207,7 +207,6 @@ const BrandPage = () => {
     <Context.Provider value={{ name: "Ant Design" }}>
       {contextHolder}
       {loading}
-
       <Row>
         <Col span={12}>
           <Input

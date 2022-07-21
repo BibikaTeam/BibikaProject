@@ -286,6 +286,9 @@ namespace BibikaProject.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("Mileage")
+                        .HasColumnType("integer");
+
                     b.Property<string>("SellerId")
                         .IsRequired()
                         .HasColumnType("text");

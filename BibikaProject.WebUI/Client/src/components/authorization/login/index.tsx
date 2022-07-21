@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { flushSync } from "react-dom";
+
 import { Form, Input, Button, Checkbox, Space, Spin } from "antd";
 import { FacebookOutlined } from "@ant-design/icons";
 
@@ -12,18 +13,15 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 import AuthorizationLayout from "../../containers/authorizationLayout";
+
 import { IRequestError } from "../../adminPanel/types";
-import {
-  CredentialResponse,
-  GoogleLogin,
-  GoogleOAuthProvider,
-  useGoogleLogin,
-} from "@react-oauth/google";
-import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID } from "../../../constants";
 
 //import FacebookLogin from 'react-facebook-login';
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { ReactFacebookLoginInfo } from "react-facebook-login";
+
+import { CredentialResponse, GoogleLogin, GoogleOAuthProvider, useGoogleLogin} from "@react-oauth/google";
+import { FACEBOOK_APP_ID, GOOGLE_CLIENT_ID } from "../../../constants";
 
 const LoginPage: FC = () => {
   const { loginUser } = useActions();
@@ -57,6 +55,7 @@ const LoginPage: FC = () => {
 
   const responseGoogle = async (values: CredentialResponse) => {
     setLoading(true);
+
     try {
       await loginGoogleUser(values);
       toast.success("Successfully login");
@@ -157,6 +156,7 @@ const LoginPage: FC = () => {
                       type="icon"
                     />
                   </GoogleOAuthProvider>
+
                   <FacebookLogin
                     appId={FACEBOOK_APP_ID}
                     autoLoad={false}

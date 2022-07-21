@@ -8,7 +8,7 @@ namespace BibikaProject.Application.Core.Services
 {
     public interface IPostService
     {
-        Task AddPostAsync(AddPostDTO addPostDTO);
+        Task<int> AddPostAsync(AddPostDTO addPostDTO);
 
         // temporary method returning all posts for test
         Task<List<PostDTO>> GetAllPosts();
@@ -22,5 +22,7 @@ namespace BibikaProject.Application.Core.Services
         Task<List<PostDTO>> GetUserPosts(string email);
 
         Task<List<PostDTO>> GetUserLikedPosts(string email);
+        
+        Task<PostDTO> GetRandomPost();
     }
 }

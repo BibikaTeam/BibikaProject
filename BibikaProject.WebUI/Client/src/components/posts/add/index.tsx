@@ -1,5 +1,13 @@
-const AddPost = () => {
-  return <h1>Add post</h1>;
-};
+import { FC, useState } from "react"
+import StepsContainer from "./steps/StepsContainer";
 
-export default AddPost;
+const PostAdd: FC = () => {
+
+    return( 
+        <>
+            <StepsContainer />     
+        </>
+    )
+}
+
+export default PostAdd;

@@ -21,14 +21,16 @@ namespace BibikaProject.WebUI.Controllers
         private readonly IPostService postService;
 
         [HttpPost("add")]
+        [Authorize]
         public async Task<IActionResult> AddNewPost(AddPostDTO postDTO)
         {
-            await postService.AddPostAsync(postDTO);
+            var result = await postService.AddPostAsync(postDTO);
 
-            return Ok();
+            return Ok(result);
         }
 
         [HttpPost("add-images")]
+        [Authorize]
         public async Task<IActionResult> AddImagesToPost(AddImagesToPostDTO addImagesToPostDTO)
         {
             await postService.AddImagesToPost(addImagesToPostDTO);
@@ -37,6 +39,7 @@ namespace BibikaProject.WebUI.Controllers
         }
 
         [HttpPost("add-options")]
+        [Authorize]
         public async Task<IActionResult> AddOptionsToPost(AddOptionsToPostDTO addOptionsToPostDTO)
         {
             await postService.AddOptionsToPost(addOptionsToPostDTO);
@@ -82,6 +85,12 @@ namespace BibikaProject.WebUI.Controllers
         public async Task<IActionResult> GetUserLikedPosts()
         {
             var result = await postService.GetUserLikedPosts(HttpContext.User.Claims.First(x => x.Type == UserJWTClaimTypes.Email).Value);
+        }
+        
+        [HttpGet("get/random")]
+        public async Task<IActionResult> GetRandomPost()
+        {
+            var result = await postService.GetRandomPost();
 
             return Ok(result);
         }

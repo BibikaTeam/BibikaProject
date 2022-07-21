@@ -11,7 +11,7 @@ import { ErrorStrings } from "../../../constants";
 
 export const getAllCompleteSets = async () => {
   try {
-    const response = await http.get(`api/brand/get/all`);
+    const response = await http.get(`api/completeSet/get/all`);
 
     return response.data;
   } catch (error) {

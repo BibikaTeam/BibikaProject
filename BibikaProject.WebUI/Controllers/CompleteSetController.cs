@@ -18,7 +18,7 @@ namespace BibikaProject.WebUI.Controllers
         private readonly ICompleteSetService completeSetService;
 
         [HttpPost("add")]
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> AddCompleteSet([FromBody] AddCompleteSetDTO model)
         {
             await completeSetService.AddCompleteSetAsync(model);
@@ -27,7 +27,7 @@ namespace BibikaProject.WebUI.Controllers
         }
 
         [HttpPut("update")]
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> UpdateCompleteSet([FromBody] UpdateCompleteSetDTO model)
         {
             await completeSetService.UpdateCompleteSetAsync(model); 
@@ -36,7 +36,7 @@ namespace BibikaProject.WebUI.Controllers
         }
 
         [HttpDelete("delete/{id}")]
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteCompleteSet(int id)
         {
             await completeSetService.DeleteCompleteSetAsync(id);
@@ -51,24 +51,27 @@ namespace BibikaProject.WebUI.Controllers
 
             return Ok(result);
         }
+
         [HttpGet("get/by-brand/{id}")]
         public async Task<IActionResult> GetCompleteSetsByBrand(int id)
         {
-            var result = await completeSetService.GetAllCompletSetsByGenerationAsync(id);
+            var result = await completeSetService.GetCompletSetsByGenerationAsync(id);
 
             return Ok(result);
         }
+
         [HttpGet("get/by-model/{id}")]
         public async Task<IActionResult> GetCompleteSetsByModel(int id)
         {
-            var result = await completeSetService.GetAllCompletSetsByModelAsync(id);
+            var result = await completeSetService.GetCompletSetsByModelAsync(id);
 
             return Ok(result);
         }
+
         [HttpGet("get/by-generation/{id}")]
         public async Task<IActionResult> GetCompleteSetsByGeneration(int id)
         {
-            var result = await completeSetService.GetAllCompletSetsByGenerationAsync(id);
+            var result = await completeSetService.GetCompletSetsByGenerationAsync(id);
 
             return Ok(result);
         }
