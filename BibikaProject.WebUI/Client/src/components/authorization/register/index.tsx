@@ -49,7 +49,7 @@ const RegisterPage = () => {
                   <path
                     d="M1 12L10.5 2L20 12"
                     stroke="white"
-                    stroke-opacity="0.5"
+                    strokeOpacity="0.5"
                     stroke-width="2"
                   />
                 </svg>

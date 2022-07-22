@@ -1,6 +1,7 @@
 import {
   ICarBodyModel,
   ICarModel,
+  IGearboxModel,
   IPaginationCarModel,
   IPaginationRequest,
   IRequestError,
@@ -15,7 +16,7 @@ export const getCarsByPaginationModel = async (data: IPaginationCarModel) => {
     const response = await http.get<IPaginationRequest<ICarModel>>(
       "/api/car/get?" + qs.stringify(data, { skipNulls: true })
     );
-
+    
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -34,6 +35,27 @@ export const getCarsByPaginationModel = async (data: IPaginationCarModel) => {
     }
   }
 };
+
+export const addCar = async (data: ICarModel) => {
+  try {
+    const response = await http.post("api/car/add", data);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.request.status == 0 || error.request.status == 500) {
+        const unknownError: IRequestError = {
+          code: error.request.status,
+          errors: new Array<string>(ErrorStrings.backendNotResponse()),
+        };
+        throw unknownError;
+      }
+      let serverError: IRequestError = {
+        errors: error.response?.data.Errors,
+        code: error.response?.data.Code,
+      };
+      throw serverError;
+    }
+  }
+}
 
 export const deleteCar = async (data: number) => {
   try {
@@ -79,3 +101,28 @@ export const getAllCarBodies = async () => {
     }
   }
 };
+
+export const getAllGearboxes = async () => {
+  try {
+    const response = await http.get<Array<IGearboxModel>>(
+      `api/gearBox/get/all`
+    );
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.request.status == 0 || error.request.status == 500) {
+        const unknownError: IRequestError = {
+          code: error.request.status,
+          errors: new Array<string>(ErrorStrings.backendNotResponse()),
+        };
+        throw unknownError;
+      }
+      let serverError: IRequestError = {
+        errors: error.response?.data.Errors,
+        code: error.response?.data.Code,
+      };
+      throw serverError;
+    }
+  }
+}

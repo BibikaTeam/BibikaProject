@@ -39,7 +39,7 @@ namespace BibikaProject.Infrastructure.Core.Services
             }      
         }
 
-        public async Task SaveImage(string base64, string userId)
+        public async Task<int> SaveImage(string base64, string userId)
         {          
             string imageTitle = $"{userId}_{ Guid.NewGuid()}";
 
@@ -55,8 +55,10 @@ namespace BibikaProject.Infrastructure.Core.Services
                 await imageFile.FlushAsync();
             }
 
-            await command.AddAsync(new Image { Title = imageTitle, UserId = userId });
+            var img = await command.AddAsync(new Image { Title = imageTitle, UserId = userId });
             await command.SaveChangesAsync();
+
+            return img.Id;
         }
 
         public async Task<byte[]> GetImage(int id)

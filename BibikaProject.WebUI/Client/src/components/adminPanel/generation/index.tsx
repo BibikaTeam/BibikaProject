@@ -209,7 +209,6 @@ const GenerationPage: FC = () => {
   };
 
   const handleAddGeneration = async (values: IGenerationAddModel) => {
-    console.log(values);
     setLoading(true);
     try {
       await addGeneration(values);
@@ -342,7 +341,7 @@ const GenerationPage: FC = () => {
             className="buttonPrimary"
             onClick={() => setModalAdd(true)}
           >
-            Додати нову марку авто
+            Додати нову генерацію авто
           </Button>
         </Col>
       </Row>

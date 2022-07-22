@@ -8,7 +8,7 @@ import { loginReducer } from "../components/authorization/login/reducer";
 
 const rootReducer = combineReducers({
   ...reducers,
-  router: connectRouter(window.history),
+  //router: connectRouter(),
   login: loginReducer,
 });
 

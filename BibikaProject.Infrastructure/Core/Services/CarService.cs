@@ -97,12 +97,12 @@ namespace BibikaProject.Infrastructure.Core.Services
             IQueryable<Car> cars = query.GetAll();
 
             return await cars.Where(x => x.EngineId == getCarDTO.EngineId &&
-                                   x.CarBodyId == getCarDTO.CarBodyId &&
-                                   x.CompleteSetId == getCarDTO.CompleteSetId &&
-                                   x.GenerationId == getCarDTO.GenerationId &&
-                                   x.GearBoxId == getCarDTO.GearBoxId)
-                            .Select(x => mapper.Map<CarDTO>(x))
-                            .FirstAsync();         
+                                    x.CarBodyId == getCarDTO.CarBodyId &&
+                                    x.CompleteSetId == getCarDTO.CompleteSetId &&
+                                    x.GenerationId == getCarDTO.GenerationId &&
+                                    x.GearBoxId == getCarDTO.GearBoxId)
+                             .Select(x => mapper.Map<CarDTO>(x))
+                             .FirstAsync();         
         } 
     }
 }

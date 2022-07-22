@@ -22,9 +22,9 @@ namespace BibikaProject.WebUI.Controllers
         [Authorize]
         public async Task<IActionResult> AddImage([FromBody] string base64)
         {
-            await imageService.SaveImage(base64, HttpContext.User.Claims.First(x => x.Type == UserJWTClaimTypes.Id).Value);
+            var result = await imageService.SaveImage(base64, HttpContext.User.Claims.First(x => x.Type == UserJWTClaimTypes.Id).Value);
 
-            return Ok(); 
+            return Ok(result); 
         }
 
         [HttpDelete("delete/{id}")]

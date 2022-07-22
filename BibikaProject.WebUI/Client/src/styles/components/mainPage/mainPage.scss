@@ -1,0 +1,17 @@
+@import "./mainBannerAdv.scss";
+@import "./searchPanel.scss";
+@import "./popularBlock.scss";
+
+.adb-main-container{
+    padding-top: 27px;
+    padding-bottom: 131px;
+}
+.home-page{
+    background-color: rgba($color: #414141, $alpha: 0.05);
+
+    padding-bottom: 100px;
+    .main-banner{
+        display: block;
+        margin: 75px auto 100px auto;
+    }
+}

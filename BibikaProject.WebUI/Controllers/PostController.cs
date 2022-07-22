@@ -1,5 +1,7 @@
 ﻿using BibikaProject.Application.Core.DTO.Post;
+using BibikaProject.Application.Core.Requests;
 using BibikaProject.Application.Core.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -17,14 +19,16 @@ namespace BibikaProject.WebUI.Controllers
         }
 
         [HttpPost("add")]
+        [Authorize]
         public async Task<IActionResult> AddNewPost(AddPostDTO postDTO)
         {
-            await postService.AddPostAsync(postDTO);
+            var result = await postService.AddPostAsync(postDTO);
 
-            return Ok();
+            return Ok(result);
         }
 
         [HttpPost("add-images")]
+        [Authorize]
         public async Task<IActionResult> AddImagesToPost(AddImagesToPostDTO addImagesToPostDTO)
         {
             await postService.AddImagesToPost(addImagesToPostDTO);
@@ -33,6 +37,7 @@ namespace BibikaProject.WebUI.Controllers
         }
 
         [HttpPost("add-options")]
+        [Authorize]
         public async Task<IActionResult> AddOptionsToPost(AddOptionsToPostDTO addOptionsToPostDTO)
         {
             await postService.AddOptionsToPost(addOptionsToPostDTO);
@@ -40,10 +45,33 @@ namespace BibikaProject.WebUI.Controllers
             return Ok();
         }
 
-        [HttpGet("get")]
+        [HttpGet("get/all")]
         public async Task<IActionResult> GetAllPosts()
         {
             var result = await postService.GetAllPosts();
+
+            return Ok(result);
+        }
+
+        [HttpPost("get")]
+        public async Task<IActionResult> GetPagedPosts([FromBody] PagedPostRequest pagedPostRequest)
+        {
+            var result = await postService.GetPagedPosts(pagedPostRequest);
+
+            return Ok(result);
+        }
+        [HttpPost("get/by-model")]
+        public async Task<IActionResult> GetPagedPostByModel([FromBody] PagedPostRequest pagedPostRequest)
+        {
+            var result = await postService.GetPagedPostsByModel(pagedPostRequest);
+
+            return Ok(result);
+        }
+
+        [HttpGet("get/random")]
+        public async Task<IActionResult> GetRandomPost()
+        {
+            var result = await postService.GetRandomPost();
 
             return Ok(result);
         }

@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const instance = axios.create({
-    // baseURL: "http://localhost:5000/",
-    baseURL: "https://localhost:44381/",
+    baseURL: "https://localhost:5001/",
+    //baseURL: "https://localhost:44381/",
     headers: {
         "Content-type": "application/json",
         "Access-Control-Allow-Origin": "*",
@@ -13,9 +13,8 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
     (config) => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        config.headers["x-access-token"] = token;
+      if (localStorage.getItem("token")) {
+        config.headers["Authorization"] = `Bearer ${localStorage.getItem("token")}`;
       }
       return config;
     },
@@ -35,9 +34,10 @@ instance.interceptors.response.use(
         originalConfig._retry = true;
         try {
           const rs = await refreshToken();
-          const { accessToken } = rs.data;
-          window.localStorage.setItem("accessToken", accessToken);
-          instance.defaults.headers.common["x-access-token"] = accessToken;
+          const { token } = rs.data;
+          console.log("data: ", rs.data);
+          window.localStorage.setItem("token", token);
+          instance.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("token")}`;
           return instance(originalConfig);
         } catch (_error) {
           if (_error.response && _error.response.data) {

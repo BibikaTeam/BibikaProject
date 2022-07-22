@@ -43,12 +43,6 @@ export interface IUpdateModelModel {
   title: string;
 }
 
-export interface IGenerationModel {
-  title: string;
-  brandTitle: string;
-  modelTitle: string;
-}
-
 export interface IPaginationBrandModel {
   page: number;
   countOnPage: number;
@@ -77,12 +71,6 @@ export interface IPaginationModelRequest {
   data: Array<IModelModel>;
   currentPage: number;
   allPages: number;
-}
-
-export interface IBrandResponse {
-  data: null | Array<IBrandModel> | boolean | undefined;
-
-  //isAuth: boolean;
 }
 
 export interface IPaginationRequest<type> {
@@ -127,7 +115,13 @@ export interface IPaginationCarModel {
   gearboxId: number | null;
   completeSetId: number | null;
 }
+
 export interface ICarBodyModel {
+  id: number;
+  title: string;
+}
+
+export interface IGearboxModel {
   id: number;
   title: string;
 }

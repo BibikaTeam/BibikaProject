@@ -1,4 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using BibikaProject.Application.Identity.Services;
+using BibikaProject.Domain.Entities.Identity;
+using BibikaProject.Application.Identity.Queries;
+using BibikaProject.Application.Identity.Commands;
+using BibikaProject.Application.Identity.Responses;
+using BibikaProject.Application.Identity.Requests;
+using BibikaProject.Application.Identity.Claims;
+using BibikaProject.Infrastructure.Identity.Errors;
+using BibikaProject.Infrastructure.Identity.Services.Settings;
+using BibikaProject.Infrastructure.Identity.Services.Helpers;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -8,35 +18,39 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
-using BibikaProject.Application.Identity.Services;
-using BibikaProject.Domain.Entities.Identity;
-using BibikaProject.Application.Identity.Queries;
-using BibikaProject.Application.Identity.Commands;
-using BibikaProject.Application.Identity.Responses;
-using BibikaProject.Application.Identity.Requests;
-using BibikaProject.Application.Identity.Claims;
-using BibikaProject.Infrastructure.Identity.Errors;
+using System.Net.Http;
 using System.Net;
+using Google.Apis.Auth;
+using Newtonsoft.Json;
+using BibikaProject.Infrastructure.Identity.Services.FacebookAuthTypes;
 
 namespace BibikaProject.Infrastructure.Identity.Services
 {
     public class AuthService : IAuthService
     {
         public AuthService(UserManager<ApplicationUser> userManager,
-                           IOptions<JWTSettings> options,
+                           IOptions<JWTSettings> jwtSettings,
                            IRefreshTokenQuery refreshTokenQuery,
-                           IRefreshTokenCommand refreshTokenCommand)
+                           IRefreshTokenCommand refreshTokenCommand,
+                           IOptions<FacebookAuthSettings> facebookAuthSettings,
+                           IOptions<GoogleAuthSettings> googleAuthSettings)
         {
             this.userManager = userManager;
-            this.options = options.Value;
+            this.jwtSettings = jwtSettings.Value;
             this.refreshTokenQuery = refreshTokenQuery;
             this.refreshTokenCommand = refreshTokenCommand;
+            this.facebookAuthSettings = facebookAuthSettings.Value;
+            this.googleAuthSettings = googleAuthSettings.Value;
         }
 
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly JWTSettings options;
+        private readonly JWTSettings jwtSettings;
         private readonly IRefreshTokenQuery refreshTokenQuery;
         private readonly IRefreshTokenCommand refreshTokenCommand;
+        private readonly FacebookAuthSettings facebookAuthSettings;
+        private readonly GoogleAuthSettings googleAuthSettings;
+
+        private static readonly HttpClient Client = new HttpClient();
 
         public async Task<TokenResponse> LoginAsync(UserLoginRequest request)
         {
@@ -63,7 +77,7 @@ namespace BibikaProject.Infrastructure.Identity.Services
             };
         }
 
-        public async Task<List<string>> RegisterAsync(UserRegisterRequest request)
+        public async Task RegisterAsync(UserRegisterRequest request)
         {
             var user = new ApplicationUser
             {
@@ -82,12 +96,10 @@ namespace BibikaProject.Infrastructure.Identity.Services
                     errors.Add(item.Description);
                 }
 
-                return errors;
+                throw new IdentityException(errors.ToArray(), HttpStatusCode.BadRequest);
             }
 
-            await userManager.AddToRoleAsync(user, "User");
-
-            return null;
+            //await userManager.AddToRoleAsync(user, "User");
         }
 
         public async Task<TokenResponse> RefreshAsync(RefreshTokenRequest request)
@@ -153,9 +165,9 @@ namespace BibikaProject.Infrastructure.Identity.Services
                 ValidateAudience = true,
                 ValidateLifetime = false,
                 ValidateIssuerSigningKey = true,
-                ValidIssuer = options.ValidIssuer,
-                ValidAudience = options.ValidAudience,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.Secret))
+                ValidIssuer = jwtSettings.ValidIssuer,
+                ValidAudience = jwtSettings.ValidAudience,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret))
             };
 
             var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out _);
@@ -192,7 +204,7 @@ namespace BibikaProject.Infrastructure.Identity.Services
 
         private SigningCredentials GetSigningCredentials()
         {
-            var key = Encoding.UTF8.GetBytes(options.Secret);
+            var key = Encoding.UTF8.GetBytes(jwtSettings.Secret);
 
             var secret = new SymmetricSecurityKey(key);
 
@@ -223,15 +235,106 @@ namespace BibikaProject.Infrastructure.Identity.Services
         {
             var tokenOptions = new JwtSecurityToken
                 (
-                    issuer: options.ValidIssuer,
-                    audience: options.ValidAudience,
+                    issuer: jwtSettings.ValidIssuer,
+                    audience: jwtSettings.ValidAudience,
                     claims: claims,
-                    expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(options.Expires)),
+                    expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(jwtSettings.Expires)),
                     signingCredentials: signingCredentials
                 );
 
             return tokenOptions;
         }
 
+        public async Task<TokenResponse> GoogleLoginAsync(GoogleLoginRequest request)
+        {
+            var settings = new GoogleJsonWebSignature.ValidationSettings()
+            {
+                Audience = new List<string>() { googleAuthSettings.ClientId }
+            };
+
+            var payload = await GoogleJsonWebSignature.ValidateAsync(request.Credential, settings);
+
+            if (payload == null)
+            {
+                throw new IdentityException("Bad Data", HttpStatusCode.BadRequest);
+            }
+
+            var user = await userManager.FindByEmailAsync(payload.Email);
+
+            if (user == null)
+            {
+                await RegisterAsync(new UserRegisterRequest
+                {
+                    Email = payload.Email,
+                    UserName = payload.Email,
+                    Password = Guid.NewGuid().ToString()
+                });
+
+                user = await userManager.FindByEmailAsync(payload.Email);
+
+                if (user == null)
+                {
+                    throw new IdentityException("Bad Data", HttpStatusCode.BadRequest);
+                }
+            }
+
+            var JWT = await CreateTokenAsync(user);
+
+            var refresh = await CreateRefreshToken(user, GetPrincipalFromToken(JWT));
+
+            return new TokenResponse
+            {
+                Token = JWT,
+                RefreshToken = refresh
+            };
+        }
+
+        public async Task<TokenResponse> FacebookLoginAsync(FacebookLoginRequest request)
+        {
+            var appAccessTokenResponse = await Client.GetStringAsync(FacebookURLGenerator.AppAccessToken(facebookAuthSettings.AppId, 
+                                                                                                         facebookAuthSettings.AppSecret));
+            var appAccessToken = JsonConvert.DeserializeObject<FacebookAppAccessToken>(appAccessTokenResponse);
+
+            var userAccessTokenValidationResponse = await Client.GetStringAsync(FacebookURLGenerator.UserAccess(request.FacebookToken, 
+                                                                                                                appAccessToken.AccessToken));
+            var userAccessTokenValidation = JsonConvert.DeserializeObject<FacebookUserAccessTokenValidation>(userAccessTokenValidationResponse);
+
+            if (!userAccessTokenValidation.Data.IsValid)
+            {
+                throw new IdentityException("Bad Data", HttpStatusCode.BadRequest);
+            }
+
+            var userInfoResponse = await Client.GetStringAsync(FacebookURLGenerator.UserInfo(request.FacebookToken));
+            var userInfo = JsonConvert.DeserializeObject<FacebookUserData>(userInfoResponse);
+
+            var user = await userManager.FindByEmailAsync(userInfo.Email);
+
+            if (user == null)
+            {
+                await RegisterAsync(new UserRegisterRequest
+                {
+                    Email = userInfo.Email,
+                    UserName = userInfo.FirstName,
+                    Password = Guid.NewGuid().ToString()
+                });
+
+                user = await userManager.FindByEmailAsync(userInfo.Email);
+
+                if (user == null)
+                {
+                    throw new IdentityException("Bad Data", HttpStatusCode.BadRequest);
+                }
+            }
+
+            var JWT = await CreateTokenAsync(user);
+
+            var refresh = await CreateRefreshToken(user, GetPrincipalFromToken(JWT));
+
+            return new TokenResponse
+            {
+                Token = JWT,
+                RefreshToken = refresh
+            };
+        }
     }
 }

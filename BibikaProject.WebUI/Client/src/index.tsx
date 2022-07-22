@@ -12,6 +12,7 @@ import { createBrowserHistory } from "history";
 import configureStore from "./store/configureStore";
 import { AuthUser, LogoutUser } from "./components/authorization/login/service";
 import { useActions } from "./hooks/useActions";
+
 const token = localStorage.getItem("token");
 
 const history = createBrowserHistory();

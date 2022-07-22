@@ -7,10 +7,12 @@ export interface IRegisterModel {
   email: string;
   password: string;
 }
+
 export interface ILoginModel {
   email: string;
   password: string;
 }
+
 export interface IUser {
   id: string | null | undefined;
   name: string;
@@ -36,11 +38,17 @@ export type AuthAction = AuthLogin | AuthLogout;
 export interface RegisterErrorType {
   errorsString: Array<string>;
 }
+
 export interface LoginErrorType {
   errorString: string;
 }
+
 export interface LoginResponseType {
   token: string;
   refreshToken: string;
   error: string;
+}
+
+export interface FacebookLoginModel {
+  facebookToken: string;
 }
