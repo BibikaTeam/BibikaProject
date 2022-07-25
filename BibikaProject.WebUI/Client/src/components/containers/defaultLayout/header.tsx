@@ -59,6 +59,7 @@ const Header = () => {
       </div>
 
       <div className="right-header-side">
+      <p>Profile</p>
         <Dropdown overlay={menu} placement="bottomLeft" trigger={["click"]}>
           <svg
             width="49"
@@ -67,7 +68,8 @@ const Header = () => {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <circle cx="24.5" cy="24.5" r="24.5" fill="#2D40E0" />
+            
+            <circle cx="24.5" cy="24.5" r="24.5" fill="#2D40E0"/>
             <circle cx="24.5" cy="24.5" r="24.5" fill="url(#pattern0)" />
             <defs>
               <pattern
@@ -78,7 +80,7 @@ const Header = () => {
               >
                 <use transform="translate(-1.97931 -2.20455) scale(0.0127126)" />
               </pattern>
-              <image id="image0_1_130" width="384" height="480" />
+              <image id="image0_1_130" width="384" height="480"  />
             </defs>
           </svg>
         </Dropdown>
@@ -98,13 +100,14 @@ const menu: any = (
       {
         key: "1",
         label: (
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.antgroup.com"
-          >
-            1st menu item
-          </a>
+          <Link to={"/user-profile"}>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              My posts
+            </a>
+          </Link>
         ),
       },
       {
@@ -115,22 +118,22 @@ const menu: any = (
             rel="noopener noreferrer"
             href="https://www.aliyun.com"
           >
-            2nd menu item
+            Logout
           </a>
         ),
       },
-      {
-        key: "3",
-        label: (
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.luohanacademy.com"
-          >
-            3rd menu item
-          </a>
-        ),
-      },
+      // {
+      //   key: "3",
+      //   label: (
+      //     <a
+      //       target="_blank"
+      //       rel="noopener noreferrer"
+      //       href="https://www.luohanacademy.com"
+      //     >
+      //       3rd menu item
+      //     </a>
+      //   ),
+      // },
     ]}
   />
 );

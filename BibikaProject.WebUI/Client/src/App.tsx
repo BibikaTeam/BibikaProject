@@ -29,13 +29,14 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="/post/add" element={<AddPostPage />} />
           <Route path="/post/search-result" element={<SearchResult />} />
+          <Route element={<AuthorizedBasedRoute />}>
+            <Route path="/user-profile" element={<UserProfile />}></Route>
+          </Route>
         </Route>
 
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route element={<AuthorizedBasedRoute />}>
-            <Route path="/user-profile" element={<UserProfile />}></Route>
-        </Route>
+
 
         <Route path="/admin" element={<AdminBasedRoute />}>
           <Route path="/admin" element={<AdminLayout />}>
