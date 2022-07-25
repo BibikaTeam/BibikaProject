@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import { Input, Checkbox, Button, Form, Spin } from "antd";
 import { IRegisterModel, RegisterErrorType } from "../types";
-
+import { motion } from 'framer-motion';
 import { registerUser } from "./service";
 import { toast } from "react-toastify";
 import AuthorizationLayout from "../../containers/authorizationLayout";
@@ -35,7 +35,12 @@ const RegisterPage = () => {
   return (
     <Spin tip="Loading..." spinning={loading} size="large">
       <AuthorizationLayout>
-        <div className="register-container">
+        <motion.div 
+          className="register-container"
+          
+          initial={{height: 0}}
+          animate={{height: "100%"}}
+          exit={{z: window.innerHeight, transition: {duration: 0.1}}}>
           <div className="register-header-container">
             <Link className="register-go-back-container" to="/login">
               <div className="register-go-back-icon">
@@ -164,7 +169,7 @@ const RegisterPage = () => {
               </div>
             </Form>
           </div>
-        </div>
+        </motion.div>
       </AuthorizationLayout>
     </Spin>
   );

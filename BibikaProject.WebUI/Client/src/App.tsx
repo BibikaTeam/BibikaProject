@@ -1,6 +1,8 @@
 import * as React from "react";
 import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
+//import { useTransition, animated } from 'react-spring';
 import { ToastContainer } from "react-toastify";
 import AdminLayout from "./components/containers/adminLayout";
 import RegisterPage from "./components/authorization/register";
@@ -19,6 +21,7 @@ import AdminBasedRoute from "./routing/adminBasedRoute";
 //default
 import HomePage from "./components/home";
 import DefaultLayout from "./components/containers/defaultLayout";
+import AuthRoutes from "./components/authorization/authRoutes";
 
 function App() {
   return (
@@ -38,10 +41,8 @@ function App() {
             <Route path="/admin/car" element={<CarPage />} />
           </Route>
         </Route>
-
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/login" element={<LoginPage />} />
       </Routes>
+      <AuthRoutes />
       <ToastContainer pauseOnHover={false} pauseOnFocusLoss={false} />
     </Router>
   );

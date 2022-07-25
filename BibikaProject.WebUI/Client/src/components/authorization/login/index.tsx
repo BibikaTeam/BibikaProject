@@ -12,6 +12,8 @@ import { toast } from "react-toastify";
 
 import { useNavigate } from "react-router-dom";
 
+import { motion } from 'framer-motion';
+
 import AuthorizationLayout from "../../containers/authorizationLayout";
 
 import { IRequestError } from "../../adminPanel/types";
@@ -84,7 +86,12 @@ const LoginPage: FC = () => {
   return (
     <Spin tip="Loading..." spinning={loading} size="large">
       <AuthorizationLayout>
-        <div className="login-container">
+        <motion.div 
+          className="login-container"
+          
+          initial={{height: 0}}
+          animate={{height: "100%"}}
+          exit={{z: window.innerHeight, transition: {duration: 0.1}}}>
           <div className="login-header-container">
             <div className="login-form-title-container">
               <span>Login</span>
@@ -207,7 +214,7 @@ const LoginPage: FC = () => {
               </Button>
             </div>
           </div>
-        </div>
+        </motion.div>
       </AuthorizationLayout>
     </Spin>
   );
