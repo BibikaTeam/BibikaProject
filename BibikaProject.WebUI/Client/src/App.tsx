@@ -15,23 +15,28 @@ import EnginePage from "./components/adminPanel/engine";
 import CompleteSetPage from "./components/adminPanel/completeSet";
 import CarPage from "./components/adminPanel/car";
 import AdminBasedRoute from "./routing/adminBasedRoute";
-
-//default
+import UserProfile from "./components/userCabinet";
+import AuthorizedBasedRoute from "./routing/authorizedBasedRoute";
 import HomePage from "./components/home";
 import DefaultLayout from "./components/containers/defaultLayout";
+import SearchResult from "./components/posts/result/searchResult";
 
 function App() {
   return (
     <Router>
       <Routes>
-
         <Route path="/" element={<DefaultLayout />}>
           <Route index element={<HomePage />} />
           <Route path="/post/add" element={<AddPostPage />} />
+          <Route path="/post/search-result" element={<SearchResult />} />
+          <Route element={<AuthorizedBasedRoute />}>
+            <Route path="/user-profile" element={<UserProfile />}></Route>
+          </Route>
         </Route>
 
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/login" element={<LoginPage />} /> 
+        <Route path="/login" element={<LoginPage />} />
+
 
         <Route path="/admin" element={<AdminBasedRoute />}>
           <Route path="/admin" element={<AdminLayout />}>
@@ -42,9 +47,7 @@ function App() {
             <Route path="/admin/complete-set" element={<CompleteSetPage />} />
             <Route path="/admin/car" element={<CarPage />} />
           </Route>
-        </Route> 
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        </Route>
       </Routes>
       <ToastContainer pauseOnHover={false} pauseOnFocusLoss={false} />
     </Router>

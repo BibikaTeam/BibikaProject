@@ -20,10 +20,13 @@
             }
             .info{
                 background-color: rgba(65, 65, 65, 0.02);
-                border: 1px solid rgba($color: #000000, $alpha: 0.2);
+
                 border-top: 0px none;
                 padding: 6px 19px 15px 19px;
 
+                border: 1px solid rgba($color: #000000, $alpha: 0.2);
+                border-bottom-left-radius: 10px;
+                border-bottom-right-radius: 10px;
                 h4{
                     font-size: 48px;
                     line-height: 50px;

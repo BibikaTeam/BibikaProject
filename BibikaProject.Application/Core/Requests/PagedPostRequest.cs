@@ -30,5 +30,6 @@ namespace BibikaProject.Application.Core.Requests
     public class PagedPostRequest : PagedRequest
     {
         public Filter[] Filters { get; set; }
+        public int SearchId { get; set; }
     }
 }

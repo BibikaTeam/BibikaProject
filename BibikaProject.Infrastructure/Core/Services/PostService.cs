@@ -74,6 +74,7 @@ namespace BibikaProject.Infrastructure.Core.Services
 
             posts = posts.Search(pagedPostRequest.Search, "Description");
 
+
             if (pagedPostRequest.Filters != null)
             {
                 foreach (var filter in pagedPostRequest.Filters)
@@ -133,6 +134,7 @@ namespace BibikaProject.Infrastructure.Core.Services
                         posts = posts.Where(x => x.Location.Contains(filter.Location));
                     }
                 }
+
             }
 
             response.AllPages = (int)Math.Ceiling((double)await posts.CountAsync() / (double)pagedPostRequest.CountOnPage);
