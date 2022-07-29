@@ -1,4 +1,5 @@
 import { title } from "process";
+
 import { useEffect } from "react";
 import { getRandomPost } from "./service";
 import { IBannerCar } from "./types";

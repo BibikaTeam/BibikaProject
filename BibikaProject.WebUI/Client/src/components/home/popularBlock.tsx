@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import MainPageCarCard from "./carCard";
 import { getRandomPost } from "./service";
@@ -32,7 +33,7 @@ const PopularBlock = () => {
   }, []);
 
   console.log("postArr: ", postArray);
-
+  
   return (
     <div className="popular-block">
       <h2>Popular</h2>

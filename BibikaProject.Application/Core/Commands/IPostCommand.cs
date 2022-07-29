@@ -9,5 +9,7 @@ namespace BibikaProject.Application.Core.Commands
         Task AddImagesToPost(int postId, List<int> imagesId);
 
         Task AddOptionsToPost(int postId, List<int> optionsId);
+
+        Task LikePost(string userId, int postId);
     }
 }
