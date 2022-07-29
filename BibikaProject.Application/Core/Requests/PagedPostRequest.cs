@@ -31,6 +31,6 @@ namespace BibikaProject.Application.Core.Requests
     {
         // public Filter[] Filters { get; set; }
 
-        public int GenerationId { get; set; }
+        public int SearchId { get; set; }
     }
 }

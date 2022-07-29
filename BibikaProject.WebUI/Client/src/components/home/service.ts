@@ -47,14 +47,21 @@ export const getRandomPost = async () => {
 
 export const shortSearch = async (params: IShortSearchRespond) => {
   try {
+    const searchString = "api/post/get/";
+    let searchValue = params.generation as number;
+    if (params.generation === null) {
+      searchString.concat("by-model/");
+      searchValue = params.model as number;
+    }
+
     const request: IShortCarsCarsRequest = {
-      generationId: params.generation as number,
+      searchId: searchValue,
       countOnPage: 10,
       page: 1,
       search: "",
     };
     const response = await http.post<IPaginationRequest<IBannerCar>>(
-      `api/post/get/`,
+      searchString,
       request
     );
 

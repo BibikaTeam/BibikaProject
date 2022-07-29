@@ -1,6 +1,6 @@
 import { queryByDisplayValue } from "@testing-library/react";
 import { Button, Form, Input, Radio, Select } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getAllBrands } from "../adminPanel/brand/service";
@@ -31,6 +31,11 @@ const SearchPanel = () => {
   const [generationLoading, setGenerationLoading] = useState<boolean>(false);
 
   const [isDisable, setDisable] = useState<boolean>(true);
+  const [isModelDisable, setModelDisable] = useState<boolean>(true);
+  const [isGenerationDisable, setGenerationDisable] = useState<boolean>(true);
+
+  const [selectedModel, setSelectedModel] = useState<any>(null);
+  const [selectedGeneration, setSelectedGeneration] = useState<any>(null);
 
   const navigator = useNavigate();
 
@@ -87,10 +92,17 @@ const SearchPanel = () => {
   //selects handling
   const handleBrandChange = async (brandId: number) => {
     await setModelsByBrandId(brandId);
+    setSelectedModel(0);
+    setSelectedGeneration(null);
+    setModelDisable(false);
+    setGenerationDisable(true);
   };
   const handleModelChange = async (modelId: number) => {
+    setSelectedModel(modelId);
     await setGenerationsByModelId(modelId);
+    setGenerationDisable(false);
     setDisable(false);
+    setSelectedGeneration(null);
   };
   const handleGenerationChange = async (generationId: number) => {
     console.log("generaiton", generationId);
@@ -143,6 +155,8 @@ const SearchPanel = () => {
                   onChange={handleModelChange}
                   placeholder="Model"
                   loading={modelLoading}
+                  disabled={isModelDisable}
+                  value={selectedModel}
                 >
                   {modelList.map((model: IModelModel) => {
                     return (
@@ -161,6 +175,8 @@ const SearchPanel = () => {
                   onChange={handleGenerationChange}
                   placeholder="Generation"
                   loading={generationLoading}
+                  disabled={isGenerationDisable}
+                  value={selectedGeneration}
                 >
                   {generationList.map((generation: IGenerationModel) => {
                     return (

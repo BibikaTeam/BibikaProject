@@ -56,10 +56,16 @@
             margin-top: 41px;
 
             .search-input-container{
-                width: 500px;
+                width: 450px;
                 
                 .ant-row{
                     width: 100%;
+                    margin-bottom: 0;
+                    .ant-select-disabled{
+                        .ant-select-selector{
+                            background-color: rgba(65, 65, 65, 0.08);
+                        }
+                    }
                     .ant-select-selector{
                         background-color: rgba(65, 65, 65, 0.02);
                         border-radius: 10px;
@@ -106,7 +112,16 @@
                         width: 100%;
                         .ant-select-selector{
                             border-radius: 10px;
-                            height: 100%
+                            height: 100%;
+                        }
+                        .ant-select-arrow {
+                            .anticon{
+                                svg{
+                                    width: 20px;
+                                    margin-top: -5px;
+                                    margin-left: -30px;
+                                }
+                            }
                         }
                     }
                 }

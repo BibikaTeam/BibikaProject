@@ -90,9 +90,9 @@ namespace BibikaProject.Infrastructure.Core.Services
                  }
              } */
 
-            if (pagedPostRequest.GenerationId != 0)
+            if (pagedPostRequest.SearchId != 0)
             {
-                posts = posts.Where(x => x.Car.GenerationId == pagedPostRequest.GenerationId);
+                posts = posts.Where(x => x.Car.GenerationId == pagedPostRequest.SearchId);
             }
 
             response.AllPages = (int)Math.Ceiling((double)await posts.CountAsync() / (double)pagedPostRequest.CountOnPage);
@@ -129,9 +129,9 @@ namespace BibikaProject.Infrastructure.Core.Services
                  }
              } */
 
-            if (pagedPostRequest.GenerationId != 0)
+            if (pagedPostRequest.SearchId != 0)
             {
-                posts = posts.Where(x => x.Car.Generation.ModelId == pagedPostRequest.GenerationId);
+                posts = posts.Where(x => x.Car.Generation.ModelId == pagedPostRequest.SearchId);
             }
 
             response.AllPages = (int)Math.Ceiling((double)await posts.CountAsync() / (double)pagedPostRequest.CountOnPage);

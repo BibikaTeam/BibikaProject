@@ -24,5 +24,5 @@ export interface IShortCarsCarsRequest {
   page: number;
   countOnPage: number;
   search: string; //by descr
-  generationId: number;
+  searchId: number;
 }
