@@ -19,5 +19,12 @@ namespace BibikaProject.Infrastructure.Core.Services
 
             await command.SaveChangesAsync();
         }
+
+        public async Task ViewPost(string userId, int postId)
+        {
+            await command.ViewPost(userId, postId);
+
+            await command.SaveChangesAsync();
+        }
     }
 }

@@ -11,5 +11,7 @@ namespace BibikaProject.Application.Core.Commands
         Task AddOptionsToPost(int postId, List<int> optionsId);
 
         Task LikePost(string userId, int postId);
+
+        Task ViewPost(string userId, int postId);
     }
 }
