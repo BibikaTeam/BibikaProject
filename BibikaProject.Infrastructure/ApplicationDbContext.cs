@@ -45,6 +45,10 @@ namespace BibikaProject.Infrastructure
                    .WithMany(x => x.LikedPosts);
 
             builder.Entity<Post>()
+                   .HasMany(x => x.Views)
+                   .WithMany(x => x.ViewedPosts);
+
+            builder.Entity<Post>()
                    .HasOne(x => x.Seller)
                    .WithMany(x => x.Posts);
 

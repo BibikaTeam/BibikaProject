@@ -62,13 +62,14 @@ namespace BibikaProject.WebUI.Controllers
 
             return Ok(result);
         }
-        [HttpPost("get/by-model")]
-        public async Task<IActionResult> GetPagedPostByModel([FromBody] PagedPostRequest pagedPostRequest)
-        {
-            var result = await postService.GetPagedPostsByModel(pagedPostRequest);
 
-            return Ok(result);
-        }
+        //[HttpPost("get/by-model")]
+        //public async Task<IActionResult> GetPagedPostByModel([FromBody] PagedPostRequest pagedPostRequest)
+        //{
+        //    var result = await postService.GetPagedPostsByModel(pagedPostRequest);
+
+        //    return Ok(result);
+        //}
 
         [HttpGet("get/user-posts/{email}")]
         public async Task<IActionResult> GetUserPosts(string email)

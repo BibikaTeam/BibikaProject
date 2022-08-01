@@ -9,5 +9,7 @@ namespace BibikaProject.Domain.Entities.Identity
         public ICollection<Post> Posts { get; set; }
 
         public ICollection<Post> LikedPosts { get; set; }
+
+        public ICollection<Post> ViewedPosts { get; set; }
     }
 }
