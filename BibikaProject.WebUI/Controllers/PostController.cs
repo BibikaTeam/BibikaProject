@@ -79,7 +79,7 @@ namespace BibikaProject.WebUI.Controllers
             return Ok(result);
         }
 
-        [HttpGet("get/user-posts/{email}")]
+        [HttpGet("get/user-posts/")]
         [Authorize]
         public async Task<IActionResult> GetUserPosts()
         {
