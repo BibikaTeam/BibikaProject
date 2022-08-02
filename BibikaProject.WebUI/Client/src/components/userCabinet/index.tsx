@@ -1,7 +1,21 @@
 import CarPreview from "./common/carPreview";
+import { getLikedMyPost, likePost } from "./service";
 import { IProfileCarPreview } from "./types";
 
 const UserProfile = () => {
+
+  //likePost(8);
+
+  // const countLikedPost = async () => {
+  //   try {
+  //     getLikedMyPost();
+  //   } catch (error) {
+      
+  //   }
+  // }
+
+  // countLikedPost();
+
   const testCar: IProfileCarPreview = {
     likes: 293,
     watches: 4100,

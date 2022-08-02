@@ -39,6 +39,8 @@ const CarCard = ({ car }: ICarCardProps) => {
             <span className="sub-price">{car.price * 30}₴</span>
           </div>
           <div className="right-price-side">
+            <button className="message-btn">Like</button>
+            <span> </span>
             <button className="message-btn">Message</button>
             <button className="call-btn">
               <svg
