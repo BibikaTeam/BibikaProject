@@ -32,8 +32,11 @@ export const getViewsPost = () => {
 };
 
 export const likePost = async (postId: number) => {
+    console.log("post id number", postId);
     try {
-        const response = await http.post("api/user/like", postId);
+      // console.log("try");
+      // https://localhost:5001/api/user/like/?postId=43
+        const response = await http.post("api/user/like/?postId=48");
         console.log("response like post", response);
         
     } catch (error) {

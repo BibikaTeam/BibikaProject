@@ -4,17 +4,9 @@ import { IProfileCarPreview } from "./types";
 
 const UserProfile = () => {
 
-  //likePost(8);
+  //console.log("like post 48", likePost(48));
 
-  // const countLikedPost = async () => {
-  //   try {
-  //     getLikedMyPost();
-  //   } catch (error) {
-      
-  //   }
-  // }
-
-  // countLikedPost();
+  console.log("get Liked My post", getLikedMyPost());
 
   const testCar: IProfileCarPreview = {
     likes: 293,
