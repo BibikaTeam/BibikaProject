@@ -44,5 +44,19 @@ namespace BibikaProject.Infrastructure.Core.Commands
 
             post.Likes.Add(user);
         }
+
+        public async Task ViewPost(string userId, int postId)
+        {
+            var post = await context.Posts.FindAsync(postId);
+
+            var user = await context.Users.FindAsync(userId);
+
+            if (post.Views == null)
+            {
+                post.Views = new List<ApplicationUser>();
+            }
+
+            post.Views.Add(user);
+        }
     }
 }
