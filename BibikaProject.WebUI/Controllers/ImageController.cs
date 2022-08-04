@@ -41,7 +41,7 @@ namespace BibikaProject.WebUI.Controllers
         {
             var result = await imageService.GetImage(id);
 
-            return File(result, "image/png");
+            return Ok(result);
         }
     }
 }
