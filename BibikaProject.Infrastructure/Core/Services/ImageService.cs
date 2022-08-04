@@ -75,13 +75,11 @@ namespace BibikaProject.Infrastructure.Core.Services
             return img.Id;
         }
 
-        public async Task<byte[]> GetImage(int id)
+        public async Task<string> GetImage(int id)
         {
             var image = await query.GetByIdAsync(id);
 
-            var byteImage = await File.ReadAllBytesAsync($"{ImagesPath}/{image.Title}.png");
-
-            return byteImage;
+            return $"{ImagesPath}/{ image.Title}.png";
         }
 
         private string ResizeImage(byte[] data, int w, int h)
