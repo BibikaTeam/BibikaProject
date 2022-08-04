@@ -146,23 +146,23 @@ namespace BibikaProject.Infrastructure.Core.Services
             return response;
         }
         
-        public async Task<List<PostDTO>> GetUserPosts(string email)
+        public async Task<List<PostDTO>> GetUserPosts(string id)
         {
             IQueryable<Post> posts = query.GetAll()
                                           .IncldueAllPostProperties();
 
-            posts = posts.Where(x => x.Seller.Email == email);
+            posts = posts.Where(x => x.Seller.Id == id);
 
             return await posts.Select(x => mapper.Map<PostDTO>(x)).ToListAsync();
         }
 
-        public async Task<List<PostDTO>> GetUserLikedPosts(string email)
+        public async Task<List<PostDTO>> GetUserLikedPosts(string id)
         {
             IQueryable<Post> posts = query.GetAll()
                                           .Include(x => x.Seller)
                                           .Include(x => x.Likes);
 
-            posts = posts.Where(x => x.Likes.Any(x => x.Email == email));
+            posts = posts.Where(x => x.Likes.Any(x => x.Id == id));
 
             return await posts.Select(x => mapper.Map<PostDTO>(x)).ToListAsync();
         }
