@@ -14,15 +14,14 @@ namespace BibikaProject.Application.Core.Services
         Task<List<PostDTO>> GetAllPosts();
 
         Task<PagedList<PostDTO>> GetPagedPosts(PagedPostRequest pagedPostRequest);
-        Task<PagedList<PostDTO>> GetPagedPostsByModel(PagedPostRequest pagedPostRequest);
 
         Task AddImagesToPost(AddImagesToPostDTO imagesToPostDTO);
 
         Task AddOptionsToPost(AddOptionsToPostDTO optionsToPostDTO);
 
-        Task<List<PostDTO>> GetUserPosts(string email);
+        Task<List<PostDTO>> GetUserPosts(string id);
 
-        Task<List<PostDTO>> GetUserLikedPosts(string email);
+        Task<List<PostDTO>> GetUserLikedPosts(string id);
         
         Task<PostDTO> GetRandomPost();
     }

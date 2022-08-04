@@ -62,13 +62,6 @@ namespace BibikaProject.WebUI.Controllers
 
             return Ok(result);
         }
-        [HttpPost("get/by-model")]
-        public async Task<IActionResult> GetPagedPostByModel([FromBody] PagedPostRequest pagedPostRequest)
-        {
-            var result = await postService.GetPagedPostsByModel(pagedPostRequest);
-
-            return Ok(result);
-        }
 
         [HttpGet("get/user-posts/{email}")]
         public async Task<IActionResult> GetUserPosts(string email)
@@ -82,7 +75,7 @@ namespace BibikaProject.WebUI.Controllers
         [Authorize]
         public async Task<IActionResult> GetUserPosts()
         {
-            var result = await postService.GetUserPosts(HttpContext.User.Claims.First(x => x.Type == UserJWTClaimTypes.Email).Value);
+            var result = await postService.GetUserPosts(HttpContext.User.Claims.First(x => x.Type == UserJWTClaimTypes.Id).Value);
 
             return Ok(result);
         }
@@ -91,7 +84,7 @@ namespace BibikaProject.WebUI.Controllers
         [Authorize]
         public async Task<IActionResult> GetUserLikedPosts()
         {
-            var result = await postService.GetUserLikedPosts(HttpContext.User.Claims.First(x => x.Type == UserJWTClaimTypes.Email).Value);
+            var result = await postService.GetUserLikedPosts(HttpContext.User.Claims.First(x => x.Type == UserJWTClaimTypes.Id).Value);
 
             return Ok(result);
         }
