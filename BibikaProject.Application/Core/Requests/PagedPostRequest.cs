@@ -8,6 +8,10 @@ namespace BibikaProject.Application.Core.Requests
 
         public DateTime YearMin { get; set; }
 
+        public int PriceMin { get; set; }
+
+        public int PriceMax { get; set; }
+
         public string Location { get; set; }
 
         public string Color { get; set; }
@@ -30,6 +34,5 @@ namespace BibikaProject.Application.Core.Requests
     public class PagedPostRequest : PagedRequest
     {
         public Filter[] Filters { get; set; }
-        public int SearchId { get; set; }
     }
 }
