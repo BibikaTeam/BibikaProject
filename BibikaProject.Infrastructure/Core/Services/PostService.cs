@@ -183,5 +183,10 @@ namespace BibikaProject.Infrastructure.Core.Services
           
             return mapper.Map<PostDTO>(postsList[rand.Next(0, postsList.Count())]);
         }
+
+        public async Task<PostDTO> GetPostById(int id)
+        {
+            return mapper.Map<PostDTO>(await query.GetAll().IncldueAllPostProperties().FirstAsync(x => x.Id == id));
+        }
     }
 }
