@@ -20,6 +20,8 @@ import AuthorizedBasedRoute from "./routing/authorizedBasedRoute";
 import HomePage from "./components/home";
 import DefaultLayout from "./components/containers/defaultLayout";
 import SearchResult from "./components/posts/result/searchResult";
+import PostAdd from "./components/posts/add";
+import PostPage from "./components/posts/postPage";
 
 function App() {
   return (
@@ -29,6 +31,7 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="/post/add" element={<AddPostPage />} />
           <Route path="/post/search-result" element={<SearchResult />} />
+          <Route path="/post/:id" element={<PostPage />}/>
           <Route element={<AuthorizedBasedRoute />}>
             <Route path="/user-profile" element={<UserProfile />}></Route>
           </Route>
