@@ -68,7 +68,9 @@ namespace BibikaProject.Infrastructure.Core.Services
         public async Task<PagedList<PostDTO>> GetPagedPosts(PagedPostRequest pagedPostRequest)
         {
             IQueryable<Post> posts = query.GetAll()
-                                          .IncldueAllPostProperties();
+                                          .Include(x => x.Car);
+                                          
+
 
             var response = new PagedList<PostDTO> { CurrentPage = pagedPostRequest.Page };
 
@@ -81,11 +83,13 @@ namespace BibikaProject.Infrastructure.Core.Services
                 {
                     if (filter.BrandId != 0) 
                     {
+                        posts = posts.Include(x => x.Car).ThenInclude(x => x.Generation).ThenInclude(x => x.Model);
                         posts = posts.Where(x => x.Car.Generation.Model.BrandId == filter.BrandId);
                     }
 
                     if (filter.ModelId != 0)
                     {
+                        posts = posts.Include(x => x.Car).ThenInclude(x => x.Generation);
                         posts = posts.Where(x => x.Car.Generation.ModelId == filter.ModelId);
                     }
 
@@ -133,8 +137,17 @@ namespace BibikaProject.Infrastructure.Core.Services
                     {
                         posts = posts.Where(x => x.Location.Contains(filter.Location));
                     }
-                }
 
+                    if (filter.PriceMin != 0)
+                    {
+                        posts = posts.Where(x => x.Price >= filter.PriceMin);
+                    }
+
+                    if (filter.PriceMax != 0)
+                    {
+                        posts = posts.Where(x => x.Price <= filter.PriceMax);
+                    }
+                }
             }
 
             response.AllPages = (int)Math.Ceiling((double)await posts.CountAsync() / (double)pagedPostRequest.CountOnPage);
@@ -146,23 +159,23 @@ namespace BibikaProject.Infrastructure.Core.Services
             return response;
         }
         
-        public async Task<List<PostDTO>> GetUserPosts(string email)
+        public async Task<List<PostDTO>> GetUserPosts(string id)
         {
             IQueryable<Post> posts = query.GetAll()
                                           .IncldueAllPostProperties();
 
-            posts = posts.Where(x => x.Seller.Email == email);
+            posts = posts.Where(x => x.Seller.Id == id);
 
             return await posts.Select(x => mapper.Map<PostDTO>(x)).ToListAsync();
         }
 
-        public async Task<List<PostDTO>> GetUserLikedPosts(string email)
+        public async Task<List<PostDTO>> GetUserLikedPosts(string id)
         {
             IQueryable<Post> posts = query.GetAll()
                                           .Include(x => x.Seller)
                                           .Include(x => x.Likes);
 
-            posts = posts.Where(x => x.Likes.Any(x => x.Email == email));
+            posts = posts.Where(x => x.Likes.Any(x => x.Id == id));
 
             return await posts.Select(x => mapper.Map<PostDTO>(x)).ToListAsync();
         }
