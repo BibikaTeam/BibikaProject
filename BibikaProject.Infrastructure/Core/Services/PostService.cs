@@ -46,7 +46,9 @@ namespace BibikaProject.Infrastructure.Core.Services
                                           .Include(x => x.Car).ThenInclude(x => x.CompleteSet)
                                           .Include(x => x.Car).ThenInclude(x => x.CarBody)
                                           .Include(x => x.Car).ThenInclude(x => x.GearBox)
-                                          .Include(x => x.Car).ThenInclude(x => x.Generation).ThenInclude(x => x.Model).ThenInclude(x => x.Brand);
+                                          .Include(x => x.Car).ThenInclude(x => x.Generation).ThenInclude(x => x.Model).ThenInclude(x => x.Brand)
+                                          .Include(x => x.Views)
+                                          .Include(x => x.Likes);
 
             return await posts.Select(x => mapper.Map<PostDTO>(x)).ToListAsync();
         }
@@ -188,7 +190,9 @@ namespace BibikaProject.Infrastructure.Core.Services
                                           .Include(x => x.Car).ThenInclude(x => x.CompleteSet)
                                           .Include(x => x.Car).ThenInclude(x => x.CarBody)
                                           .Include(x => x.Car).ThenInclude(x => x.GearBox)
-                                          .Include(x => x.Car).ThenInclude(x => x.Generation).ThenInclude(x => x.Model).ThenInclude(x => x.Brand);
+                                          .Include(x => x.Car).ThenInclude(x => x.Generation).ThenInclude(x => x.Model).ThenInclude(x => x.Brand)
+                                          .Include(x => x.Views)
+                                          .Include(x => x.Likes); ;
 
             var postsList = await posts.ToListAsync();
 
