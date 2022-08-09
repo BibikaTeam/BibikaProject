@@ -1,12 +1,8 @@
 import CarPreview from "./common/carPreview";
-import { getLikedMyPost, likePost } from "./service";
+import { getLikedMyPost, likePost, viewPost } from "./service";
 import { IProfileCarPreview } from "./types";
 
-const UserProfile = () => {
-
-  //console.log("like post 48", likePost(48));
-
-  console.log("get Liked My post", getLikedMyPost());
+const UserProfile = () => {  
 
   const testCar: IProfileCarPreview = {
     likes: 293,
