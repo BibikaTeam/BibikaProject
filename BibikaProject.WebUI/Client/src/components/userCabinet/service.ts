@@ -3,32 +3,11 @@ import axios from "axios";
 import { IRequestError } from "../adminPanel/types";
 import { ErrorStrings } from "../../constants";
 
-export const getLikedMyPost = async () => {
-  try {
-    const response = await http.get("api/post/get/user-liked");
-
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      if (error.request.status == 0 || error.request.status == 500) {
-        const unknownError: IRequestError = {
-          code: error.request.status,
-          errors: new Array<string>(ErrorStrings.backendNotResponse()),
-        };
-        throw unknownError;
-      }
-      let serverError: IRequestError = {
-        errors: error.response?.data.Errors,
-        code: error.response?.data.Code,
-      };
-      throw serverError;
-    }
-  }
-};
-
-// export const getViewsPost = async () => {
+// export const getLikedMyPost = async () => {
 //   try {
-//     const response = await http.get("");
+//     const response = await http.get("api/post/get/user-liked");
+
+//     return response.data;
 //   } catch (error) {
 //     if (axios.isAxiosError(error)) {
 //       if (error.request.status == 0 || error.request.status == 500) {
@@ -88,26 +67,3 @@ export const viewPost = async (postId: number) => {
     }
   }
 };
-
-// export const getAllPost = async () => {
-//   try {
-//     const response = await http.get("api/post/get/all")
-
-//     return response.data;
-//   } catch (error) {
-//     if (axios.isAxiosError(error)) {
-//       if (error.request.status == 0 || error.request.status == 500) {
-//         const unknownError: IRequestError = {
-//           code: error.request.status,
-//           errors: new Array<string>(ErrorStrings.backendNotResponse()),
-//         };
-//         throw unknownError;
-//       }
-//       let serverError: IRequestError = {
-//         errors: error.response?.data.Errors,
-//         code: error.response?.data.Code,
-//       };
-//       throw serverError;
-//     }
-//   }
-// }

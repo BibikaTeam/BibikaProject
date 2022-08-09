@@ -1,5 +1,4 @@
 import CarPreview from "./common/carPreview";
-import { getLikedMyPost, likePost, viewPost } from "./service";
 import { IProfileCarPreview } from "./types";
 
 const UserProfile = () => {  
