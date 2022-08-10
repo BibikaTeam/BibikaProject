@@ -1,4 +1,5 @@
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, Avatar } from "antd";
+import { UserOutlined } from '@ant-design/icons';
 import { Link } from "react-router-dom";
 
 const Header = () => {
@@ -59,9 +60,11 @@ const Header = () => {
       </div>
 
       <div className="right-header-side">
-      <p>Profile</p>
+      {/* <p>Profile</p> */}
         <Dropdown overlay={menu} placement="bottomLeft" trigger={["click"]}>
-          <svg
+        <Avatar size={49} style={{ backgroundColor: '#2D40E0', marginTop: '5px' }} icon={<UserOutlined />} />
+
+        {/* <svg
             width="49"
             height="49"
             viewBox="0 0 49 49"
@@ -82,7 +85,8 @@ const Header = () => {
               </pattern>
               <image id="image0_1_130" width="384" height="480"  />
             </defs>
-          </svg>
+          </svg> */}
+
         </Dropdown>
         <Link to="/post/add" className="add-car-button">
           Sell car
@@ -112,6 +116,19 @@ const menu: any = (
       },
       {
         key: "2",
+        label: (
+          <Link to={"/user-profile/settings"}>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Settings
+            </a>
+          </Link>
+        ),
+      },
+      {
+        key: "3",
         label: (
           <a
             target="_blank"

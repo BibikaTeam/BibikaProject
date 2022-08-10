@@ -20,6 +20,7 @@ import AuthorizedBasedRoute from "./routing/authorizedBasedRoute";
 import HomePage from "./components/home";
 import DefaultLayout from "./components/containers/defaultLayout";
 import SearchResult from "./components/posts/result/searchResult";
+import SettingsProfile from "./components/userCabinet/settings";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/post/search-result" element={<SearchResult />} />
           <Route element={<AuthorizedBasedRoute />}>
             <Route path="/user-profile" element={<UserProfile />}></Route>
+            <Route path="/user-profile/settings" element={<SettingsProfile />}></Route>
           </Route>
         </Route>
 
