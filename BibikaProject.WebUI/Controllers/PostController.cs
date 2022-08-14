@@ -96,5 +96,13 @@ namespace BibikaProject.WebUI.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("get/{id}")]
+        public async Task<IActionResult> GetPostById(int id)
+        {
+            var result = await postService.GetPostById(id);
+
+            return Ok(result);
+        }
     }
 }

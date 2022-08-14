@@ -28,7 +28,8 @@ namespace BibikaProject.Infrastructure.Core.Services.Mapper
                 .ForMember(dest => dest.Likes, opt => opt.MapFrom(src => src.Likes.Count()))         
                 .ForMember(dest => dest.Mileage, opt => opt.MapFrom(src => src.Mileage))
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
-                .ForMember(dest => dest.Viewes, opt => opt.MapFrom(src => src.Views.Count()));
+                .ForMember(dest => dest.Viewes, opt => opt.MapFrom(src => src.Views.Count()))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description));
         }
     }
 }

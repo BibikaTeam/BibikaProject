@@ -24,5 +24,7 @@ namespace BibikaProject.Application.Core.Services
         Task<List<PostDTO>> GetUserLikedPosts(string id);
         
         Task<PostDTO> GetRandomPost();
+
+        Task<PostDTO> GetPostById(int id);
     }
 }
