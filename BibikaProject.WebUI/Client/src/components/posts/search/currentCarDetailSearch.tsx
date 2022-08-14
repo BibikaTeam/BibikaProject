@@ -9,13 +9,23 @@ import {
   IModelModel,
   IGenerationModel,
   IRequestError,
+  IEngineModel,
+  ICompleteSetModel,
+  ICarBodyModel,
+  IGearboxModel,
 } from "../../adminPanel/types";
 
 import { Form } from "antd";
 import { ICurrentCarDetailProps } from "./types";
 
-import { TwitterPicker, GithubPicker } from "react-color";
-// import Github from "react-color/lib/components/github/Github";
+import { ColorChangeHandler, ColorResult, GithubPicker } from "react-color";
+import {
+  getCarBodiesByGeneration,
+  getEnginesByGenerationId,
+  getGearBoxesByGeneration,
+} from "../add/service";
+import { getCompleteSetsByGeneration } from "../../adminPanel/completeSet/service";
+import { getMinMaxYearPriceByGeneration } from "./serivce";
 
 const { Panel } = Collapse;
 
@@ -29,12 +39,29 @@ const CurrentCarDetailSearch = ({ updateCar }: ICurrentCarSearchPanelProps) => {
   const [generationList, setGenerationList] = useState<Array<IGenerationModel>>(
     []
   );
+  const [fuelList, setFuelList] = useState<Array<string>>([]);
+  const [engineList, setEngineList] = useState<Array<IEngineModel>>([]);
+  const [completeSetList, setCompleteSetList] = useState<
+    Array<ICompleteSetModel>
+  >([]);
+  const [carBodyList, setCarBodyList] = useState<Array<ICarBodyModel>>([]);
+  const [gearBoxList, setGearBoxList] = useState<Array<IGearboxModel>>([]);
+  const [minYear, setMinYear] = useState<number>(-1);
+  const [maxYear, setMaxYear] = useState<number>(-1);
+  const [yearsList, setYearsList] = useState<Array<number>>([]);
+  const [minPrice, setMinPrice] = useState<number>(-1);
+  const [maxPrice, setMaxPrice] = useState<number>(-1);
 
   const [brandLoading, setBrandLoading] = useState<boolean>(true);
   const [modelLoading, setModelLoading] = useState<boolean>(false);
   const [generationLoading, setGenerationLoading] = useState<boolean>(false);
 
-  let test = useRef<ICurrentCarDetailProps>({
+  const [modelDisable, setModelDisable] = useState<boolean>(true);
+  const [generationDisable, setGenerationDisable] = useState<boolean>(true);
+  const [generationDependDisable, setGenerationDependDisable] =
+    useState<boolean>(true);
+
+  let filter = useRef<ICurrentCarDetailProps>({
     brandId: 0,
     carBodyId: 0,
     color: "",
@@ -46,8 +73,8 @@ const CurrentCarDetailSearch = ({ updateCar }: ICurrentCarSearchPanelProps) => {
     modelId: 0,
     yearMax: 0,
     yearMin: 0,
-    priceFrom: 0,
-    priceTo: 0,
+    priceMin: 0,
+    priceMax: 0,
   });
 
   useEffect(() => {
@@ -99,59 +126,148 @@ const CurrentCarDetailSearch = ({ updateCar }: ICurrentCarSearchPanelProps) => {
       setGenerationLoading(false);
     }
   };
+  const setEnginesByGenerationId = async (generationId: number) => {
+    try {
+      let data = await getEnginesByGenerationId(generationId);
+      const fuels = (data as IEngineModel[]).map((x) => x.fuel);
+      setFuelList(fuels);
+      setEngineList(data as IEngineModel[]);
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
+    }
+  };
+  const setCompleteSetsByGenerationId = async (generationId: number) => {
+    try {
+      let data = await getCompleteSetsByGeneration(generationId);
+      setCompleteSetList(data as ICompleteSetModel[]);
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
+    }
+  };
+  const setCarBodiesByGenerationId = async (generationId: number) => {
+    try {
+      let data = await getCarBodiesByGeneration(generationId);
+      setCarBodyList(data as ICarBodyModel[]);
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
+    }
+  };
+  const setGearboxByGenerationId = async (generationId: number) => {
+    try {
+      let data = await getGearBoxesByGeneration(generationId);
+      setGearBoxList(data as IGearboxModel[]);
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
+    }
+  };
+  const setMinMaxPriceYears = async (generationId: number) => {
+    try {
+      let data = await getMinMaxYearPriceByGeneration(generationId);
 
+      const minYearNumb = data ? data.minYear : 0;
+      const maxYearNumb = data ? data.maxYear : 0;
+
+      setMinYear(minYearNumb);
+      setMaxYear(maxYearNumb);
+      setMinPrice(data?.minPrice as number);
+      setMaxPrice(data?.maxPrice as number);
+
+      const tmpArr: Array<number> = [];
+      for (let i = minYearNumb; i <= maxYearNumb; i++) {
+        tmpArr.push(i);
+      }
+      setYearsList(tmpArr);
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
+    }
+  };
+
+  //----changes---
   const onBrandChange = async (brandId: number) => {
-    test.current.brandId = brandId;
-    updateCar(test.current);
+    filter.current.brandId = brandId;
+    updateCar(filter.current);
     setModelsByBrandId(brandId);
+    setModelDisable(false);
   };
   const onModelChange = async (modelId: number) => {
-    test.current.modelId = modelId;
-    updateCar(test.current);
+    filter.current.modelId = modelId;
+    updateCar(filter.current);
     setGenerationsByModelId(modelId);
+    setGenerationDisable(false);
   };
   const onGenerationChange = async (generationId: number) => {
-    test.current.generationId = generationId;
-    updateCar(test.current);
+    setEnginesByGenerationId(generationId);
+    setCompleteSetsByGenerationId(generationId);
+    setCarBodiesByGenerationId(generationId);
+    setGearboxByGenerationId(generationId);
+    setMinMaxPriceYears(generationId);
+
+    filter.current.generationId = generationId;
+    updateCar(filter.current);
+
+    setGenerationDependDisable(false);
   };
   const onCompleteSetChange = async (completeSetId: number) => {
-    test.current.completeSetId = completeSetId;
-    updateCar(test.current);
+    filter.current.completeSetId = completeSetId;
+    updateCar(filter.current);
   };
   const onCarBodyChange = async (carBodyId: number) => {
-    test.current.carBodyId = carBodyId;
-    updateCar(test.current);
+    filter.current.carBodyId = carBodyId;
+    updateCar(filter.current);
   };
   const onYearFromChange = async (yearFrom: number) => {
-    test.current.yearMin = yearFrom;
-    updateCar(test.current);
+    // setYearsList(yearsList.slice(yearsList.findIndex((x) => x == yearFrom)));
+
+    filter.current.yearMin = yearFrom;
+    updateCar(filter.current);
   };
   const onYearToChange = async (yearTo: number) => {
-    test.current.yearMax = yearTo;
-    updateCar(test.current);
+    // setYearsList(
+    //   yearsList.slice(0, yearsList.findIndex((x) => x == yearTo) + 1)
+    // );
+
+    filter.current.yearMax = yearTo;
+    updateCar(filter.current);
   };
-  const onColorChange = async (color: string, event: any) => {
-    test.current.color = color;
-    updateCar(test.current);
+  const onColorChange = async (color: ColorResult, event: any) => {
+    filter.current.color = color.hex;
+    updateCar(filter.current);
   };
   const onFuelChange = async (fuelType: string) => {
-    updateCar(test.current);
+    const tmpArr = engineList.slice();
+    tmpArr.filter((x) => x.fuel === fuelType);
+    setEngineList(tmpArr);
   };
   const onEngineChange = async (engineId: number) => {
-    test.current.engineId = engineId;
-    updateCar(test.current);
+    filter.current.engineId = engineId;
+    updateCar(filter.current);
   };
   const onGearboxChange = async (gearboxId: number) => {
-    test.current.gearBoxId = gearboxId;
-    updateCar(test.current);
+    filter.current.gearBoxId = gearboxId;
+    updateCar(filter.current);
   };
-  const onPriceFromChange = async (priceFrom: number) => {
-    test.current.priceFrom = priceFrom;
-    updateCar(test.current);
+  const onPriceFromChange = async (event: any) => {
+    filter.current.priceMin = event.target.value;
+    updateCar(filter.current);
   };
-  const onPriceToChange = async (priceTo: number) => {
-    test.current.priceTo = priceTo;
-    updateCar(test.current);
+  const onPriceToChange = async (event: any) => {
+    filter.current.priceMax = event.target.value;
+    updateCar(filter.current);
   };
 
   return (
@@ -163,6 +279,7 @@ const CurrentCarDetailSearch = ({ updateCar }: ICurrentCarSearchPanelProps) => {
               placeholder={"Brand"}
               className="search-input"
               onChange={onBrandChange}
+              loading={brandLoading}
             >
               {brandList.map((brand: IBrandModel) => {
                 return (
@@ -179,6 +296,8 @@ const CurrentCarDetailSearch = ({ updateCar }: ICurrentCarSearchPanelProps) => {
               placeholder={"Model"}
               className="search-input"
               onChange={onModelChange}
+              disabled={modelDisable}
+              loading={modelLoading}
             >
               {modelList.map((model: IModelModel) => {
                 return (
@@ -190,7 +309,13 @@ const CurrentCarDetailSearch = ({ updateCar }: ICurrentCarSearchPanelProps) => {
         </div>
         <div className="search-input-container">
           <Form.Item name={"brand"}>
-            <Select placeholder={"Generation"} className="search-input">
+            <Select
+              placeholder={"Generation"}
+              className="search-input"
+              disabled={generationDisable}
+              loading={generationLoading}
+              onChange={onGenerationChange}
+            >
               {generationList.map((generation: IGenerationModel) => {
                 return (
                   <Select.Option key={generation.id}>
@@ -208,11 +333,14 @@ const CurrentCarDetailSearch = ({ updateCar }: ICurrentCarSearchPanelProps) => {
             <Select
               placeholder={"Complete set"}
               className="search-input"
-              onChange={onGenerationChange}
+              onChange={onCompleteSetChange}
+              disabled={generationDependDisable}
             >
-              {brandList.map((brand: IBrandModel) => {
+              {completeSetList.map((completeSet: ICompleteSetModel) => {
                 return (
-                  <Select.Option key={brand.id}>{brand.title}</Select.Option>
+                  <Select.Option key={completeSet.id}>
+                    {completeSet.title}
+                  </Select.Option>
                 );
               })}
             </Select>
@@ -221,10 +349,17 @@ const CurrentCarDetailSearch = ({ updateCar }: ICurrentCarSearchPanelProps) => {
 
         <div className="search-input-container">
           <Form.Item name={"carBody"}>
-            <Select placeholder={"Car body"} className="search-input">
-              {modelList.map((model: IModelModel) => {
+            <Select
+              placeholder={"Car body"}
+              className="search-input"
+              disabled={generationDependDisable}
+              onChange={onCarBodyChange}
+            >
+              {carBodyList.map((carBody: ICarBodyModel) => {
                 return (
-                  <Select.Option key={model.id}>{model.title}</Select.Option>
+                  <Select.Option key={carBody.id}>
+                    {carBody.title}
+                  </Select.Option>
                 );
               })}
             </Select>
@@ -236,11 +371,29 @@ const CurrentCarDetailSearch = ({ updateCar }: ICurrentCarSearchPanelProps) => {
           <span>Year</span>
           <Form.Item name="yearFrom">
             <span className="hint">from</span>
-            <Select className="from-to-select"> </Select>
+            <Select
+              className="from-to-select"
+              disabled={generationDependDisable}
+              onChange={onYearFromChange}
+              placeholder={minYear === -1 ? null : minYear}
+            >
+              {yearsList.map((year: number) => {
+                return <Select.Option key={year}>{year}</Select.Option>;
+              })}
+            </Select>
           </Form.Item>
           <Form.Item name="yearTo">
             <span className="hint">to</span>
-            <Select className="from-to-select"> </Select>
+            <Select
+              className="from-to-select"
+              disabled={generationDependDisable}
+              onChange={onYearToChange}
+              placeholder={maxYear === -1 ? null : maxYear}
+            >
+              {yearsList.map((year: number) => {
+                return <Select.Option key={year}>{year}</Select.Option>;
+              })}
+            </Select>
           </Form.Item>
         </div>
         <GithubPicker
@@ -255,6 +408,7 @@ const CurrentCarDetailSearch = ({ updateCar }: ICurrentCarSearchPanelProps) => {
             "#23A0E7",
           ]}
           triangle={"hide"}
+          onChange={onColorChange}
         />
       </div>
       <div className="fourth-line line">
@@ -263,12 +417,11 @@ const CurrentCarDetailSearch = ({ updateCar }: ICurrentCarSearchPanelProps) => {
             <Select
               placeholder={"Fuel"}
               className="search-input"
-              onChange={onBrandChange}
+              onChange={onFuelChange}
+              disabled={generationDependDisable}
             >
-              {brandList.map((brand: IBrandModel) => {
-                return (
-                  <Select.Option key={brand.id}>{brand.title}</Select.Option>
-                );
+              {fuelList.map((fuelType: string) => {
+                return <Select.Option key={fuelType}>{fuelType}</Select.Option>;
               })}
             </Select>
           </Form.Item>
@@ -279,10 +432,11 @@ const CurrentCarDetailSearch = ({ updateCar }: ICurrentCarSearchPanelProps) => {
               placeholder={"Engine"}
               className="search-input"
               onChange={onEngineChange}
+              disabled={generationDependDisable}
             >
-              {brandList.map((brand: IBrandModel) => {
+              {engineList.map((engine: IEngineModel) => {
                 return (
-                  <Select.Option key={brand.id}>{brand.title}</Select.Option>
+                  <Select.Option key={engine.id}>{engine.title}</Select.Option>
                 );
               })}
             </Select>
@@ -293,11 +447,14 @@ const CurrentCarDetailSearch = ({ updateCar }: ICurrentCarSearchPanelProps) => {
             <Select
               placeholder={"Gearbox type"}
               className="search-input"
-              onChange={onBrandChange}
+              onChange={onGearboxChange}
+              disabled={generationDependDisable}
             >
-              {brandList.map((brand: IBrandModel) => {
+              {gearBoxList.map((gearbox: IGearboxModel) => {
                 return (
-                  <Select.Option key={brand.id}>{brand.title}</Select.Option>
+                  <Select.Option key={gearbox.id}>
+                    {gearbox.title}
+                  </Select.Option>
                 );
               })}
             </Select>
@@ -309,11 +466,17 @@ const CurrentCarDetailSearch = ({ updateCar }: ICurrentCarSearchPanelProps) => {
           <span>Price</span>
           <Form.Item name="priceFrom">
             <span className="hint">from</span>
-            <Input />
+            <Input
+              onChange={onPriceFromChange}
+              placeholder={minPrice === -1 ? "" : minPrice.toString()}
+            />
           </Form.Item>
           <Form.Item name="priceTo">
             <span className="hint">to</span>
-            <Input />
+            <Input
+              onChange={onPriceToChange}
+              placeholder={maxPrice === -1 ? "" : maxPrice.toString()}
+            />
           </Form.Item>
           <span>$</span>
         </div>

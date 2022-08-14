@@ -5,11 +5,13 @@ import { History } from "history";
 import { ApplicationState, reducers } from "./";
 
 import { loginReducer } from "../components/authorization/login/reducer";
+import { searchReducer } from "../components/posts/search/reducer";
 
 const rootReducer = combineReducers({
   ...reducers,
   //router: connectRouter(),
   login: loginReducer,
+  search: searchReducer,
 });
 
 export default function configureStore(

@@ -1,5 +1,18 @@
+import { IPaginationRequest } from "../../adminPanel/types";
+import { IBannerCar } from "../../home/types";
+
+export enum SearchActionTypes {
+  SET_CAR_RESULT = "SET_CAR_RESULT",
+}
+export interface SearchState {
+  searchRespond: IPaginationRequest<IBannerCar>;
+}
+
 export interface IDetailSearchProps {
-  filters: ICurrentCarDetailProps;
+  filters: ICurrentCarDetailProps[];
+  page: number;
+  countOnPage: number;
+  search: string;
 }
 
 export interface ICurrentCarDetailProps {
@@ -15,6 +28,20 @@ export interface ICurrentCarDetailProps {
   completeSetId: number;
   gearBoxId: number;
 
-  priceFrom: number;
-  priceTo: number;
+  priceMin: number;
+  priceMax: number;
 }
+
+export interface IMinMaxYearPriceDTO {
+  minYear: number;
+  maxYear: number;
+  minPrice: number;
+  maxPrice: number;
+}
+
+export interface WriteCarsAction {
+  type: SearchActionTypes.SET_CAR_RESULT;
+  payload: IPaginationRequest<IBannerCar>;
+}
+
+export type SearchAction = WriteCarsAction;
