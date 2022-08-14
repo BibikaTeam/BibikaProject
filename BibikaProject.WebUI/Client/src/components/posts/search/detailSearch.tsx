@@ -17,6 +17,8 @@ const DetailSearch = () => {
       modelId: 0,
       yearMax: 0,
       yearMin: 0,
+      priceFrom: 0,
+      priceTo: 0,
     },
   });
 

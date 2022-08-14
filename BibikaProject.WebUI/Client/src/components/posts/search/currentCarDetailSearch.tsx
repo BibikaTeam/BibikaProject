@@ -46,6 +46,8 @@ const CurrentCarDetailSearch = ({ updateCar }: ICurrentCarSearchPanelProps) => {
     modelId: 0,
     yearMax: 0,
     yearMin: 0,
+    priceFrom: 0,
+    priceTo: 0,
   });
 
   useEffect(() => {
@@ -110,6 +112,45 @@ const CurrentCarDetailSearch = ({ updateCar }: ICurrentCarSearchPanelProps) => {
   };
   const onGenerationChange = async (generationId: number) => {
     test.current.generationId = generationId;
+    updateCar(test.current);
+  };
+  const onCompleteSetChange = async (completeSetId: number) => {
+    test.current.completeSetId = completeSetId;
+    updateCar(test.current);
+  };
+  const onCarBodyChange = async (carBodyId: number) => {
+    test.current.carBodyId = carBodyId;
+    updateCar(test.current);
+  };
+  const onYearFromChange = async (yearFrom: number) => {
+    test.current.yearMin = yearFrom;
+    updateCar(test.current);
+  };
+  const onYearToChange = async (yearTo: number) => {
+    test.current.yearMax = yearTo;
+    updateCar(test.current);
+  };
+  const onColorChange = async (color: string, event: any) => {
+    test.current.color = color;
+    updateCar(test.current);
+  };
+  const onFuelChange = async (fuelType: string) => {
+    updateCar(test.current);
+  };
+  const onEngineChange = async (engineId: number) => {
+    test.current.engineId = engineId;
+    updateCar(test.current);
+  };
+  const onGearboxChange = async (gearboxId: number) => {
+    test.current.gearBoxId = gearboxId;
+    updateCar(test.current);
+  };
+  const onPriceFromChange = async (priceFrom: number) => {
+    test.current.priceFrom = priceFrom;
+    updateCar(test.current);
+  };
+  const onPriceToChange = async (priceTo: number) => {
+    test.current.priceTo = priceTo;
     updateCar(test.current);
   };
 
@@ -233,26 +274,11 @@ const CurrentCarDetailSearch = ({ updateCar }: ICurrentCarSearchPanelProps) => {
           </Form.Item>
         </div>
         <div className="search-input-container">
-          <Form.Item name={"kwt"}>
+          <Form.Item name={"engine"}>
             <Select
-              placeholder={"Kwt"}
+              placeholder={"Engine"}
               className="search-input"
-              onChange={onBrandChange}
-            >
-              {brandList.map((brand: IBrandModel) => {
-                return (
-                  <Select.Option key={brand.id}>{brand.title}</Select.Option>
-                );
-              })}
-            </Select>
-          </Form.Item>
-        </div>
-        <div className="search-input-container">
-          <Form.Item name={"capacity"}>
-            <Select
-              placeholder={"Capacity"}
-              className="search-input"
-              onChange={onBrandChange}
+              onChange={onEngineChange}
             >
               {brandList.map((brand: IBrandModel) => {
                 return (

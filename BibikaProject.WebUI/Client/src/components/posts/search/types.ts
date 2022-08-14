@@ -14,4 +14,7 @@ export interface ICurrentCarDetailProps {
   carBodyId: number;
   completeSetId: number;
   gearBoxId: number;
+
+  priceFrom: number;
+  priceTo: number;
 }
