@@ -186,7 +186,9 @@ namespace BibikaProject.Infrastructure.Core.Services
 
         public async Task<PostDTO> GetPostById(int id)
         {
-            return mapper.Map<PostDTO>(await query.GetAll().IncldueAllPostProperties().FirstAsync(x => x.Id == id));
+            var temp = await query.GetAll().IncldueAllPostProperties().FirstAsync(x => x.Id == id);
+
+            return mapper.Map<PostDTO>(temp);
         }
     }
 }

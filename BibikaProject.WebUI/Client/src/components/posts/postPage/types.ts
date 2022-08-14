@@ -9,5 +9,6 @@ export interface IPostModel {
     likes: number,
     viewes: number,
     car: ICarModel,
-    price: number
+    price: number,
+    description: string
 }

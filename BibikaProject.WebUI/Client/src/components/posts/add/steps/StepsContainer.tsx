@@ -16,6 +16,7 @@ let addPostModel: AddPostModel = {
     mileage: 10,
     year: "",
     sellerId: "",
+    price: 10000
 }
 
 let images: number[] = [];

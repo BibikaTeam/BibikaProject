@@ -1,0 +1,302 @@
+.post-page-container {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    padding-left: 7.81vw;
+    padding-right: 7.81vw;
+    padding-top: 3.6vh;
+    background: linear-gradient(0deg, 
+            rgba($accent-dark, 0.05), 
+            rgba($accent-dark, 0.05)), 
+            #FFFFFF;
+}
+
+.post-page-go-back {
+    color: rgba($accent-dark, 0.7);
+    
+    a {
+        font-family: 'Manrope';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 24px;
+        line-height: 33px;
+    }
+
+    margin-bottom: 3.6vh;
+}
+
+.post-page-images {
+    display: flex;
+    width: 100%;
+    height: 66vh;
+
+    .post-page-current-image {
+        width: 73vw;
+        height: 100%;
+        border-radius: 6px;
+
+        img {
+            width: 73vw;
+            height: 66vh;
+            overflow: hidden;
+            border-radius: 6px;
+        }
+
+        .left-arrow {
+            position: absolute;
+            top: 55%;
+            left: 9%;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        .right-arrow {
+            position: absolute;
+            top: 55%;
+            left: 78%;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+
+    .post-page-side-images {
+        display: flex;
+        position: relative;
+        //justify-content: ;
+       
+        flex-direction: column;
+        width: 10vw;
+        height: 100%;
+        
+        margin-left: 0.8vw;
+
+        .post-page-side-image {
+            display: flex;
+            border-radius: 6px;
+            height: 15vh;
+            margin-bottom: 2vh;
+
+            img {
+                width: 10vw;
+                height: 15vh;
+                overflow: hidden;
+                border-radius: 6px;
+            }            
+        }
+    }
+}
+
+.post-page-user-block {
+    margin-top: 3vh;
+    width: 100%;
+    height: 12vh;
+    background-color: rgba($primary-2, 0.1);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 6px;
+
+    .post-page-user-avatar {
+        display: flex;
+        font-size: 48px;
+        width: 4vw;
+        height: 8vh;
+        border-radius: 124px;
+        background-color: rgba($accent-dark, 0.2);
+        align-items: center;
+        justify-content: center;
+        margin-left: 2vw;
+        color: $accent-dark;
+    }
+
+
+    .post-page-user-info {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        color: $accent-dark;
+
+        .user-name {
+            font-family: 'Manrope';
+            font-style: normal;
+            font-weight: 700;
+            font-size: 36px;
+            line-height: 49px;
+            margin-left: 3vw;
+        }
+    
+        .user-rating {
+            font-family: 'Manrope';
+            font-style: normal;
+            font-weight: 700;
+            font-size: 36px;
+            line-height: 49px;
+            color: $primary-2;
+            margin-left: 1vw;
+        }
+    
+        svg {
+            margin-left: 0.3vw;
+        }
+    
+        .user-location {
+            font-family: 'Manrope';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 24px;
+            margin-left: 3vw;
+        }
+    }  
+    
+    .post-page-user-buttons {
+        display: flex;
+        justify-content: center;
+        align-items: center;    
+        margin-left: auto;
+        margin-right: 3vw;
+
+        .button-phone {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 5.3vw;
+            height: 6.4vh;
+            background-color: rgba($primary-2, 0.2);
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .button-message {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba($primary-2, 0.7);
+            border-radius: 10px;
+            color: $accent-light;
+            font-family: 'Manrope';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 32px;
+            line-height: 44px;
+            margin-right: 1vw;
+            width: 18vw;
+            height: 6.4vh;
+            cursor: pointer;
+        }
+    }
+
+}
+
+.post-page-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 4vh;
+
+    .title {
+        font-family: 'Manrope';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 90px;
+        line-height: 123px;
+        color: $accent-dark;
+    }
+
+    .price {
+        font-family: 'Manrope';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 64px;
+        line-height: 87px;
+        margin-left: auto;
+        color: $primary;
+
+        .dot {
+            color: rgba($primary, 0.5);
+        }
+
+        .uan {
+            color: rgba($primary, 0.5);
+            font-size: 40px;
+        }
+    }
+}
+
+.post-page-description {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 33px;
+
+    color: rgba($accent-dark, 0.7);
+}
+
+.post-page-specs {
+    
+    margin-top: 4.2vh;
+
+    .specs-header {
+        width: 100%;
+        height: 13vh;
+        background-color: rgba($primary, 0.05);
+        border-radius: 6px 6px 0px 0px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .header-tag {
+            font-family: 'Manrope';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 24px;
+            line-height: 33px;
+            margin-left: 2vw;
+
+            .name {
+                color: rgba($accent-dark, 0.5);
+            }
+
+            .value {
+                color: $accent-dark;
+            }
+        }   
+    }
+
+    .specs-body {
+        background-color: rgba($accent-dark, 0.02);
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        border-radius: 0px 0px 6px 6px;
+        padding: 10px;
+        min-height: 30vh;
+        margin-bottom: 50px;
+
+        .body-tag {
+            font-family: 'Manrope';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 24px;
+            line-height: 33px;
+            color: $accent-dark;
+
+            background: rgba($accent-light, 0.7);
+            border-radius: 6px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            padding: 4px 25px;
+            height: 5.5vh;
+            
+            margin-right: 1.5vw;
+        }
+    }
+}
