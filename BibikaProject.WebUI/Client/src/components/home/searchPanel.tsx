@@ -242,38 +242,8 @@ const SearchPanel = () => {
             </Button>
           </div>
           <div className="fourth-line">
-            <Link to="#">More options</Link>
+            <Link to="/post/detail-search">More options</Link>
           </div>
-
-        </div>
-        <div className="third-line">
-          <Button>
-            {" "}
-            <svg
-              width="25"
-              height="25"
-              viewBox="0 0 25 25"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M9.28486 16.2485C13.1308 16.2485 16.2485 13.1308 16.2485 9.28486C16.2485 5.43895 13.1308 2.32122 9.28486 2.32122C5.43894 2.32122 2.32121 5.43895 2.32121 9.28486C2.32121 13.1308 5.43894 16.2485 9.28486 16.2485ZM9.28486 18.5697C14.4127 18.5697 18.5697 14.4128 18.5697 9.28486C18.5697 4.15697 14.4127 0 9.28486 0C4.15697 0 0 4.15697 0 9.28486C0 14.4128 4.15697 18.5697 9.28486 18.5697Z"
-                fill="white"
-              />
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M23.3587 25L14.2672 15.9086L15.9086 14.2672L25 23.3587L23.3587 25Z"
-                fill="white"
-              />
-            </svg>
-            Search
-          </Button>
-        </div>
-        <div className="fourth-line">
-          <Link to="#">More options</Link>
         </div>
       </div>
     </Form>
