@@ -46,7 +46,9 @@ namespace BibikaProject.Infrastructure.Core.Services
                                           .Include(x => x.Car).ThenInclude(x => x.CompleteSet)
                                           .Include(x => x.Car).ThenInclude(x => x.CarBody)
                                           .Include(x => x.Car).ThenInclude(x => x.GearBox)
-                                          .Include(x => x.Car).ThenInclude(x => x.Generation).ThenInclude(x => x.Model).ThenInclude(x => x.Brand);
+                                          .Include(x => x.Car).ThenInclude(x => x.Generation).ThenInclude(x => x.Model).ThenInclude(x => x.Brand)
+                                          .Include(x => x.Views)
+                                          .Include(x => x.Likes);
 
             return await posts.Select(x => mapper.Map<PostDTO>(x)).ToListAsync();
         }
@@ -68,7 +70,9 @@ namespace BibikaProject.Infrastructure.Core.Services
         public async Task<PagedList<PostDTO>> GetPagedPosts(PagedPostRequest pagedPostRequest)
         {
             IQueryable<Post> posts = query.GetAll()
-                                          .IncldueAllPostProperties();
+                                          .Include(x => x.Car);
+                                          
+
 
             var response = new PagedList<PostDTO> { CurrentPage = pagedPostRequest.Page };
 
@@ -81,11 +85,13 @@ namespace BibikaProject.Infrastructure.Core.Services
                 {
                     if (filter.BrandId != 0) 
                     {
+                        posts = posts.Include(x => x.Car).ThenInclude(x => x.Generation).ThenInclude(x => x.Model);
                         posts = posts.Where(x => x.Car.Generation.Model.BrandId == filter.BrandId);
                     }
 
                     if (filter.ModelId != 0)
                     {
+                        posts = posts.Include(x => x.Car).ThenInclude(x => x.Generation);
                         posts = posts.Where(x => x.Car.Generation.ModelId == filter.ModelId);
                     }
 
@@ -133,8 +139,17 @@ namespace BibikaProject.Infrastructure.Core.Services
                     {
                         posts = posts.Where(x => x.Location.Contains(filter.Location));
                     }
-                }
 
+                    if (filter.PriceMin != 0)
+                    {
+                        posts = posts.Where(x => x.Price >= filter.PriceMin);
+                    }
+
+                    if (filter.PriceMax != 0)
+                    {
+                        posts = posts.Where(x => x.Price <= filter.PriceMax);
+                    }
+                }
             }
 
             response.AllPages = (int)Math.Ceiling((double)await posts.CountAsync() / (double)pagedPostRequest.CountOnPage);
@@ -175,7 +190,9 @@ namespace BibikaProject.Infrastructure.Core.Services
                                           .Include(x => x.Car).ThenInclude(x => x.CompleteSet)
                                           .Include(x => x.Car).ThenInclude(x => x.CarBody)
                                           .Include(x => x.Car).ThenInclude(x => x.GearBox)
-                                          .Include(x => x.Car).ThenInclude(x => x.Generation).ThenInclude(x => x.Model).ThenInclude(x => x.Brand);
+                                          .Include(x => x.Car).ThenInclude(x => x.Generation).ThenInclude(x => x.Model).ThenInclude(x => x.Brand)
+                                          .Include(x => x.Views)
+                                          .Include(x => x.Likes); ;
 
             var postsList = await posts.ToListAsync();
 

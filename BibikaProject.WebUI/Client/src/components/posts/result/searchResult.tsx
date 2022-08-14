@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { IPaginationRequest } from "../../adminPanel/types";
+import { toast } from "react-toastify";
+import { IPaginationRequest, IRequestError } from "../../adminPanel/types";
 import { shortSearch } from "../../home/service";
 import { IBannerCar, IShortSearchRespond } from "../../home/types";
+import { likePost } from "../../userCabinet/service";
 import CarCard from "./carCard";
 
 const SearchResult = () => {
@@ -25,6 +27,17 @@ const SearchResult = () => {
 
   const [paginatedCars, setPaginatedCars] =
     useState<IPaginationRequest<IBannerCar>>();
+
+  // const handleLikePost = async (value: number) => {
+  //   try {
+  //     await likePost(value);
+  //   } catch (_error) {
+  //       const error: IRequestError = _error as IRequestError;
+  //       error.errors.forEach((e) => {
+  //         toast.error(e);
+  //       });
+  //     }
+  // }
 
   useEffect(() => {
     (async () => {
