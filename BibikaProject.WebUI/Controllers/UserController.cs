@@ -26,5 +26,14 @@ namespace BibikaProject.WebUI.Controllers
 
             return Ok();
         }
+
+        [HttpPost("view")]
+        [Authorize]
+        public async Task<IActionResult> ViewPost(int postId)
+        {
+            await userService.ViewPost(HttpContext.User.Claims.First(x => x.Type == UserJWTClaimTypes.Id).Value, postId);
+
+            return Ok();
+        }
     }
 }
