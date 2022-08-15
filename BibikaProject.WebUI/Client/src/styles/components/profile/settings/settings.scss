@@ -1,3 +1,81 @@
 .settings {
-    padding: 20px 145px;
+    .settings-container {
+        padding: 20px 145px;
+    }
+
+    .settings-text {
+        width: 351px;
+        height: 66px;
+
+        font-family: 'Manrope';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 48px;
+        line-height: 66px;
+        color: $primary-font-color;
+    }
+
+    .settings-dropdown {
+        box-sizing: border-box;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 28px;
+        margin-bottom: 20px;
+
+        width: 1613px;
+        height: 92px;
+
+        background: #FFFFFF;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 6px;
+    }
+
+    .settings-menu {
+
+
+        .settings-menu-text {
+
+            font-family: 'Manrope';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 26px;
+            line-height: 36px;
+            color: $primary-font-color;
+
+            flex: none;
+            order: 0;
+            flex-grow: 0;
+        }
+    }
+
+    .delete-button {
+        width: 228px;
+        height: 36px;
+
+        font-family: 'Manrope';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 26px;
+        line-height: 36px;
+        color: $primary-font-color;
+    }
+
+    .logout-button {
+        width: 75px;
+        height: 36px;
+
+        font-family: 'Manrope';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 26px;
+        line-height: 36px;
+        color: $primary-font-color;
+    }
+}
+
+.menuSettings {
+    padding: 28px;
 }
