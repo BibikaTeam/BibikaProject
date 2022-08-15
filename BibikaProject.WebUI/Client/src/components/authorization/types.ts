@@ -29,8 +29,12 @@ export interface AuthLogin {
   type: AuthActionTypes.AUTH_LOGIN;
   payload: IUser;
 }
+export interface AuthLogout {
+  type: AuthActionTypes.AUTH_LOGOUT;
+}
 
-export type AuthAction = AuthLogin;
+export type AuthAction = AuthLogin | AuthLogout;
+
 export interface RegisterErrorType {
   errorsString: Array<string>;
 }

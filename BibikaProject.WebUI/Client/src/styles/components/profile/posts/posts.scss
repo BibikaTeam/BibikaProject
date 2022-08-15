@@ -1,0 +1,130 @@
+.my-cars {
+    padding: 20px 145px;
+}
+.carPreviewContainer {
+    height: 308px;
+    border-radius: 10px;
+    overflow: hidden;
+
+    .imageCol{
+        width: 500px;
+        height: 308px;
+        overflow: hidden;
+        img {
+            width: 500px;
+        }
+    }
+
+    .info{ 
+        border: $default-border-color 1px solid;
+        border-left: 0;
+        .upLine{
+            background-color: white;
+            height: auto;
+            padding-top: 15px;
+            padding-left: 34px;
+            padding-bottom: 22px;
+            padding-right: 51px;
+
+            .carTitle{
+                font-weight: 700;
+                font-size: 48px;
+                line-height: 64px;
+                color: $primary-font-color;
+                display: block;
+            }
+            .location{
+                color: $secondary-font-color;
+                font-weight: 500;
+                font-size: 24px;
+                line-height: 32px;
+            }
+            .price {
+                color: $primary;
+                font-weight: 500;
+                font-size: 40px;
+                display: inline-block;
+                vertical-align: middle;
+                line-height: normal;
+            }
+        }
+        .downLine{
+            background-color: $accent-light;
+            height: 175px;
+            border-top: 1px solid $secondary-border-color;
+            padding-left: 34px;
+            padding-top: 28px;
+            padding-right: 27px;
+            width: 100%;
+
+            .status-info{
+                color: $primary-font-color;
+                .statistic-cell {
+                    margin-right: 28px;
+                }
+
+                .statistic-info{
+                    font-weight: 600;
+                    font-size: 24px;
+                    line-height: 33px;
+                    display: inline;
+                    margin-top: -5px
+                }
+
+                .icon {
+                    height: 25px;
+                    width: 30px;
+                    display: inline-block;
+                    margin-right: 10px;
+                    margin-bottom: -3px;
+
+                }
+                .like{
+                    background: url('../../../../../public/icons/likes.png');
+                }
+                .watch{
+                    background: url('../../../../../public/icons/watches.png');
+                }
+                .message{
+                    background: url('../../../../../public/icons/messages.png');
+                    background-position: center;
+                }
+            }
+
+            .buttons-bar{
+                margin-top: 15px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                .editButton{
+                    padding: 15px 66px;
+                    border: 2px solid $primary-font-color;
+                    border-radius: 10px;
+                    font-size: 24px;
+                    font-weight: 500;
+                    line-height: 33px;
+                }
+                .advButton{
+                    padding: 15px 80px;
+                    background-color: $danger-color-transparent;
+                    color: $danger-color;
+
+                    font-size: 24px;
+                    font-weight: 500;
+                    line-height: 33px;
+                    border-radius: 5px;
+                }
+                .link-button{
+                    font-weight: 500;
+                    font-size: 24px;
+                    line-height: 33px;
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+
+}

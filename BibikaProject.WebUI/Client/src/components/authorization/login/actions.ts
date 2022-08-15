@@ -13,6 +13,9 @@ import http from "../../../http_common"; //axios
 import axios, { AxiosError, AxiosResponse } from "axios";
 
 import jwt_decode from "jwt-decode";
+
+import { IRequestError } from "../../adminPanel/types";
+import { ErrorStrings } from "../../../constants";
 import { CredentialResponse } from "@react-oauth/google";
 
 export const loginUser = (data: ILoginModel) => {
@@ -38,12 +41,18 @@ export const loginUser = (data: ILoginModel) => {
       return Promise.resolve();
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        const serverError: LoginErrorType = {
-          errorString: error.response?.data as string,
-        };
-        if (serverError) {
-          return Promise.reject(serverError);
+        if (error.request.status == 0 || error.request.status == 500) {
+          const unknownError: IRequestError = {
+            code: error.request.status,
+            errors: new Array<string>(ErrorStrings.backendNotResponse()),
+          };
+          throw unknownError;
         }
+        let serverError: IRequestError = {
+          errors: error.response?.data.Errors,
+          code: error.response?.data.Code,
+        };
+        throw serverError;
       }
       return Promise.reject();
     }
@@ -83,7 +92,7 @@ export const loginGoogleUser = (data: CredentialResponse) => {
       return Promise.reject();
     }
   };
-}
+};
 
 export const loginFacebookUser = (data: FacebookLoginModel) => {
   return async (dispatch: React.Dispatch<AuthAction>) => {
@@ -98,7 +107,7 @@ export const loginFacebookUser = (data: FacebookLoginModel) => {
 
           const user = jwt_decode(token) as IUser;
 
-          console.log(1);      
+          console.log(1);
           //Write to redux
           dispatch({
             type: AuthActionTypes.AUTH_LOGIN,
@@ -106,8 +115,8 @@ export const loginFacebookUser = (data: FacebookLoginModel) => {
           });
         });
 
-        console.log(2);
-      
+      console.log(2);
+
       return Promise.resolve();
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -121,4 +130,4 @@ export const loginFacebookUser = (data: FacebookLoginModel) => {
       return Promise.reject();
     }
   };
-}
+};

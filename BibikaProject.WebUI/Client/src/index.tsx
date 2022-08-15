@@ -10,17 +10,26 @@ import "./index.css";
 
 import { createBrowserHistory } from "history";
 import configureStore from "./store/configureStore";
-import { GoogleOAuthProvider } from "@react-oauth/google";
+import { AuthUser, LogoutUser } from "./components/authorization/login/service";
+import { useActions } from "./hooks/useActions";
+
+const token = localStorage.getItem("token");
 
 const history = createBrowserHistory();
 const store = configureStore(history);
 
 let root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 
+if (token) {
+  AuthUser(token as string, store.dispatch);
+} else {
+  LogoutUser(store.dispatch);
+}
+
 root.render(
   // <React.StrictMode>
-  <Provider store={store}>  
-      <App />
+  <Provider store={store}>
+    <App />
   </Provider>
   // </React.StrictMode>
 );

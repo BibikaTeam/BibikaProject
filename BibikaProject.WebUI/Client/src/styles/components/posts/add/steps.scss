@@ -1,30 +1,582 @@
-.addPostStep1 {
-    h1{
-        font-size: 40px;
-        font-size: 400;
-        line-height: 54.64px;
-        margin-bottom: 15px;
-        span {
-            font-weight: 700;
+.steps-container {
+    display: flex;
+    flex-direction: column;
+    height: 87.3%;
+    justify-content: flex-start;
+    background-color: $accent-light;
+    
+}
+.steps-text{
+   
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+   
+    
+    color: rgba(65, 65, 65, 0.7);
+}
+
+.steps-header {
+    display: flex;  
+    height: 14%;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 5vh;
+}
+
+.steps-title-container {
+    padding-top: 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+.steps-title {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 55px;
+    
+
+
+}
+
+.steps-description {
+
+
+    
+    position: absolute;
+width: 332px;
+height: 27px;
+left: 149px;
+top: 223px;
+
+font-family: 'Manrope';
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 27px;
+
+color: rgba(65, 65, 65, 0.7);
+}
+
+.steps-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5vw;
+    margin: 0;
+}
+
+.steps-action-button-done {
+
+ 
+    gap: 10px;
+    
+    background: #219CE1;
+    border-radius: 10px;
+
+    
+    width: 4.5vw;
+    height: 4vh;
+    border-radius: 5px;
+    text-align: center;
+
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 19px;
+    color: $accent-light;
+    background-color: $primary;
+
+    &:hover {
+        color: $accent-light;
+        background-color: $primary;
+    }
+
+    &:active {
+        color: $accent-light;
+        background-color: $primary;
+    }
+
+    &:focus {
+        color: $accent-light;
+        background-color: $primary;
+    }
+}
+
+.steps-action-button-back {
+
+    
+    gap: 10px;
+  
+    width: 4.5vw;
+    height: 4vh;
+    border-radius: 8px;
+    text-align: center;
+
+
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 19px;
+    
+    color: $accent-dark;
+    
+    background-color: rgba($accent-light, 0.2);
+    border: 5;
+
+    &:hover {
+        color: $accent-dark;
+        background-color: rgba($accent-light, 0.3);
+    }
+
+    &:active {
+        color: $accent-light;
+        background-color: rgba($accent-dark, 0.3);
+    }
+
+    &:focus {
+        color: $accent-light;
+        background-color: rgba($accent-dark, 0.3);
+    }
+}
+
+.steps-body {
+    display: flex;
+    flex-direction: column;
+    height: 92%;
+    
+    padding-left: 147px;
+    padding-right: 147px;
+    padding-bottom: 2vh;
+}
+
+.steps-footer {
+
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 700;
+    font-size:20px;
+    line-height: 33px;
+   
+
+    display: flex;
+    flex-direction: row;
+    position: fixed;
+    bottom: 0;
+    height: 8%;     
+    width: 100%;
+    background-color: white;
+
+    z-index: 3;
+}
+
+.steps-footer-block {
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba($primary, 0.4);
+    background-color: rgba($primary, 0.2);
+    width: 33.3%;
+
+    
+}
+
+.steps-footer-block-active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 33.3%;
+    background-color: $primary;
+    color: $accent-light;
+}
+
+.radiogroup-container {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    
+
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    background: #FFFFFF;
+    margin-bottom: 2vh;
+}
+
+.radiogroup-title {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 26px;
+    margin: 1vh;
+}
+
+
+.radiogroup-button {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 800;
+    font-size: 20px;
+    background: rgba($accent-dark, 0.1);
+    border: 0;
+    color: rgba(0, 0, 0, 0.5);
+
+    border-radius: 5px;
+   
+    background:  rgba(33, 156, 225, 0.1);
+    margin: 2vh;
+   /*  padding-left: 26px;
+    padding-right: 26px;
+    padding-top: 10px;
+    padding-bottom: 10px; */
+
+    
+
+    &::before {
+        
+        background-color: none;
+        border: none;
+    }
+}
+
+.radiogroup-container .ant-radio-button-wrapper-checked {
+    background-color: $primary;
+    color: $accent-light;
+    
+}
+
+.ant-radio-button-wrapper:not(:first-child)::before {
+    background-color: transparent;
+    
+
+
+    &:hover {
+        background-color: transparent;
+        
+    }
+}
+
+.ant-radio-button-wrapper:first-child {
+    border-radius: 5px;
+    padding: 26px, 10px;
+
+  
+}
+
+.ant-radio-button-wrapper:last-child {
+    border-radius: 5px;
+    padding: 26px, 10px;
+ 
+
+}
+
+.steps-radio-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    
+   
+}
+
+.steps-secondstep-description {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.imageSelector-card-container {
+    width: 21vw;
+    height: 23.5vh;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.imageCard-img {
+    width: 21vw;
+    height: 23.5vh;
+    object-fit: fill;
+}
+
+
+.imageSelector-cards-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-column-gap: 4.1vh;
+    grid-row-gap: 1vw;
+    height: 100%;
+}
+
+.steps-secondstep-description-title {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 32px;
+}
+
+.imageSelector-input-container {
+    display: flex;
+    width: 21vw;
+    height: 23.5vh;
+    border: 1px dashed rgba($primary, 0.5);
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+}
+
+.imageSelector-dragger-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 2px dashed rgba($primary, 0.5);
+    border-radius: 5px;
+}
+
+.imageSelector-upload-text {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 32px;
+    text-align: center;
+
+    color: $primary;
+}
+.steps-price-container{
+    background-color: blue;
+}
+
+.second-line{
+   
+    .from-to-container{
+        border-radius: 10px;
+        background-color: rgba(65, 65, 65, 0.02);
+        
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        border: 1px solid #d9d9d9;
+        padding: 20px 30px;
+        .ant-row{
+            width: 35%;
+            margin-bottom: 0;
+
+            input{
+                font-size: 32px;
+                border-radius: 10px;
+                padding: 2px 10px;
+                text-align: left;
+                width: 100%;
+            }
+        }
+        .ant-row{
+            width: 35%;
+            .from-to-select{
+                font-size: 32px;
+                padding: 2px 10px;
+                text-align: left;
+                width: 100%;
+                .ant-select-selector{
+                    border-radius: 10px;
+                    height: 100%;
+                }
+                .ant-select-arrow {
+                    .anticon{
+                        svg{
+                            width: 20px;
+                            margin-top: -5px;
+                            margin-left: -30px;
+                        }
+                    }
+                }
+            }
         }
     }
-    h6 {
-        font-size: 20px;
-        line-height: 27.32px;
-        color: rgba($color: #414141, $alpha: 0.7);
-        margin-top: 0;
-    }
-    .emptyImagesArray{
-        width: 100%;
-        min-height: 600px; 
-        border: 1px rgba($color: $mainColor, $alpha: 0.5) dashed;
-    }
-    .emptyArrAlt {
-        color: $mainColor;
+    span{
+        margin-top: 4px;
         font-size: 32px;
         font-weight: 500;
-        
-        display: inline-block;
-        
+        line-height: 43px;
     }
+}
+.checkbox{
+    font-family: 'Manrope';
+font-style: normal;
+font-weight: 500;
+font-size: 24px;
+line-height: 33px;
+}
+
+.imageSelector-input {
+    display: none;
+}
+
+.visibility-hidden {
+    visibility: hidden;
+}
+
+.steps-selects-container {
+    display: flex;
+    flex-direction: row;   
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 22px;
+    margin-top: 2vh;
+    justify-content: space-between;
+}
+
+
+.steps-select-container {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+}
+.steps-select-price-container{
+    display: flex;
+    flex-direction: column;
+    width: 200%;
+    height: 250%;
+}
+
+.steps-input-container {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 22px;
+    
+}
+
+
+.steps-input {
+    border-radius: 5px;
+}
+
+.steps-datepicker {
+    border-radius: 5px;
+}
+.steps-colorpicker{
+    margin-bottom: 20px;
+    width: 500px;
+    
+}
+.step-checkbox{
+    padding: 20px;
+    margin: 20px;
+    
+}
+.steps-secondstep-description-text{
+    font-size: 18px;
+}
+.title{
+    font-size: 22px;
+}
+
+.steps-select {
+    border-radius: 5px;
+}
+
+.steps-select-container .ant-select .ant-select-selector {
+    border-radius: 5px;
+    margin-bottom: 30px;
+}
+
+.steps-textarea {
+    border-radius: 5px;
+}
+
+.steps-map-container {
+    margin-top: 1vh;
+    height: 100%;
+    width: 100%;
+    
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 22px;
+}
+
+.steps-map-input {
+    z-index: 3;
+    position: relative;
+    top: 5vh;
+    width: 90%;
+    margin: auto;
+    border-radius: 10px;
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    padding-left: 1vw;
+    color: $accent-dark;
+    background-color: $accent-light; 
+}
+
+.steps-wrapper {
+    width: 100%;
+    height: 90%;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.laststep-text{
+
+    font-family: 'Manrope';
+font-style: normal;
+font-weight: 500;
+font-size: 48px;
+line-height: 66px;
+text-align: center;
+color: #219CE1;
+
+}
+.laststep-body{
+    display: flex;
+    padding-top: 300px;
+    margin: 20px;
+    flex-direction: column;
+    height: 100%;
+    justify-content: flex-start;
+    background: linear-gradient(0deg, rgba(33, 156, 225, 0.1), rgba(33, 156, 225, 0.1)), #F6F6F6;
+}
+.save{
+    
+    height: 105px;
+    width: 115px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    background: url('../../../../../public/img/vector.png');
+    
+}
+.logo{
+    padding-left: 47vw;
+}
+.steps-button{
+
+    gap: 10px;
+    margin-left: 47vw;
+    margin-top: 55px;;
+    background: #219CE1;
+    border-radius: 10px;
+    text-align: center;
+ 
+    width: 4.5vw;
+    height: 4vh;
+    border-radius: 5px;
+
+
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 19px;
+    color: $accent-light;
+    background-color: $primary;
 }
