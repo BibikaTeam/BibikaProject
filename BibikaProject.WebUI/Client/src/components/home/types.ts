@@ -1,24 +1,27 @@
-export interface IBannerCar {
-  mainImageSrc: string;
-  title: string;
-  price: number;
-  location: string;
-  year: number;
-  mileage: number;
-  engine: string;
-  gearBoxTitle: string;
-  description: string;
-  id: number;
+import { ICarModel } from "../adminPanel/types";
 
-  // color: string;
-  // id: number;
-  // likes: number;
-  // location: string;
-  // mileage: number;
+export interface IBannerCar {
+  // title: string;
   // price: number;
-  // sellerName: string;
-  // viewes: number;
-  // year: Date;
+  // location: string;
+  // year: number;
+  // mileage: number;
+  // engine: string;
+  // gearBoxTitle: string;
+  // description: string;
+  // id: number;
+
+  color: string;
+  id: number;
+  likes: number;
+  location: string;
+  mileage: number;
+  price: number;
+  sellerName: string;
+  viewes: number;
+  year: number;
+  car: ICarModel;
+  description: string;
 }
 export interface IShortSearchRespond {
   brand: number | undefined;

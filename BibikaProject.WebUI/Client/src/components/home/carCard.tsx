@@ -25,15 +25,15 @@ const MainPageCarCard = ({ car }: IMainPageCarCardProps) => {
   console.log("INside: ", car);
   return (
     <div className="main-car-card">
-      <img src={car.mainImageSrc} alt="Car src" />
+      {/* <img src={car.mainImageSrc} alt="Car src" /> */}
       <div className="info">
-        <h4>{car.title}</h4>
+        <h4>{car.car.title}</h4>
         <span className="price">{car.price}$</span>
         <span className="location">{car.location}</span>
         <div className="tags-line">
           <span>{car.year}</span>
           <span>{car.mileage}km</span>
-          <span>{car.engine}</span>
+          <span>{car.car.engine.title}</span>
         </div>
       </div>
     </div>

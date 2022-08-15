@@ -16,7 +16,7 @@ export interface IEngineModel {
   id: number;
   title: string;
   capacity: string;
-  kWPower: number;
+  kwPower: number;
   fuel: string;
 }
 export interface ICompleteSetModel {

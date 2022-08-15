@@ -41,6 +41,8 @@ export const getDetailPaginatedPosts = async (
       filterProps
     );
 
+    response.data.data.map((x) => (x.year = new Date(x.year).getFullYear()));
+
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
