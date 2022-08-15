@@ -14,5 +14,4 @@ bld/
 .vs
 internal_logs/
 logs/
-images/
-package-lock.json
+images/*

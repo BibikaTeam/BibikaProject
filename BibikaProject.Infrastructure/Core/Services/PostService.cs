@@ -211,6 +211,13 @@ namespace BibikaProject.Infrastructure.Core.Services
             return mapper.Map<PostDTO>(postsList[rand.Next(0, postsList.Count())]);
         }
 
+        public async Task<PostDTO> GetPostById(int id)
+        {
+            var temp = await query.GetAll().IncldueAllPostProperties().FirstAsync(x => x.Id == id);
+
+            return mapper.Map<PostDTO>(temp);
+        }
+        
         public async Task<MinMaxValuesDTO> GetMinMaxYearsPrice(int generationId)
         {
             IQueryable<Post> posts = query.GetAll().Include(x => x.Car).Where(x => x.Car.GenerationId == generationId);

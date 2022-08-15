@@ -25,6 +25,8 @@ namespace BibikaProject.Application.Core.Services
         
         Task<PostDTO> GetRandomPost();
 
+        Task<PostDTO> GetPostById(int id);
+
         Task<MinMaxValuesDTO> GetMinMaxYearsPrice(int generationId);
     }
 }

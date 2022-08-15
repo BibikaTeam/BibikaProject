@@ -43,5 +43,13 @@ namespace BibikaProject.WebUI.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("get/by-post/{postId}")]
+        public async Task<IActionResult> GetImagesByPost(int postId)
+        {
+            var result = await imageService.GetImagesByPost(postId);
+
+            return Ok(result);
+        }
     }
 }
