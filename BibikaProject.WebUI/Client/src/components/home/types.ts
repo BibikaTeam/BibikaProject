@@ -9,6 +9,16 @@ export interface IBannerCar {
   gearBoxTitle: string;
   description: string;
   id: number;
+
+  // color: string;
+  // id: number;
+  // likes: number;
+  // location: string;
+  // mileage: number;
+  // price: number;
+  // sellerName: string;
+  // viewes: number;
+  // year: Date;
 }
 export interface IShortSearchRespond {
   brand: number | undefined;

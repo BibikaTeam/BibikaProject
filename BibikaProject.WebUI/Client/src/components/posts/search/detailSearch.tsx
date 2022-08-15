@@ -1,29 +1,42 @@
+import { useNavigate } from "react-router";
+import { Button } from "antd";
+import qs from "qs";
 import { useState } from "react";
 import CurrentCarDetailSearch from "./currentCarDetailSearch";
-import CollapseBar from "./searchCarDetail";
+import { getDetailPaginatedPosts } from "./serivce";
 import { ICurrentCarDetailProps, IDetailSearchProps } from "./types";
 
 const DetailSearch = () => {
-  const [carModelst, setCarModel] = useState<IDetailSearchProps>({
-    filters: {
-      brandId: 0,
-      carBodyId: 0,
-      color: "",
-      completeSetId: 0,
-      engineId: 0,
-      gearBoxId: 0,
-      generationId: 0,
-      location: "",
-      modelId: 0,
-      yearMax: 0,
-      yearMin: 0,
-      priceFrom: 0,
-      priceTo: 0,
-    },
+  const navigator = useNavigate();
+  const [carModel, setCarModel] = useState<IDetailSearchProps>({
+    filters: [
+      {
+        brandId: 0,
+        carBodyId: 0,
+        color: "",
+        completeSetId: 0,
+        engineId: 0,
+        gearBoxId: 0,
+        generationId: 0,
+        location: "",
+        modelId: 0,
+        yearMax: 0,
+        yearMin: 0,
+        priceMin: 0,
+        priceMax: 0,
+      },
+    ],
+    countOnPage: 10,
+    page: 1,
+    search: "",
   });
 
-  const updateCar = async (carModel: ICurrentCarDetailProps) => {
-    setCarModel({ ...carModel, filters: carModel });
+  const updateCar = async (carModelFromOutside: ICurrentCarDetailProps) => {
+    setCarModel({ ...carModel, filters: [carModelFromOutside] });
+  };
+  const onSearchClick = () => {
+    const searchString = qs.stringify(carModel.filters[0]);
+    navigator(`/post/search-result?${searchString}`);
   };
   return (
     <div className="detail-search-panel">
@@ -53,6 +66,8 @@ const DetailSearch = () => {
           Detail search
         </h1>
         <CurrentCarDetailSearch updateCar={updateCar} />
+
+        <Button onClick={onSearchClick}>Search</Button>
       </div>
     </div>
   );
