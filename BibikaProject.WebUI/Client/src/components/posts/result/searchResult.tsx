@@ -12,6 +12,7 @@ import CarCard from "./carCard";
 import { keys } from "ts-transformer-keys";
 import { ICurrentCarDetailProps, IDetailSearchProps } from "../search/types";
 import { getDetailPaginatedPosts } from "../search/serivce";
+import SearchPanel from "../../home/searchPanel";
 
 const SearchResult = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -44,7 +45,7 @@ const SearchResult = () => {
   useEffect(() => {
     (async () => {
       //@ts-ignore
-      let params: IShortSearchRespond = {};
+      let params: ICurrentCarDetailProps = {};
 
       //Going for each of key, check can we parse it to int, and write to param object
       const keys = Object.keys(test);
@@ -70,7 +71,7 @@ const SearchResult = () => {
       setRequestData(requestDataInside);
       fetchDataByRequest(requestDataInside);
     })();
-  }, []);
+  }, [searchParams]);
 
   const fetchData = async () => {
     try {
@@ -98,11 +99,14 @@ const SearchResult = () => {
   };
 
   return (
-    <div className="search-result">
-      <h1>Search result</h1>
-      {searchRespond?.data.map((x, id) => {
-        return <CarCard car={x} />;
-      })}
+    <div className="search-page">
+      <SearchPanel searchProps={requestData.filters[0]}></SearchPanel>
+      <div className="search-result">
+        <h1>Search result</h1>
+        {searchRespond?.data.map((x, id) => {
+          return <CarCard car={x} />;
+        })}
+      </div>
     </div>
   );
 };

@@ -60,6 +60,7 @@
                         .tags-row{
                             display: flex;
                             justify-content: center;
+                            align-items: center;
 
                             .tag{
                                 color: #219CE1;
@@ -145,6 +146,14 @@
                     }
                 }
             }
+        }
+    }
+}
+.search-page {
+    .search-panel {
+        margin-top: 80px;
+        .radio-buttons-search{
+            display: none;
         }
     }
 }

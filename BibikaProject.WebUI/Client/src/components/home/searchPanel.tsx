@@ -18,10 +18,17 @@ import * as qs from "qs";
 import { IShortSearchRespond } from "./types";
 
 import { useNavigate } from "react-router-dom";
-import { IDetailSearchProps } from "../posts/search/types";
+import {
+  ICurrentCarDetailProps,
+  IDetailSearchProps,
+} from "../posts/search/types";
 import { getMinMaxYearPriceByGeneration } from "../posts/search/serivce";
 
-const SearchPanel = () => {
+export interface SearchPanelProps {
+  searchProps: ICurrentCarDetailProps | null;
+}
+
+const SearchPanel = ({ searchProps }: SearchPanelProps) => {
   const [brandList, setBrandList] = useState<Array<IBrandModel>>([]);
   const [modelList, setModelList] = useState<Array<IModelModel>>([]);
   const [generationList, setGenerationList] = useState<Array<IGenerationModel>>(
@@ -227,7 +234,7 @@ const SearchPanel = () => {
                 <Select
                   className="search-input"
                   onChange={handleBrandChange}
-                  placeholder="Brand"
+                  placeholder={"Brand"}
                   loading={brandLoading}
                 >
                   {brandList.map((brand: IBrandModel) => {
@@ -358,6 +365,10 @@ const SearchPanel = () => {
       </div>
     </Form>
   );
+};
+
+SearchPanel.defaultProps = {
+  searchProps: null,
 };
 
 export default SearchPanel;
