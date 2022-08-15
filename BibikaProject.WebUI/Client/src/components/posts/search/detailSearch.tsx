@@ -1,10 +1,13 @@
+import { useNavigate } from "react-router";
 import { Button } from "antd";
+import qs from "qs";
 import { useState } from "react";
 import CurrentCarDetailSearch from "./currentCarDetailSearch";
 import { getDetailPaginatedPosts } from "./serivce";
 import { ICurrentCarDetailProps, IDetailSearchProps } from "./types";
 
 const DetailSearch = () => {
+  const navigator = useNavigate();
   const [carModel, setCarModel] = useState<IDetailSearchProps>({
     filters: [
       {
@@ -32,7 +35,8 @@ const DetailSearch = () => {
     setCarModel({ ...carModel, filters: [carModelFromOutside] });
   };
   const onSearchClick = () => {
-    getDetailPaginatedPosts(carModel);
+    const searchString = qs.stringify(carModel.filters[0]);
+    navigator(`/post/search-result?${searchString}`);
   };
   return (
     <div className="detail-search-panel">

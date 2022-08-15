@@ -70,7 +70,7 @@ namespace BibikaProject.Infrastructure.Core.Services
         public async Task<PagedList<PostDTO>> GetPagedPosts(PagedPostRequest pagedPostRequest)
         {
             IQueryable<Post> posts = query.GetAll()
-                                          .Include(x => x.Car);
+                                          .IncldueAllPostProperties();
 
 
 

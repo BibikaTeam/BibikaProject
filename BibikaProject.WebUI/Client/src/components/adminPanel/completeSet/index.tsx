@@ -129,7 +129,6 @@ const CompleteSetPage = () => {
       duration: 0,
       key: key,
       onClick: () => {
-        console.log("key: ", key);
         notification.close(key);
         clearCompleteSets();
         getCompleteSetsByGeneration(currentGenerationId);

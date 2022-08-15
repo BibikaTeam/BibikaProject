@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useActions } from "../../../hooks/useActions";
+import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { toast } from "react-toastify";
 import { IPaginationRequest, IRequestError } from "../../adminPanel/types";
 import { shortSearch } from "../../home/service";
@@ -8,14 +10,21 @@ import { likePost } from "../../userCabinet/service";
 import CarCard from "./carCard";
 
 import { keys } from "ts-transformer-keys";
-import { ICurrentCarDetailProps } from "../search/types";
+import { ICurrentCarDetailProps, IDetailSearchProps } from "../search/types";
+import { getDetailPaginatedPosts } from "../search/serivce";
 
 const SearchResult = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [requestData, setRequestData] = useState<IDetailSearchProps>({
+    filters: [],
+    countOnPage: 10,
+    page: 1,
+    search: "",
+  });
+  const { writeCars } = useActions();
+  const { searchRespond } = useTypedSelector((x) => x.search);
 
-  const [paginatedCars, setPaginatedCars] =
-    useState<IPaginationRequest<IBannerCar>>();
-
+  //create object for getting keys from ICurrentCarDetailProps
   let test: ICurrentCarDetailProps = {
     brandId: 0,
     carBodyId: 0,
@@ -32,63 +41,66 @@ const SearchResult = () => {
     priceMax: 0,
   };
 
-  const convertArrayToObject = (array: any, key: any) => {
-    const initialValue = {};
-    return array.reduce((obj: any, item: any) => {
-      return {
-        ...obj,
-        [item[key]]: item,
-      };
-    }, initialValue);
-  };
-
   useEffect(() => {
     (async () => {
       //@ts-ignore
-      // const a: ICurrentCarDetailProps = {};
-      // console.log(a);
+      let params: IShortSearchRespond = {};
 
-      const keysArr = Object.keys(test);
+      //Going for each of key, check can we parse it to int, and write to param object
+      const keys = Object.keys(test);
+      keys.forEach((x) => {
+        //@ts-ignore
+        params[x] = searchParams.get(x)
+          ? //@ts-ignore
+            isNaN(parseInt(searchParams.get(x)))
+            ? //@ts-ignore
+              searchParams.get(x)
+            : //@ts-ignore
+              parseInt(searchParams.get(x))
+          : undefined;
+      });
 
-      console.log(convertArrayToObject(["aa", "bb"], ["11", "22"]));
-
-      // const params: IShortSearchRespond = {
-      //   brand: searchParams.get("brand")
-      //     ? parseInt(searchParams.get("brand") as string)
-      //     : undefined,
-      //   model: searchParams.get("model")
-      //     ? parseInt(searchParams.get("model") as string)
-      //     : undefined,
-      //   generation: searchParams.get("generation")
-      //     ? parseInt(searchParams.get("generation") as string)
-      //     : undefined,
-      //   priceFrom: searchParams.get("priceFrom")
-      //     ? parseInt(searchParams.get("priceFrom") as string)
-      //     : undefined,
-      //   priceTo: searchParams.get("priceTo")
-      //     ? parseInt(searchParams.get("priceTo") as string)
-      //     : undefined,
-      //   quality: searchParams.get("quality")
-      //     ? searchParams.get("quality")
-      //     : undefined,
-      //   yearFrom: searchParams.get("yearFrom")
-      //     ? parseInt(searchParams.get("yearFrom") as string)
-      //     : undefined,
-      //   yearTo: searchParams.get("yearTo")
-      //     ? parseInt(searchParams.get("yearTo") as string)
-      //     : undefined,
-      // };
-      // console.log("params: ", params);
-
-      // const data = await shortSearch(params);
-      // setPaginatedCars(data);
+      const requestDataInside: IDetailSearchProps = {
+        //@ts-ignore
+        filters: [params],
+        countOnPage: 10,
+        page: 1,
+        search: "",
+      };
+      setRequestData(requestDataInside);
+      fetchDataByRequest(requestDataInside);
     })();
-  });
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const data = await getDetailPaginatedPosts(requestData);
+      writeCars(data as IPaginationRequest<IBannerCar>);
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
+    }
+  };
+  const fetchDataByRequest = async (request: IDetailSearchProps) => {
+    try {
+      console.log("works");
+      const data = await getDetailPaginatedPosts(request);
+      console.log("data:", data);
+      writeCars(data as IPaginationRequest<IBannerCar>);
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
+    }
+  };
 
   return (
     <div className="search-result">
       <h1>Search result</h1>
-      {paginatedCars?.data.map((x, id) => {
+      {searchRespond?.data.map((x, id) => {
         return <CarCard car={x} />;
       })}
     </div>

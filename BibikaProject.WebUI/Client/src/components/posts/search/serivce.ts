@@ -1,7 +1,8 @@
 import axios from "axios";
 import { ErrorStrings } from "../../../constants";
 import http from "../../../http_common";
-import { IRequestError } from "../../adminPanel/types";
+import { IPaginationRequest, IRequestError } from "../../adminPanel/types";
+import { IBannerCar } from "../../home/types";
 import { IDetailSearchProps, IMinMaxYearPriceDTO } from "./types";
 
 export const getMinMaxYearPriceByGeneration = async (generationId: number) => {
@@ -35,7 +36,7 @@ export const getDetailPaginatedPosts = async (
   filterProps: IDetailSearchProps
 ) => {
   try {
-    const response = await http.post<IMinMaxYearPriceDTO>(
+    const response = await http.post<IPaginationRequest<IBannerCar>>(
       `api/post/get`,
       filterProps
     );
