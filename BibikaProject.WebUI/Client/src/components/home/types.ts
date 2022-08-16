@@ -1,16 +1,3 @@
-<<<<<<< HEAD
-export interface IBannerCar {
-  mainImageSrc: string;
-  title: string;
-  price: number;
-  location: string;
-  year: number;
-  mileage: number;
-  engine: string;
-  gearBoxTitle: string;
-  description: string;
-  id: number;
-=======
 import { ICarModel } from "../adminPanel/types";
 
 export interface IBannerCar {
@@ -35,7 +22,6 @@ export interface IBannerCar {
   year: number;
   car: ICarModel;
   description: string;
->>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
 }
 export interface IShortSearchRespond {
   brand: number | undefined;

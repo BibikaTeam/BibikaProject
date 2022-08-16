@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
@@ -7,111 +7,93 @@ import { AddPostModel, CurrentStep } from "../types";
 import FirstStep from "./FirstStep";
 import SecondStep from "./SecondStep";
 import ThirdStep from "./ThirdStep";
-<<<<<<< HEAD
 import LastStep from "./LastStep";
-=======
->>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
 
 let addPostModel: AddPostModel = {
-    carId: 0,
-    description: "",
-    location: "",
-    color: "blue",
-    mileage: 10,
-    year: "",
-    sellerId: "",
-<<<<<<< HEAD
-    price:0
-=======
-    price: 10000
->>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
-}
+  carId: 0,
+  description: "",
+  location: "",
+  color: "blue",
+  mileage: 10,
+  year: "",
+  sellerId: "",
+  price: 0,
+};
 
 let images: number[] = [];
 
-const StepsContainer: FC = () => {
+const StepsContainer = () => {
+  const userId = useTypedSelector((redux) => redux.login.user?.id);
 
-    const userId = useTypedSelector((redux) => redux.login.user?.id);
+  const [currentStep, setCurrentStep] = useState<CurrentStep>(
+    CurrentStep.FirstStep
+  );
 
-    const [currentStep, setCurrentStep] = useState<CurrentStep>(CurrentStep.FirstStep);
-    
-    const onFirstStepFinish = (values: number[]) => {
-        images = values;
-        setCurrentStep(CurrentStep.SecondStep);
-    }
+  const onFirstStepFinish = (values: number[]) => {
+    images = values;
+    setCurrentStep(CurrentStep.SecondStep);
+  };
 
-    const onSecondStepFinish = (values: any) => {
-        addPostModel.description = values.description;
-        addPostModel.year = `${values.selectedYear}-07-12T17:03:18.227Z`;
-        getCarIdByParams(
-            {
-                generationId: values.selectedGeneration,
-                carBodyId: values.selectedCarBody,
-                gearBoxId: values.selectedGearBox,
-                completeSetId: values.selectedCompleteSet,
-                engineId: values.selectedEngine,
-            }
+  const onSecondStepFinish = (values: any) => {
+    addPostModel.description = values.description;
+    addPostModel.year = `${values.selectedYear}-07-12T17:03:18.227Z`;
+    getCarIdByParams({
+      generationId: values.selectedGeneration,
+      carBodyId: values.selectedCarBody,
+      gearBoxId: values.selectedGearBox,
+      completeSetId: values.selectedCompleteSet,
+      engineId: values.selectedEngine,
+    }).then((id: any) => {
+      addPostModel.carId = id;
+      console.log(id);
+    });
 
-        ).then((id: any) => { addPostModel.carId = id; console.log(id); });
+    console.log(values.selectedYear);
 
-        console.log(values.selectedYear);
-        
+    setCurrentStep(CurrentStep.ThirdStep);
+  };
 
-        setCurrentStep(CurrentStep.ThirdStep);
-    }
+  const onSecondStepBack = () => {
+    setCurrentStep(CurrentStep.FirstStep);
+  };
 
-    const onSecondStepBack = () => {
-        setCurrentStep(CurrentStep.FirstStep);
-    }
+  const onThirdStepFinish = (values: any) => {
+    addPostModel.location = values;
+    addPostModel.sellerId = userId!;
 
-    const onThirdStepFinish = (values: any) => {
-        addPostModel.location = values;
-        addPostModel.sellerId = userId!;
+    addPost(addPostModel).then((data) => {
+      addImagesToPost({
+        postId: data,
+        imagesId: images,
+      });
+      console.log(data);
 
-        addPost(addPostModel).then(data => {
-            addImagesToPost({
-                postId: data,
-                imagesId: images
-            });
-                console.log(data);
-                
-<<<<<<< HEAD
-        }); 
-        setCurrentStep(CurrentStep.LastStep);           
-=======
-        });            
->>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
-    }
+      setCurrentStep(CurrentStep.LastStep);
+    });
+  };
 
-    const onThirdStepBack = () => {
-        setCurrentStep(CurrentStep.SecondStep);
-    }
+  const onThirdStepBack = () => {
+    setCurrentStep(CurrentStep.SecondStep);
+  };
 
-<<<<<<< HEAD
-    
-    const onLastStepFinish = (values: number[]) => {
-       
-    }
+  const onLastStepFinish = (values: number[]) => {};
 
-=======
->>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
-    switch (currentStep)
-    {
-        case CurrentStep.FirstStep: 
-            return ( <FirstStep onFinish={onFirstStepFinish}/> );
-        
-        case CurrentStep.SecondStep:
-            return( <SecondStep onFinish={onSecondStepFinish} onBack={onSecondStepBack}/> );
+  switch (currentStep) {
+    case CurrentStep.FirstStep:
+      return <FirstStep onFinish={onFirstStepFinish} />;
 
-        case CurrentStep.ThirdStep:
-            return( <ThirdStep onFinish={onThirdStepFinish} onBack={onThirdStepBack}/>  );
-<<<<<<< HEAD
+    case CurrentStep.SecondStep:
+      return (
+        <SecondStep onFinish={onSecondStepFinish} onBack={onSecondStepBack} />
+      );
 
-        case CurrentStep.LastStep: 
-            return ( <LastStep onFinish={onLastStepFinish}/> );
-=======
->>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
-    }
-}
+    case CurrentStep.ThirdStep:
+      return (
+        <ThirdStep onFinish={onThirdStepFinish} onBack={onThirdStepBack} />
+      );
+    case CurrentStep.LastStep:
+      return <LastStep onFinish={onLastStepFinish} />;
+  }
+};
 
 export default StepsContainer;

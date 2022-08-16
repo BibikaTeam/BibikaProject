@@ -25,25 +25,15 @@ const MainPageCarCard = ({ car }: IMainPageCarCardProps) => {
   console.log("INside: ", car);
   return (
     <div className="main-car-card">
-<<<<<<< HEAD
-      <img src={car.mainImageSrc} alt="Car src" />
-      <div className="info">
-        <h4>{car.title}</h4>
-=======
       {/* <img src={car.mainImageSrc} alt="Car src" /> */}
       <div className="info">
         <h4>{car.car.title}</h4>
->>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
         <span className="price">{car.price}$</span>
         <span className="location">{car.location}</span>
         <div className="tags-line">
           <span>{car.year}</span>
           <span>{car.mileage}km</span>
-<<<<<<< HEAD
-          <span>{car.engine}</span>
-=======
           <span>{car.car.engine.title}</span>
->>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
         </div>
       </div>
     </div>

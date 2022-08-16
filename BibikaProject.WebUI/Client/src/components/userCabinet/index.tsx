@@ -1,12 +1,7 @@
 import CarPreview from "./common/carPreview";
 import { IProfileCarPreview } from "./types";
 
-<<<<<<< HEAD
-const UserProfile = () => {
-=======
 const UserProfile = () => {  
-
->>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
   const testCar: IProfileCarPreview = {
     likes: 293,
     watches: 4100,

@@ -21,13 +21,8 @@ export const getRandomPost = async () => {
     //@ts-ignore;
     post.year = new Date(Date.parse(post.year)).getFullYear();
 
-<<<<<<< HEAD
-    post.mainImageSrc =
-      "https://tesla-cdn.thron.com/delivery/public/image/tesla/8a74d206-66dc-4386-8c7a-88ff32174e7d/bvlatuR/std/4096x2560/Model-S-Main-Hero-Desktop-LHD";
-=======
     // post.mainImageSrc =
     // "https://tesla-cdn.thron.com/delivery/public/image/tesla/8a74d206-66dc-4386-8c7a-88ff32174e7d/bvlatuR/std/4096x2560/Model-S-Main-Hero-Desktop-LHD";
->>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
 
     post.price = 100;
 
@@ -79,13 +74,8 @@ export const shortSearch = async (params: IShortSearchRespond) => {
       //@ts-ignore;
       post.year = new Date(Date.parse(post.year)).getFullYear();
 
-<<<<<<< HEAD
-      post.mainImageSrc =
-        "https://tesla-cdn.thron.com/delivery/public/image/tesla/8a74d206-66dc-4386-8c7a-88ff32174e7d/bvlatuR/std/4096x2560/Model-S-Main-Hero-Desktop-LHD";
-=======
       // post.mainImageSrc =
       // "https://tesla-cdn.thron.com/delivery/public/image/tesla/8a74d206-66dc-4386-8c7a-88ff32174e7d/bvlatuR/std/4096x2560/Model-S-Main-Hero-Desktop-LHD";
->>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
 
       post.description =
         "TEST DESCRIPTION | TEST DESCRIPTION | TEST DESCRIPTION | TEST DESCRIPTION | TEST DESCRIPTION | TEST DESCRIPTION | TEST DESCRIPTION | TEST DESCRIPTION | TEST DESCRIPTION | TEST DESCRIPTION | TEST DESCRIPTION | TEST DESCRIPTION | TEST DESCRIPTION | TEST DESCRIPTION | TEST DESCRIPTION | TEST DESCRIPTION | ";
