@@ -231,5 +231,10 @@ namespace BibikaProject.WebUI
         {
             services.AddTransient<IUserService, UserService>();
         }
+
+        public static void ConfigureAdvertismentService(this IServiceCollection services)
+        {
+            services.AddTransient<IAdvertismentService, AdvertismentService>();
+        }
     }
 }
