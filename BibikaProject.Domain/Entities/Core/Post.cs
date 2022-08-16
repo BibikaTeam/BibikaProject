@@ -55,7 +55,7 @@ namespace BibikaProject.Domain.Entities.Core
 
         public int DailyViews { get; set; }
 
-        public int Balance { get; set; }
+        public float Balance { get; set; }
 
         public int BannerShowsLeft { get; set; }
 
