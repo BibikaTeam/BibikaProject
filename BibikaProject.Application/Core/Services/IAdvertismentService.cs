@@ -8,9 +8,7 @@ namespace BibikaProject.Application.Core.Services
     {
         Task<PostDTO> GetRandomBannerPost();
 
-        Task<PostDTO> GetRandomTrendPost();
-
-        Task<List<PostDTO>> GetRandomTrendPosts(); // returns 3 random trend posts
+        Task<PostDTO> GetRandomTrendPost();     
 
         Task EnableBannerAdvForPost(int postId, int addViews);
 

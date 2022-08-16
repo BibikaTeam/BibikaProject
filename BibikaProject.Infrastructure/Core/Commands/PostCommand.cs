@@ -1,6 +1,7 @@
 ﻿using BibikaProject.Application.Core.Commands;
 using BibikaProject.Domain.Entities.Core;
 using BibikaProject.Domain.Entities.Identity;
+using BibikaProject.Infrastructure.Core.Errors;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -65,6 +66,118 @@ namespace BibikaProject.Infrastructure.Core.Commands
             entity.CreatedAt = DateTime.UtcNow;
 
             return base.AddAsync(entity);   
+        }
+
+        public async Task AddBannerViews(int postId, int amount)
+        {
+            var post = await context.Posts.FindAsync(postId);
+
+            if (post == null)
+            {
+                throw new NotFoundException("There is no post with this id");
+            }
+
+            post.BannerShowsLeft += amount;
+        }
+
+        public async Task AddTrendViews(int postId, int amount)
+        {
+            var post = await context.Posts.FindAsync(postId);
+
+            if (post == null)
+            {
+                throw new NotFoundException("There is no post with this id");
+            }
+
+            post.TrendShowsLeft += amount;
+        }
+
+        public async Task AddMoneyToBalance(int postId, float amount)
+        {
+            var post = await context.Posts.FindAsync(postId);
+
+            if (post == null)
+            {
+                throw new NotFoundException("There is no post with this id");
+            }
+
+            post.Balance += amount;
+        }
+
+        public async Task EnableBannerAdvForPost(int postId, int addViews)
+        {
+            var post = await context.Posts.FindAsync(postId);
+
+            if (post == null)
+            {
+                throw new NotFoundException("There is no post with this id");
+            }
+
+            post.BannerShowsLeft += addViews;
+
+            post.IsBanner = true;
+        }
+
+        public async Task DisableBannerAdvForPost(int postId)
+        {
+            var post = await context.Posts.FindAsync(postId);
+
+            if (post == null)
+            {
+                throw new NotFoundException("There is no post with this id");
+            }
+
+            post.IsBanner = false;
+        }
+
+        public async Task EnableTrendAdvForPost(int postId, int addViews)
+        {
+            var post = await context.Posts.FindAsync(postId);
+
+            if (post == null)
+            {
+                throw new NotFoundException("There is no post with this id");
+            }
+
+            post.TrendShowsLeft += addViews;
+
+            post.IsTrend = true;
+        }
+
+        public async Task DisableTrendAdvForPost(int postId)
+        {
+            var post = await context.Posts.FindAsync(postId);
+
+            if (post == null)
+            {
+                throw new NotFoundException("There is no post with this id");
+            }
+
+            post.IsTrend = false;
+        }
+
+        public async Task DecrementBannerViews(int postId)
+        {
+            var post = await context.Posts.FindAsync(postId);
+
+            if (post == null)
+            {
+                throw new NotFoundException("There is no post with this id");
+            }
+
+            post.BannerShowsLeft--;
+        }
+
+        public async Task DecrementTrendViews(int postId)
+        {
+            var post = await context.Posts.FindAsync(postId);
+
+            if (post == null)
+            {
+                throw new NotFoundException("There is no post with this id");
+            }
+
+            post.TrendShowsLeft--;
         }
     }
 }
