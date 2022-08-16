@@ -21,6 +21,9 @@ import HomePage from "./components/home";
 import DefaultLayout from "./components/containers/defaultLayout";
 import SearchResult from "./components/posts/result/searchResult";
 import SettingsProfile from "./components/userCabinet/settings";
+import MyPosts from "./components/userCabinet/myPosts";
+import Message from "./components/userCabinet/message";
+import SavedPosts from "./components/userCabinet/savedPosts";
 
 function App() {
   return (
@@ -31,8 +34,12 @@ function App() {
           <Route path="/post/add" element={<AddPostPage />} />
           <Route path="/post/search-result" element={<SearchResult />} />
           <Route element={<AuthorizedBasedRoute />}>
-            <Route path="/user-profile" element={<UserProfile />}></Route>
-            <Route path="/user-profile/settings" element={<SettingsProfile />}></Route>
+            <Route path="/user-profile" element={<UserProfile/>}>
+              <Route path="/user-profile/my-posts" element={<MyPosts/>}></Route>
+              <Route path="/user-profile/message" element={<Message/>}></Route>
+              <Route path="/user-profile/saved-posts" element={<SavedPosts/>}></Route>
+              <Route path="/user-profile/settings" element={<SettingsProfile />}/>
+            </Route>
           </Route>
         </Route>
 

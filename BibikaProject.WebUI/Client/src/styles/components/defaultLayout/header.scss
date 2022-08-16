@@ -6,11 +6,11 @@
     justify-content: space-between;
     border-bottom: 0.2px solid rgba($color: #000000, $alpha: 0.18);
 
-    svg{
+    svg {
         display: inline-block;
     }
 
-    ul{
+    ul {
         list-style-type: none;
         display: inline-block;
         margin-bottom: 0;
@@ -26,24 +26,26 @@
         line-height: 27px;
         margin-right: 67px;
     }
-    .add-car-button{
-        box-sizing: border-box;
-         color: $primary-2;
-         border: 2px solid $primary-2;
-         padding: 15px 66px;
-         font-size: 20px;
-         font-weight: 600;
-         line-height: 27px;
-         border-radius: 5px;
-         margin-left: 32px;
-         margin-top: -3px;
 
-         &:hover{
+    .add-car-button {
+        box-sizing: border-box;
+        color: $primary-2;
+        border: 2px solid $primary-2;
+        padding: 15px 66px;
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 27px;
+        border-radius: 5px;
+        margin-left: 32px;
+        margin-top: -3px;
+
+        &:hover {
             color: white;
             background-color: $primary-2;
-         }
+        }
     }
-    .right-header-side{
-        display:flex;
+
+    .right-header-side {
+        display: flex;
     }
 }
