@@ -19,7 +19,14 @@ namespace BibikaProject.Domain.Entities.Core
         [Required]
         public string Color { get; set; }
 
+        [Required]
+        public int Mileage { get; set; }
+
+        [Required]
+        public int Price { get; set; }
+
         public int CarId { get; set; }
+
         public string SellerId { get; set; }
 
         [Required]
@@ -28,6 +35,10 @@ namespace BibikaProject.Domain.Entities.Core
         public ICollection<Image> Images { get; set; }
 
         public ICollection<Option> Options { get; set; }
+
+        public ICollection<ApplicationUser> Likes { get; set; }
+
+        public ICollection<ApplicationUser> Views { get; set; }
 
         [Required]
         public Car Car { get; set; }

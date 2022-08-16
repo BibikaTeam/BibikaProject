@@ -1,13 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BibikaProject.Application.Core.Services
 {
     public interface IImageService
     {
-        Task SaveImage(string base64, string userId);
+        Task<int> SaveImage(string base64, string userId);
 
         Task DeleteImage(int id, string userId);
 
-        Task<byte[]> GetImage(int id);
+        Task<string> GetImage(int id);
+
+        Task<List<string>> GetImagesByPost(int postId);
     }
 }

@@ -18,8 +18,22 @@ import * as qs from "qs";
 import { IShortSearchRespond } from "./types";
 
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
 
 const SearchPanel = () => {
+=======
+import {
+  ICurrentCarDetailProps,
+  IDetailSearchProps,
+} from "../posts/search/types";
+import { getMinMaxYearPriceByGeneration } from "../posts/search/serivce";
+
+export interface SearchPanelProps {
+  searchProps: ICurrentCarDetailProps | null;
+}
+
+const SearchPanel = ({ searchProps }: SearchPanelProps) => {
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
   const [brandList, setBrandList] = useState<Array<IBrandModel>>([]);
   const [modelList, setModelList] = useState<Array<IModelModel>>([]);
   const [generationList, setGenerationList] = useState<Array<IGenerationModel>>(
@@ -37,6 +51,38 @@ const SearchPanel = () => {
   const [selectedModel, setSelectedModel] = useState<any>(null);
   const [selectedGeneration, setSelectedGeneration] = useState<any>(null);
 
+<<<<<<< HEAD
+=======
+  const [minYear, setMinYear] = useState<number>(-1);
+  const [maxYear, setMaxYear] = useState<number>(-1);
+  const [yearsList, setYearsList] = useState<Array<number>>([]);
+  const [minPrice, setMinPrice] = useState<number>(-1);
+  const [maxPrice, setMaxPrice] = useState<number>(-1);
+
+  const [carModel, setCarModel] = useState<IDetailSearchProps>({
+    filters: [
+      {
+        brandId: 0,
+        carBodyId: 0,
+        color: "",
+        completeSetId: 0,
+        engineId: 0,
+        gearBoxId: 0,
+        generationId: 0,
+        location: "",
+        modelId: 0,
+        yearMax: 0,
+        yearMin: 0,
+        priceMin: 0,
+        priceMax: 0,
+      },
+    ],
+    countOnPage: 10,
+    page: 1,
+    search: "",
+  });
+
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
   const navigator = useNavigate();
 
   useEffect(() => {
@@ -88,10 +134,38 @@ const SearchPanel = () => {
       setGenerationLoading(false);
     }
   };
+<<<<<<< HEAD
+=======
+  const setMinMaxPriceYears = async (generationId: number) => {
+    try {
+      let data = await getMinMaxYearPriceByGeneration(generationId);
+
+      const minYearNumb = data ? data.minYear : 0;
+      const maxYearNumb = data ? data.maxYear : 0;
+
+      setMinYear(minYearNumb);
+      setMaxYear(maxYearNumb);
+      setMinPrice(data?.minPrice as number);
+      setMaxPrice(data?.maxPrice as number);
+
+      const tmpArr: Array<number> = [];
+      for (let i = minYearNumb; i <= maxYearNumb; i++) {
+        tmpArr.push(i);
+      }
+      setYearsList(tmpArr);
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
+    }
+  };
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
 
   //selects handling
   const handleBrandChange = async (brandId: number) => {
     await setModelsByBrandId(brandId);
+<<<<<<< HEAD
     setSelectedModel(0);
     setSelectedGeneration(null);
     setModelDisable(false);
@@ -106,12 +180,69 @@ const SearchPanel = () => {
   };
   const handleGenerationChange = async (generationId: number) => {
     console.log("generaiton", generationId);
+=======
+    setCarModel({
+      ...carModel,
+      filters: [{ ...carModel.filters[0], brandId: brandId }],
+    });
+    setSelectedModel(0);
+    setSelectedGeneration(null);
+    setModelDisable(false);
+    setDisable(false);
+    setGenerationDisable(true);
+  };
+  const handleModelChange = async (modelId: number) => {
+    setCarModel({
+      ...carModel,
+      filters: [{ ...carModel.filters[0], modelId: modelId }],
+    });
+    setSelectedModel(modelId);
+    await setGenerationsByModelId(modelId);
+    setGenerationDisable(false);
+    setSelectedGeneration(null);
+  };
+  const handleGenerationChange = async (generationId: number) => {
+    setMinMaxPriceYears(generationId);
+    setCarModel({
+      ...carModel,
+      filters: [{ ...carModel.filters[0], generationId: generationId }],
+    });
+  };
+  const handleMinPriceChange = async (event: any) => {
+    setCarModel({
+      ...carModel,
+      filters: [{ ...carModel.filters[0], priceMin: event.target.value }],
+    });
+  };
+  const handleMaxPriceChange = async (event: any) => {
+    setCarModel({
+      ...carModel,
+      filters: [{ ...carModel.filters[0], priceMax: event.target.value }],
+    });
+  };
+  const handleMinYearChange = async (yearMin: number) => {
+    setCarModel({
+      ...carModel,
+      filters: [{ ...carModel.filters[0], yearMin: yearMin }],
+    });
+  };
+  const handleMaxYearChange = async (yearMax: number) => {
+    setCarModel({
+      ...carModel,
+      filters: [{ ...carModel.filters[0], yearMax: yearMax }],
+    });
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
   };
 
   const handleRadioChange = () => {};
 
   const handleSearch = async (values: IShortSearchRespond) => {
+<<<<<<< HEAD
     const searchString = qs.stringify(values);
+=======
+    console.log(carModel);
+    const searchString = qs.stringify(carModel.filters[0]);
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
     navigator(`/post/search-result?${searchString}`);
   };
 
@@ -135,7 +266,11 @@ const SearchPanel = () => {
                 <Select
                   className="search-input"
                   onChange={handleBrandChange}
+<<<<<<< HEAD
                   placeholder="Brand"
+=======
+                  placeholder={"Brand"}
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
                   loading={brandLoading}
                 >
                   {brandList.map((brand: IBrandModel) => {
@@ -194,16 +329,30 @@ const SearchPanel = () => {
             <div className="from-to-container">
               <span>Price</span>
               <Form.Item name="priceFrom">
+<<<<<<< HEAD
                 <Input placeholder="From" />
               </Form.Item>
               <Form.Item name="priceTo">
                 <Input placeholder="To" />
+=======
+                <Input
+                  placeholder={minPrice === -1 ? "From" : minPrice.toString()}
+                  onChange={handleMinPriceChange}
+                />
+              </Form.Item>
+              <Form.Item name="priceTo">
+                <Input
+                  placeholder={maxPrice === -1 ? "To" : maxPrice.toString()}
+                  onChange={handleMaxPriceChange}
+                />
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
               </Form.Item>
               <span>$</span>
             </div>
             <div className="from-to-container">
               <span>Year</span>
               <Form.Item name="yearFrom">
+<<<<<<< HEAD
                 <Select className="from-to-select" placeholder="From">
                   {" "}
                 </Select>
@@ -211,6 +360,27 @@ const SearchPanel = () => {
               <Form.Item name="yearTo">
                 <Select className="from-to-select" placeholder="To">
                   {" "}
+=======
+                <Select
+                  className="from-to-select"
+                  placeholder={minYear === -1 ? "From" : minYear.toString()}
+                  onChange={handleMinYearChange}
+                >
+                  {yearsList.map((year: number) => {
+                    return <Select.Option key={year}>{year}</Select.Option>;
+                  })}
+                </Select>
+              </Form.Item>
+              <Form.Item name="yearTo">
+                <Select
+                  className="from-to-select"
+                  placeholder={maxYear === -1 ? "To" : maxYear.toString()}
+                  onChange={handleMaxYearChange}
+                >
+                  {yearsList.map((year: number) => {
+                    return <Select.Option key={year}>{year}</Select.Option>;
+                  })}
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
                 </Select>
               </Form.Item>
             </div>
@@ -242,6 +412,7 @@ const SearchPanel = () => {
             </Button>
           </div>
           <div className="fourth-line">
+<<<<<<< HEAD
             <Link to="#">More options</Link>
           </div>
 
@@ -274,10 +445,21 @@ const SearchPanel = () => {
         </div>
         <div className="fourth-line">
           <Link to="#">More options</Link>
+=======
+            <Link to="/post/detail-search">More options</Link>
+          </div>
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
         </div>
       </div>
     </Form>
   );
 };
 
+<<<<<<< HEAD
+=======
+SearchPanel.defaultProps = {
+  searchProps: null,
+};
+
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
 export default SearchPanel;

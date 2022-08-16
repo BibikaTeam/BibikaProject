@@ -99,7 +99,11 @@ export const addBrand = async (data: IBrandModel) => {
 
 export const deleteBrand = async (data: number) => {
   try {
+<<<<<<< HEAD
     const response = await http.delete(`api/brand/delete/${465465}`);
+=======
+    const response = await http.delete(`api/brand/delete/${data}`);
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.request.status == 0 || error.request.status == 500) {

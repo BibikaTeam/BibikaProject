@@ -7,7 +7,10 @@ import { AddPostModel, CurrentStep } from "../types";
 import FirstStep from "./FirstStep";
 import SecondStep from "./SecondStep";
 import ThirdStep from "./ThirdStep";
+<<<<<<< HEAD
 import LastStep from "./LastStep";
+=======
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
 
 let addPostModel: AddPostModel = {
     carId: 0,
@@ -17,7 +20,11 @@ let addPostModel: AddPostModel = {
     mileage: 10,
     year: "",
     sellerId: "",
+<<<<<<< HEAD
     price:0
+=======
+    price: 10000
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
 }
 
 let images: number[] = [];
@@ -68,19 +75,26 @@ const StepsContainer: FC = () => {
             });
                 console.log(data);
                 
+<<<<<<< HEAD
         }); 
         setCurrentStep(CurrentStep.LastStep);           
+=======
+        });            
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
     }
 
     const onThirdStepBack = () => {
         setCurrentStep(CurrentStep.SecondStep);
     }
 
+<<<<<<< HEAD
     
     const onLastStepFinish = (values: number[]) => {
        
     }
 
+=======
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
     switch (currentStep)
     {
         case CurrentStep.FirstStep: 
@@ -91,9 +105,12 @@ const StepsContainer: FC = () => {
 
         case CurrentStep.ThirdStep:
             return( <ThirdStep onFinish={onThirdStepFinish} onBack={onThirdStepBack}/>  );
+<<<<<<< HEAD
 
         case CurrentStep.LastStep: 
             return ( <LastStep onFinish={onLastStepFinish}/> );
+=======
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
     }
 }
 

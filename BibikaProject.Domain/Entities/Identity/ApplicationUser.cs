@@ -7,5 +7,9 @@ namespace BibikaProject.Domain.Entities.Identity
     public class ApplicationUser : IdentityUser
     {
         public ICollection<Post> Posts { get; set; }
+
+        public ICollection<Post> LikedPosts { get; set; }
+
+        public ICollection<Post> ViewedPosts { get; set; }
     }
 }

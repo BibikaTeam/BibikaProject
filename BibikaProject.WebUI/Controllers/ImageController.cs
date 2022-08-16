@@ -22,9 +22,9 @@ namespace BibikaProject.WebUI.Controllers
         [Authorize]
         public async Task<IActionResult> AddImage([FromBody] string base64)
         {
-            await imageService.SaveImage(base64, HttpContext.User.Claims.First(x => x.Type == UserJWTClaimTypes.Id).Value);
+            var result = await imageService.SaveImage(base64, HttpContext.User.Claims.First(x => x.Type == UserJWTClaimTypes.Id).Value);
 
-            return Ok(); 
+            return Ok(result); 
         }
 
         [HttpDelete("delete/{id}")]
@@ -41,7 +41,15 @@ namespace BibikaProject.WebUI.Controllers
         {
             var result = await imageService.GetImage(id);
 
-            return File(result, "image/png");
+            return Ok(result);
+        }
+
+        [HttpGet("get/by-post/{postId}")]
+        public async Task<IActionResult> GetImagesByPost(int postId)
+        {
+            var result = await imageService.GetImagesByPost(postId);
+
+            return Ok(result);
         }
     }
 }

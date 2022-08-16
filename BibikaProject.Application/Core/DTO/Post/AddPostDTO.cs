@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using System;
-using System.Collections.Generic;
 
 namespace BibikaProject.Application.Core.DTO.Post
 {
@@ -12,11 +11,15 @@ namespace BibikaProject.Application.Core.DTO.Post
 
         public string Location { get; set; }
 
+        public int Mileage { get; set; }
+
         public string Color { get; set; }
 
         public string SellerId { get; set; }
 
         public int CarId { get; set; }
+
+        public int Price { get; set; }
     }
 
     public class AddPostDTOValidator : AbstractValidator<AddPostDTO>
@@ -26,8 +29,10 @@ namespace BibikaProject.Application.Core.DTO.Post
             RuleFor(x => x.Description).NotEmpty();
             RuleFor(x => x.Location).NotEmpty();
             RuleFor(x => x.Color).NotEmpty();
+            RuleFor(x => x.Mileage).NotNull();
             RuleFor(x => x.Year).NotNull();
             RuleFor(x => x.SellerId).NotEmpty();
+            RuleFor(x => x.Price).NotEmpty();
             RuleFor(x => x.CarId).NotNull().GreaterThanOrEqualTo(1);
         }
     }

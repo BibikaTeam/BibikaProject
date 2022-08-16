@@ -51,7 +51,7 @@ const EnginePage = () => {
     capacity: "",
     fuel: "",
     id: 0,
-    kWPower: 0,
+    kwPower: 0,
     title: "",
   };
   const [editableValue, setEditableValue] =

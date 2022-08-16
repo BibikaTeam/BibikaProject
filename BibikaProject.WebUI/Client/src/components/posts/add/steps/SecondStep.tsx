@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { Button, Checkbox, DatePicker, Form, Select } from "antd";
+=======
+import { Button, DatePicker, Select } from "antd";
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
 // import TextArea from "antd/lib/input/TextArea";
 import { Input } from "antd";
 import { RadioChangeEvent } from "antd/lib/radio";
@@ -25,8 +29,11 @@ import {
 } from "../service";
 import { IGearBoxModel } from "../types";
 import { getCompleteSetsByGeneration } from "../../../adminPanel/completeSet/service";
+<<<<<<< HEAD
 import { TwitterPicker } from "react-color";
 
+=======
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
 const { TextArea } = Input;
 
 interface SecondStepProps {
@@ -52,12 +59,17 @@ const SecondStep: FC<SecondStepProps> = (props) => {
   const [carBodiesList, setCarBodiesList] = useState<ICarBodyModel[]>([]);
   const [selectedCarBody, setSelectedCarBody] = useState<number>(0);
 
+<<<<<<< HEAD
   const [selectedColor, setSelectedColor] = useState<string>("");
 
   const [description, setDescription] = useState<string>("");
 
   const [price, setPrice] = useState<number>(0);
 
+=======
+  const [description, setDescription] = useState<string>("");
+
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
   const [gearBoxesList, setGearBoxesList] = useState<IGearBoxModel[]>([]);
   const [selectedGearBox, setSelectedGearBox] = useState<number>(0);
 
@@ -66,8 +78,11 @@ const SecondStep: FC<SecondStepProps> = (props) => {
   >([]);
   const [selectedCompleteSet, setSelectedCompleteSet] = useState<number>(0);
 
+<<<<<<< HEAD
   
  
+=======
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
   useEffect(() => {
     setAllBrands();
   }, []);
@@ -149,7 +164,10 @@ const SecondStep: FC<SecondStepProps> = (props) => {
       });
     }
   };
+<<<<<<< HEAD
   
+=======
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
 
   const setCarBodiesByGenerationId = async (generationId: number) => {
     try {
@@ -212,6 +230,7 @@ const SecondStep: FC<SecondStepProps> = (props) => {
     setDescription(value.target.value);
   };
 
+<<<<<<< HEAD
   const handlePriceChange = (value: any) => {
     setPrice(value.target.value);
   };
@@ -223,6 +242,8 @@ const SecondStep: FC<SecondStepProps> = (props) => {
     
   };
   
+=======
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
   const ifModelSelected = () => {
     if (selectedModel == 0) {
       return "visibility-hidden";
@@ -249,7 +270,10 @@ const SecondStep: FC<SecondStepProps> = (props) => {
       return "steps-selects-container";
     }
   };
+<<<<<<< HEAD
   
+=======
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
 
   return (
     <div className="steps-container">
@@ -283,7 +307,11 @@ const SecondStep: FC<SecondStepProps> = (props) => {
                 });
               }}
             >
+<<<<<<< HEAD
               Next
+=======
+              Done
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
             </Button>
           </div>
         </div>
@@ -332,6 +360,7 @@ const SecondStep: FC<SecondStepProps> = (props) => {
             </Select>
           </div>
         </div>
+<<<<<<< HEAD
 
         <div className="steps-radio-container">
           <RadioGroup
@@ -342,6 +371,8 @@ const SecondStep: FC<SecondStepProps> = (props) => {
           />
         </div>
 
+=======
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
         <div className={ifEngineSelected(2)}>
           <div className="steps-select-container">
             Gearbox
@@ -352,6 +383,7 @@ const SecondStep: FC<SecondStepProps> = (props) => {
             </Select>
           </div>
           <div className="steps-select-container">
+<<<<<<< HEAD
             Technical condition
             <Select></Select>
           </div>
@@ -362,15 +394,22 @@ const SecondStep: FC<SecondStepProps> = (props) => {
         </div>
 
         {/*   <div className="steps-select-container">
+=======
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
             Car Body
             <Select className="steps-select" onChange={handleCarBodyChange}>
               {carBodiesList.map((carBody: ICarBodyModel) => (
                 <Select.Option key={carBody.id}>{carBody.title}</Select.Option>
               ))}
             </Select>
+<<<<<<< HEAD
           </div> */}
 
         {/*  <div className="steps-select-container">
+=======
+          </div>
+          <div className="steps-select-container">
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
             Complete Set
             <Select className="steps-select" onChange={handleCompleteSetChange}>
               {comepleteSetsList.map((completeSet: ICompleteSetModel) => (
@@ -380,6 +419,7 @@ const SecondStep: FC<SecondStepProps> = (props) => {
               ))}
             </Select>
           </div>
+<<<<<<< HEAD
         </div> */}
         <div className={ifEngineSelected(2)}>
           <div className="steps-radio-container">
@@ -421,6 +461,9 @@ const SecondStep: FC<SecondStepProps> = (props) => {
         </div>
         </div>
 
+=======
+        </div>
+>>>>>>> 1fbc4b9f71b5c86ccee32149bd08d1c777567a5a
         <div className={ifEngineSelected(1)}>
           <span className="steps-secondstep-description-title">
             Car description

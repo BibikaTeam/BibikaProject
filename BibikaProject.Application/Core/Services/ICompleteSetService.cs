@@ -13,5 +13,12 @@ namespace BibikaProject.Application.Core.Services
         Task DeleteCompleteSetAsync(int id);
 
         Task<List<CompleteSetDTO>> GetAllCompleteSets();
+
+        Task<List<CompleteSetDTO>> GetCompletSetsByGenerationAsync(int generationId);
+
+        Task<List<CompleteSetDTO>> GetCompletSetsByModelAsync(int modelId);
+
+        Task<List<CompleteSetDTO>> GetCompletSetsByBrandAsync(int brandId);
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using BibikaProject.Application.Core.Commands;
 using BibikaProject.Domain.Entities.Core;
+using BibikaProject.Domain.Entities.Identity;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -28,6 +29,34 @@ namespace BibikaProject.Infrastructure.Core.Commands
             }
 
             optionsId.ForEach(optionId => post.Options.Add(context.Options.Find(optionId)));
+        }
+
+        public async Task LikePost(string userId, int postId)
+        {
+            var post = await context.Posts.FindAsync(postId);
+
+            var user = await context.Users.FindAsync(userId);
+
+            if (post.Likes == null)
+            {
+                post.Likes = new List<ApplicationUser>();
+            }
+
+            post.Likes.Add(user);
+        }
+
+        public async Task ViewPost(string userId, int postId)
+        {
+            var post = await context.Posts.FindAsync(postId);
+
+            var user = await context.Users.FindAsync(userId);
+
+            if (post.Views == null)
+            {
+                post.Views = new List<ApplicationUser>();
+            }
+
+            post.Views.Add(user);
         }
     }
 }

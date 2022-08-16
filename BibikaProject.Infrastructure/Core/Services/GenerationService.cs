@@ -54,7 +54,7 @@ namespace BibikaProject.Infrastructure.Core.Services
 
             if (pagedGenerationsRequest.ModelId != 0)
             {
-                generations = generations.Where(x => x.ModelId == pagedGenerationsRequest.BrandId);
+                generations = generations.Where(x => x.ModelId == pagedGenerationsRequest.ModelId);
             }
 
             if (pagedGenerationsRequest.BrandId != 0)

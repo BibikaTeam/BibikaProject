@@ -49,5 +49,14 @@ namespace BibikaProject.Infrastructure.Core.Services
 
             await command.SaveChangesAsync();
         }
+
+        public async Task<List<CarBodyDTO>> GetCarBodiesByGenerationId(int id)
+        {
+            IQueryable<CarBody> carBodies = query.GetAll().Include(x => x.Cars);
+
+            carBodies = carBodies.Where(x => x.Cars.Any(x => x.GenerationId == id));
+
+            return await carBodies.Select(x => mapper.Map<CarBodyDTO>(x)).ToListAsync();
+        }
     }
 }
