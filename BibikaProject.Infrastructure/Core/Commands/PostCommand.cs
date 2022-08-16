@@ -1,6 +1,7 @@
 ﻿using BibikaProject.Application.Core.Commands;
 using BibikaProject.Domain.Entities.Core;
 using BibikaProject.Domain.Entities.Identity;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -57,6 +58,13 @@ namespace BibikaProject.Infrastructure.Core.Commands
             }
 
             post.Views.Add(user);
+        }
+
+        public override Task<Post> AddAsync(Post entity)
+        {
+            entity.CreatedAt = DateTime.UtcNow;
+
+            return base.AddAsync(entity);   
         }
     }
 }

@@ -29,6 +29,8 @@ namespace BibikaProject.Domain.Entities.Core
 
         public string SellerId { get; set; }
 
+        public DateTime CreatedAt { get; set; }
+
         [Required]
         public ApplicationUser Seller { get; set; }
 
@@ -39,6 +41,7 @@ namespace BibikaProject.Domain.Entities.Core
         public ICollection<ApplicationUser> Likes { get; set; }
 
         public ICollection<ApplicationUser> Views { get; set; }
+
 
         [Required]
         public Car Car { get; set; }
