@@ -85,7 +85,8 @@ namespace BibikaProject.WebUI
             services.ConfigureCompleteSetService();
             services.ConfigureCarBodyService();
             services.ConfigureUserService();
-            services.ConfigureCarBodyService();         
+            services.ConfigureCarBodyService();
+            services.ConfigureAdvertismentService();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
