@@ -31,8 +31,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<DefaultLayout />}>
-          <Route index element={<HomePage />} />
-          <Route path="/post/add" element={<AddPostPage />} />
+          <Route index element={<HomePage />} />     
           <Route path="/post/detail-search" element={<DetailSearch />} />
           <Route path="/post/search-result" element={<SearchResult />} />
           <Route path="/post/:id" element={<PostPage />}/>
@@ -40,6 +39,8 @@ function App() {
             <Route path="/user-profile" element={<UserProfile />}></Route>
           </Route>
         </Route>
+
+        <Route path="/post/add" element={<AddPostPage />} />
 
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
