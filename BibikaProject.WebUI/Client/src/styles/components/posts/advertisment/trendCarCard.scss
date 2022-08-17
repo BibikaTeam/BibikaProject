@@ -83,3 +83,22 @@
     }
 
 }
+.trend-block{
+    background-color: rgba($color: #E06738, $alpha: 0.1);
+        padding: 20px 154px;
+        padding-bottom: 40px;
+        // margin-top: 30px;
+        margin-bottom: 30px;
+        h2{
+            color: #414141;
+            font-size: 48px;
+            font-weight: 600;
+            line-height: 65px;
+        }
+    
+        .cars-cards{
+            display: flex;
+            justify-content: space-between;
+            
+        }
+}
