@@ -1,0 +1,85 @@
+.trend-car-card{
+    width: 500px;
+    background-color: white;
+    border-radius: 10px;
+    margin-right: 0 !important;
+    img{
+        width: 100%;
+        // max-height: 350px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+    .info-block{
+        padding: 0 20px;
+        .trend-title{
+            font-size: 48px;
+            font-weight: 700;
+            color: #414141; 
+            display: block;
+            margin-top: 10px;
+            margin-bottom: 14px;
+            line-height: 50px;
+        }
+        .trend-location{
+            font-size: 24px;
+            color: rgba($color: #414141, $alpha: 0.5);
+            line-height: 20px;
+        }
+        .trend-tags-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            margin-bottom: 25px;
+            .trend-tag{
+                 font-size: 24px;
+                 color: #219CE1;
+                 padding: 4px 25px;
+                 background-color: rgba($color: #219CE1, $alpha: 0.2);
+                 border-radius: 10px;
+            }
+        }
+    }
+    hr{
+        margin: 0;
+    }
+    .action-block{
+        padding: 13px 20px 23px 20px;
+
+        .price-container{
+            .trend-price{
+                font-size: 40px;
+                font-weight: 600;
+                color: #219CE1;
+                line-height: 40px;
+            }
+        }
+        .buttons-container{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 14px;
+            margin-bottom: 0;
+
+            .write-btn{
+                width: auto;
+                font-size: 32px;
+                color: white;
+                background-color: rgba($color: #E06738, $alpha: 0.6);
+                padding: 7px 59px;
+                border-radius: 10px;
+                border: none;
+                cursor: pointer;
+            }
+            .call-btn{
+                background-color: rgba($color: #E06738, $alpha: 0.2);
+                border-radius: 10px;
+                border: none;
+                cursor: pointer;
+                padding: 13px 35px;
+            }
+        }
+
+    }
+
+}

@@ -1,5 +1,5 @@
-
 import { useEffect, useState } from "react";
+import { getRandomTrendPost } from "../posts/advertisment/service";
 import MainPageCarCard from "./carCard";
 import { getRandomPost } from "./service";
 import { IBannerCar } from "./types";
@@ -25,7 +25,7 @@ const PopularBlock = () => {
       let post: IBannerCar | null | undefined = null;
       const tmpArr: Array<IBannerCar> = [];
       for (let i = 0; i <= 2; i++) {
-        post = await getRandomPost();
+        post = await getRandomTrendPost();
         tmpArr.push(post as IBannerCar);
       }
       setPostArray(tmpArr);
@@ -33,7 +33,7 @@ const PopularBlock = () => {
   }, []);
 
   console.log("postArr: ", postArray);
-  
+
   return (
     <div className="popular-block">
       <h2>Popular</h2>
