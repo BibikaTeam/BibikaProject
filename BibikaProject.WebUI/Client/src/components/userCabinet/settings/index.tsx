@@ -1,21 +1,24 @@
 import { Button, Collapse, Input, Form } from "antd";
+import { userInfo } from "os";
 import { Link } from "react-router-dom";
 import { logoutUser } from "../../authorization/login/actions";
+import { IContact, IEmail, IPassword } from "../types";
+import { saveContact, saveEmail, savePassword } from "./service";
 
 const { Panel } = Collapse;
 
 const SettingsProfile = () => {
 
-    const handleSaveContac = () => {
-
+    const handleSaveContac = (value: IContact) => {
+        saveContact(value);
     }
 
-    const handleSavePassword = () => {
-
+    const handleSavePassword = (value: IPassword) => {
+        savePassword(value);
     }
 
-    const handleSaveEmail = () => {
-
+    const handleSaveEmail = (value: IEmail) => {
+        saveEmail(value);
     }
 
     const handleLogout = () => {
@@ -32,17 +35,16 @@ const SettingsProfile = () => {
                             <Form>
                                 <div className="settings-input-container">
                                     Name
-                                    <Input className="settings-input"/>
+                                    <Input className="settings-input" />
                                 </div>
                                 <div className="settings-input-container">
                                     Locality
                                     <Input className="settings-input" />
                                 </div>
+                                <div className="settings-button-container">
+                                    <Button className="settings-button">Save</Button>
+                                </div>
                             </Form>
-
-                            <div className="settings-button-container">
-                                <Button className="settings-button">Save</Button>
-                            </div>
                         </Panel>
                     </Collapse>
                 </div>
