@@ -7,3 +7,18 @@ export interface IProfileCarPreview {
   watches: number;
   messages: number;
 }
+
+export interface IContact {
+  name: string;
+}
+
+export interface IPassword {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+export interface IEmail {
+  newEmail: string;
+  password: string;
+}

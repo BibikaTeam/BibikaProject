@@ -1,5 +1,5 @@
 .settings {
-    color: #F5F5F5;
+    background-color: $accent-light;
 
     .settings-container {
         padding: 20px 145px;
@@ -57,6 +57,24 @@
         border-radius: 6px;
     }
 
+    .settings-button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        
+    }
+
+    .settings-button {
+        font-family: 'Manrope';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 24px;
+        background-color: #219CE1;
+        color: white;
+        height: 50px;
+        border-radius: 6px;
+        width: 100%;
+    }
 
     .delete-button {
         width: 228px;
