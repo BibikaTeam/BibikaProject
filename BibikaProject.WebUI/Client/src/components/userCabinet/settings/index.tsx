@@ -9,17 +9,36 @@ const { Panel } = Collapse;
 
 const SettingsProfile = () => {
 
-    const handleSaveContac = (value: IContact) => {
-        saveContact(value);
+    const changeInputName = () => {
+
+    }
+    const changeInputOldPassword = () => {
+
+    }
+    const changeInputNewPassword = () => {
+
+    }
+    const changeInputConfirmPassword = () => {
+
+    }
+    const changeInputNewEmail = () => {
+
+    }
+    const changeInputEmailPasssword = () => {
+
     }
 
-    const handleSavePassword = (value: IPassword) => {
-        savePassword(value);
-    }
+    // const handleSaveContac = (value: IContact) => {
+    //     saveContact(value);
+    // }
 
-    const handleSaveEmail = (value: IEmail) => {
-        saveEmail(value);
-    }
+    // const handleSavePassword = (value: IPassword) => {
+    //     savePassword(value);
+    // }
+
+    // const handleSaveEmail = (value: IEmail) => {
+    //     saveEmail(value);
+    // }
 
     const handleLogout = () => {
         logoutUser();
@@ -32,19 +51,17 @@ const SettingsProfile = () => {
                 <div className="settings-dropdown">
                     <Collapse expandIconPosition={"end"} className="settings-menu" bordered={false}>
                         <Panel header="Contact" key="1" className="settings-submenu-container">
-                            <Form>
-                                <div className="settings-input-container">
-                                    Name
-                                    <Input className="settings-input" />
-                                </div>
-                                <div className="settings-input-container">
-                                    Locality
-                                    <Input className="settings-input" />
-                                </div>
-                                <div className="settings-button-container">
-                                    <Button className="settings-button">Save</Button>
-                                </div>
-                            </Form>
+                            <div className="settings-input-container">
+                                Name
+                                <Input onChange={changeInputName} className="settings-input" />
+                            </div>
+                            {/* <div className="settings-input-container">
+                                Locality
+                                <Input className="settings-input" />
+                            </div> */}
+                            <div className="settings-button-container">
+                                <Button className="settings-button">Save</Button>
+                            </div>
                         </Panel>
                     </Collapse>
                 </div>
@@ -52,21 +69,18 @@ const SettingsProfile = () => {
                 <div className="settings-dropdown">
                     <Collapse expandIconPosition={"end"} className="settings-menu" bordered={false}>
                         <Panel header="Password" key="1" className="settings-submenu-container">
-                            <Form>
-                                <div className="settings-input-container">
-                                    Old password
-                                    <Input.Password className="settings-input" />
-                                </div>
-                                <div className="settings-input-container">
-                                    New password
-                                    <Input.Password className="settings-input" />
-                                </div>
-                                <div className="settings-input-container">
-                                    Confirm password
-                                    <Input.Password className="settings-input" />
-                                </div>
-                            </Form>
-
+                            <div className="settings-input-container">
+                                Old password
+                                <Input.Password className="settings-input" onChange={changeInputOldPassword}/>
+                            </div>
+                            <div className="settings-input-container">
+                                New password
+                                <Input.Password className="settings-input" onChange={changeInputNewPassword}/>
+                            </div>
+                            <div className="settings-input-container">
+                                Confirm password
+                                <Input.Password className="settings-input" onChange={changeInputConfirmPassword}/>
+                            </div>
                             <div className="settings-button-container">
                                 <Button className="settings-button">Save</Button>
                             </div>
@@ -77,20 +91,17 @@ const SettingsProfile = () => {
                 <div className="settings-dropdown">
                     <Collapse expandIconPosition={"end"} className="settings-menu" bordered={false}>
                         <Panel header="Email address" key="1" className="settings-submenu-container">
-                            <Form>
-                                <div className="settings-input-container">
-                                    New email address
-                                    <Input className="settings-input" />
-                                </div>
-                                <div className="settings-input-container">
-                                    Password
-                                    <Input className="settings-input" />
-                                </div>
-                                <div className="settings-button-container">
-                                    <Button className="settings-button">Save</Button>
-                                </div>
-                            </Form>
-
+                            <div className="settings-input-container">
+                                New email address
+                                <Input className="settings-input" onChange={changeInputNewEmail}/>
+                            </div>
+                            <div className="settings-input-container">
+                                Password
+                                <Input className="settings-input" onChange={changeInputEmailPasssword}/>
+                            </div>
+                            <div className="settings-button-container">
+                                <Button className="settings-button">Save</Button>
+                            </div>
                         </Panel>
                     </Collapse>
                 </div>

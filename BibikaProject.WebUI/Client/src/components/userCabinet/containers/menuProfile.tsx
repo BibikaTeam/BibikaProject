@@ -9,7 +9,6 @@ const MenuProfile = () => {
         <div className="menu-container">
             <div className="left-menu-side">
                 <Avatar size={49} style={{ backgroundColor: '#2D40E0', marginTop: '5px' }} icon={<UserOutlined />} />
-                
             </div>
             <div className="right-menu-side">
                 <ul>
