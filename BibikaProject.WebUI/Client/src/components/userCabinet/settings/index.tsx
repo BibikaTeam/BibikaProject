@@ -1,5 +1,5 @@
-import { Button, Collapse, Input, Form } from "antd";
-import { userInfo } from "os";
+import { Button, Collapse, Form, Input} from "antd";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { logoutUser } from "../../authorization/login/actions";
 import { IContact, IEmail, IPassword } from "../types";
@@ -8,37 +8,68 @@ import { saveContact, saveEmail, savePassword } from "./service";
 const { Panel } = Collapse;
 
 const SettingsProfile = () => {
+    const [name, setName] = useState("");
+    const [oldPassword, setOldPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [newEmail, setNewEmail] = useState("");
+    const [passwordEmail, setPasswordEmail] = useState("");
 
-    const changeInputName = () => {
-
+    const initialValueContact : IContact = {
+        name: ""
     }
-    const changeInputOldPassword = () => {
-
+    const initialValuePassword : IPassword = {
+        oldPassword: "",
+        newPassword: "",
+        confirmPassword: ""
     }
-    const changeInputNewPassword = () => {
-
-    }
-    const changeInputConfirmPassword = () => {
-
-    }
-    const changeInputNewEmail = () => {
-
-    }
-    const changeInputEmailPasssword = () => {
-
+    const initialValueEmail : IEmail = {
+        newEmail: "",
+        password: ""
     }
 
-    // const handleSaveContac = (value: IContact) => {
-    //     saveContact(value);
-    // }
+    const changeInputName = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setName(e.target.value);
+    }
+    const changeInputOldPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setOldPassword(e.target.value);
+    }
+    const changeInputNewPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setNewPassword(e.target.value);
+    }
+    const changeInputConfirmPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setConfirmPassword(e.target.value);
+    }
+    const changeInputNewEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setNewEmail(e.target.value);
+    }
+    const changeInputEmailPasssword = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPasswordEmail(e.target.value);
+    }
 
-    // const handleSavePassword = (value: IPassword) => {
-    //     savePassword(value);
-    // }
+    const handleSaveContact = () => {
+        const values: IContact = {
+            name: name
+        }
+        saveContact(values);
+    }
 
-    // const handleSaveEmail = (value: IEmail) => {
-    //     saveEmail(value);
-    // }
+    const handleSavePassword = () => {
+        const values: IPassword = {
+            oldPassword: oldPassword,
+            newPassword: newPassword,
+            confirmPassword: confirmPassword
+        } 
+        savePassword(values);
+    }
+
+    const handleSaveEmail = () => {
+        const values: IEmail = {
+            newEmail: newEmail,
+            password: passwordEmail
+        }
+        saveEmail(values);
+    }
 
     const handleLogout = () => {
         logoutUser();
@@ -51,16 +82,21 @@ const SettingsProfile = () => {
                 <div className="settings-dropdown">
                     <Collapse expandIconPosition={"end"} className="settings-menu" bordered={false}>
                         <Panel header="Contact" key="1" className="settings-submenu-container">
+                            <Form>
+                                <Form.Item>
+                                    
+                                </Form.Item>
+                            </Form>
                             <div className="settings-input-container">
                                 Name
-                                <Input onChange={changeInputName} className="settings-input" />
+                                <Input onChange={changeInputName} className="settings-input"/>
                             </div>
                             {/* <div className="settings-input-container">
                                 Locality
                                 <Input className="settings-input" />
                             </div> */}
                             <div className="settings-button-container">
-                                <Button className="settings-button">Save</Button>
+                                <Button className="settings-button" onClick={handleSaveContact}>Save</Button>
                             </div>
                         </Panel>
                     </Collapse>
@@ -71,18 +107,18 @@ const SettingsProfile = () => {
                         <Panel header="Password" key="1" className="settings-submenu-container">
                             <div className="settings-input-container">
                                 Old password
-                                <Input.Password className="settings-input" onChange={changeInputOldPassword}/>
+                                <Input.Password className="settings-input" onChange={changeInputOldPassword} />
                             </div>
                             <div className="settings-input-container">
                                 New password
-                                <Input.Password className="settings-input" onChange={changeInputNewPassword}/>
+                                <Input.Password className="settings-input" onChange={changeInputNewPassword} />
                             </div>
                             <div className="settings-input-container">
                                 Confirm password
-                                <Input.Password className="settings-input" onChange={changeInputConfirmPassword}/>
+                                <Input.Password className="settings-input" onChange={changeInputConfirmPassword} />
                             </div>
                             <div className="settings-button-container">
-                                <Button className="settings-button">Save</Button>
+                                <Button className="settings-button" onClick={handleSavePassword}>Save</Button>
                             </div>
                         </Panel>
                     </Collapse>
@@ -93,14 +129,14 @@ const SettingsProfile = () => {
                         <Panel header="Email address" key="1" className="settings-submenu-container">
                             <div className="settings-input-container">
                                 New email address
-                                <Input className="settings-input" onChange={changeInputNewEmail}/>
+                                <Input className="settings-input" onChange={changeInputNewEmail} />
                             </div>
                             <div className="settings-input-container">
                                 Password
-                                <Input className="settings-input" onChange={changeInputEmailPasssword}/>
+                                <Input className="settings-input" onChange={changeInputEmailPasssword} />
                             </div>
                             <div className="settings-button-container">
-                                <Button className="settings-button">Save</Button>
+                                <Button className="settings-button" onClick={handleSaveEmail}>Save</Button>
                             </div>
                         </Panel>
                     </Collapse>
