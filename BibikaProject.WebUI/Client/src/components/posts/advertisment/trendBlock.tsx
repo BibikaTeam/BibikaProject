@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { getRandomTrendPost } from "../posts/advertisment/service";
-import MainPageCarCard from "./carCard";
-import { getRandomPost } from "./service";
-import { IBannerCar } from "./types";
+import { IBannerCar } from "../../home/types";
+import { getRandomTrendPost } from "./service";
+import TrendCarCard from "./trendCarCard";
 
-const PopularBlock = () => {
+const TrendBlock = () => {
   // const car: IBannerCar = {
   //   title: "Tesla Model S",
   //   engine: "Electro",
@@ -25,7 +24,7 @@ const PopularBlock = () => {
       let post: IBannerCar | null | undefined = null;
       const tmpArr: Array<IBannerCar> = [];
       for (let i = 0; i <= 2; i++) {
-        post = await getRandomPost();
+        post = await getRandomTrendPost();
         tmpArr.push(post as IBannerCar);
       }
       setPostArray(tmpArr);
@@ -35,14 +34,14 @@ const PopularBlock = () => {
   console.log("postArr: ", postArray);
 
   return (
-    <div className="popular-block">
-      <h2>Popular</h2>
+    <div className="trend-block">
+      <h2>Trends</h2>
       <div className="cars-cards">
-        {postArray[0] && <MainPageCarCard car={postArray[0]} />}
-        {postArray[1] && <MainPageCarCard car={postArray[1]} />}
-        {postArray[2] && <MainPageCarCard car={postArray[2]} />}
+        {postArray[0] && <TrendCarCard car={postArray[0]} />}
+        {postArray[1] && <TrendCarCard car={postArray[1]} />}
+        {postArray[2] && <TrendCarCard car={postArray[2]} />}
       </div>
     </div>
   );
 };
-export default PopularBlock;
+export default TrendBlock;

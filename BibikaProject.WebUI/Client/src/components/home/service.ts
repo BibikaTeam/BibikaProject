@@ -24,8 +24,6 @@ export const getRandomPost = async () => {
     // post.mainImageSrc =
     // "https://tesla-cdn.thron.com/delivery/public/image/tesla/8a74d206-66dc-4386-8c7a-88ff32174e7d/bvlatuR/std/4096x2560/Model-S-Main-Hero-Desktop-LHD";
 
-    post.price = 100;
-
     return post;
   } catch (error) {
     if (axios.isAxiosError(error)) {

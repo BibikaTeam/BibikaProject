@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BibikaProject.WebUI.Controllers
 {
-    [Route("api/advertisment/")]
+    [Route("api/adv")]
     [ApiController]
     public class AdvertismentController : ControllerBase
     {

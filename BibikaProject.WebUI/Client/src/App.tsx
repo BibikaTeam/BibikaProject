@@ -25,6 +25,7 @@ import PostAdd from "./components/posts/add";
 import PostPage from "./components/posts/postPage";
 import DetailSearch from "./components/posts/search/detailSearch";
 import Test from "./components/test";
+import AdvOrderPage from "./components/posts/advertisment/advOrder";
 
 function App() {
   return (
@@ -34,9 +35,11 @@ function App() {
           <Route index element={<HomePage />} />     
           <Route path="/post/detail-search" element={<DetailSearch />} />
           <Route path="/post/search-result" element={<SearchResult />} />
-          <Route path="/post/:id" element={<PostPage />}/>
+          <Route path="/post/:id" element={<PostPage />} />
           <Route element={<AuthorizedBasedRoute />}>
             <Route path="/user-profile" element={<UserProfile />}></Route>
+            <Route path="/post/add" element={<AddPostPage />} />
+            <Route path="/post/adv-order" element={<AdvOrderPage />} />
           </Route>
         </Route>
 

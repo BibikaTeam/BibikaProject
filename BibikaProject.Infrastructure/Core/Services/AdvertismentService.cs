@@ -97,9 +97,14 @@ namespace BibikaProject.Infrastructure.Core.Services
         {
             var posts = query.GetAll().Where(x => x.IsTrend && x.TrendShowsLeft > 0).IncldueAllPostProperties();
 
+            if(posts == null)
+            {
+                throw new NotFoundException("There is no trend post in database");
+            }
+
             var random = new Random();
 
-            var post = await posts.FirstOrDefaultAsync(x => x.Id == random.Next(0, posts.Count() - 1));
+            var post = posts.ToList()[random.Next(0, posts.Count() - 1)];
 
             if (post == null)
             {
