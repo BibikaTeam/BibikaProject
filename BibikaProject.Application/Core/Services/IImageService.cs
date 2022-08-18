@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BibikaProject.Application.Core.Services
 {
@@ -9,5 +10,7 @@ namespace BibikaProject.Application.Core.Services
         Task DeleteImage(int id, string userId);
 
         Task<string> GetImage(int id);
+
+        Task<List<string>> GetImagesByPost(int postId);
     }
 }

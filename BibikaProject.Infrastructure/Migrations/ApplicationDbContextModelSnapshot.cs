@@ -286,6 +286,12 @@ namespace BibikaProject.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<float>("Balance")
+                        .HasColumnType("real");
+
+                    b.Property<int>("BannerShowsLeft")
+                        .HasColumnType("integer");
+
                     b.Property<int>("CarId")
                         .HasColumnType("integer");
 
@@ -293,9 +299,24 @@ namespace BibikaProject.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("DailyPoint")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("DailyViews")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsBanner")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsTrend")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Location")
                         .IsRequired()
@@ -310,6 +331,12 @@ namespace BibikaProject.Infrastructure.Migrations
                     b.Property<string>("SellerId")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("text");
+
+                    b.Property<int>("TrendShowsLeft")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("Year")
                         .HasColumnType("timestamp with time zone");

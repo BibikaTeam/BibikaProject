@@ -29,6 +29,8 @@ namespace BibikaProject.Domain.Entities.Core
 
         public string SellerId { get; set; }
 
+        public DateTime CreatedAt { get; set; }
+
         [Required]
         public ApplicationUser Seller { get; set; }
 
@@ -42,5 +44,32 @@ namespace BibikaProject.Domain.Entities.Core
 
         [Required]
         public Car Car { get; set; }
+
+        // ADVERTISMENT
+
+        public bool IsBanner { get; set; }
+
+        public bool IsTrend { get; set; }
+
+        public int DailyPoint { get; set; }
+
+        public int DailyViews { get; set; }
+
+        public float Balance { get; set; }
+
+        public int BannerShowsLeft { get; set; }
+
+        public int TrendShowsLeft { get; set; }
+
+        public string Status { get; set; }
+    }
+
+    public static class PostStatusTypes
+    {
+        public static string Active => "Active";
+
+        public static string Deactivated => "Deactivated";
+
+        public static string Sold => "Sold";
     }
 }
