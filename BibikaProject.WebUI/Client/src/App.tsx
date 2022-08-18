@@ -32,7 +32,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<DefaultLayout />}>
-          <Route index element={<HomePage />} />
+          <Route index element={<HomePage />} />     
           <Route path="/post/detail-search" element={<DetailSearch />} />
           <Route path="/post/search-result" element={<SearchResult />} />
           <Route path="/post/:id" element={<PostPage />} />
@@ -42,6 +42,8 @@ function App() {
             <Route path="/post/adv-order" element={<AdvOrderPage />} />
           </Route>
         </Route>
+
+        <Route path="/post/add" element={<AddPostPage />} />
 
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
