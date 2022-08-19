@@ -17,6 +17,14 @@ namespace BibikaProject.Application.Core.DTO.Post
 
         public string SellerName { get; set; }
 
+        public int Likes { get; set; }
+
+        public int Viewes { get; set; }
+
         public CarDTO Car { get; set; }
+
+        public int Price { get; set; }
+
+        public string Description { get; set; }
     }
 }

@@ -19,6 +19,14 @@ namespace BibikaProject.Application.Core.Services
 
         Task AddOptionsToPost(AddOptionsToPostDTO optionsToPostDTO);
 
+        Task<List<PostDTO>> GetUserPosts(string id);
+
+        Task<List<PostDTO>> GetUserLikedPosts(string id);
+        
         Task<PostDTO> GetRandomPost();
+
+        Task<PostDTO> GetPostById(int id);
+
+        Task<MinMaxValuesDTO> GetMinMaxYearsPrice(int generationId);
     }
 }

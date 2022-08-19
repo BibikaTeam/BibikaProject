@@ -4,14 +4,14 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 
 namespace BibikaProject.WebUI
@@ -76,7 +76,7 @@ namespace BibikaProject.WebUI
             services.ConfigureEmail(Configuration);
 
             services.ConfigureBrandService();
-            services.ConfigurePostService(); 
+            services.ConfigurePostService();
             services.ConfigureImageService();
             services.ConfigureModelService();
             services.ConfigureGenerationService();
@@ -86,12 +86,9 @@ namespace BibikaProject.WebUI
             services.ConfigureGearBoxService();
             services.ConfigureCompleteSetService();
             services.ConfigureCarBodyService();         
-        }
-
-        private IEnumerable<object> SelectMany(Func<object, object> p)
-        {
-            throw new NotImplementedException();
-
+            services.ConfigureUserService();
+            services.ConfigureAdvertismentService();
+            services.ConfigureSearchPanelService();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
@@ -102,6 +99,12 @@ namespace BibikaProject.WebUI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
             }
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "images")),
+                RequestPath = "/images"
+            });
 
             app.UseSpaStaticFiles();
 
@@ -130,7 +133,7 @@ namespace BibikaProject.WebUI
             //    //{
             //    //    spa.UseReactDevelopmentServer(npmScript: "start");
             //    //}
-            //});
+            //});      
         }
     }
 }

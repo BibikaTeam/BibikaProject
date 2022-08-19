@@ -2,3 +2,12 @@ $primary: rgb(33, 156, 225);
 $primary-2: rgba(224, 103, 56, 1);
 $accent-light: rgba(246, 246, 246, 1);
 $accent-dark: rgba(65, 65, 65, 1);
+
+$default-border-color: rgba($color: #000000, $alpha: 0.2);
+$secondary-border-color: rgba($color: #414141, $alpha: 0.2);
+
+$primary-font-color: rgba($color: #414141, $alpha: 1);
+$secondary-font-color: rgba($color: #414141, $alpha: 0.5);
+
+$danger-color: rgba($color: #E06738, $alpha: 1);
+$danger-color-transparent: rgba($color: #E06738, $alpha: 0.1);

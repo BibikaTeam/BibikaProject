@@ -131,3 +131,14 @@ export const loginFacebookUser = (data: FacebookLoginModel) => {
     }
   };
 };
+
+export const logoutUser = () => {
+  return async (dispatch: React.Dispatch<AuthAction>) => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
+
+    dispatch({
+      type: AuthActionTypes.AUTH_LOGOUT,
+    });
+  };
+};

@@ -12,3 +12,8 @@ export const AuthUser = (
     payload: user,
   });
 };
+export const LogoutUser = (dispatch: React.Dispatch<AuthAction>) => {
+  dispatch({
+    type: AuthActionTypes.AUTH_LOGOUT,
+  });
+};

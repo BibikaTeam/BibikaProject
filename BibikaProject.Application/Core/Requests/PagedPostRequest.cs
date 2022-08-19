@@ -4,9 +4,13 @@ namespace BibikaProject.Application.Core.Requests
 {
     public struct Filter
     {
-        public DateTime YearMax { get; set; }
+        public int YearMax { get; set; }
 
-        public DateTime YearMin { get; set; }
+        public int YearMin { get; set; }
+
+        public int PriceMin { get; set; }
+
+        public int PriceMax { get; set; }
 
         public string Location { get; set; }
 

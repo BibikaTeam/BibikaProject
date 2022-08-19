@@ -1,0 +1,105 @@
+.adv-selection {
+    .trend-selection{
+        background: radial-gradient(55.23% 597.02% at 74.45% 42.21%,
+         rgba(224, 103, 56, 0.2) 0%, 
+         rgba(224, 103, 56, 0) 100%),
+         rgba(224, 103, 56, 0.1);
+         height: 600px;
+         display: flex;
+         justify-content: space-between;
+        .left-trend-side{
+            padding-left: 150px;
+            padding-top: 70px;
+            flex-grow: 1;
+            h1{
+                color: white;
+                font-size: 58px;
+                background-color: #E06738;
+                padding: 26px 32px;
+                border-radius: 10px;
+                display: inline-block;
+                line-height: 40px;
+                font-weight: 600;
+                margin: 0;
+            }
+            h3{
+                font-size: 64px;
+                font-weight: 500;
+                color: #414141;
+                margin-top: 47px;
+                margin-bottom: 20px;
+                .header-selection{
+                    font-weight: 800;
+                    font-size: 66px;
+                    padding: 0;
+                }
+            }
+            .privilege{
+                font-size: 32px;
+                color: #414141;
+                font-weight: 400;
+                display: block;
+                margin-top: 0;
+            }
+            .buttons-group {
+                margin-top: 73px;
+
+                .button-trend-times-select{
+                    font-size: 32px;
+                    font-weight: 400;
+                    padding: 4px 16px;
+                    background-color: white;
+                    border: none;
+                    border-radius: 10px;
+                    cursor: pointer;
+                    margin-right: 31px;
+                }
+                .active {
+                    color: #E06738;
+                }
+            }
+        }
+        .right-trend-side{
+            flex-grow: 2;
+            .col{
+                width: 30%;
+                display: inline-block;
+                .trend-car-card{
+                 display: block;
+                //  position: absolute;
+                }
+            }
+        }
+        margin-bottom: 30px;
+    }
+    .trend-description{
+        padding-left: 150px;
+        padding-right: 70px;
+
+        .trend-description-text{
+            font-size: 43px;
+            font-weight: 500;
+            color: #414141;
+
+            .price-trend-description{
+                color: #E06738;
+                font-size: 64px;
+                font-weight: 800;
+            }
+            .times-trend-description{
+                font-weight: 800;
+            }
+        }
+        .choose-trend-button{
+             background-color: rgba($color: #E06738, $alpha: 0.1);
+             color: #E06738;
+             padding: 13px 143px;
+             border: none;
+             border-radius: 10px;
+             cursor: pointer;
+             font-size: 36px;
+             font-weight: 600;
+             float: right;
+        }
+    }
+}

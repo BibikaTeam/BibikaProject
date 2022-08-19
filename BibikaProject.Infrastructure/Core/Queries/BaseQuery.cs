@@ -13,7 +13,7 @@ namespace BibikaProject.Infrastructure.Core.Queries
             this.context = context;
         }
 
-        private readonly ApplicationDbContext context;
+        protected readonly ApplicationDbContext context;
 
         public IQueryable<TEntity> GetAll()
         {

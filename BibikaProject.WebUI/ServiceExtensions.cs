@@ -233,6 +233,21 @@ namespace BibikaProject.WebUI
             var settings = configuration.GetSection("EmailConfiguration");
 
             services.Configure<EmailConfiguration>(settings);
+        }  
+          
+        public static void ConfigureUserService(this IServiceCollection services)
+        {
+            services.AddTransient<IUserService, UserService>();
+        }
+
+        public static void ConfigureAdvertismentService(this IServiceCollection services)
+        {
+            services.AddTransient<IAdvertismentService, AdvertismentService>();
+        }
+
+        public static void ConfigureSearchPanelService(this IServiceCollection services)
+        {
+            services.AddTransient<ISearchPanelService, SearchPanelService>();
         }
     }
 }

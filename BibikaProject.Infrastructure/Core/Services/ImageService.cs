@@ -4,8 +4,11 @@ using BibikaProject.Application.Core.Services;
 using BibikaProject.Domain.Entities.Core;
 using BibikaProject.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BibikaProject.Infrastructure.Core.Services
@@ -24,6 +27,34 @@ namespace BibikaProject.Infrastructure.Core.Services
         private readonly IImageQuery query;
 
         public const string ImagesPath = "images/";
+
+        private string ResizeImage(byte[] data, int w, int h)
+        {
+            using (var ms = new MemoryStream(data))
+            {
+                var image = System.Drawing.Image.FromStream(ms);
+
+                var ratioX = (double)w / image.Width;
+                var ratioY = (double)h / image.Height;
+
+                var ratio = Math.Min(ratioX, ratioY);
+
+                var width = (int)(image.Width * ratio);
+                var height = (int)(image.Height * ratio);
+
+                var newImage = new System.Drawing.Bitmap(width, height);
+
+                System.Drawing.Graphics.FromImage(newImage).DrawImage(image, 0, 0, width, height);
+
+                System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(newImage);
+
+                System.Drawing.ImageConverter converter = new System.Drawing.ImageConverter();
+
+                data = (byte[])converter.ConvertTo(bmp, typeof(byte[]));
+
+                return Convert.ToBase64String(data);
+            }
+        }
 
         public async Task DeleteImage(int id, string userId)
         {
@@ -75,41 +106,20 @@ namespace BibikaProject.Infrastructure.Core.Services
             return img.Id;
         }
 
-        public async Task<byte[]> GetImage(int id)
+        public async Task<string> GetImage(int id)
         {
             var image = await query.GetByIdAsync(id);
 
-            var byteImage = await File.ReadAllBytesAsync($"{ImagesPath}/{image.Title}.png");
+            return $"{image.Title}";
+        }       
 
-            return byteImage;
-        }
-
-        private string ResizeImage(byte[] data, int w, int h)
+        public async Task<List<string>> GetImagesByPost(int postId)
         {
-            using (var ms = new MemoryStream(data))
-            {
-                var image = System.Drawing.Image.FromStream(ms);
+            var images = query.GetAll().Where(x => x.PostId == postId);
 
-                var ratioX = (double)w / image.Width;
-                var ratioY = (double)h / image.Height;
+            var result = images.Select(x => $"{x.Title}");
 
-                var ratio = Math.Min(ratioX, ratioY);
-
-                var width = (int)(image.Width * ratio);
-                var height = (int)(image.Height * ratio);
-
-                var newImage = new System.Drawing.Bitmap(width, height);
-
-                System.Drawing.Graphics.FromImage(newImage).DrawImage(image, 0, 0, width, height);
-
-                System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(newImage);
-
-                System.Drawing.ImageConverter converter = new System.Drawing.ImageConverter();
-
-                data = (byte[])converter.ConvertTo(bmp, typeof(byte[]));
-
-                return Convert.ToBase64String(data);
-            }
+            return await result.ToListAsync();
         }
     }
 }
