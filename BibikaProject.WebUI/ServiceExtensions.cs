@@ -236,5 +236,10 @@ namespace BibikaProject.WebUI
         {
             services.AddTransient<IAdvertismentService, AdvertismentService>();
         }
+
+        public static void ConfigureSearchPanelService(this IServiceCollection services)
+        {
+            services.AddTransient<ISearchPanelService, SearchPanelService>();
+        }
     }
 }
