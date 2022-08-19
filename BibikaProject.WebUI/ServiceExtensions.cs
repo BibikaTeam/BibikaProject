@@ -28,6 +28,7 @@ using BibikaProject.Infrastructure.Core.Queries;
 using BibikaProject.Application.Core.Queries;
 using BibikaProject.Application.Core.DTO.Post;
 using BibikaProject.Infrastructure.Identity.Services.Settings;
+using BibikaProject.Infrastructure.Identity.Services.Helpers.Email;
 
 namespace BibikaProject.WebUI
 {
@@ -227,9 +228,26 @@ namespace BibikaProject.WebUI
             services.Configure<GoogleAuthSettings>(settings);
         }
 
+        public static void ConfigureEmail(this IServiceCollection services, IConfiguration configuration)
+        {
+            var settings = configuration.GetSection("EmailConfiguration");
+
+            services.Configure<EmailConfiguration>(settings);
+        }  
+          
         public static void ConfigureUserService(this IServiceCollection services)
         {
             services.AddTransient<IUserService, UserService>();
+        }
+
+        public static void ConfigureAdvertismentService(this IServiceCollection services)
+        {
+            services.AddTransient<IAdvertismentService, AdvertismentService>();
+        }
+
+        public static void ConfigureSearchPanelService(this IServiceCollection services)
+        {
+            services.AddTransient<ISearchPanelService, SearchPanelService>();
         }
     }
 }

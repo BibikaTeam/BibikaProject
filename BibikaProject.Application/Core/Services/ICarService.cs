@@ -16,5 +16,7 @@ namespace BibikaProject.Application.Core.Services
         Task<PagedList<CarDTO>> GetPagedCarsAsync(PagedCarsRequest pagedCarRequest);
 
         Task<CarDTO> GetCarByParamsAsync(GetCarDTO getCarDTO);
+
+        Task<CarDTO> GetCarById(int id);
     }
 }

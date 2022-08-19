@@ -73,6 +73,8 @@ namespace BibikaProject.WebUI
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            services.ConfigureEmail(Configuration);
+
             services.ConfigureBrandService();
             services.ConfigurePostService();
             services.ConfigureImageService();
@@ -83,9 +85,10 @@ namespace BibikaProject.WebUI
             services.ConfigureEngineService();
             services.ConfigureGearBoxService();
             services.ConfigureCompleteSetService();
-            services.ConfigureCarBodyService();
-            services.ConfigureUserService();
             services.ConfigureCarBodyService();         
+            services.ConfigureUserService();
+            services.ConfigureAdvertismentService();
+            services.ConfigureSearchPanelService();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
