@@ -6,6 +6,7 @@ using BibikaProject.Application.Core.Requests;
 using BibikaProject.Application.Core.Responses;
 using BibikaProject.Application.Core.Services;
 using BibikaProject.Domain.Entities.Core;
+using BibikaProject.Infrastructure.Core.Errors;
 using BibikaProject.Infrastructure.Core.Services.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -103,6 +104,27 @@ namespace BibikaProject.Infrastructure.Core.Services
                                     x.GearBoxId == getCarDTO.GearBoxId)
                              .Select(x => mapper.Map<CarDTO>(x))
                              .FirstAsync();         
-        } 
+        }
+
+        public async Task<CarDTO> GetCarById(int id)
+        {
+            var cars = query.GetAll()
+                            .Include(x => x.CarBody)
+                            .Include(x => x.CompleteSet)
+                            .Include(x => x.Engine)
+                            .Include(x => x.GearBox)
+                            .Include(x => x.Generation)
+                            .ThenInclude(x => x.Model)
+                            .ThenInclude(x => x.Brand);
+
+            var car = await cars.Where(x => x.Id == id).FirstOrDefaultAsync();
+
+            if (car == null)
+            {
+                throw new NotFoundException("A car with this id doesn't exist");
+            }
+
+            return mapper.Map<CarDTO>(car);
+        }
     }
 }
