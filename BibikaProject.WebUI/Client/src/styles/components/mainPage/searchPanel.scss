@@ -54,28 +54,12 @@
             display: flex;
             justify-content: space-between;
             margin-top: 41px;
+            gap: 35px;
 
             .search-input-container{
-                width: 450px;
-                
-                .ant-row{
+                width: 100%;
+                select{
                     width: 100%;
-                    margin-bottom: 0;
-                    .ant-select-disabled{
-                        .ant-select-selector{
-                            background-color: rgba(65, 65, 65, 0.08);
-                        }
-                    }
-
-                    .ant-select-selector{
-                        background-color: rgba(65, 65, 65, 0.02);
-                        border-radius: 10px;
-                        height: auto;
-                        padding: 10px 30px;
-                        
-                        line-height: 43px;
-                        font-size: 32px;
-                    }
                 }
             }
         }
@@ -88,50 +72,62 @@
                 background-color: rgba(65, 65, 65, 0.02);
                 
                 display: flex;
-                justify-content: space-around;
+                justify-content: space-between;
                 width: 48%;
                 border: 1px solid #d9d9d9;
                 padding: 20px 30px;
-                .ant-row{
-                    width: 35%;
-                    margin-bottom: 0;
-
+                .input-container{
+                    width: 36%;
                     input{
-                        font-size: 32px;
-                        border-radius: 10px;
-                        padding: 2px 10px;
+                        width: 100%;
                         text-align: center;
+                    }
+                }
+                .select-container{
+                    width: 40%;
+                    select{
                         width: 100%;
                     }
                 }
-                .ant-row{
-                    width: 35%;
-                    .from-to-select{
-                        font-size: 32px;
-                        padding: 2px 10px;
-                        text-align: center;
-                        width: 100%;
-                        .ant-select-selector{
-                            border-radius: 10px;
-                            height: 100%;
-                        }
-                        .ant-select-arrow {
-                            .anticon{
-                                svg{
-                                    width: 20px;
-                                    margin-top: -5px;
-                                    margin-left: -30px;
-                                }
-                            }
-                        }
-                    }
-                }
+                // .ant-row{
+                //     width: 35%;
+                //     margin-bottom: 0;
+
+                    // input{
+                    //     font-size: 32px;
+                    //     border-radius: 10px;
+                    //     padding: 2px 10px;
+                    //     text-align: center;
+                    //     width: 100%;
+                    // }
+                // }
+                // .ant-row{
+                //     width: 35%;
+                //     .from-to-select{
+                //         font-size: 32px;
+                //         padding: 2px 10px;
+                //         text-align: center;
+                //         width: 100%;
+                //         .ant-select-selector{
+                //             border-radius: 10px;
+                //             height: 100%;
+                //         }
+                //         .ant-select-arrow {
+                //             .anticon{
+                //                 svg{
+                //                     width: 20px;
+                //                     margin-top: -5px;
+                //                     margin-left: -30px;
+                //                 }
+                //             }
+                //         }
+                //     }
+                // }
             }
             span{
                 margin-top: 4px;
                 font-size: 32px;
                 font-weight: 500;
-                line-height: 43px;
             }
         }
         .third-line{
