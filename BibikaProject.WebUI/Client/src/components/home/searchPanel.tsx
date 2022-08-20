@@ -1,5 +1,5 @@
 import { queryByDisplayValue } from "@testing-library/react";
-import { Button, Form, Input, Radio, Select } from "antd";
+import { Button, Form, Radio } from "antd";
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -23,6 +23,8 @@ import {
   IDetailSearchProps,
 } from "../posts/search/types";
 import { getMinMaxYearPriceByGeneration } from "../posts/search/serivce";
+import MySelect from "../common/ownElement/select";
+import MyInput from "../common/ownElement/input";
 
 export interface SearchPanelProps {
   searchProps: ICurrentCarDetailProps | null;
@@ -43,8 +45,13 @@ const SearchPanel = ({ searchProps }: SearchPanelProps) => {
   const [isModelDisable, setModelDisable] = useState<boolean>(true);
   const [isGenerationDisable, setGenerationDisable] = useState<boolean>(true);
 
+  const [selectedBrand, setSelectedBrand] = useState<any>(null);
   const [selectedModel, setSelectedModel] = useState<any>(null);
   const [selectedGeneration, setSelectedGeneration] = useState<any>(null);
+  const [currentPriceFrom, setCurrentPriceFrom] = useState<number>(0);
+  const [currentPriceTo, setCurrentPriceTo] = useState<number>(0);
+  const [currentYearFrom, setCurrentYearFrom] = useState<number>(0);
+  const [currentYearTo, setCurrentYearTo] = useState<number>(0);
 
   const [minYear, setMinYear] = useState<number>(-1);
   const [maxYear, setMaxYear] = useState<number>(-1);
@@ -137,6 +144,10 @@ const SearchPanel = ({ searchProps }: SearchPanelProps) => {
       setMaxYear(maxYearNumb);
       setMinPrice(data?.minPrice as number);
       setMaxPrice(data?.maxPrice as number);
+      setCurrentYearFrom(minYearNumb);
+      setCurrentYearTo(maxYearNumb);
+      setCurrentPriceFrom(data?.minPrice as number);
+      setCurrentPriceTo(data?.maxPrice as number);
 
       const tmpArr: Array<number> = [];
       for (let i = minYearNumb; i <= maxYearNumb; i++) {
@@ -153,6 +164,7 @@ const SearchPanel = ({ searchProps }: SearchPanelProps) => {
 
   //selects handling
   const handleBrandChange = async (brandId: number) => {
+    setSelectedBrand(brandId);
     await setModelsByBrandId(brandId);
     setCarModel({
       ...carModel,
@@ -165,6 +177,7 @@ const SearchPanel = ({ searchProps }: SearchPanelProps) => {
     setGenerationDisable(true);
   };
   const handleModelChange = async (modelId: number) => {
+    setSelectedModel(modelId);
     setCarModel({
       ...carModel,
       filters: [{ ...carModel.filters[0], modelId: modelId }],
@@ -175,6 +188,7 @@ const SearchPanel = ({ searchProps }: SearchPanelProps) => {
     setSelectedGeneration(null);
   };
   const handleGenerationChange = async (generationId: number) => {
+    setSelectedGeneration(generationId);
     setMinMaxPriceYears(generationId);
     setCarModel({
       ...carModel,
@@ -182,24 +196,28 @@ const SearchPanel = ({ searchProps }: SearchPanelProps) => {
     });
   };
   const handleMinPriceChange = async (event: any) => {
+    setCurrentPriceFrom(event.target.value);
     setCarModel({
       ...carModel,
       filters: [{ ...carModel.filters[0], priceMin: event.target.value }],
     });
   };
   const handleMaxPriceChange = async (event: any) => {
+    setCurrentPriceTo(event.target.value);
     setCarModel({
       ...carModel,
       filters: [{ ...carModel.filters[0], priceMax: event.target.value }],
     });
   };
   const handleMinYearChange = async (yearMin: number) => {
+    setCurrentYearFrom(yearMin);
     setCarModel({
       ...carModel,
       filters: [{ ...carModel.filters[0], yearMin: yearMin }],
     });
   };
   const handleMaxYearChange = async (yearMax: number) => {
+    setCurrentPriceTo(yearMax);
     setCarModel({
       ...carModel,
       filters: [{ ...carModel.filters[0], yearMax: yearMax }],
@@ -212,6 +230,20 @@ const SearchPanel = ({ searchProps }: SearchPanelProps) => {
     console.log(carModel);
     const searchString = qs.stringify(carModel.filters[0]);
     navigator(`/post/search-result?${searchString}`);
+  };
+
+  const handleConfirmClick = async () => {
+    const values: IShortSearchRespond = {
+      brand: selectedBrand,
+      model: selectedModel,
+      generation: selectedGeneration,
+      priceFrom: currentPriceFrom,
+      priceTo: currentPriceTo,
+      yearFrom: currentYearFrom,
+      yearTo: currentYearTo,
+      quality: "Ok",
+    };
+    await handleSearch(values);
   };
 
   return (
@@ -230,110 +262,87 @@ const SearchPanel = ({ searchProps }: SearchPanelProps) => {
         <div className="inputs-group">
           <div className="first-line">
             <div className="search-input-container">
-              <Form.Item name="brand">
-                <Select
-                  className="search-input"
-                  onChange={handleBrandChange}
-                  placeholder={"Brand"}
-                  loading={brandLoading}
-                >
-                  {brandList.map((brand: IBrandModel) => {
-                    return (
-                      <Select.Option key={brand.id}>
-                        {brand.title}
-                      </Select.Option>
-                    );
-                  })}
-                </Select>
-              </Form.Item>
+              <MySelect
+                className="search-input"
+                onChange={handleBrandChange}
+                placeholder={"Brand"}
+                loading={brandLoading}
+                values={brandList.map((x) => ({ label: x.title, value: x.id }))}
+                value={selectedBrand}
+              />
             </div>
             <div className="search-input-container">
-              <Form.Item name="model">
-                <Select
-                  className="search-input"
-                  onChange={handleModelChange}
-                  placeholder="Model"
-                  loading={modelLoading}
-                  disabled={isModelDisable}
-                  value={selectedModel}
-                >
-                  {modelList.map((model: IModelModel) => {
-                    return (
-                      <Select.Option key={model.id}>
-                        {model.title}
-                      </Select.Option>
-                    );
-                  })}
-                </Select>
-              </Form.Item>
+              <MySelect
+                className="search-input"
+                onChange={handleModelChange}
+                placeholder="Model"
+                loading={modelLoading}
+                disabled={isModelDisable}
+                value={selectedModel}
+                values={modelList.map((x) => ({ label: x.title, value: x.id }))}
+              />
             </div>
             <div className="search-input-container">
-              <Form.Item name="generation">
-                <Select
-                  className="search-input"
-                  onChange={handleGenerationChange}
-                  placeholder="Generation"
-                  loading={generationLoading}
-                  disabled={isGenerationDisable}
-                  value={selectedGeneration}
-                >
-                  {generationList.map((generation: IGenerationModel) => {
-                    return (
-                      <Select.Option key={generation.id}>
-                        {generation.title}
-                      </Select.Option>
-                    );
-                  })}
-                </Select>
-              </Form.Item>
+              <MySelect
+                className="search-input"
+                onChange={handleGenerationChange}
+                placeholder="Generation"
+                loading={generationLoading}
+                disabled={isGenerationDisable}
+                value={selectedGeneration}
+                values={generationList.map((x) => ({
+                  label: x.title,
+                  value: x.id,
+                }))}
+              />
             </div>
           </div>
 
           <div className="second-line">
             <div className="from-to-container">
               <span>Price</span>
-              <Form.Item name="priceFrom">
-                <Input
+              <div className="input-container">
+                <MyInput
                   placeholder={minPrice === -1 ? "From" : minPrice.toString()}
                   onChange={handleMinPriceChange}
+                  value={minPrice === -1 ? "" : minPrice.toString()}
                 />
-              </Form.Item>
-              <Form.Item name="priceTo">
-                <Input
+              </div>
+              <div className="input-container">
+                <MyInput
                   placeholder={maxPrice === -1 ? "To" : maxPrice.toString()}
                   onChange={handleMaxPriceChange}
+                  value={maxPrice === -1 ? "" : maxPrice.toString()}
                 />
-              </Form.Item>
+              </div>
               <span>$</span>
             </div>
             <div className="from-to-container">
               <span>Year</span>
-              <Form.Item name="yearFrom">
-                <Select
+              <div className="select-container">
+                <MySelect
                   className="from-to-select"
                   placeholder={minYear === -1 ? "From" : minYear.toString()}
                   onChange={handleMinYearChange}
-                >
-                  {yearsList.map((year: number) => {
-                    return <Select.Option key={year}>{year}</Select.Option>;
-                  })}
-                </Select>
-              </Form.Item>
-              <Form.Item name="yearTo">
-                <Select
+                  values={yearsList.map((x) => ({ label: x, value: x }))}
+                  disabled={selectedGeneration == null}
+                  value={minYear}
+                />
+              </div>
+              <div className="select-container">
+                <MySelect
                   className="from-to-select"
                   placeholder={maxYear === -1 ? "To" : maxYear.toString()}
                   onChange={handleMaxYearChange}
-                >
-                  {yearsList.map((year: number) => {
-                    return <Select.Option key={year}>{year}</Select.Option>;
-                  })}
-                </Select>
-              </Form.Item>
+                  values={yearsList.map((x) => ({ label: x, value: x }))}
+                  disabled={selectedGeneration == null}
+                  value={maxYear}
+                />
+              </div>
             </div>
           </div>
           <div className="third-line">
-            <Button disabled={isDisable} htmlType="submit">
+            <Button disabled={isDisable} onClick={handleConfirmClick}>
               {" "}
               <svg
                 width="25"

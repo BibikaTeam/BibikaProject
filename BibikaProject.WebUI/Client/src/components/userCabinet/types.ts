@@ -2,10 +2,11 @@ export interface IProfileCarPreview {
   mainImageSrc: string;
   price: number;
   title: string;
-  place: string;
+  location: string;
   likes: number;
-  watches: number;
+  views: number;
   messages: number;
+  id: number;
 }
 
 export interface IContact {

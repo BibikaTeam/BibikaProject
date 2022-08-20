@@ -1,6 +1,7 @@
 import { title } from "process";
 
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { IRequestError } from "../adminPanel/types";
 import { getImagesByPostId } from "../posts/postPage/service";
@@ -48,17 +49,19 @@ const MainPageCarCard = ({ car }: IMainPageCarCardProps) => {
 
   return (
     <div className="main-car-card">
-      <img src={imgSrc} alt="Car src" />
-      <div className="info">
-        <h4>{car.car.title}</h4>
-        <span className="price">{car.price}$</span>
-        <span className="location">{car.location}</span>
-        <div className="tags-line">
-          <span>{car.year}</span>
-          <span>{car.mileage}km</span>
-          <span>{car.car.engine.title}</span>
+      <Link to={`/car/post/${car.id}`}>
+        <img src={imgSrc} alt="Car src" />
+        <div className="info">
+          <h4>{car.car.title}</h4>
+          <span className="price">{car.price}$</span>
+          <span className="location">{car.location}</span>
+          <div className="tags-line">
+            <span>{car.year}</span>
+            <span>{car.mileage}km</span>
+            <span>{car.car.engine.title}</span>
+          </div>
         </div>
-      </div>
+      </Link>
     </div>
   );
 };
