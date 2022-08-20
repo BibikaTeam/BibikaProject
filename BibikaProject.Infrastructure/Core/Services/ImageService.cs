@@ -61,7 +61,7 @@ namespace BibikaProject.Infrastructure.Core.Services
             var userRoles = await userManager.GetRolesAsync(await userManager.FindByIdAsync(userId));
             var image = await query.GetByIdAsync(id);
             
-            if (userRoles.Contains("Administrator") || image.UserId == userId)
+            if (userRoles.Contains("Admin") || image.UserId == userId)
             {
                 File.Delete($"{ImagesPath}/{image.Title}.png");
 

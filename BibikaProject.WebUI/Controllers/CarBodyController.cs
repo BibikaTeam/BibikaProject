@@ -18,7 +18,7 @@ namespace BibikaProject.WebUI.Controllers
         private readonly ICarBodyService carBodyService;
 
         [HttpPost("add")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = ENV.AdminRoleName)]
         public async Task<IActionResult> AddCarBody([FromBody] AddCarBodyDTO model)
         {
             await carBodyService.AddCarBodyAsync(model);
@@ -27,7 +27,7 @@ namespace BibikaProject.WebUI.Controllers
         }
 
         [HttpPut("update")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = ENV.AdminRoleName)]
         public async Task<IActionResult> UpdateCarBody([FromBody] UpdateCarBodyDTO model)
         {
             await carBodyService.UpdateCarBodyAsync(model);
@@ -36,7 +36,7 @@ namespace BibikaProject.WebUI.Controllers
         }
 
         [HttpDelete("delete/{id}")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = ENV.AdminRoleName)]
         public async Task<IActionResult> DeleteCarBody(int id)
         {
             await carBodyService.DeleteCarBodyAsync(id);

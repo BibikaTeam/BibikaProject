@@ -28,7 +28,7 @@ namespace BibikaProject.WebUI.Controllers
         }
 
         [HttpPut("update")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = ENV.AdminRoleName)]
         public async Task<IActionResult> UpdateCar([FromBody] UpdateCarDTO model)
         {
             await carService.UpdateCarAsync(model);
