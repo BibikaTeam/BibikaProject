@@ -14,6 +14,7 @@ import {
   ICarBodyModel,
   IGearboxModel,
 } from "../../adminPanel/types";
+import MySelect from "../../common/ownElement/select";
 
 import { Form } from "antd";
 import { ICurrentCarDetailProps } from "./types";
@@ -270,24 +271,27 @@ const CurrentCarDetailSearch = ({ updateCar }: ICurrentCarSearchPanelProps) => {
     updateCar(filter.current);
   };
 
+  console.log(
+    "yearsList.map((x: number) => ({ key: x, title: x }))",
+    yearsList.map((x: number) => ({ key: x, title: x }))
+  );
+
   return (
     <>
       <div className="first-line line">
         <div className="search-input-container">
-          <Form.Item name={"brand"}>
-            <Select
-              placeholder={"Brand"}
-              className="search-input"
-              onChange={onBrandChange}
-              loading={brandLoading}
-            >
-              {brandList.map((brand: IBrandModel) => {
-                return (
-                  <Select.Option key={brand.id}>{brand.title}</Select.Option>
-                );
-              })}
-            </Select>
-          </Form.Item>
+          <Select
+            placeholder={"Brand"}
+            className="search-input"
+            onChange={onBrandChange}
+            loading={brandLoading}
+          >
+            {brandList.map((brand: IBrandModel) => {
+              return (
+                <Select.Option key={brand.id}>{brand.title}</Select.Option>
+              );
+            })}
+          </Select>
         </div>
 
         <div className="search-input-container">
@@ -371,16 +375,17 @@ const CurrentCarDetailSearch = ({ updateCar }: ICurrentCarSearchPanelProps) => {
           <span>Year</span>
           <Form.Item name="yearFrom">
             <span className="hint">from</span>
-            <Select
+            <MySelect
               className="from-to-select"
-              disabled={generationDependDisable}
-              onChange={onYearFromChange}
-              placeholder={minYear === -1 ? null : minYear}
-            >
-              {yearsList.map((year: number) => {
+              // disabled={generationDependDisable}
+              // onChange={onYearFromChange}
+              // placeholder={minYear === -1 ? null : minYear}
+              values={yearsList.map((x: number) => ({ key: x, title: x }))}
+            />
+            {/* {yearsList.map((year: number) => {
                 return <Select.Option key={year}>{year}</Select.Option>;
-              })}
-            </Select>
+              })} */}
+            {/* </MySelect> */}
           </Form.Item>
           <Form.Item name="yearTo">
             <span className="hint">to</span>
