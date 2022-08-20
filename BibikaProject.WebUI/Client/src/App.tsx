@@ -56,8 +56,6 @@ function App() {
                 element={<SettingsProfile />}
               />
             </Route>
-
-            <Route path="/post/add" element={<AddPostPage />} />
             <Route path="/post/adv-order" element={<AdvOrderPage />} />
           </Route>
         </Route>
