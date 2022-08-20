@@ -155,6 +155,8 @@
     border-radius: 10px;
     
     margin-bottom: 2vh;
+
+    background: #FFFFFF;
 }
 
 .radiogroup-title {
@@ -171,10 +173,10 @@
     font-weight: 500;
     font-size: 15px;
     background: rgba($accent-dark, 0.1);
-    border: 0;
+    border: 0 !important;
     color: rgba(0, 0, 0, 0.5);
 
-    border-radius: 5px;
+    border-radius: 5px !important;
 
     margin: 1vh;
 
@@ -215,6 +217,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    margin-top: 2vh;
 }
 
 .imageSelector-card-container {
@@ -318,10 +321,12 @@
 
 .steps-datepicker {
     border-radius: 10px;
+    //font-size: 24px;
 }
 
 .steps-select {
     border-radius: 10px;
+    //font-size: 24px;
 }
 
 .steps-select-container .ant-select .ant-select-selector {
@@ -365,3 +370,103 @@
     border-radius: 10px;
     overflow: hidden;
 }
+
+.color-picker-container {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    margin-top: 2vh;
+}
+
+.color-picker {
+    display: flex;
+    flex-direction: row;   
+    width: 29.5vw;
+        .github-picker{
+            flex-grow: 3;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.5) !important; 
+            box-shadow: none !important;
+            border: 1px solid #d9d9d9 !important;
+            border-radius: 10px !important; 
+            span{
+                width: 55px;
+                height: 55px;
+                margin: 15px 7px;
+                div{
+                    width: 100% !important;
+                    height: 100% !important;
+                    div{
+                        border-radius: 10px;
+                        border: 1px solid rgba($color: #000000, $alpha: 0.2)
+                    }
+                }
+            }
+        }
+}
+
+.steps-price-container {
+    margin-top: 2vh;
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 32px;
+    padding: 20px 30px;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.5);
+
+    .steps-price {
+        display: flex;
+        flex-direction: row;
+
+        Input {
+            text-align: center;
+            width: 15vw;
+            background: #FFFFFF;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            margin-left: 1.5vw;
+            margin-right: 0.5vw;
+
+            font-family: 'Manrope';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 24px;
+        }  
+
+    }
+}
+
+.steps-checkbox-container {
+
+
+    .checkbox-group {
+        flex-grow: 1;
+        display: flex;
+        justify-content: space-around;
+        .ant-checkbox-wrapper{
+            display: flex;
+            align-items: center;
+            .title{
+                font-size: 24px;
+                font-weight: 500;
+            }
+            .ant-checkbox-inner{
+                border-radius: 10px;
+                width: 45px;
+                height: 45px;
+                &::after{
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
