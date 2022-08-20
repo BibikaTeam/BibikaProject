@@ -49,7 +49,7 @@ const MainPageCarCard = ({ car }: IMainPageCarCardProps) => {
 
   return (
     <div className="main-car-card">
-      <Link to={`/car/post/${car.id}`}>
+      <Link to={`/post/${car.id}`}>
         <img src={imgSrc} alt="Car src" />
         <div className="info">
           <h4>{car.car.title}</h4>

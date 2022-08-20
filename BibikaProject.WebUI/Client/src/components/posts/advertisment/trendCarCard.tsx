@@ -34,7 +34,7 @@ const TrendCarCard = ({ car, scale }: ITrendCarCardProps) => {
 
   return (
     <div className="trend-car-card" style={{ transform: `scale(${scale})` }}>
-      <Link to={`/car/post/${car.id}`}>
+      <Link to={`/post/${car.id}`}>
         <img src={imgSrc} alt="" />
         <div className="info-block">
           <span className="trend-title">{car.car.title}</span>

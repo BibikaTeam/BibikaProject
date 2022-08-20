@@ -40,7 +40,7 @@ const CarPreview = ({ car }: ICarPreviewProps) => {
       <Col flex="auto" className="info">
         <Row className="upLine" justify="space-between">
           <Col>
-            <Link to={`/car/post/${car.id}`}>
+            <Link to={`/post/${car.id}`}>
               <span className="carTitle">{car.title}</span>
             </Link>
             <span className="location">{car.location}</span>
