@@ -1,4 +1,5 @@
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, Avatar } from "antd";
+import { UserOutlined } from '@ant-design/icons';
 import { Link } from "react-router-dom";
 
 const Header = () => {
@@ -59,30 +60,8 @@ const Header = () => {
       </div>
 
       <div className="right-header-side">
-      <p>Profile</p>
         <Dropdown overlay={menu} placement="bottomLeft" trigger={["click"]}>
-          <svg
-            width="49"
-            height="49"
-            viewBox="0 0 49 49"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            
-            <circle cx="24.5" cy="24.5" r="24.5" fill="#2D40E0"/>
-            <circle cx="24.5" cy="24.5" r="24.5" fill="url(#pattern0)" />
-            <defs>
-              <pattern
-                id="pattern0"
-                patternContentUnits="objectBoundingBox"
-                width="1"
-                height="1"
-              >
-                <use transform="translate(-1.97931 -2.20455) scale(0.0127126)" />
-              </pattern>
-              <image id="image0_1_130" width="384" height="480"  />
-            </defs>
-          </svg>
+          <Avatar size={49} style={{ backgroundColor: '#2D40E0', marginTop: '5px' }} icon={<UserOutlined />} />
         </Dropdown>
         <Link to="/post/add" className="add-car-button">
           Sell car
@@ -100,7 +79,7 @@ const menu: any = (
       {
         key: "1",
         label: (
-          <Link to={"/user-profile"}>
+          <Link to={"/user-profile/my-posts"}>
             <a
               target="_blank"
               rel="noopener noreferrer"
@@ -112,6 +91,19 @@ const menu: any = (
       },
       {
         key: "2",
+        label: (
+          <Link to={"/user-profile/settings"}>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Settings
+            </a>
+          </Link>
+        ),
+      },
+      {
+        key: "3",
         label: (
           <a
             target="_blank"

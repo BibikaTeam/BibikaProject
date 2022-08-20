@@ -31,7 +31,6 @@ const CarCard = ({ car }: ICarCardProps) => {
       });
     }
   };
-  console.log(imgSrc);
 
   return (
     <Link to={"/post/" + car.id}>

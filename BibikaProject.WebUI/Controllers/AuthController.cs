@@ -55,5 +55,21 @@ namespace BibikaProject.WebUI.Controllers
 
             return Ok(result);
         }
+
+        [HttpPost("reset-password/{email}")]
+        public async Task<IActionResult> ResetPasswordRequest(string email)
+        {
+            await authService.ResetPasswordReqauest(email);
+
+            return Ok();
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest resetPasswordRequest)
+        {
+            await authService.ResetPassword(resetPasswordRequest);
+
+            return Ok();
+        }
     }
 }

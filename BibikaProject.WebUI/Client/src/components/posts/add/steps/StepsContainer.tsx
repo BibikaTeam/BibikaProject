@@ -12,11 +12,11 @@ let addPostModel: AddPostModel = {
     carId: 0,
     description: "",
     location: "",
-    color: "blue",
-    mileage: 10,
+    color: "",
+    mileage: 1000,
     year: "",
     sellerId: "",
-    price: 10000
+    price: 0
 }
 
 let images: number[] = [];
@@ -35,6 +35,8 @@ const StepsContainer: FC = () => {
     const onSecondStepFinish = (values: any) => {
         addPostModel.description = values.description;
         addPostModel.year = `${values.selectedYear}-07-12T17:03:18.227Z`;
+        addPostModel.color = values.selectedColor;
+        addPostModel.price = values.selectedPrice;
         getCarIdByParams(
             {
                 generationId: values.selectedGeneration,

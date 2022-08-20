@@ -60,5 +60,13 @@ namespace BibikaProject.WebUI.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("get/{id}")]
+        public async Task<IActionResult> GetCarById(int id)
+        {
+            var result = await carService.GetCarById(id);
+
+            return Ok(result);
+        }
     }
 }
