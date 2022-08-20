@@ -33,10 +33,11 @@ instance.interceptors.response.use(
       if (err.response.status === 401 && !originalConfig._retry) {
         originalConfig._retry = true;
         try {
-          const rs = await refreshToken();
+          const rs = await getRefreshToken();
           const { token } = rs.data;
-          console.log("data: ", rs.data);
+          const { refreshTokenThere } = rs.data;
           window.localStorage.setItem("token", token);
+          window.localStorage.setItem("refreshToken", refreshTokenThere);
           instance.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("token")}`;
           return instance(originalConfig);
         } catch (_error) {
@@ -54,7 +55,7 @@ instance.interceptors.response.use(
   }
 );
 
-function refreshToken() {
+function getRefreshToken() {
   return instance.post("/api/refresh", {
     refreshToken: getLocalRefreshToken(),
     token: getLocalAccessToken()

@@ -14,6 +14,7 @@ import {
   ICarBodyModel,
   IGearboxModel,
 } from "../../adminPanel/types";
+import MySelect from "../../common/ownElement/select";
 
 import { Form } from "antd";
 import { ICurrentCarDetailProps } from "./types";
@@ -26,6 +27,7 @@ import {
 } from "../add/service";
 import { getCompleteSetsByGeneration } from "../../adminPanel/completeSet/service";
 import { getMinMaxYearPriceByGeneration } from "./serivce";
+import MyInput from "../../common/ownElement/input";
 
 const { Panel } = Collapse;
 
@@ -184,6 +186,9 @@ const CurrentCarDetailSearch = ({ updateCar }: ICurrentCarSearchPanelProps) => {
       setMinPrice(data?.minPrice as number);
       setMaxPrice(data?.maxPrice as number);
 
+      filter.current.priceMin = data?.minPrice as number;
+      filter.current.priceMax = data?.maxPrice as number;
+
       const tmpArr: Array<number> = [];
       for (let i = minYearNumb; i <= maxYearNumb; i++) {
         tmpArr.push(i);
@@ -274,127 +279,93 @@ const CurrentCarDetailSearch = ({ updateCar }: ICurrentCarSearchPanelProps) => {
     <>
       <div className="first-line line">
         <div className="search-input-container">
-          <Form.Item name={"brand"}>
-            <Select
-              placeholder={"Brand"}
-              className="search-input"
-              onChange={onBrandChange}
-              loading={brandLoading}
-            >
-              {brandList.map((brand: IBrandModel) => {
-                return (
-                  <Select.Option key={brand.id}>{brand.title}</Select.Option>
-                );
-              })}
-            </Select>
-          </Form.Item>
+          <MySelect
+            placeholder={"Brand"}
+            className="search-input"
+            onChange={onBrandChange}
+            loading={brandLoading}
+            values={brandList.map((x) => ({ value: x.id, label: x.title }))}
+            value={filter.current.brandId}
+          />
         </div>
 
         <div className="search-input-container">
-          <Form.Item name={"brand"}>
-            <Select
-              placeholder={"Model"}
-              className="search-input"
-              onChange={onModelChange}
-              disabled={modelDisable}
-              loading={modelLoading}
-            >
-              {modelList.map((model: IModelModel) => {
-                return (
-                  <Select.Option key={model.id}>{model.title}</Select.Option>
-                );
-              })}
-            </Select>
-          </Form.Item>
+          <MySelect
+            placeholder={"Model"}
+            className="search-input"
+            onChange={onModelChange}
+            disabled={modelDisable}
+            loading={modelLoading}
+            values={modelList.map((x) => ({ value: x.id, label: x.title }))}
+            value={filter.current.modelId}
+          />
         </div>
         <div className="search-input-container">
-          <Form.Item name={"brand"}>
-            <Select
-              placeholder={"Generation"}
-              className="search-input"
-              disabled={generationDisable}
-              loading={generationLoading}
-              onChange={onGenerationChange}
-            >
-              {generationList.map((generation: IGenerationModel) => {
-                return (
-                  <Select.Option key={generation.id}>
-                    {generation.title}
-                  </Select.Option>
-                );
-              })}
-            </Select>
-          </Form.Item>
+          <MySelect
+            placeholder={"Generation"}
+            className="search-input"
+            disabled={generationDisable}
+            loading={generationLoading}
+            onChange={onGenerationChange}
+            value={filter.current.generationId}
+            values={generationList.map((x) => ({
+              value: x.id,
+              label: x.title,
+            }))}
+          />
         </div>
       </div>
       <div className="second-line line">
         <div className="search-input-container">
-          <Form.Item name={"completeSet"}>
-            <Select
-              placeholder={"Complete set"}
-              className="search-input"
-              onChange={onCompleteSetChange}
-              disabled={generationDependDisable}
-            >
-              {completeSetList.map((completeSet: ICompleteSetModel) => {
-                return (
-                  <Select.Option key={completeSet.id}>
-                    {completeSet.title}
-                  </Select.Option>
-                );
-              })}
-            </Select>
-          </Form.Item>
+          <MySelect
+            placeholder={"Complete set"}
+            className="search-input"
+            onChange={onCompleteSetChange}
+            disabled={generationDependDisable}
+            values={completeSetList.map((x) => ({
+              value: x.id,
+              label: x.title,
+            }))}
+            value={filter.current.completeSetId}
+          />
         </div>
 
         <div className="search-input-container">
-          <Form.Item name={"carBody"}>
-            <Select
-              placeholder={"Car body"}
-              className="search-input"
-              disabled={generationDependDisable}
-              onChange={onCarBodyChange}
-            >
-              {carBodyList.map((carBody: ICarBodyModel) => {
-                return (
-                  <Select.Option key={carBody.id}>
-                    {carBody.title}
-                  </Select.Option>
-                );
-              })}
-            </Select>
-          </Form.Item>
+          <MySelect
+            placeholder={"Car body"}
+            className="search-input"
+            disabled={generationDependDisable}
+            onChange={onCarBodyChange}
+            values={carBodyList.map((x) => ({ value: x.id, label: x.title }))}
+            value={filter.current.carBodyId}
+          />
         </div>
       </div>
       <div className="third-line line">
         <div className="from-to-container">
-          <span>Year</span>
-          <Form.Item name="yearFrom">
-            <span className="hint">from</span>
-            <Select
-              className="from-to-select"
-              disabled={generationDependDisable}
-              onChange={onYearFromChange}
-              placeholder={minYear === -1 ? null : minYear}
-            >
-              {yearsList.map((year: number) => {
-                return <Select.Option key={year}>{year}</Select.Option>;
-              })}
-            </Select>
-          </Form.Item>
-          <Form.Item name="yearTo">
-            <span className="hint">to</span>
-            <Select
-              className="from-to-select"
-              disabled={generationDependDisable}
-              onChange={onYearToChange}
-              placeholder={maxYear === -1 ? null : maxYear}
-            >
-              {yearsList.map((year: number) => {
-                return <Select.Option key={year}>{year}</Select.Option>;
-              })}
-            </Select>
-          </Form.Item>
+          {/* <span>Year</span> */}
+          <div className="from-to-flex">
+            <div className="from-to-select-container">
+              <span className="hint">from</span>
+              <MySelect
+                className="from-to-select"
+                disabled={generationDependDisable}
+                onChange={onYearFromChange}
+                value={minYear === -1 ? undefined : minYear}
+                values={yearsList.map((x: number) => ({ value: x, label: x }))}
+              />
+            </div>
+            <div className="from-to-select-container">
+              <span className="hint">to</span>
+              <MySelect
+                className="from-to-select"
+                disabled={generationDependDisable}
+                onChange={onYearToChange}
+                value={maxYear === -1 ? undefined : maxYear}
+                values={yearsList.map((x) => ({ value: x, label: x }))}
+              />
+            </div>
+          </div>
         </div>
         <GithubPicker
           colors={[
@@ -413,72 +384,57 @@ const CurrentCarDetailSearch = ({ updateCar }: ICurrentCarSearchPanelProps) => {
       </div>
       <div className="fourth-line line">
         <div className="search-input-container">
-          <Form.Item name={"fuelType"}>
-            <Select
-              placeholder={"Fuel"}
-              className="search-input"
-              onChange={onFuelChange}
-              disabled={generationDependDisable}
-            >
-              {fuelList.map((fuelType: string) => {
-                return <Select.Option key={fuelType}>{fuelType}</Select.Option>;
-              })}
-            </Select>
-          </Form.Item>
+          <MySelect
+            placeholder={"Fuel"}
+            className="search-input"
+            onChange={onFuelChange}
+            disabled={generationDependDisable}
+            values={fuelList.map((x) => ({ value: x, label: x }))}
+          />
         </div>
         <div className="search-input-container">
-          <Form.Item name={"engine"}>
-            <Select
-              placeholder={"Engine"}
-              className="search-input"
-              onChange={onEngineChange}
-              disabled={generationDependDisable}
-            >
-              {engineList.map((engine: IEngineModel) => {
-                return (
-                  <Select.Option key={engine.id}>{engine.title}</Select.Option>
-                );
-              })}
-            </Select>
-          </Form.Item>
+          <MySelect
+            placeholder={"Engine"}
+            className="search-input"
+            onChange={onEngineChange}
+            disabled={generationDependDisable}
+            values={engineList.map((x) => ({ value: x.id, label: x.title }))}
+            value={filter.current.engineId}
+          />
         </div>
         <div className="search-input-container">
-          <Form.Item name={"gearboxType"}>
-            <Select
-              placeholder={"Gearbox type"}
-              className="search-input"
-              onChange={onGearboxChange}
-              disabled={generationDependDisable}
-            >
-              {gearBoxList.map((gearbox: IGearboxModel) => {
-                return (
-                  <Select.Option key={gearbox.id}>
-                    {gearbox.title}
-                  </Select.Option>
-                );
-              })}
-            </Select>
-          </Form.Item>
+          <MySelect
+            placeholder={"Gearbox type"}
+            className="search-input"
+            onChange={onGearboxChange}
+            disabled={generationDependDisable}
+            values={gearBoxList.map((x) => ({ value: x.id, label: x.title }))}
+            value={filter.current.gearBoxId}
+          />
         </div>
       </div>
       <div className="fifth-line line">
         <div className="from-to-container">
-          <span>Price</span>
-          <Form.Item name="priceFrom">
-            <span className="hint">from</span>
-            <Input
-              onChange={onPriceFromChange}
-              placeholder={minPrice === -1 ? "" : minPrice.toString()}
-            />
-          </Form.Item>
-          <Form.Item name="priceTo">
-            <span className="hint">to</span>
-            <Input
-              onChange={onPriceToChange}
-              placeholder={maxPrice === -1 ? "" : maxPrice.toString()}
-            />
-          </Form.Item>
-          <span>$</span>
+          {/* <span>Price</span> */}
+          <div className="from-to-flex">
+            <div className="from-to-select-container">
+              <span className="hint">from</span>
+              <MyInput
+                onChange={onPriceFromChange}
+                placeholder={minPrice === -1 ? "" : minPrice.toString()}
+                value={filter.current.priceMin}
+              />
+            </div>
+            <div className="from-to-select-container">
+              <span className="hint">to</span>
+              <MyInput
+                onChange={onPriceToChange}
+                // placeholder={maxPrice === -1 ? "" : maxPrice.toString()}
+                value={filter.current.priceMax}
+              />
+            </div>
+          </div>
+          {/* <span>$</span> */}
         </div>
         <div className="checkbox-group">
           <Checkbox>

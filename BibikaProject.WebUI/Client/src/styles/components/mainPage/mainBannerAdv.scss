@@ -1,12 +1,15 @@
 .adv-main-banner {
-    width: 1620px;
+    // width: 1620px;
+    // width: 100%;
+
     height: 500px;
     position: relative;
     border-radius: 10px;
     background-position: 50% 30%;
 
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 8%;
+    margin-right: 8%;
+    // margin-right: 150px;
     
     .main-adv-info{
         position: absolute;
