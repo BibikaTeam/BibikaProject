@@ -8,17 +8,17 @@ export interface IProfileCarPreview {
   messages: number;
 }
 
-export interface IContact {
+export interface IUpdateContactModel {
   name: string;
 }
 
-export interface IPassword {
+export interface IUpdatePasswordModel {
   oldPassword: string;
   newPassword: string;
   confirmPassword: string;
 }
 
-export interface IEmail {
+export interface IUpdateEmailModel {
   newEmail: string;
   password: string;
 }

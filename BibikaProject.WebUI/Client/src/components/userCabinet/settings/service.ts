@@ -1,13 +1,13 @@
-import { IContact, IEmail, IPassword } from "../types";
+import { IUpdateContactModel, IUpdatePasswordModel, IUpdateEmailModel } from "../types";
 
-export const saveContact = (values: IContact) => {
+export const saveContact = (values: IUpdateContactModel) => {
     console.log("contact", values);
 }
 
-export const savePassword = (values: IPassword) => {
+export const savePassword = (values: IUpdatePasswordModel) => {
     console.log("password", values);
 }
 
-export const saveEmail = (values: IEmail) => {
+export const saveEmail = (values: IUpdateEmailModel) => {
     console.log("email", values);
 }
