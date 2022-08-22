@@ -22,7 +22,7 @@ const CarCard = ({ car }: ICarCardProps) => {
     try {
       const imgName = await getImagesByPostId(car.id);
       if (imgName && imgName[0] && (imgName[0] as string)) {
-        setImgSrc(`https://localhost:5001/images/${imgName[0]}_medium.png`);
+        setImgSrc(`/images/${imgName[0]}_medium.png`);
       }
     } catch (_error) {
       const error: IRequestError = _error as IRequestError;

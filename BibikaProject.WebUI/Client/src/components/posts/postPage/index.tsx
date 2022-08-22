@@ -104,9 +104,7 @@ const PostPage = () => {
 
       <div className="post-page-images">
         <div className="post-page-current-image">
-          <img
-            src={`https://localhost:5001/images/${images[currentImageIndex]}.png`}
-          />
+          <img src={`/images/${images[currentImageIndex]}.png`} />
           <svg
             onClick={onImagePrev}
             className="left-arrow"
@@ -147,9 +145,7 @@ const PostPage = () => {
             if (index != currentImageIndex) {
               return (
                 <div className="post-page-side-image">
-                  <img
-                    src={`https://localhost:5001/images/${data}_small.png`}
-                  />
+                  <img src={`/images/${data}_small.png`} />
                 </div>
               );
             }
