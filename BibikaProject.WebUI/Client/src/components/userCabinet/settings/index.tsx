@@ -1,4 +1,4 @@
-import { Button, Collapse, Form, Input} from "antd";
+import { Button, Collapse, Form, Input } from "antd";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { logoutUser } from "../../authorization/login/actions";
@@ -8,37 +8,75 @@ import { saveContact, saveEmail, savePassword } from "./service";
 const { Panel } = Collapse;
 
 const SettingsProfile = () => {
-    const [oldPassword, setOldPassword] = useState("");
-    const [newPassword, setNewPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [newEmail, setNewEmail] = useState("");
-    const [passwordEmail, setPasswordEmail] = useState("");
-    const [updateContactModel, setUpdateContactModel] = useState<IUpdateContactModel> ({
-        name:""
+    const [updateContactModel, setUpdateContactModel] = useState<IUpdateContactModel>({
+        name: ""
     });
     const [updatePasswordModel, setUpdatePasswordModel] = useState<IUpdatePasswordModel>({
-        oldPassword:"",
-        newPassword:"",
-        confirmPassword:""
+        oldPassword: "",
+        newPassword: "",
+        confirmPassword: ""
     });
+    const [updateEmailModel, setUpdateEmailModel] = useState<IUpdateEmailModel>({
+        newEmail: "",
+        password: ""
+    })
 
-    const handleContactChange = (contact: React.ChangeEvent<HTMLInputElement>) => {
-        setUpdateContactModel({...updateContactModel, name: contact.target.value})
+    const [disableConfirmPassword, setDisabledConfirmPassword] = useState<boolean>(true);
+    const [disableInputEmailPassword, setDisabledInputEmailPassword] = useState<boolean>(true);
+    const [disableSaveButtonContact, setDisableSaveButtonContact] = useState<boolean>(true);
+    const [disableSaveButtonPassword, setDisableSaveButtonPassword] = useState<boolean>(true);
+    const [disableSaveButtonEmail, setDisableSaveButtonEmail] = useState<boolean>(true);
+
+    const handleContactChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.value == "") {
+            setDisableSaveButtonContact(true);
+        }
+        else {
+            setDisableSaveButtonContact(false);
+            setUpdateContactModel({ ...updateContactModel, name: e.target.value })
+        }
     }
-    const handleOldPasswordChange = (password: React.ChangeEvent<HTMLInputElement>) => {
-        setUpdatePasswordModel({...updatePasswordModel, oldPassword: password.target.value});
+    const handleOldPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUpdatePasswordModel({ ...updatePasswordModel, oldPassword: e.target.value });
+
     }
-    const handleNewPasswordChange = (password: React.ChangeEvent<HTMLInputElement>) => {
-        setUpdatePasswordModel({...updatePasswordModel, newPassword: password.target.value});
+    const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.value.length >= 6) {
+            setUpdatePasswordModel({ ...updatePasswordModel, newPassword: e.target.value });
+            setDisabledConfirmPassword(false)
+        }
+        else if (e.target.value.length < 6) {
+            e.target.placeholder = "The password can be at least 6 characters long"
+            setDisabledConfirmPassword(true);
+        }
     }
-    const handleConfirmPasswordChange = (password: React.ChangeEvent<HTMLInputElement>) => {
-        setUpdatePasswordModel({...updatePasswordModel, confirmPassword: password.target.value});
+    const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.value == updatePasswordModel.newPassword) {
+            setDisableSaveButtonPassword(false);
+            setUpdatePasswordModel({ ...updatePasswordModel, confirmPassword: e.target.value });
+        }
+        else {
+            setDisableSaveButtonPassword(true);
+        }
+
     }
-    const changeInputNewEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setNewEmail(e.target.value);
+    const handleNewEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.value == "") {
+            setDisabledInputEmailPassword(true);
+        }
+        else {
+            setDisabledInputEmailPassword(false);
+            setUpdateEmailModel({ ...updateEmailModel, newEmail: e.target.value });
+        }
     }
-    const changeInputEmailPasssword = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPasswordEmail(e.target.value);
+    const handleEmailPassswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.value == "") {
+            setDisableSaveButtonEmail(true);
+        }
+        else {
+            setDisableSaveButtonEmail(false);
+            setUpdateEmailModel({ ...updateEmailModel, password: e.target.value });
+        }
     }
 
     const handleSaveContact = () => {
@@ -46,20 +84,11 @@ const SettingsProfile = () => {
     }
 
     const handleSavePassword = () => {
-        const values: IUpdatePasswordModel = {
-            oldPassword: oldPassword,
-            newPassword: newPassword,
-            confirmPassword: confirmPassword
-        } 
-        savePassword(values);
+        savePassword(updatePasswordModel);
     }
 
     const handleSaveEmail = () => {
-        const values: IUpdateEmailModel = {
-            newEmail: newEmail,
-            password: passwordEmail
-        }
-        saveEmail(values);
+        saveEmail(updateEmailModel);
     }
 
     const handleLogout = () => {
@@ -73,26 +102,27 @@ const SettingsProfile = () => {
                 <div className="settings-dropdown">
                     <Collapse expandIconPosition={"end"} className="settings-menu" bordered={false}>
                         <Panel header="Contact" key="1" className="settings-submenu-container">
-                            <Form>
-                                <Form.Item>
-                                    
-                                </Form.Item>
-                            </Form>
                             <div className="settings-input-container">
                                 Name
-                                <Input onChange={handleContactChange} className="settings-input"/>
+                                <Input
+                                    onChange={handleContactChange}
+                                    className="settings-input"
+                                />
                             </div>
                             {/* <div className="settings-input-container">
                                 Locality
                                 <Input className="settings-input" />
                             </div> */}
                             <div className="settings-button-container">
-                                <Button className="settings-button" onClick={handleSaveContact}>Save</Button>
+                                <Button
+                                    className="settings-button"
+                                    onClick={handleSaveContact}
+                                    disabled={disableSaveButtonContact}>
+                                    Save</Button>
                             </div>
                         </Panel>
                     </Collapse>
                 </div>
-
                 <div className="settings-dropdown">
                     <Collapse expandIconPosition={"end"} className="settings-menu" bordered={false}>
                         <Panel header="Password" key="1" className="settings-submenu-container">
@@ -102,37 +132,59 @@ const SettingsProfile = () => {
                             </div>
                             <div className="settings-input-container">
                                 New password
-                                <Input.Password className="settings-input" onChange={handleNewPasswordChange} />
+                                <Input.Password
+                                    className="settings-input"
+                                    onChange={handleNewPasswordChange}
+                                    placeholder={"The password can be at least 6 characters long"}
+                                />
                             </div>
                             <div className="settings-input-container">
                                 Confirm password
-                                <Input.Password className="settings-input" onChange={handleConfirmPasswordChange} />
+                                <Input.Password
+                                    className="settings-input"
+                                    onChange={handleConfirmPasswordChange}
+                                    disabled={disableConfirmPassword}
+                                />
                             </div>
                             <div className="settings-button-container">
-                                <Button className="settings-button" onClick={handleSavePassword}>Save</Button>
+                                <Button
+                                    className="settings-button"
+                                    onClick={handleSavePassword}
+                                    disabled={disableSaveButtonPassword}>
+                                    Save</Button>
                             </div>
                         </Panel>
                     </Collapse>
                 </div>
-
                 <div className="settings-dropdown">
                     <Collapse expandIconPosition={"end"} className="settings-menu" bordered={false}>
                         <Panel header="Email address" key="1" className="settings-submenu-container">
                             <div className="settings-input-container">
                                 New email address
-                                <Input className="settings-input" onChange={changeInputNewEmail} />
+                                <Input
+                                    className="settings-input"
+                                    type="email"
+                                    onChange={handleNewEmailChange}
+                                />
                             </div>
                             <div className="settings-input-container">
                                 Password
-                                <Input className="settings-input" onChange={changeInputEmailPasssword} />
+                                <Input
+                                    className="settings-input"
+                                    onChange={handleEmailPassswordChange}
+                                    disabled={disableInputEmailPassword}
+                                />
                             </div>
                             <div className="settings-button-container">
-                                <Button className="settings-button" onClick={handleSaveEmail}>Save</Button>
+                                <Button
+                                    className="settings-button"
+                                    onClick={handleSaveEmail}
+                                    disabled={disableSaveButtonEmail}>
+                                    Save</Button>
                             </div>
                         </Panel>
                     </Collapse>
                 </div>
-
                 <div className="delete-button">
                     <Link to="#" className="link-button">
                         Delete profile
