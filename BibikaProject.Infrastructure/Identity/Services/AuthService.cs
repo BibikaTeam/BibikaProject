@@ -371,6 +371,30 @@ namespace BibikaProject.Infrastructure.Identity.Services
             await emailSender.SendAsync(email, "Password Resset", body);
         }
 
+        public async Task ChangeUserName(ChaneUserNameRequest chaneUserNameRequest)
+        {
+            var user = await userManager.FindByEmailAsync(chaneUserNameRequest.Email);
+
+            if (user == null)
+            {
+                throw new IdentityException("Wrong email or password", HttpStatusCode.Unauthorized);
+            }
+
+            if (!await userManager.CheckPasswordAsync(user, chaneUserNameRequest.Password))
+            {
+                throw new IdentityException("Wrong email or password", HttpStatusCode.Unauthorized);
+            }
+
+            user.UserName = chaneUserNameRequest.NewUserName;
+
+            var result = await userManager.UpdateAsync(user);     
+            
+            if (!result.Succeeded)
+            {
+                throw new IdentityException(result.Errors.Select(x => x.Description).ToArray(), HttpStatusCode.BadRequest);
+            }
+        }
+
         private string Encode(string token)
         {
             var result = token.Replace('/', '.').Replace('+', '-');
@@ -383,6 +407,6 @@ namespace BibikaProject.Infrastructure.Identity.Services
             var result = token.Replace('.', '/').Replace('-', '+');
 
             return result;
-        }
+        }   
     }
 }

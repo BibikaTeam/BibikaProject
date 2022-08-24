@@ -71,5 +71,13 @@ namespace BibikaProject.WebUI.Controllers
 
             return Ok();
         }
+
+        [HttpPost("change-username")]
+        public async Task<IActionResult> ChanegUserName([FromBody] ChaneUserNameRequest chaneUserNameRequest)
+        {
+            await authService.ChangeUserName(chaneUserNameRequest);
+
+            return Ok();
+        }
     }
 }
