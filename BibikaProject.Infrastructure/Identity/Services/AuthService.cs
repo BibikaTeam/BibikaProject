@@ -352,7 +352,7 @@ namespace BibikaProject.Infrastructure.Identity.Services
                 throw new IdentityException("User not found", HttpStatusCode.NotFound);
             }
 
-            await userManager.ResetPasswordAsync(user, request.Token, request.NewPassword);
+            await userManager.ResetPasswordAsync(user, Decode(request.Token), request.NewPassword);
         }
 
         public async Task ResetPasswordReqauest(string email)
@@ -366,9 +366,23 @@ namespace BibikaProject.Infrastructure.Identity.Services
 
             var token = await userManager.GeneratePasswordResetTokenAsync(user);
 
-            var body = TemplateEngine.GetResetPasswordTemplate(user.UserName, token);
+            var body = TemplateEngine.GetResetPasswordTemplate(user.UserName, Encode(token));
 
             await emailSender.SendAsync(email, "Password Resset", body);
+        }
+
+        private string Encode(string token)
+        {
+            var result = token.Replace('/', '.').Replace('+', '-');
+
+            return result;
+        }
+
+        private string Decode(string token)
+        {
+            var result = token.Replace('.', '/').Replace('-', '+');
+
+            return result;
         }
     }
 }
