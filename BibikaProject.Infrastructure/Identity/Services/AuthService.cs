@@ -352,7 +352,7 @@ namespace BibikaProject.Infrastructure.Identity.Services
                 throw new IdentityException("User not found", HttpStatusCode.NotFound);
             }
 
-            await userManager.ResetPasswordAsync(user, request.Token, request.NewPassword);
+            await userManager.ResetPasswordAsync(user, Decode(request.Token), request.NewPassword);
         }
 
         public async Task ResetPasswordReqauest(string email)
@@ -366,9 +366,47 @@ namespace BibikaProject.Infrastructure.Identity.Services
 
             var token = await userManager.GeneratePasswordResetTokenAsync(user);
 
-            var body = TemplateEngine.GetResetPasswordTemplate(user.UserName, token);
+            var body = TemplateEngine.GetResetPasswordTemplate(user.UserName, Encode(token));
 
             await emailSender.SendAsync(email, "Password Resset", body);
         }
+
+        public async Task ChangeUserName(ChaneUserNameRequest chaneUserNameRequest)
+        {
+            var user = await userManager.FindByEmailAsync(chaneUserNameRequest.Email);
+
+            if (user == null)
+            {
+                throw new IdentityException("Wrong email or password", HttpStatusCode.Unauthorized);
+            }
+
+            if (!await userManager.CheckPasswordAsync(user, chaneUserNameRequest.Password))
+            {
+                throw new IdentityException("Wrong email or password", HttpStatusCode.Unauthorized);
+            }
+
+            user.UserName = chaneUserNameRequest.NewUserName;
+
+            var result = await userManager.UpdateAsync(user);     
+            
+            if (!result.Succeeded)
+            {
+                throw new IdentityException(result.Errors.Select(x => x.Description).ToArray(), HttpStatusCode.BadRequest);
+            }
+        }
+
+        private string Encode(string token)
+        {
+            var result = token.Replace('/', '.').Replace('+', '-');
+
+            return result;
+        }
+
+        private string Decode(string token)
+        {
+            var result = token.Replace('.', '/').Replace('-', '+');
+
+            return result;
+        }   
     }
 }
