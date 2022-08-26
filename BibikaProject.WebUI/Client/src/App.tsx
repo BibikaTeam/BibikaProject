@@ -30,6 +30,7 @@ import PostPage from "./components/posts/postPage";
 import DetailSearch from "./components/posts/search/detailSearch";
 import Test from "./components/test";
 import AdvOrderPage from "./components/posts/advertisment/advOrder";
+import ChangePasswordPage from "./components/userCabinet/settings/changePassword";
 
 function App() {
   return (
@@ -54,7 +55,9 @@ function App() {
               <Route
                 path="/user-profile/settings"
                 element={<SettingsProfile />}
-              />
+              >
+                <Route path="/user-profile/settings/change-password" element={<ChangePasswordPage />}/>
+              </Route>
             </Route>
 
             <Route path="/post/add" element={<AddPostPage />} />

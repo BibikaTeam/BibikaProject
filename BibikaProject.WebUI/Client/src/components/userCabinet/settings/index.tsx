@@ -130,7 +130,7 @@ const SettingsProfile = () => {
                                 Old password
                                 <Input.Password className="settings-input" onChange={handleOldPasswordChange} />
                             </div>
-                            <div className="settings-input-container">
+                            {/* <div className="settings-input-container">
                                 New password
                                 <Input.Password
                                     className="settings-input"
@@ -145,13 +145,15 @@ const SettingsProfile = () => {
                                     onChange={handleConfirmPasswordChange}
                                     disabled={disableConfirmPassword}
                                 />
-                            </div>
+                            </div> */}
                             <div className="settings-button-container">
-                                <Button
-                                    className="settings-button"
-                                    onClick={handleSavePassword}
-                                    disabled={disableSaveButtonPassword}>
-                                    Save</Button>
+                                <Link to="/user-profile/settings/change-password">
+                                    <Button
+                                        className="settings-button"
+                                        onClick={handleSavePassword}>
+                                        Save</Button>
+                                </Link>
+
                             </div>
                         </Panel>
                     </Collapse>
