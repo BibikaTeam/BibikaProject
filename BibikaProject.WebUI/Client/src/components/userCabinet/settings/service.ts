@@ -11,3 +11,7 @@ export const savePassword = (values: IUpdatePasswordModel) => {
 export const saveEmail = (values: IUpdateEmailModel) => {
     console.log("email", values);
 }
+
+export const getUserName = () => {
+    
+}
