@@ -147,10 +147,11 @@ const SettingsProfile = () => {
                                 />
                             </div> */}
                             <div className="settings-button-container">
-                                <Link to="/user-profile/settings/change-password">
+                                <Link to="/user-profile/settings/change-password" className="settings-button-changePassword">
                                     <Button
                                         className="settings-button"
-                                        onClick={handleSavePassword}>
+                                        onClick={handleSavePassword}
+                                        disabled={disableSaveButtonPassword}> 
                                         Save</Button>
                                 </Link>
 
