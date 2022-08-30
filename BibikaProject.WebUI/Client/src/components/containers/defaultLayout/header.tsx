@@ -1,6 +1,7 @@
 import { Dropdown, Menu, Avatar } from "antd";
 import { UserOutlined } from '@ant-design/icons';
 import { Link } from "react-router-dom";
+import { logoutUser } from "../../authorization/login/actions";
 
 const Header = () => {
   return (
@@ -92,6 +93,32 @@ const menu: any = (
       {
         key: "2",
         label: (
+          <Link to={"/user-profile/message"}>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Message
+            </a>
+          </Link>
+        ),
+      },
+      {
+        key: "3",
+        label: (
+          <Link to={"/user-profile/saved-posts"}>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Save posts
+            </a>
+          </Link>
+        ),
+      },
+      {
+        key: "4",
+        label: (
           <Link to={"/user-profile/settings"}>
             <a
               target="_blank"
@@ -105,13 +132,15 @@ const menu: any = (
       {
         key: "3",
         label: (
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.aliyun.com"
-          >
-            Logout
-          </a>
+          <Link to={"/login"} onClick={logoutUser}>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Logout
+            </a>
+          </Link>
+
         ),
       },
       // {

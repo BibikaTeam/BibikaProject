@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { logoutUser } from "../../authorization/login/actions";
 import { IConfirmOldPasswordModel, IUpdateContactModel, IUpdateEmailModel } from "../types";
-import { saveContact, saveEmail, savePassword } from "./service";
+import { confirmOldPassword, saveContact, saveEmail, savePassword } from "./service";
 
 const { Panel } = Collapse;
 
@@ -11,7 +11,7 @@ const SettingsProfile = () => {
     const [updateContactModel, setUpdateContactModel] = useState<IUpdateContactModel>({
         name: ""
     });
-    const [updatePasswordModel, setUpdatePasswordModel] = useState<IConfirmOldPasswordModel>({
+    const [confirmStateOldPasswordModel, setConfirmStateOldPasswordModel] = useState<IConfirmOldPasswordModel>({
         oldPassword: "",
     });
     const [updateEmailModel, setUpdateEmailModel] = useState<IUpdateEmailModel>({
@@ -35,13 +35,11 @@ const SettingsProfile = () => {
     const handleOldPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.value.length >= 2) {
             setDisableSaveButtonPassword(false);
-            setUpdatePasswordModel({ ...updatePasswordModel, oldPassword: e.target.value });
+            setConfirmStateOldPasswordModel({ ...confirmStateOldPasswordModel, oldPassword: e.target.value });
         }
         else {
             setDisableSaveButtonPassword(true);
         }
-
-
     }
     const handleNewEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.value == "") {
@@ -67,7 +65,7 @@ const SettingsProfile = () => {
     }
 
     const handleConfirmOldPassword = () => {
-        console.log("Confirm");
+        confirmOldPassword(confirmStateOldPasswordModel);
 
     }
 

@@ -16,9 +16,8 @@ export interface IConfirmOldPasswordModel {
   oldPassword: string;
 }
 
-export interface IUpdatePasswordModel {
+export interface INewPasswordModel {
   newPassword: string;
-  confirmPassword: string;
 }
 
 export interface IResetPasswordRequestModel {

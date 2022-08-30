@@ -2,7 +2,7 @@ import { Button, Input } from "antd";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { logoutUser } from "../../authorization/login/actions";
-import { IUpdatePasswordModel } from "../types";
+import { INewPasswordModel } from "../types";
 import { savePassword } from "./service";
 
 const ChangePasswordPage = () => {
@@ -10,14 +10,13 @@ const ChangePasswordPage = () => {
     const [disableConfirmPassword, setDisableConfirmPassword] = useState<boolean>(true);
     const [disableSaveButtonPassword, setDisableSaveButtonPassword] = useState<boolean>(true);
 
-    const [updatePasswordModel, setUpdatePasswordModel] = useState<IUpdatePasswordModel>({
+    const [newPasswordModel, setNewPasswordModel] = useState<INewPasswordModel>({
         newPassword: "",
-        confirmPassword: ""
     });
 
     const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.value.length >= 6) {
-            setUpdatePasswordModel({ ...updatePasswordModel, newPassword: e.target.value });
+            setNewPasswordModel({ ...newPasswordModel, newPassword: e.target.value });
             setDisableConfirmPassword(false)
         }
         else if (e.target.value.length < 6) {
@@ -26,9 +25,8 @@ const ChangePasswordPage = () => {
         }
     }
     const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.value == updatePasswordModel.newPassword) {
+        if (e.target.value == newPasswordModel.newPassword) {
             setDisableSaveButtonPassword(false);
-            setUpdatePasswordModel({ ...updatePasswordModel, confirmPassword: e.target.value });
         }
         else {
             setDisableSaveButtonPassword(true);
@@ -36,7 +34,7 @@ const ChangePasswordPage = () => {
     }
 
     const handleSavePassword = () => {
-        savePassword(updatePasswordModel);
+        savePassword(newPasswordModel);
         logoutUser();
     }
 
@@ -67,7 +65,6 @@ const ChangePasswordPage = () => {
                         disabled={disableSaveButtonPassword}>
                         Save</Button>
                 </Link>
-
             </div>
         </div>
     )
