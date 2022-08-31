@@ -1,11 +1,15 @@
 import { Button, Input } from "antd";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { logoutUser } from "../../authorization/login/actions";
 import { INewPasswordModel } from "../types";
 import { savePassword } from "./service";
 
+
 const ChangePasswordPage = () => {
+
+    const { user } = useTypedSelector((redux) => redux.login);
 
     const [disableConfirmPassword, setDisableConfirmPassword] = useState<boolean>(true);
     const [disableSaveButtonPassword, setDisableSaveButtonPassword] = useState<boolean>(true);

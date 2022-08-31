@@ -62,7 +62,7 @@ const Header = () => {
 
       <div className="right-header-side">
         <Dropdown overlay={menu} placement="bottomLeft" trigger={["click"]}>
-          <Avatar size={49} style={{ backgroundColor: '#2D40E0', marginTop: '5px' }} icon={<UserOutlined />} />
+          <Avatar size={49} style={{ marginTop: '5px' }} icon={<UserOutlined />} />
         </Dropdown>
         <Link to="/post/add" className="add-car-button">
           Sell car

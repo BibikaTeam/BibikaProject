@@ -1,13 +1,19 @@
 import { Button, Collapse, Form, Input } from "antd";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { logoutUser } from "../../authorization/login/actions";
+import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import { loginUser, logoutUser } from "../../authorization/login/actions";
+import { ILoginModel } from "../../authorization/types";
 import { IConfirmOldPasswordModel, IUpdateContactModel, IUpdateEmailModel } from "../types";
-import { confirmOldPassword, saveContact, saveEmail, savePassword } from "./service";
+import { confirmOldPassword, saveContact, saveEmail } from "./service";
+
 
 const { Panel } = Collapse;
 
 const SettingsProfile = () => {
+
+    const { user } = useTypedSelector((redux) => redux.login);
+
     const [updateContactModel, setUpdateContactModel] = useState<IUpdateContactModel>({
         name: ""
     });
@@ -65,7 +71,11 @@ const SettingsProfile = () => {
     }
 
     const handleConfirmOldPassword = () => {
+
+
         confirmOldPassword(confirmStateOldPasswordModel);
+        // const checkPassword: ILoginModel
+        // loginUser();
 
     }
 
