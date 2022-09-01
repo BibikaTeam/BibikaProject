@@ -50,7 +50,7 @@ const RegisterPage = () => {
                     d="M1 12L10.5 2L20 12"
                     stroke="white"
                     strokeOpacity="0.5"
-                    stroke-width="2"
+                    strokeWidth="2"
                   />
                 </svg>
               </div>

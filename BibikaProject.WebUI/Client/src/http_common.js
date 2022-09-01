@@ -2,7 +2,8 @@ import axios from "axios";
 
 const instance = axios.create({
     baseURL: "https://localhost:5001/",
-    //baseURL: "https://localhost:44381/",
+    // baseURL: "https://localhost:44381/",
+    // baseURL: "/",
     headers: {
         "Content-type": "application/json",
         "Access-Control-Allow-Origin": "*",
@@ -33,10 +34,11 @@ instance.interceptors.response.use(
       if (err.response.status === 401 && !originalConfig._retry) {
         originalConfig._retry = true;
         try {
-          const rs = await refreshToken();
+          const rs = await updateRefreshToken();
           const { token } = rs.data;
-          console.log("data: ", rs.data);
+          const { refreshToken } = rs.data;
           window.localStorage.setItem("token", token);
+          window.localStorage.setItem("refreshToken", refreshToken);
           instance.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("token")}`;
           return instance(originalConfig);
         } catch (_error) {
@@ -54,11 +56,24 @@ instance.interceptors.response.use(
   }
 );
 
-function refreshToken() {
-  return instance.post("/api/refresh", {
+function updateRefreshToken() {
+  const tmp = instance.post("/api/refresh", {
     refreshToken: getLocalRefreshToken(),
     token: getLocalAccessToken()
+  }).catch(_error => {
+    if (_error.response && _error.response.status === 400) {
+      logoutUser();
+      return Promise.reject(_error.response.data);
+    }
   });
+
+  return tmp;
+}
+
+function logoutUser() {
+  window.localStorage.removeItem("token");
+  window.localStorage.removeItem("refreshToken");
+  window.location.reload();
 }
 
   function getLocalAccessToken() {

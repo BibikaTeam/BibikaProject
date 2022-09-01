@@ -1,4 +1,4 @@
-import { Button, DatePicker, Select } from "antd";
+import { Button, Checkbox, DatePicker, Select } from "antd";
 // import TextArea from "antd/lib/input/TextArea";
 import { Input } from "antd";
 import { RadioChangeEvent } from "antd/lib/radio";
@@ -25,6 +25,8 @@ import {
 } from "../service";
 import { IGearBoxModel } from "../types";
 import { getCompleteSetsByGeneration } from "../../../adminPanel/completeSet/service";
+import { ColorChangeHandler, ColorResult, GithubPicker } from "react-color";
+import { number } from "yup";
 const { TextArea } = Input;
 
 interface SecondStepProps {
@@ -59,6 +61,9 @@ const SecondStep: FC<SecondStepProps> = (props) => {
     ICompleteSetModel[]
   >([]);
   const [selectedCompleteSet, setSelectedCompleteSet] = useState<number>(0);
+
+  const [selectedColor, setSelectedColor] = useState<string>("");
+  const [selectedPrice, setSelectedPrice] = useState<number>(0);
 
   useEffect(() => {
     setAllBrands();
@@ -203,30 +208,43 @@ const SecondStep: FC<SecondStepProps> = (props) => {
     setDescription(value.target.value);
   };
 
+  const handleColorChange = (color: ColorResult, event: any) => {
+    setSelectedColor(color.hex);
+  };
+
+  const handlePriceChange = (event: any) => {
+    setSelectedPrice((v) =>
+      event.target.validity.valid ? event.target.value : v
+    );
+  };
+
   const ifModelSelected = () => {
     if (selectedModel == 0) {
       return "visibility-hidden";
     }
+
     return "steps-selects-container";
   };
 
-  const ifYearAndGenerationSelected = () => {
-    if (selectedGeneration == 0 || selectedYear == "") {
-      return "visibility-hidden";
-    }
-    return "steps-select-container";
-  };
-
-  const ifEngineSelected = (type: number) => {
-    if (selectedEngine == 0) {
+  const ifGenerationSelected = (value: number) => {
+    if (selectedGeneration == 0) {
       return "visibility-hidden";
     }
 
-    // temp solution while waiting for design
-    if (type == 1) {
+    if (value == 1) {
+      return "steps-select-container";
+    }
+
+    if (value == 2) {
       return "steps-secondstep-description";
-    } else if (type == 2) {
-      return "steps-selects-container";
+    }
+
+    if (value == 3) {
+      return "color-picker-container";
+    }
+
+    if (value == 4) {
+      return "steps-price-container";
     }
   };
 
@@ -259,6 +277,8 @@ const SecondStep: FC<SecondStepProps> = (props) => {
                   selectedCompleteSet,
                   selectedCarBody,
                   selectedGearBox,
+                  selectedColor,
+                  selectedPrice,
                 });
               }}
             >
@@ -275,6 +295,7 @@ const SecondStep: FC<SecondStepProps> = (props) => {
             onChange={handleBrandChange}
           />
         </div>
+
         <div className="steps-radio-container">
           <RadioGroup
             data={modelsList}
@@ -283,15 +304,8 @@ const SecondStep: FC<SecondStepProps> = (props) => {
             onChange={handleModelChange}
           />
         </div>
+
         <div className={ifModelSelected()}>
-          <div className="steps-select-container">
-            Year of manufacture
-            <DatePicker
-              className="steps-datepicker"
-              onChange={handleYearChange}
-              picker="year"
-            />
-          </div>
           <div className="steps-select-container">
             Generation
             <Select className="steps-select" onChange={handleGenerationChange}>
@@ -302,7 +316,15 @@ const SecondStep: FC<SecondStepProps> = (props) => {
               ))}
             </Select>
           </div>
-          <div className={ifYearAndGenerationSelected()}>
+          <div className={ifGenerationSelected(1)}>
+            Year of manufacture
+            <DatePicker
+              className="steps-datepicker"
+              onChange={handleYearChange}
+              picker="year"
+            />
+          </div>
+          <div className={ifGenerationSelected(1)}>
             Engines
             <Select className="steps-select" onChange={handleEngineChange}>
               {enginesList.map((engine: IEngineModel) => (
@@ -311,8 +333,9 @@ const SecondStep: FC<SecondStepProps> = (props) => {
             </Select>
           </div>
         </div>
-        <div className={ifEngineSelected(2)}>
-          <div className="steps-select-container">
+
+        <div className={ifModelSelected()}>
+          <div className={ifGenerationSelected(1)}>
             Gearbox
             <Select className="steps-select" onChange={handleGearboxChange}>
               {gearBoxesList.map((gearBox: IGearBoxModel) => (
@@ -320,7 +343,7 @@ const SecondStep: FC<SecondStepProps> = (props) => {
               ))}
             </Select>
           </div>
-          <div className="steps-select-container">
+          <div className={ifGenerationSelected(1)}>
             Car Body
             <Select className="steps-select" onChange={handleCarBodyChange}>
               {carBodiesList.map((carBody: ICarBodyModel) => (
@@ -328,7 +351,7 @@ const SecondStep: FC<SecondStepProps> = (props) => {
               ))}
             </Select>
           </div>
-          <div className="steps-select-container">
+          <div className={ifGenerationSelected(1)}>
             Complete Set
             <Select className="steps-select" onChange={handleCompleteSetChange}>
               {comepleteSetsList.map((completeSet: ICompleteSetModel) => (
@@ -339,7 +362,72 @@ const SecondStep: FC<SecondStepProps> = (props) => {
             </Select>
           </div>
         </div>
-        <div className={ifEngineSelected(1)}>
+
+        <div className={ifModelSelected()}>
+          <div className={ifGenerationSelected(1)}>
+            Participation in a road accident
+            <Select className="steps-select">
+              <Select.Option key={1}>Yes</Select.Option>
+              <Select.Option key={2}>No</Select.Option>
+            </Select>
+          </div>
+          <div className={ifGenerationSelected(1)}>
+            Technical condition
+            <Select className="steps-select">
+              <Select.Option key={1}>Ideal</Select.Option>
+              <Select.Option key={2}>Needs repair</Select.Option>
+              <Select.Option key={3}>For spare parts</Select.Option>
+            </Select>
+          </div>
+          <div className={ifGenerationSelected(1)}>
+            Driven from
+            <Select className="steps-select"></Select>
+          </div>
+        </div>
+
+        <div className={ifGenerationSelected(3)}>
+          Color of car
+          <div className="color-picker">
+            <GithubPicker
+              colors={[
+                "#CACACA",
+                "#2F2F2F",
+                "#FFFFFF",
+                "#2A27A6",
+                "#E7A423",
+                "#E72323",
+                "#45CD2F",
+                "#23A0E7",
+              ]}
+              triangle={"hide"}
+              onChange={handleColorChange}
+            />
+          </div>
+        </div>
+
+        <div className={ifGenerationSelected(4)}>
+          <div className="steps-price">
+            <span>Price</span>
+            <Input
+              pattern="[0-9]*"
+              onChange={handlePriceChange}
+              value={selectedPrice}
+            />
+            <span>$</span>
+          </div>
+          <div className="steps-checkbox-container">
+            <div className="checkbox-group">
+              <Checkbox>
+                <span className="title">Haggling</span>
+              </Checkbox>
+              <Checkbox>
+                <span className="title">Exchange</span>
+              </Checkbox>
+            </div>
+          </div>
+        </div>
+
+        <div className={ifGenerationSelected(2)}>
           <span className="steps-secondstep-description-title">
             Car description
           </span>
@@ -366,7 +454,7 @@ const SecondStep: FC<SecondStepProps> = (props) => {
               d="M4 18.0717L16.6696 31.0425C17.6157 32.0111 19.2306 31.7794 19.8663 30.5839L34 4"
               stroke="#219CE1"
               strokeOpacity="0.6"
-              stroke-width="5"
+              strokeWidth="5"
               stroke-linecap="square"
             />
           </svg>

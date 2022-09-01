@@ -49,7 +49,6 @@ function App() {
               <Route path="/user-profile/settings" element={<SettingsProfile/>}/>
               <Route path="/user-profile/settings/change-password" element={<ChangePasswordPage />} />
             </Route>
-            <Route path="/post/add" element={<AddPostPage />} />
             <Route path="/post/adv-order" element={<AdvOrderPage />} />
           </Route>
         </Route>

@@ -29,6 +29,9 @@ using BibikaProject.Application.Core.Queries;
 using BibikaProject.Application.Core.DTO.Post;
 using BibikaProject.Infrastructure.Identity.Services.Settings;
 using BibikaProject.Infrastructure.Identity.Services.Helpers.Email;
+using Hangfire;
+using Hangfire.PostgreSql;
+using Newtonsoft.Json;
 
 namespace BibikaProject.WebUI
 {
@@ -248,6 +251,14 @@ namespace BibikaProject.WebUI
         public static void ConfigureSearchPanelService(this IServiceCollection services)
         {
             services.AddTransient<ISearchPanelService, SearchPanelService>();
+        }
+
+        public static void ConfigureHangfire(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddHangfire(x => { 
+                x.UsePostgreSqlStorage(configuration.GetConnectionString("DefaultConnection"));
+                x.UseSerializerSettings(new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }); 
+            });
         }
     }
 }

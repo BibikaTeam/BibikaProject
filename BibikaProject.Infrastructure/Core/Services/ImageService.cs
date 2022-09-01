@@ -3,10 +3,12 @@ using BibikaProject.Application.Core.Queries;
 using BibikaProject.Application.Core.Services;
 using BibikaProject.Domain.Entities.Core;
 using BibikaProject.Domain.Entities.Identity;
+using BibikaProject.Infrastructure.Core.Services.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -61,7 +63,7 @@ namespace BibikaProject.Infrastructure.Core.Services
             var userRoles = await userManager.GetRolesAsync(await userManager.FindByIdAsync(userId));
             var image = await query.GetByIdAsync(id);
             
-            if (userRoles.Contains("Administrator") || image.UserId == userId)
+            if (userRoles.Contains("Admin") || image.UserId == userId)
             {
                 File.Delete($"{ImagesPath}/{image.Title}.png");
 
@@ -77,28 +79,33 @@ namespace BibikaProject.Infrastructure.Core.Services
             if (!Directory.Exists(ImagesPath))
             {
                 Directory.CreateDirectory(ImagesPath);
-            }    
-
-            var bytes = Convert.FromBase64String(base64);
-            using (var imageFile = new FileStream($"{ImagesPath}/{imageTitle}.png", FileMode.Create))
-            {
-                await imageFile.WriteAsync(bytes, 0, bytes.Length);
-                await imageFile.FlushAsync();
             }
 
-            var medium = Convert.FromBase64String(ResizeImage(bytes, 512, 512)); 
-            using (var imageFile = new FileStream($"{ImagesPath}/{imageTitle}_medium.png", FileMode.Create))
-            {
-                await imageFile.WriteAsync(medium, 0, medium.Length);
-                await imageFile.FlushAsync();
-            }
+            //var bytes = Convert.FromBase64String(base64);
+            var bmp = ImageWorker.FromBase64StringToImage(base64);
+            bmp.Save($"{ImagesPath}/{imageTitle}.png", ImageFormat.Jpeg);
+            //using (var imageFile = new FileStream($"{ImagesPath}/{imageTitle}.png", FileMode.Create))
+            //{
+            //    await imageFile.WriteAsync(bytes, 0, bytes.Length);
+            //    await imageFile.FlushAsync();
+            //}
+            var medium = ImageWorker.CompressImage(bmp, 512, 512, false);
+            medium.Save($"{ImagesPath}/{imageTitle}_medium.png", ImageFormat.Jpeg);
+            //var medium = Convert.FromBase64String(ResizeImage(bytes, 512, 512)); 
+            //using (var imageFile = new FileStream($"{ImagesPath}/{imageTitle}_medium.png", FileMode.Create))
+            //{
+            //    await imageFile.WriteAsync(medium, 0, medium.Length);
+            //    await imageFile.FlushAsync();
+            //}
 
-            var small = Convert.FromBase64String(ResizeImage(bytes, 128, 128));
-            using (var imageFile = new FileStream($"{ImagesPath}/{imageTitle}_small.png", FileMode.Create))
-            {
-                await imageFile.WriteAsync(small, 0, small.Length);
-                await imageFile.FlushAsync();
-            }
+            var small = ImageWorker.CompressImage(bmp, 128, 128, false);
+            small.Save($"{ImagesPath}/{imageTitle}_small.png", ImageFormat.Jpeg);
+            //var small = Convert.FromBase64String(ResizeImage(bytes, 128, 128));
+            //using (var imageFile = new FileStream($"{ImagesPath}/{imageTitle}_small.png", FileMode.Create))
+            //{
+            //    await imageFile.WriteAsync(small, 0, small.Length);
+            //    await imageFile.FlushAsync();
+            //}
 
             var img = await command.AddAsync(new Image { Title = imageTitle, UserId = userId });
             await command.SaveChangesAsync();

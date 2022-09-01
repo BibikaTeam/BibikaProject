@@ -64,6 +64,7 @@ namespace BibikaProject.Infrastructure.Core.Commands
         public override Task<Post> AddAsync(Post entity)
         {
             entity.CreatedAt = DateTime.UtcNow;
+            entity.DailyPoint = 7;
 
             return base.AddAsync(entity);   
         }
