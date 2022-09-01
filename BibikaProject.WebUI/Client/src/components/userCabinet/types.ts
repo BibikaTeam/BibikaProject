@@ -13,10 +13,18 @@ export interface IUpdateContactModel {
   name: string;
 }
 
-export interface IUpdatePasswordModel {
+export interface IConfirmOldPasswordModel {
   oldPassword: string;
+}
+
+export interface INewPasswordModel {
   newPassword: string;
-  confirmPassword: string;
+}
+
+export interface IResetPasswordRequestModel {
+  email: string,
+  newPassword: string,
+  token: string
 }
 
 export interface IUpdateEmailModel {

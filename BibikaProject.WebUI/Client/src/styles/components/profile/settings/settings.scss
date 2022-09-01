@@ -1,71 +1,68 @@
-.settings {
+.settings-container {
+    padding: 20px 145px;
     background-color: $accent-light;
     height: 100%;
-
-    .settings-container {
-        padding: 20px 145px;
-        background-color: $accent-light;
-        height: 100%;
-    }
-
-    .settings-text {
-        width: 351px;
-        height: 66px;
-
-        font-family: 'Manrope';
-        font-style: normal;
-        font-weight: 700;
-        font-size: 48px;
-        line-height: 66px;
-        color: $primary-font-color;
-    }
-
-    .settings-dropdown {
-        box-sizing: border-box;
-        justify-content: start;
-        align-items: center;
-        margin-bottom: 20px;
-
-        width: 1613px;
-        border: 1px solid rgba(0, 0, 0, 0.2);
-        border-radius: 6px;
-    }
-
-    .settings-submenu-container {
-        font-family: 'Manrope';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 26px;
-        background-color: white;
-    }
-
-    .settings-input-container {
-        display: inline-block;
-        width: 457px;
-        font-family: 'Manrope';
-        font-style: normal;
-        font-weight: 300;
-        font-size: 22px;
-        margin-right: 50px;
-    }
+}
 
 
-    .settings-input {
-        box-sizing: border-box;
-        height: 50px;
-        background: white;
-        border: 1px solid rgba(0, 0, 0, 0.2);
-        border-radius: 6px;
-    }
 
-    .settings-button-container {
-        display: flex;
-        justify-content: center;
-        margin-top: 20px;
-        
-    }
+.settings-dropdown {
+    box-sizing: border-box;
+    justify-content: start;
+    align-items: center;
+    margin-bottom: 20px;
 
-    .settings-button {
+    width: 1613px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+}
+
+.settings-submenu-container {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 26px;
+    background-color: white;
+}
+
+.settings-input-container {
+    display: inline-block;
+    width: 457px;
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 22px;
+    margin-right: 50px;
+}
+
+.settings-changePassword-input-container {
+    width: 457px;
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 22px;
+    margin-bottom: 21px;
+}
+
+.settings-input {
+    box-sizing: border-box;
+    height: 50px;
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+}
+
+.settings-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+
+}
+
+.settings-changePassword-button-container {
+    margin-top: 59px;
+
+    .settings-changePassword-button {
         font-family: 'Manrope';
         font-style: normal;
         font-weight: 700;
@@ -74,34 +71,77 @@
         color: white;
         height: 50px;
         border-radius: 6px;
-        width: 100%;
+        width: 173px;
     }
+}
 
-    .delete-button {
-        width: 228px;
-        height: 36px;
+.settings-button {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    background-color: #219CE1;
+    color: white;
+    height: 50px;
+    border-radius: 6px;
+    width: 100%;
+}
 
-        font-family: 'Manrope';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 26px;
-        line-height: 36px;
-        color: $primary-font-color;
-    }
 
-    .logout-button {
-        width: 75px;
-        height: 36px;
 
-        font-family: 'Manrope';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 26px;
-        line-height: 36px;
-        color: $primary-font-color;
-    }
+.settings-button-changePassword {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    background-color: #219CE1;
+    color: white;
+    height: 50px;
+    border-radius: 6px;
+    width: 100%;
+}
+
+.delete-button {
+    width: 228px;
+    height: 36px;
+
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 26px;
+    line-height: 36px;
+    color: $primary-font-color;
+}
+
+.logout-button {
+    width: 75px;
+    height: 36px;
+
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 26px;
+    line-height: 36px;
+    color: $primary-font-color;
+}
+
+.settings-text {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 66px;
+    color: $primary-font-color;
 }
 
 .menuSettings {
     padding: 28px;
+}
+
+.settings-changePassword-container {
+    padding: 20px 145px;
+    background-color: $accent-light;
+    height: 100%;
+
+
 }

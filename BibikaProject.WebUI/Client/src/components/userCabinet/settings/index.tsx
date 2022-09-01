@@ -1,27 +1,29 @@
 import { Button, Collapse, Form, Input } from "antd";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { logoutUser } from "../../authorization/login/actions";
-import { IUpdateContactModel, IUpdateEmailModel, IUpdatePasswordModel } from "../types";
-import { saveContact, saveEmail, savePassword } from "./service";
+import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import { loginUser, logoutUser } from "../../authorization/login/actions";
+import { ILoginModel } from "../../authorization/types";
+import { IConfirmOldPasswordModel, IUpdateContactModel, IUpdateEmailModel } from "../types";
+import { confirmOldPassword, saveContact, saveEmail } from "./service";
+
 
 const { Panel } = Collapse;
 
 const SettingsProfile = () => {
+
+    const { user } = useTypedSelector((redux) => redux.login);
+
     const [updateContactModel, setUpdateContactModel] = useState<IUpdateContactModel>({
         name: ""
     });
-    const [updatePasswordModel, setUpdatePasswordModel] = useState<IUpdatePasswordModel>({
+    const [confirmStateOldPasswordModel, setConfirmStateOldPasswordModel] = useState<IConfirmOldPasswordModel>({
         oldPassword: "",
-        newPassword: "",
-        confirmPassword: ""
     });
     const [updateEmailModel, setUpdateEmailModel] = useState<IUpdateEmailModel>({
         newEmail: "",
         password: ""
     })
-
-    const [disableConfirmPassword, setDisabledConfirmPassword] = useState<boolean>(true);
     const [disableInputEmailPassword, setDisabledInputEmailPassword] = useState<boolean>(true);
     const [disableSaveButtonContact, setDisableSaveButtonContact] = useState<boolean>(true);
     const [disableSaveButtonPassword, setDisableSaveButtonPassword] = useState<boolean>(true);
@@ -37,28 +39,13 @@ const SettingsProfile = () => {
         }
     }
     const handleOldPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUpdatePasswordModel({ ...updatePasswordModel, oldPassword: e.target.value });
-
-    }
-    const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.value.length >= 6) {
-            setUpdatePasswordModel({ ...updatePasswordModel, newPassword: e.target.value });
-            setDisabledConfirmPassword(false)
-        }
-        else if (e.target.value.length < 6) {
-            e.target.placeholder = "The password can be at least 6 characters long"
-            setDisabledConfirmPassword(true);
-        }
-    }
-    const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.value == updatePasswordModel.newPassword) {
+        if (e.target.value.length >= 2) {
             setDisableSaveButtonPassword(false);
-            setUpdatePasswordModel({ ...updatePasswordModel, confirmPassword: e.target.value });
+            setConfirmStateOldPasswordModel({ ...confirmStateOldPasswordModel, oldPassword: e.target.value });
         }
         else {
             setDisableSaveButtonPassword(true);
         }
-
     }
     const handleNewEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.value == "") {
@@ -83,8 +70,13 @@ const SettingsProfile = () => {
         saveContact(updateContactModel);
     }
 
-    const handleSavePassword = () => {
-        savePassword(updatePasswordModel);
+    const handleConfirmOldPassword = () => {
+
+
+        confirmOldPassword(confirmStateOldPasswordModel);
+        // const checkPassword: ILoginModel
+        // loginUser();
+
     }
 
     const handleSaveEmail = () => {
@@ -96,105 +88,90 @@ const SettingsProfile = () => {
     }
 
     return (
-        <div className="settings">
-            <div className="settings-container">
-                <h1 className="settings-text">Settings</h1>
-                <div className="settings-dropdown">
-                    <Collapse expandIconPosition={"end"} className="settings-menu" bordered={false}>
-                        <Panel header="Contact" key="1" className="settings-submenu-container">
-                            <div className="settings-input-container">
-                                Name
-                                <Input
-                                    onChange={handleContactChange}
-                                    className="settings-input"
-                                />
-                            </div>
-                            {/* <div className="settings-input-container">
+        <div className="settings-container">
+            <h1 className="settings-text">Settings</h1>
+            <div className="settings-dropdown">
+                <Collapse expandIconPosition={"end"} className="settings-menu" bordered={false}>
+                    <Panel header="Contact" key="1" className="settings-submenu-container">
+                        <div className="settings-input-container">
+                            Name
+                            <Input
+                                onChange={handleContactChange}
+                                className="settings-input"
+                            />
+                        </div>
+                        {/* <div className="settings-input-container">
                                 Locality
                                 <Input className="settings-input" />
                             </div> */}
-                            <div className="settings-button-container">
-                                <Button
-                                    className="settings-button"
-                                    onClick={handleSaveContact}
-                                    disabled={disableSaveButtonContact}>
-                                    Save</Button>
-                            </div>
-                        </Panel>
-                    </Collapse>
-                </div>
-                <div className="settings-dropdown">
-                    <Collapse expandIconPosition={"end"} className="settings-menu" bordered={false}>
-                        <Panel header="Password" key="1" className="settings-submenu-container">
-                            <div className="settings-input-container">
-                                Old password
-                                <Input.Password className="settings-input" onChange={handleOldPasswordChange} />
-                            </div>
-                            <div className="settings-input-container">
-                                New password
-                                <Input.Password
-                                    className="settings-input"
-                                    onChange={handleNewPasswordChange}
-                                    placeholder={"The password can be at least 6 characters long"}
-                                />
-                            </div>
-                            <div className="settings-input-container">
-                                Confirm password
-                                <Input.Password
-                                    className="settings-input"
-                                    onChange={handleConfirmPasswordChange}
-                                    disabled={disableConfirmPassword}
-                                />
-                            </div>
-                            <div className="settings-button-container">
-                                <Button
-                                    className="settings-button"
-                                    onClick={handleSavePassword}
-                                    disabled={disableSaveButtonPassword}>
-                                    Save</Button>
-                            </div>
-                        </Panel>
-                    </Collapse>
-                </div>
-                <div className="settings-dropdown">
-                    <Collapse expandIconPosition={"end"} className="settings-menu" bordered={false}>
-                        <Panel header="Email address" key="1" className="settings-submenu-container">
-                            <div className="settings-input-container">
-                                New email address
-                                <Input
-                                    className="settings-input"
-                                    type="email"
-                                    onChange={handleNewEmailChange}
-                                />
-                            </div>
-                            <div className="settings-input-container">
-                                Password
-                                <Input
-                                    className="settings-input"
-                                    onChange={handleEmailPassswordChange}
-                                    disabled={disableInputEmailPassword}
-                                />
-                            </div>
-                            <div className="settings-button-container">
-                                <Button
-                                    className="settings-button"
-                                    onClick={handleSaveEmail}
-                                    disabled={disableSaveButtonEmail}>
-                                    Save</Button>
-                            </div>
-                        </Panel>
-                    </Collapse>
-                </div>
-                <div className="delete-button">
-                    <Link to="#" className="link-button">
-                        Delete profile
-                    </Link>
-                </div>
-                <div className="logout-button">
-                    <Link to="/" className="link-button" onClick={handleLogout}>
-                        Logout
-                    </Link></div>
+                        <div className="settings-button-container">
+                            <Button
+                                className="settings-button"
+                                onClick={handleSaveContact}
+                                disabled={disableSaveButtonContact}>
+                                Save</Button>
+                        </div>
+                    </Panel>
+                </Collapse>
             </div>
+            <div className="settings-dropdown">
+                <Collapse expandIconPosition={"end"} className="settings-menu" bordered={false}>
+                    <Panel header="Password" key="1" className="settings-submenu-container">
+                        <div className="settings-input-container">
+                            Old password
+                            <Input.Password className="settings-input" onChange={handleOldPasswordChange} />
+                        </div>
+                        <div className="settings-button-container">
+                            <Link to="/user-profile/settings/change-password" className="settings-button-changePassword">
+                                <Button
+                                    className="settings-button"
+                                    onClick={handleConfirmOldPassword}
+                                    disabled={disableSaveButtonPassword}>
+                                    Confirm</Button>
+                            </Link>
+
+                        </div>
+                    </Panel>
+                </Collapse>
+            </div>
+            <div className="settings-dropdown">
+                <Collapse expandIconPosition={"end"} className="settings-menu" bordered={false}>
+                    <Panel header="Email address" key="1" className="settings-submenu-container">
+                        <div className="settings-input-container">
+                            New email address
+                            <Input
+                                className="settings-input"
+                                type="email"
+                                onChange={handleNewEmailChange}
+                            />
+                        </div>
+                        <div className="settings-input-container">
+                            Password
+                            <Input
+                                className="settings-input"
+                                onChange={handleEmailPassswordChange}
+                                disabled={disableInputEmailPassword}
+                            />
+                        </div>
+                        <div className="settings-button-container">
+                            <Button
+                                className="settings-button"
+                                onClick={handleSaveEmail}
+                                disabled={disableSaveButtonEmail}>
+                                Save</Button>
+                        </div>
+                    </Panel>
+                </Collapse>
+            </div>
+            <div className="delete-button">
+                <Link to="#" className="link-button">
+                    Delete profile
+                </Link>
+            </div>
+            <div className="logout-button">
+                <Link to="/" className="link-button" onClick={handleLogout}>
+                    Logout
+                </Link></div>
         </div>
     )
 }

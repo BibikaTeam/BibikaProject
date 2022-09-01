@@ -1,9 +1,9 @@
 import { Dropdown, Menu, Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { logoutUser } from "../../authorization/login/actions";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { useActions } from "../../../hooks/useActions";
-
 const Header = () => {
   const { isAuth } = useTypedSelector((redux) => redux.login);
   const { logoutUser } = useActions();
@@ -125,6 +125,7 @@ const Header = () => {
       </div>
 
       <div className="right-header-side">
+
         {isAuth ? (
           <>
             <Dropdown overlay={menu} placement="bottomLeft" trigger={["click"]}>
@@ -152,3 +153,4 @@ const Header = () => {
 };
 
 export default Header;
+

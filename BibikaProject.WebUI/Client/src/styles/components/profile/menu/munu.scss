@@ -5,19 +5,29 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
+
     .left-menu-side {
         margin-left: 20px;
         width: 50%;
+
+        .user-name-text {
+            margin-left: 29px;
+            font-family: 'Manrope';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 26px;
+            color: #219CE1;
+        }
     }
+
+    
 
     .right-menu-side {
         ul {
             list-style-type: none;
             display: inline-block;
-    
         }
-    
+
         ul li {
             float: left;
             font-family: 'Manrope';
@@ -27,15 +37,16 @@
             color: #219CE1;
             padding: 5px 20px;
             margin-right: 40px;
-    
+
             &:hover {
-                background: #FFFFFF;
+                background: white;
+                border-radius: 6px;
+            }
+
+            &:active {
+                background: white;
                 border-radius: 6px;
             }
         }
     }
-
-    
-
-
 }

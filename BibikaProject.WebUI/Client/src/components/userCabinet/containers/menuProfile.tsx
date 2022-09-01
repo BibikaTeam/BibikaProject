@@ -1,14 +1,18 @@
 import { Avatar } from "antd";
 import { UserOutlined } from '@ant-design/icons';
 import { Link } from "react-router-dom";
+import { useTypedSelector } from "../../../hooks/useTypedSelector";
 
 
 const MenuProfile = () => {
 
+    const { user } = useTypedSelector((redux) => redux.login);
+
     return (
         <div className="menu-container">
             <div className="left-menu-side">
-                <Avatar size={49} style={{ backgroundColor: '#2D40E0', marginTop: '5px' }} icon={<UserOutlined />} />
+                <Avatar size={49} icon={<UserOutlined />} />
+                <span className="user-name-text">{user?.name}</span>
             </div>
             <div className="right-menu-side">
                 <ul>

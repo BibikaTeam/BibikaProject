@@ -30,6 +30,7 @@ import PostPage from "./components/posts/postPage";
 import DetailSearch from "./components/posts/search/detailSearch";
 import Test from "./components/test";
 import AdvOrderPage from "./components/posts/advertisment/advOrder";
+import ChangePasswordPage from "./components/userCabinet/settings/changePassword";
 
 function App() {
   return (
@@ -42,19 +43,11 @@ function App() {
           <Route path="/post/:id" element={<PostPage />} />
           <Route element={<AuthorizedBasedRoute />}>
             <Route path="/user-profile" element={<UserProfile />}>
-              <Route
-                path="/user-profile/my-posts"
-                element={<MyPosts />}
-              ></Route>
-              <Route path="/user-profile/message" element={<Message />}></Route>
-              <Route
-                path="/user-profile/saved-posts"
-                element={<SavedPosts />}
-              ></Route>
-              <Route
-                path="/user-profile/settings"
-                element={<SettingsProfile />}
-              />
+              <Route path="/user-profile/my-posts" element={<MyPosts />}/>
+              <Route path="/user-profile/message" element={<Message />}/>
+              <Route path="/user-profile/saved-posts" element={<SavedPosts />}/>
+              <Route path="/user-profile/settings" element={<SettingsProfile/>}/>
+              <Route path="/user-profile/settings/change-password" element={<ChangePasswordPage />} />
             </Route>
             <Route path="/post/adv-order" element={<AdvOrderPage />} />
           </Route>
