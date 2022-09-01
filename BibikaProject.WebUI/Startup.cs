@@ -1,6 +1,9 @@
 using BibikaProject.Application.Logger;
+using BibikaProject.Infrastructure.Core.Commands;
+using BibikaProject.Infrastructure.Core.Services.Helpers;
 using BibikaProject.WebUI.ExceptionMiddleware;
 using FluentValidation.AspNetCore;
+using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -47,7 +50,12 @@ namespace BibikaProject.WebUI
 
                             return new BadRequestObjectResult(result);
                         };
+                    })
+                    .AddNewtonsoftJson(options =>
+                    {
+                        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                     });
+                    
 
             services.AddSwaggerGen(c =>
             {
@@ -75,6 +83,8 @@ namespace BibikaProject.WebUI
 
             services.ConfigureEmail(Configuration);
 
+            services.ConfigureHangfire(Configuration);
+
             services.ConfigureBrandService();
             services.ConfigurePostService();
             services.ConfigureImageService();
@@ -88,7 +98,7 @@ namespace BibikaProject.WebUI
             services.ConfigureCarBodyService();         
             services.ConfigureUserService();
             services.ConfigureAdvertismentService();
-            services.ConfigureSearchPanelService();
+            services.ConfigureSearchPanelService();            
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
@@ -98,6 +108,7 @@ namespace BibikaProject.WebUI
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
+                app.UseHangfireDashboard();
             }
 
             app.UseStaticFiles(new StaticFileOptions
@@ -110,7 +121,11 @@ namespace BibikaProject.WebUI
 
             app.UseCors("CorsPolicy");
 
+<<<<<<< HEAD
+            app.UseHttpsRedirection();          
+=======
             //app.UseHttpsRedirection();
+>>>>>>> dev
 
             app.ConfigureExceptionHandler(logger);
 
@@ -125,6 +140,22 @@ namespace BibikaProject.WebUI
                 endpoints.MapControllers();
             });
 
+<<<<<<< HEAD
+            app.UseHangfireServer();
+
+            //app.UseSpa(spa =>
+            //{
+            //    spa.Options.SourcePath = "Client";
+
+            //    //if (env.IsDevelopment())
+            //    //{
+            //    //    spa.UseReactDevelopmentServer(npmScript: "start");
+            //    //}
+            //});
+
+            RecurringJob.AddOrUpdate<AdvertismentHelper>("dailyPointsDecrement", x => x.DecrementDailyPoints(), Cron.Daily);
+            RecurringJob.AddOrUpdate<AdvertismentHelper>("balanceDecrement", x => x.DecrementBalance(), Cron.Daily);
+=======
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "Client";
@@ -134,6 +165,7 @@ namespace BibikaProject.WebUI
                 //    spa.UseReactDevelopmentServer(npmScript: "start");
                 //}
             });
+>>>>>>> dev
         }
     }
 }
