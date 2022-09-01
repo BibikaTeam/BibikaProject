@@ -121,11 +121,8 @@ namespace BibikaProject.WebUI
 
             app.UseCors("CorsPolicy");
 
-<<<<<<< HEAD
             app.UseHttpsRedirection();          
-=======
-            //app.UseHttpsRedirection();
->>>>>>> dev
+
 
             app.ConfigureExceptionHandler(logger);
 
@@ -140,7 +137,6 @@ namespace BibikaProject.WebUI
                 endpoints.MapControllers();
             });
 
-<<<<<<< HEAD
             app.UseHangfireServer();
 
             //app.UseSpa(spa =>
@@ -155,17 +151,6 @@ namespace BibikaProject.WebUI
 
             RecurringJob.AddOrUpdate<AdvertismentHelper>("dailyPointsDecrement", x => x.DecrementDailyPoints(), Cron.Daily);
             RecurringJob.AddOrUpdate<AdvertismentHelper>("balanceDecrement", x => x.DecrementBalance(), Cron.Daily);
-=======
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "Client";
-
-                //if (env.IsDevelopment())
-                //{
-                //    spa.UseReactDevelopmentServer(npmScript: "start");
-                //}
-            });
->>>>>>> dev
         }
     }
 }
