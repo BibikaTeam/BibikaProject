@@ -29,7 +29,6 @@ import { ColorChangeHandler, ColorResult, GithubPicker } from "react-color";
 import { number } from "yup";
 const { TextArea } = Input;
 
-
 interface SecondStepProps {
   onFinish: (values: any) => void;
   onBack: () => void;
@@ -214,8 +213,10 @@ const SecondStep: FC<SecondStepProps> = (props) => {
   };
 
   const handlePriceChange = (event: any) => {
-    setSelectedPrice((v) => (event.target.validity.valid ? event.target.value : v))
-  }
+    setSelectedPrice((v) =>
+      event.target.validity.valid ? event.target.value : v
+    );
+  };
 
   const ifModelSelected = () => {
     if (selectedModel == 0) {
@@ -226,14 +227,13 @@ const SecondStep: FC<SecondStepProps> = (props) => {
   };
 
   const ifGenerationSelected = (value: number) => {
-
     if (selectedGeneration == 0) {
-        return "visibility-hidden"
+      return "visibility-hidden";
     }
 
     if (value == 1) {
-      return "steps-select-container"
-    } 
+      return "steps-select-container";
+    }
 
     if (value == 2) {
       return "steps-secondstep-description";
@@ -246,7 +246,7 @@ const SecondStep: FC<SecondStepProps> = (props) => {
     if (value == 4) {
       return "steps-price-container";
     }
-  }
+  };
 
   return (
     <div className="steps-container">
@@ -295,7 +295,7 @@ const SecondStep: FC<SecondStepProps> = (props) => {
             onChange={handleBrandChange}
           />
         </div>
-        
+
         <div className="steps-radio-container">
           <RadioGroup
             data={modelsList}
@@ -323,7 +323,7 @@ const SecondStep: FC<SecondStepProps> = (props) => {
               onChange={handleYearChange}
               picker="year"
             />
-          </div>       
+          </div>
           <div className={ifGenerationSelected(1)}>
             Engines
             <Select className="steps-select" onChange={handleEngineChange}>
@@ -381,40 +381,41 @@ const SecondStep: FC<SecondStepProps> = (props) => {
           </div>
           <div className={ifGenerationSelected(1)}>
             Driven from
-            <Select className="steps-select">
-              
-            </Select>
+            <Select className="steps-select"></Select>
           </div>
         </div>
 
-      
         <div className={ifGenerationSelected(3)}>
           Color of car
           <div className="color-picker">
             <GithubPicker
-                colors={[
-                  "#CACACA",
-                  "#2F2F2F",
-                  "#FFFFFF",
-                  "#2A27A6",
-                  "#E7A423",
-                  "#E72323",
-                  "#45CD2F",
-                  "#23A0E7",
-                ]}
-                triangle={"hide"}
-                onChange={handleColorChange}
-              />
-          </div>   
+              colors={[
+                "#CACACA",
+                "#2F2F2F",
+                "#FFFFFF",
+                "#2A27A6",
+                "#E7A423",
+                "#E72323",
+                "#45CD2F",
+                "#23A0E7",
+              ]}
+              triangle={"hide"}
+              onChange={handleColorChange}
+            />
+          </div>
         </div>
 
         <div className={ifGenerationSelected(4)}>
           <div className="steps-price">
-                <span>Price</span>
-                <Input pattern="[0-9]*" onChange={handlePriceChange} value={selectedPrice}/>
-                <span>$</span>
+            <span>Price</span>
+            <Input
+              pattern="[0-9]*"
+              onChange={handlePriceChange}
+              value={selectedPrice}
+            />
+            <span>$</span>
           </div>
-          <div className="steps-checkbox-container">   
+          <div className="steps-checkbox-container">
             <div className="checkbox-group">
               <Checkbox>
                 <span className="title">Haggling</span>
@@ -425,7 +426,7 @@ const SecondStep: FC<SecondStepProps> = (props) => {
             </div>
           </div>
         </div>
-        
+
         <div className={ifGenerationSelected(2)}>
           <span className="steps-secondstep-description-title">
             Car description
@@ -438,7 +439,6 @@ const SecondStep: FC<SecondStepProps> = (props) => {
             className="steps-textarea"
           />
         </div>
-
       </div>
 
       <div className="steps-footer">
@@ -454,7 +454,7 @@ const SecondStep: FC<SecondStepProps> = (props) => {
               d="M4 18.0717L16.6696 31.0425C17.6157 32.0111 19.2306 31.7794 19.8663 30.5839L34 4"
               stroke="#219CE1"
               strokeOpacity="0.6"
-              stroke-width="5"
+              strokeWidth="5"
               stroke-linecap="square"
             />
           </svg>

@@ -1,8 +1,73 @@
 import { Dropdown, Menu, Avatar } from "antd";
-import { UserOutlined } from '@ant-design/icons';
+import { UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import { useActions } from "../../../hooks/useActions";
 
 const Header = () => {
+  const { isAuth } = useTypedSelector((redux) => redux.login);
+  const { logoutUser } = useActions();
+
+  const handleLogout = async () => {
+    await logoutUser();
+  };
+
+  const menu: any = (
+    <Menu
+      items={[
+        {
+          key: "1",
+          label: (
+            <Link to={"/user-profile/my-posts"}>
+              <a target="_blank" rel="noopener noreferrer">
+                My posts
+              </a>
+            </Link>
+          ),
+        },
+        {
+          key: "2",
+          label: (
+            <Link to={"/user-profile/settings"}>
+              <a target="_blank" rel="noopener noreferrer">
+                Settings
+              </a>
+            </Link>
+          ),
+        },
+        {
+          key: "3",
+          label: (
+            <Link onClick={handleLogout} to={"/login"}>
+              <a target="_blank" rel="noopener noreferrer">
+                Logout
+              </a>
+            </Link>
+            // <a
+            //   target="_blank"
+            //   rel="noopener noreferrer"
+            //   href="https://www.aliyun.com"
+            // >
+            //   Logout
+            // </a>
+          ),
+        },
+        // {
+        //   key: "3",
+        //   label: (
+        //     <a
+        //       target="_blank"
+        //       rel="noopener noreferrer"
+        //       href="https://www.luohanacademy.com"
+        //     >
+        //       3rd menu item
+        //     </a>
+        //   ),
+        // },
+      ]}
+    />
+  );
+
   return (
     <header className="header">
       <div className="left-header-side">
@@ -53,79 +118,37 @@ const Header = () => {
           </svg>
         </Link>
 
-        <ul>
+        {/* <ul>
           <li>New</li>
           <li>Used</li>
-        </ul>
+        </ul> */}
       </div>
 
       <div className="right-header-side">
-        <Dropdown overlay={menu} placement="bottomLeft" trigger={["click"]}>
-          <Avatar size={49} style={{ backgroundColor: '#2D40E0', marginTop: '5px' }} icon={<UserOutlined />} />
-        </Dropdown>
-        <Link to="/post/add" className="add-car-button">
-          Sell car
-        </Link>
+        {isAuth ? (
+          <>
+            <Dropdown overlay={menu} placement="bottomLeft" trigger={["click"]}>
+              <Avatar
+                size={49}
+                style={{ backgroundColor: "#2D40E0", marginTop: "5px" }}
+                icon={<UserOutlined />}
+              />
+            </Dropdown>
+            <Link to="/post/add" className="add-car-button">
+              Sell car
+            </Link>
+          </>
+        ) : (
+          <>
+            {" "}
+            <Link to="/login" className="add-car-button">
+              Login
+            </Link>
+          </>
+        )}
       </div>
     </header>
   );
 };
 
 export default Header;
-
-const menu: any = (
-  <Menu
-    items={[
-      {
-        key: "1",
-        label: (
-          <Link to={"/user-profile/my-posts"}>
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              My posts
-            </a>
-          </Link>
-        ),
-      },
-      {
-        key: "2",
-        label: (
-          <Link to={"/user-profile/settings"}>
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Settings
-            </a>
-          </Link>
-        ),
-      },
-      {
-        key: "3",
-        label: (
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.aliyun.com"
-          >
-            Logout
-          </a>
-        ),
-      },
-      // {
-      //   key: "3",
-      //   label: (
-      //     <a
-      //       target="_blank"
-      //       rel="noopener noreferrer"
-      //       href="https://www.luohanacademy.com"
-      //     >
-      //       3rd menu item
-      //     </a>
-      //   ),
-      // },
-    ]}
-  />
-);
