@@ -1,9 +1,10 @@
 .steps-container {
     display: flex;
     flex-direction: column;
-    height: 87.3%;
+    height: 91.5%;
     justify-content: flex-start;
     background-color: $accent-light;
+    padding-top: 1.5vh;
 }
 
 .steps-header {
@@ -221,10 +222,13 @@
 }
 
 .imageSelector-card-container {
-    width: 21vw;
+    width: 20vw;
     height: 23.5vh;
     border-radius: 5px;
     overflow: hidden;
+    margin-right: 0.58vw;
+    margin-left: 0.58vw;
+    margin-bottom: 0.6vw;
 }
 
 .imageCard-img {
@@ -235,10 +239,9 @@
 
 
 .imageSelector-cards-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-column-gap: 4.1vh;
-    grid-row-gap: 1vw;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     height: 100%;
 }
 
@@ -251,12 +254,15 @@
 
 .imageSelector-input-container {
     display: flex;
-    width: 21vw;
+    width: 20vw;
     height: 23.5vh;
     border: 1px dashed rgba($primary, 0.5);
     border-radius: 5px;
     justify-content: center;
     align-items: center;
+    margin-right: 0.58vw;
+    margin-left: 0.58vw;
+    margin-bottom: 0.6vw;
 }
 
 .imageSelector-dragger-container {
@@ -316,6 +322,7 @@
 }
 
 .steps-input {
+    margin-top: 1.5vh;
     border-radius: 10px;
 }
 

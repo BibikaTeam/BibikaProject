@@ -40,6 +40,7 @@
             height: 66vh;
             overflow: hidden;
             border-radius: 6px;
+            object-fit: cover;
         }
 
         .left-arrow {
@@ -85,6 +86,7 @@
                 height: 15vh;
                 overflow: hidden;
                 border-radius: 6px;
+                object-fit: cover;
             }            
         }
     }
@@ -202,7 +204,7 @@
         font-family: 'Manrope';
         font-style: normal;
         font-weight: 700;
-        font-size: 90px;
+        font-size: 70px;
         line-height: 123px;
         color: $accent-dark;
     }
@@ -233,6 +235,9 @@
     font-weight: 500;
     font-size: 24px;
     line-height: 33px;
+    word-break: break-word;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 
     color: rgba($accent-dark, 0.7);
 }
@@ -276,7 +281,7 @@
         flex-wrap: wrap;
         border-radius: 0px 0px 6px 6px;
         padding: 10px;
-        min-height: 30vh;
+        //min-height: 30vh;
         margin-bottom: 50px;
 
         .body-tag {
@@ -297,6 +302,7 @@
             height: 5.5vh;
             
             margin-right: 1.5vw;
+            margin-bottom: 1.5vw;
         }
     }
 }

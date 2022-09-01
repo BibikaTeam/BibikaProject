@@ -73,7 +73,7 @@ const Header = () => {
       <div className="left-header-side">
         <Link to="/">
           <svg
-            width="137"
+            width="110"
             height="39"
             viewBox="0 0 137 39"
             fill="none"
