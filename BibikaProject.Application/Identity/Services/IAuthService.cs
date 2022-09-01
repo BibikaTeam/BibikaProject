@@ -20,5 +20,7 @@ namespace BibikaProject.Application.Identity.Services
         Task ResetPassword(ResetPasswordRequest request);
 
         Task ResetPasswordReqauest(string email);
+
+        Task ChangeUserName(ChaneUserNameRequest chaneUserNameRequest);
     }
 }

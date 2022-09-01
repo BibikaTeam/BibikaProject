@@ -5,12 +5,13 @@
          rgba(224, 103, 56, 0) 100%),
          rgba(224, 103, 56, 0.1);
          height: 600px;
-         display: flex;
-         justify-content: space-between;
+        //  display: flex;
+        //  justify-content: space-between;
         .left-trend-side{
             padding-left: 150px;
             padding-top: 70px;
-            flex-grow: 1;
+            // flex-grow: 1;
+            // min-width: 850px;
             h1{
                 color: white;
                 font-size: 58px;
@@ -60,15 +61,36 @@
             }
         }
         .right-trend-side{
-            flex-grow: 2;
-            .col{
-                width: 30%;
-                display: inline-block;
-                .trend-car-card{
-                 display: block;
-                //  position: absolute;
+            .first-col{
+                overflow: hidden;
+            }
+            .outer{
+                // display: table;
+                .inner{
+                    // padding: 50% 0;
+                    // height: 0;
+                    .marquee-container {
+                        transform: rotate(90deg);
+                        width: 600px!important;
+                        height: 280px !important;
+                        overflow: hidden;
+ 
+                        // display: block;
+                        // transform-origin: top left;
+                        /* Note: for a CLOCKWISE rotation, use the commented-out
+                           transform instead of this one. */
+                        // transform: rotate(-90deg) translate(-100%);
+                        /* transform: rotate(90deg) translate(0, -100%); */
+                        // margin-top: -50%;
+
+                        /* Not vital, but possibly a good idea if the element you're rotating contains
+                           text and you want a single long vertical line of text and the pre-rotation
+                           width of your element is small enough that the text wraps: */
+                        // white-space: nowrap;
+                    }
                 }
             }
+
         }
         margin-bottom: 30px;
     }

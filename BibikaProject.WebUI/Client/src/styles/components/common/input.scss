@@ -1,0 +1,16 @@
+.my-own-input{
+    background-color: rgba($color: #FFFFFF, $alpha: 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 10px 30px;
+    font-size: 26px;
+    width: auto;
+    &:disabled {
+        background-color: rgba(65, 65, 65, 0.08) !important;
+    }
+    &:focus {
+        border: 1px solid #219CE1;
+        outline: none;
+    }
+}

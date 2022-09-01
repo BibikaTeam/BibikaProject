@@ -34,7 +34,7 @@ instance.interceptors.response.use(
       if (err.response.status === 401 && !originalConfig._retry) {
         originalConfig._retry = true;
         try {
-          const rs = await refreshToken();
+          const rs = await getRefreshToken();
           const { token } = rs.data;
           const { refreshToken } = rs.data;
           // console.log("data: ", rs.data);
@@ -63,6 +63,7 @@ function refreshToken() {
     token: getLocalAccessToken()
   })
   const tmp = instance.post("/api/refresh", {
+
     refreshToken: getLocalRefreshToken(),
     token: getLocalAccessToken()
   });
