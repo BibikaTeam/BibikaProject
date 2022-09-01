@@ -34,10 +34,9 @@ instance.interceptors.response.use(
       if (err.response.status === 401 && !originalConfig._retry) {
         originalConfig._retry = true;
         try {
-          const rs = await getRefreshToken();
+          const rs = await updateRefreshToken();
           const { token } = rs.data;
           const { refreshToken } = rs.data;
-          // console.log("data: ", rs.data);
           window.localStorage.setItem("token", token);
           window.localStorage.setItem("refreshToken", refreshToken);
           instance.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("token")}`;
@@ -57,19 +56,24 @@ instance.interceptors.response.use(
   }
 );
 
-function refreshToken() {
-  console.log("old: ", {
-    refreshToken: getLocalRefreshToken(),
-    token: getLocalAccessToken()
-  })
+function updateRefreshToken() {
   const tmp = instance.post("/api/refresh", {
-
     refreshToken: getLocalRefreshToken(),
     token: getLocalAccessToken()
+  }).catch(_error => {
+    if (_error.response && _error.response.status === 400) {
+      logoutUser();
+      return Promise.reject(_error.response.data);
+    }
   });
-  console.log("new: ", tmp)
 
   return tmp;
+}
+
+function logoutUser() {
+  window.localStorage.removeItem("token");
+  window.localStorage.removeItem("refreshToken");
+  window.location.reload();
 }
 
   function getLocalAccessToken() {
