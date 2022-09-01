@@ -19,7 +19,7 @@ namespace BibikaProject.WebUI.Controllers
         private readonly IGenerationService generationService;
 
         [HttpPost("add")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddGeneration([FromBody] AddGenerationDTO model)
         {
             await generationService.AddGenerationAsync(model);
@@ -28,7 +28,7 @@ namespace BibikaProject.WebUI.Controllers
         }
 
         [HttpPut("update")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = ENV.AdminRoleName)]
         public async Task<IActionResult> UpdateGeneration([FromBody] UpdateGenerationDTO model)
         {
             await generationService.UpdateGenerationAsync(model);
@@ -37,7 +37,7 @@ namespace BibikaProject.WebUI.Controllers
         }
 
         [HttpDelete("delete/{id}")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = ENV.AdminRoleName)]
         public async Task<IActionResult> DeleteGeneration(int id)
         {
             await generationService.DeleteGenerationAsync(id);

@@ -19,7 +19,7 @@ namespace BibikaProject.WebUI.Controllers
         public readonly IOptionService optionService;
 
         [HttpPost("add")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = ENV.AdminRoleName)]
         public async Task<IActionResult> AddOption([FromBody] AddOptionDTO model)
         {
             await optionService.AddOptionAsync(model);
@@ -28,7 +28,7 @@ namespace BibikaProject.WebUI.Controllers
         }
 
         [HttpPut("update")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = ENV.AdminRoleName)]
         public async Task<IActionResult> UpdateOption([FromBody] UpdateOptionDTO model)
         {
             await optionService.UpdateOptionAsync(model);
@@ -37,7 +37,7 @@ namespace BibikaProject.WebUI.Controllers
         }
 
         [HttpDelete("delete/{id}")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = ENV.AdminRoleName)]
         public async Task<IActionResult> DeleteOption(int id)
         {
             await optionService.DeleteOptionAsync(id);

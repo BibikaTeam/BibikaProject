@@ -151,6 +151,7 @@ namespace BibikaProject.WebUI
 
             RecurringJob.AddOrUpdate<AdvertismentHelper>("dailyPointsDecrement", x => x.DecrementDailyPoints(), Cron.Daily);
             RecurringJob.AddOrUpdate<AdvertismentHelper>("balanceDecrement", x => x.DecrementBalance(), Cron.Daily);
+
         }
     }
 }

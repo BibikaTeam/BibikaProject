@@ -18,7 +18,7 @@ namespace BibikaProject.WebUI.Controllers
         private readonly IGearBoxService gearBoxService;
 
         [HttpPost("add")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = ENV.AdminRoleName)]
         public async Task<IActionResult> AddGearBox([FromBody] AddGearBoxDTO model)
         {
             await gearBoxService.AddGearBoxAsync(model);
@@ -27,7 +27,7 @@ namespace BibikaProject.WebUI.Controllers
         }
 
         [HttpPut("update")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = ENV.AdminRoleName)]
         public async Task<IActionResult> UpdateGearBox([FromBody] UpdateGearBoxDTO model)
         {
             await gearBoxService.UpdateGearBoxAsync(model);
@@ -36,7 +36,7 @@ namespace BibikaProject.WebUI.Controllers
         }
 
         [HttpDelete("delete/{id}")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = ENV.AdminRoleName)]
         public async Task<IActionResult> DeleteGearBox(int id)
         {
             await gearBoxService.DeleteGearBoxAsync(id);

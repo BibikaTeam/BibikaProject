@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const instance = axios.create({
-     baseURL: "https://localhost:5001/",
-    //baseURL: "https://localhost:44381/",
+    baseURL: "https://localhost:5001/",
+    // baseURL: "https://localhost:44381/",
     // baseURL: "/",
     headers: {
         "Content-type": "application/json",
@@ -36,9 +36,10 @@ instance.interceptors.response.use(
         try {
           const rs = await getRefreshToken();
           const { token } = rs.data;
-          const { refreshTokenThere } = rs.data;
+          const { refreshToken } = rs.data;
+          // console.log("data: ", rs.data);
           window.localStorage.setItem("token", token);
-          window.localStorage.setItem("refreshToken", refreshTokenThere);
+          window.localStorage.setItem("refreshToken", refreshToken);
           instance.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("token")}`;
           return instance(originalConfig);
         } catch (_error) {
@@ -56,11 +57,19 @@ instance.interceptors.response.use(
   }
 );
 
-function getRefreshToken() {
-  return instance.post("/api/refresh", {
+function refreshToken() {
+  console.log("old: ", {
+    refreshToken: getLocalRefreshToken(),
+    token: getLocalAccessToken()
+  })
+  const tmp = instance.post("/api/refresh", {
+
     refreshToken: getLocalRefreshToken(),
     token: getLocalAccessToken()
   });
+  console.log("new: ", tmp)
+
+  return tmp;
 }
 
   function getLocalAccessToken() {
