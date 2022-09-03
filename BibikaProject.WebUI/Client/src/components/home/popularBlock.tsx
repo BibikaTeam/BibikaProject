@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import CarCardLoader from "../common/ownElement/carCardLoader";
 import { getRandomTrendPost } from "../posts/advertisment/service";
 import MainPageCarCard from "./carCard";
 import { getRandomPost } from "./service";
@@ -38,9 +39,9 @@ const PopularBlock = () => {
     <div className="popular-block">
       <h2>Popular</h2>
       <div className="cars-cards">
-        {postArray[0] && <MainPageCarCard car={postArray[0]} />}
-        {postArray[1] && <MainPageCarCard car={postArray[1]} />}
-        {postArray[2] && <MainPageCarCard car={postArray[2]} />}
+        <MainPageCarCard car={postArray[0]} />
+        <MainPageCarCard car={postArray[1]} />
+        <MainPageCarCard car={postArray[2]} />
       </div>
     </div>
   );

@@ -37,6 +37,11 @@
                  padding: 4px 25px;
                  background-color: rgba($color: #219CE1, $alpha: 0.2);
                  border-radius: 10px;
+
+                 &:hover{
+                    background-color: rgba($color: #219CE1, $alpha: 1);
+                    color: white;
+                 }
             }
         }
     }
@@ -60,9 +65,10 @@
             align-items: center;
             margin-top: 14px;
             margin-bottom: 0;
+            column-gap: 15px;
 
             .write-btn{
-                width: auto;
+                width: 100%;
                 font-size: 32px;
                 color: white;
                 background-color: rgba($color: #E06738, $alpha: 0.6);
@@ -70,6 +76,9 @@
                 border-radius: 10px;
                 border: none;
                 cursor: pointer;
+                &:hover{
+                    background-color: rgba($color: #E06738, $alpha: 1);
+                }
             }
             .call-btn{
                 background-color: rgba($color: #E06738, $alpha: 0.2);
@@ -77,6 +86,10 @@
                 border: none;
                 cursor: pointer;
                 padding: 13px 35px;
+
+                &:hover{
+                    background-color: rgba($color: #E06738, $alpha: 1);
+                }
             }
         }
 
