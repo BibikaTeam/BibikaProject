@@ -76,13 +76,13 @@ function logoutUser() {
   window.location.reload();
 }
 
-  function getLocalAccessToken() {
-    const accessToken = localStorage.getItem("token");
-    return accessToken;
-  }
-  function getLocalRefreshToken() {
-    const refreshToken = localStorage.getItem("refreshToken");
-    return refreshToken;
-  }
+function getLocalAccessToken() {
+  const accessToken = localStorage.getItem("token");
+  return accessToken;
+}
+function getLocalRefreshToken() {
+  const refreshToken = localStorage.getItem("refreshToken");
+  return refreshToken;
+}
 
 export default instance;

@@ -25,7 +25,7 @@ import SettingsProfile from "./components/userCabinet/settings";
 import MyPosts from "./components/userCabinet/myPosts";
 import Message from "./components/userCabinet/message";
 import SavedPosts from "./components/userCabinet/savedPosts";
-import PostAdd from "./components/posts/add";
+// import PostAdd from "./components/posts/add";
 import PostPage from "./components/posts/postPage";
 import DetailSearch from "./components/posts/search/detailSearch";
 import Test from "./components/test";
@@ -40,20 +40,28 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="/post/detail-search" element={<DetailSearch />} />
           <Route path="/post/search-result" element={<SearchResult />} />
+          <Route path="/post/add" element={<AddPostPage />} />
           <Route path="/post/:id" element={<PostPage />} />
           <Route element={<AuthorizedBasedRoute />}>
             <Route path="/user-profile" element={<UserProfile />}>
-              <Route path="/user-profile/my-posts" element={<MyPosts />}/>
-              <Route path="/user-profile/message" element={<Message />}/>
-              <Route path="/user-profile/saved-posts" element={<SavedPosts />}/>
-              <Route path="/user-profile/settings" element={<SettingsProfile/>}/>
-              <Route path="/user-profile/settings/change-password" element={<ChangePasswordPage />} />
+              <Route path="/user-profile/my-posts" element={<MyPosts />} />
+              <Route path="/user-profile/message" element={<Message />} />
+              <Route
+                path="/user-profile/saved-posts"
+                element={<SavedPosts />}
+              />
+              <Route
+                path="/user-profile/settings"
+                element={<SettingsProfile />}
+              />
+              <Route
+                path="/user-profile/settings/change-password"
+                element={<ChangePasswordPage />}
+              />
             </Route>
             <Route path="/post/adv-order" element={<AdvOrderPage />} />
           </Route>
         </Route>
-
-        <Route path="/post/add" element={<AddPostPage />} />
 
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />

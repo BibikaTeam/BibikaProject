@@ -6,42 +6,21 @@ import { IBannerCar } from "./home/types";
 import ITrendCarCard from "./posts/advertisment/trendCarCard";
 
 const Test = () => {
-  const [randomCar, setRandomCar] = useState<IBannerCar>();
-  useEffect(() => {
-    (async () => {
-      const rc = await getRandomPost();
-      setRandomCar(rc);
-    })();
-  }, []);
-
-  console.log(randomCar);
+  const imgSrc =
+    "https://localhost:5001/images/9e74c71c-0662-4ff7-9a36-64cbbc4f1091_1fe34be7-9a98-40fc-aefe-9635b07d778a.png";
 
   return (
-    <div>
-      {randomCar && (
-        <>
-          <Marquee
-            direction="right"
-            speed={40}
-            style={{
-              transform: "rotate(90deg)",
-              width: "auto",
-              overflow: "hidden",
-            }}
-          >
-            <div style={{ transform: "rotate(-90deg)" }}>
-              <ITrendCarCard car={randomCar} scale={0.8}></ITrendCarCard>
-            </div>
-            <div style={{ transform: "rotate(-90deg)" }}>
-              <ITrendCarCard car={randomCar} scale={0.8}></ITrendCarCard>
-            </div>
-            <div style={{ transform: "rotate(-90deg)", marginTop: "10px" }}>
-              <ITrendCarCard car={randomCar} scale={0.8}></ITrendCarCard>
-            </div>
-          </Marquee>
-        </>
-      )}
-    </div>
+    <>
+      <h1>TEST</h1>
+      <div style={{ backgroundColor: "gray", width: "368px", height: "223px" }}>
+        <img
+          src={imgSrc}
+          alt=""
+          style={{ width: "100%", height: "100%", objectFit: "scale-down" }}
+          loading="lazy"
+        />
+      </div>
+    </>
   );
 };
 
