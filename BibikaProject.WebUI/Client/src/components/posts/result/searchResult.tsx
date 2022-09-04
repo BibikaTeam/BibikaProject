@@ -9,7 +9,6 @@ import { IBannerCar, IShortSearchRespond } from "../../home/types";
 import { likePost } from "../../userCabinet/service";
 import CarCard from "./carCard";
 
-import { keys } from "ts-transformer-keys";
 import { ICurrentCarDetailProps, IDetailSearchProps } from "../search/types";
 import { getDetailPaginatedPosts } from "../search/serivce";
 import SearchPanel from "../../home/searchPanel";

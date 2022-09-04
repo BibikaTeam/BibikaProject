@@ -11,6 +11,7 @@ import AdminBasedRoute from "./routing/adminBasedRoute";
 import AuthorizedBasedRoute from "./routing/authorizedBasedRoute";
 import LoginPage from "./components/authorization/login";
 import RegisterPage from "./components/authorization/register";
+import ErrorPage from "./components/noMatch/errorPage";
 
 //lazy loading
 const HomePage = React.lazy(() => import("./components/home"));
@@ -60,6 +61,7 @@ function App() {
         <Routes>
           <Route path="/" element={<DefaultLayout />}>
             <Route index element={<HomePage />} />
+            <Route path="/error/:errorCode" element={<ErrorPage />} />
             <Route path="/post/detail-search" element={<DetailSearch />} />
             <Route path="/post/search-result" element={<SearchResult />} />
             <Route path="/post/add" element={<AddPostPage />} />
