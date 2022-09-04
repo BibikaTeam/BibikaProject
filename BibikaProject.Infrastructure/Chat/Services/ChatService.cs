@@ -9,6 +9,7 @@ using BibikaProject.Infrastructure.Core.Errors;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BibikaProject.Infrastructure.Chat.Services
@@ -45,7 +46,7 @@ namespace BibikaProject.Infrastructure.Chat.Services
                 throw new NotFoundException("There is no chat between these users");
             }
 
-            return mapper.Map<List<MessageDTO>>(chat.Messages);
+            return mapper.Map<List<MessageDTO>>(chat.Messages.OrderBy(x => x.Date));
         }
 
         public async Task SendMessage(SendMessageRequest sendMessageRequest)
