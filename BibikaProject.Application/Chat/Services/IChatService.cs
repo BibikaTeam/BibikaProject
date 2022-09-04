@@ -1,4 +1,6 @@
-﻿using BibikaProject.Application.Chat.Requests;
+﻿using BibikaProject.Application.Chat.DTO;
+using BibikaProject.Application.Chat.Requests;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BibikaProject.Application.Chat.Services
@@ -7,6 +9,6 @@ namespace BibikaProject.Application.Chat.Services
     {
         Task SendMessage(SendMessageRequest sendMessageRequest);
 
-        Task GetMessages(GetMessagesRequest getMessagesRequest);
+        Task<List<MessageDTO>> GetMessages(GetMessagesRequest getMessagesRequest);
     }
 }

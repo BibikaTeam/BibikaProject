@@ -39,7 +39,7 @@ namespace BibikaProject.Infrastructure
 
         public virtual DbSet<Message> Messages { get; set; }
 
-        public virtual DbSet<Chat> Chats { get; set; }
+        public virtual DbSet<Domain.Entities.Chat.Chat> Chats { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

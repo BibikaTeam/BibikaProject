@@ -32,6 +32,12 @@ using BibikaProject.Infrastructure.Identity.Services.Helpers.Email;
 using Hangfire;
 using Hangfire.PostgreSql;
 using Newtonsoft.Json;
+using BibikaProject.Infrastructure.Chat.Queries;
+using BibikaProject.Application.Chat.Queris;
+using BibikaProject.Infrastructure.Chat.Commands;
+using BibikaProject.Application.Chat.Commands;
+using BibikaProject.Application.Chat.Services;
+using BibikaProject.Infrastructure.Chat.Services;
 
 namespace BibikaProject.WebUI
 {
@@ -259,6 +265,15 @@ namespace BibikaProject.WebUI
                 x.UsePostgreSqlStorage(configuration.GetConnectionString("DefaultConnection"));
                 x.UseSerializerSettings(new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }); 
             });
+        }
+
+        public static void ConfigureCharService(this IServiceCollection services)
+        {
+            services.AddTransient<IMessageQuery, MessageQuery>();
+            services.AddTransient<IMessageCommand, MessageCommand>();
+            services.AddTransient<IChatCommand, ChatCommand>();
+            services.AddTransient<IChatQuery, ChatQuery>();
+            services.AddTransient<IChatService, ChatService>();
         }
     }
 }
