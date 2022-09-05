@@ -13,7 +13,7 @@ const AdminBasedRoute = () => {
     isAdmin ? (
       <Outlet />
     ) : (
-      <NotPermittedPage />
+      <Navigate to="/error/401" replace />
     )
   ) : (
     <Navigate to="/login" replace />

@@ -36,9 +36,14 @@ const MySelect = ({
       placeholder={placeholder}
       value={value}
     >
-      <option value={"default"} hidden>{`${placeholder}...`}</option>
+      <option value="default" hidden>{`${placeholder}...`}</option>
       {values.map((x) => (
-        <option value={x.value}>{x.label}</option>
+        <option
+          value={x.value && x.value !== null ? x.value : ""}
+          key={x.value}
+        >
+          {x.label}
+        </option>
       ))}
     </select>
   );

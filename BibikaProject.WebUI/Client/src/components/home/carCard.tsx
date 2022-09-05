@@ -4,9 +4,13 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { IRequestError } from "../adminPanel/types";
+import CarCardLoader from "../common/ownElement/carCardLoader";
 import { getImagesByPostId } from "../posts/postPage/service";
 import { getRandomPost } from "./service";
 import { IBannerCar } from "./types";
+
+import loadingImage from "../../assets/loading.gif";
+import defaultImage from "../../assets/defaultImage.png";
 
 export interface IMainPageCarCardProps {
   car: IBannerCar;
@@ -28,41 +32,57 @@ const MainPageCarCard = ({ car }: IMainPageCarCardProps) => {
 
   const [imgSrc, setImgSrc] = useState<string>("");
   useEffect(() => {
-    (async () => {
-      loadImage();
-    })();
-  }, [imgSrc]);
+    if (car) {
+      (async () => {
+        loadImage();
+      })();
+    }
+  }, [car]);
 
   const loadImage = async () => {
     try {
+      setImgSrc(loadingImage);
       const imgName = await getImagesByPostId(car.id);
       if (imgName && imgName[0] && (imgName[0] as string)) {
         setImgSrc(`/images/${imgName[0]}_medium.png`);
+      } else {
+        setImgSrc(defaultImage);
       }
     } catch (_error) {
       const error: IRequestError = _error as IRequestError;
       error.errors.forEach((e) => {
         toast.error(e);
       });
+      setImgSrc(defaultImage);
     }
   };
 
+  const handleImgError = (ev: any) => {
+    setImgSrc(defaultImage);
+  };
+
   return (
-    <div className="main-car-card">
-      <Link to={`/post/${car.id}`}>
-        <img src={imgSrc} alt="Car src" />
-        <div className="info">
-          <h4>{car.car.title}</h4>
-          <span className="price">{car.price}$</span>
-          <span className="location">{car.location}</span>
-          <div className="tags-line">
-            <span>{car.year}</span>
-            <span>{car.mileage}km</span>
-            <span>{car.car.engine.title}</span>
-          </div>
+    <>
+      {car && car != undefined ? (
+        <div className="main-car-card">
+          <Link to={`/post/${car.id}`}>
+            <img src={imgSrc} alt="Car src" onError={handleImgError} />
+            <div className="info">
+              <h4>{car.car.title}</h4>
+              <span className="price">{car.price}$</span>
+              <span className="location">{car.location}</span>
+              <div className="tags-line">
+                <span>{car.year}</span>
+                <span>{car.mileage}km</span>
+                <span>{car.car.engine.title}</span>
+              </div>
+            </div>
+          </Link>
         </div>
-      </Link>
-    </div>
+      ) : (
+        <CarCardLoader />
+      )}
+    </>
   );
 };
 

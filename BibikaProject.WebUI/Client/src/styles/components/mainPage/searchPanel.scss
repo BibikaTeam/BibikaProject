@@ -147,6 +147,11 @@
                 padding: 10px;
                 height: auto;
 
+                &:hover {
+                    background-color:  #E06738;
+                    border-color: transparent;
+                }
+
                 &:disabled{
                     background-color: rgba($color: $primary, $alpha: 0.5);
                 }

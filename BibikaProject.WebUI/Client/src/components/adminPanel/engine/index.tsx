@@ -124,7 +124,6 @@ const EnginePage = () => {
     }
   };
   const handleDeleteEngine = async (value: IEngineModel) => {
-    console.log("value: ", value);
     setLoading(true);
     try {
       await deleteEngine(value.id);
@@ -187,7 +186,6 @@ const EnginePage = () => {
       duration: 0,
       key: key,
       onClick: () => {
-        console.log("key: ", key);
         notification.close(key);
         handleGetAllEngines();
       },

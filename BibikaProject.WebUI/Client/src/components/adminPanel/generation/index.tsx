@@ -180,7 +180,6 @@ const GenerationPage: FC = () => {
   };
 
   const handleDeleteGeneration = async (value: IGenerationModel) => {
-    console.log("value: ", value);
     setLoading(true);
     try {
       await deleteGeneration(value.id);
@@ -236,7 +235,6 @@ const GenerationPage: FC = () => {
       duration: 0,
       key: key,
       onClick: () => {
-        console.log("key: ", key);
         notification.close(key);
         handleGetAllGenerations(defaultPaginationRequest);
       },

@@ -121,7 +121,6 @@ const ModelPage = () => {
     }
   };
   const handleDeleteModel = async (value: IModelModel) => {
-    console.log("value: ", value);
     setLoading(true);
     try {
       await deleteModel(value.id);

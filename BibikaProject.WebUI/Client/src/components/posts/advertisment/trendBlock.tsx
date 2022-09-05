@@ -37,9 +37,9 @@ const TrendBlock = () => {
     <div className="trend-block">
       <h2>Trends</h2>
       <div className="cars-cards">
-        {postArray[0] && <TrendCarCard car={postArray[0]} />}
-        {postArray[1] && <TrendCarCard car={postArray[1]} />}
-        {postArray[2] && <TrendCarCard car={postArray[2]} />}
+        <TrendCarCard car={postArray[0]} />
+        <TrendCarCard car={postArray[1]} />
+        <TrendCarCard car={postArray[2]} />
       </div>
     </div>
   );

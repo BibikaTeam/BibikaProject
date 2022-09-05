@@ -1,0 +1,31 @@
+.error-page{
+    width: 100vw;
+    height: calc(100vh - 192px - 120px);
+    padding-left: 150px;
+    padding-top: 80px;
+    position: relative;
+    h1 {
+        color: #414141;
+        font-size: 64px;
+        font-weight: 600;
+    }
+    h2{
+        margin-top: 15px;
+        font-size: 36px;
+        font-weight: 400;
+        margin-bottom: 40px;
+    }
+    a{
+        color: #E06738;
+        font-size: 24px;
+        text-decoration-line: underline;
+    }
+    img {
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+        width: 1000px;
+        height: 411px;
+    }
+    
+}

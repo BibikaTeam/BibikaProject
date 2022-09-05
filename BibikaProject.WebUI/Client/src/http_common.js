@@ -51,6 +51,13 @@ instance.interceptors.response.use(
       if (err.response.status === 403 && err.response.data) {
         return Promise.reject(err.response.data);
       }
+      if(err.response.status === 500 && err.response.data) {
+        window.location.href = "/error/500";
+      }
+    }
+    else {
+      window.location.href = "/error/500";
+
     }
     return Promise.reject(err);
   }
@@ -76,13 +83,13 @@ function logoutUser() {
   window.location.reload();
 }
 
-  function getLocalAccessToken() {
-    const accessToken = localStorage.getItem("token");
-    return accessToken;
-  }
-  function getLocalRefreshToken() {
-    const refreshToken = localStorage.getItem("refreshToken");
-    return refreshToken;
-  }
+function getLocalAccessToken() {
+  const accessToken = localStorage.getItem("token");
+  return accessToken;
+}
+function getLocalRefreshToken() {
+  const refreshToken = localStorage.getItem("refreshToken");
+  return refreshToken;
+}
 
 export default instance;
