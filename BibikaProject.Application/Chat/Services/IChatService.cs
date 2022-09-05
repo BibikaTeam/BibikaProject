@@ -10,5 +10,7 @@ namespace BibikaProject.Application.Chat.Services
         Task SendMessage(SendMessageRequest sendMessageRequest);
 
         Task<List<MessageDTO>> GetMessages(GetMessagesRequest getMessagesRequest);
+
+        Task<List<string>> GetChats(string email);
     }
 }

@@ -61,5 +61,14 @@ namespace BibikaProject.WebUI.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("get-chats/")]
+        [Authorize]
+        public async Task<IActionResult> GetChats()
+        {
+            var result = await chatService.GetChats(HttpContext.User.Claims.First(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value);
+
+            return Ok(result);
+        }
     }
 }

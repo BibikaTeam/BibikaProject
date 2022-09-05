@@ -83,5 +83,25 @@ namespace BibikaProject.Infrastructure.Chat.Services
             await messageCommand.AddAsync(newMsg);
             await messageCommand.SaveChangesAsync();
         }
+
+        public async Task<List<string>> GetChats(string email)
+        {
+            var chats = chatQuery.GetAll().Where(x => x.UserEmails.Contains(email));
+
+            if (chats == null || chats.Count() == 0)
+            {
+                return null;
+            }
+
+            var result = new List<string>();
+
+            await chats.ForEachAsync(x => x.UserEmails.ForEach(x => 
+            { 
+                if (x != email)
+                    result.Add(x);
+            }));
+
+            return result;
+        }
     }
 }
