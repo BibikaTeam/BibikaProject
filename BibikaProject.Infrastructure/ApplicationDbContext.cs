@@ -1,4 +1,5 @@
-﻿using BibikaProject.Domain.Entities.Core;
+﻿using BibikaProject.Domain.Entities.Chat;
+using BibikaProject.Domain.Entities.Core;
 using BibikaProject.Domain.Entities.Identity;
 using BibikaProject.Infrastructure.Configurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -35,6 +36,10 @@ namespace BibikaProject.Infrastructure
         public virtual DbSet<Option> Options { get; set; }
 
         public virtual DbSet<Post> Posts { get; set; }
+
+        public virtual DbSet<Message> Messages { get; set; }
+
+        public virtual DbSet<Domain.Entities.Chat.Chat> Chats { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
