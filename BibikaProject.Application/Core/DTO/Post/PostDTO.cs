@@ -16,6 +16,8 @@ namespace BibikaProject.Application.Core.DTO.Post
         public int Mileage { get; set; }
 
         public string SellerName { get; set; }
+        public string SellerId { get; set; }
+        public string SellerEmail { get; set; }
 
         public int Likes { get; set; }
 

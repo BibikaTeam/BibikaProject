@@ -9,6 +9,9 @@ import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import loadingImage from "../../../assets/loading.gif";
 import defaultImage from "../../../assets/defaultImage.png";
 import CarCardLoader from "../../common/ownElement/carCardLoader";
+import { createChat } from "../../userCabinet/chat/service";
+
+import { useNavigate } from "react-router-dom";
 
 export interface ITrendCarCardProps {
   car: IBannerCar;
@@ -16,6 +19,7 @@ export interface ITrendCarCardProps {
 }
 
 const TrendCarCard = ({ car, scale }: ITrendCarCardProps) => {
+  const navigator = useNavigate();
   const [imgSrc, setImgSrc] = useState<string>("");
   useEffect(() => {
     (async () => {
@@ -34,11 +38,19 @@ const TrendCarCard = ({ car, scale }: ITrendCarCardProps) => {
       }
     } catch (_error) {
       const error: IRequestError = _error as IRequestError;
-      error.errors.forEach((e) => {
-        toast.error(e);
-      });
+      if (error && error.errors) {
+        error.errors.forEach((e) => {
+          toast.error(e);
+        });
+      }
       setImgSrc(defaultImage);
     }
+  };
+
+  const onHandleMessageWrite = async () => {
+    console.log("Works 1");
+    await createChat(car.sellerEmail);
+    navigator("/user-profile/chat");
   };
 
   const handleImgError = (ev: any) => {
@@ -71,7 +83,9 @@ const TrendCarCard = ({ car, scale }: ITrendCarCardProps) => {
                 <span className="trend-price">{car.price}$</span>
               </div>
               <div className="buttons-container">
-                <button className="write-btn">Message</button>
+                <button className="write-btn" onClick={onHandleMessageWrite}>
+                  Message
+                </button>
                 <button className="call-btn">
                   <svg
                     width="32"

@@ -18,6 +18,8 @@ export interface IBannerCar {
   mileage: number;
   price: number;
   sellerName: string;
+  sellerId: string;
+  sellerEmail: string;
   viewes: number;
   year: number;
   car: ICarModel;

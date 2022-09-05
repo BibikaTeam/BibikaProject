@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import CarCardLoader from "../common/ownElement/carCardLoader";
 import { getRandomTrendPost } from "../posts/advertisment/service";
+import TrendCarCard from "../posts/advertisment/trendCarCard";
 import MainPageCarCard from "./carCard";
 import { getRandomPost } from "./service";
 import { IBannerCar } from "./types";
+import { UserOutlined } from "@ant-design/icons";
 
 const PopularBlock = () => {
   // const car: IBannerCar = {
@@ -33,15 +35,13 @@ const PopularBlock = () => {
     })();
   }, []);
 
-  console.log("postArr: ", postArray);
-
   return (
     <div className="popular-block">
       <h2>Popular</h2>
       <div className="cars-cards">
-        <MainPageCarCard car={postArray[0]} />
-        <MainPageCarCard car={postArray[1]} />
-        <MainPageCarCard car={postArray[2]} />
+        <TrendCarCard car={postArray[0]} />
+        <TrendCarCard car={postArray[1]} />
+        <TrendCarCard car={postArray[2]} />
       </div>
     </div>
   );

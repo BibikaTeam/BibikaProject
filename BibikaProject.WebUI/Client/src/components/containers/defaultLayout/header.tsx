@@ -38,6 +38,16 @@ const Header = () => {
         {
           key: "3",
           label: (
+            <Link to={"/user-profile/chat"}>
+              <a target="_blank" rel="noopener noreferrer">
+                Chat
+              </a>
+            </Link>
+          ),
+        },
+        {
+          key: "4",
+          label: (
             <Link onClick={handleLogout} to={"/login"}>
               <a target="_blank" rel="noopener noreferrer">
                 Logout
@@ -125,7 +135,6 @@ const Header = () => {
       </div>
 
       <div className="right-header-side">
-
         {isAuth ? (
           <>
             <Dropdown overlay={menu} placement="bottomLeft" trigger={["click"]}>
@@ -153,4 +162,3 @@ const Header = () => {
 };
 
 export default Header;
-

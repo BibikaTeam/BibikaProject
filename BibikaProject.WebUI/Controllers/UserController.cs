@@ -70,5 +70,13 @@ namespace BibikaProject.WebUI.Controllers
 
             return Ok(result);
         }
+        [HttpPost("create-chat/")]
+        [Authorize]
+        public async Task<IActionResult> CreateChat([FromBody] CreateChatRequest createChatRequest)
+        {
+            await chatService.CreateChat(createChatRequest);
+
+            return Ok();
+        }
     }
 }

@@ -25,6 +25,8 @@ namespace BibikaProject.Infrastructure.Core.Services.Mapper
                 .ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.Location))
                 .ForMember(dest => dest.Color, opt => opt.MapFrom(src => src.Color))
                 .ForMember(dest => dest.SellerName, opt => opt.MapFrom(src => src.Seller.UserName))
+                .ForMember(dest => dest.SellerEmail, opt => opt.MapFrom(src => src.Seller.Email))
+                .ForMember(dest => dest.SellerId, opt => opt.MapFrom(src => src.Seller.Id))
                 .ForMember(dest => dest.Likes, opt => opt.MapFrom(src => src.Likes.Count()))         
                 .ForMember(dest => dest.Mileage, opt => opt.MapFrom(src => src.Mileage))
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))

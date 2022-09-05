@@ -16,9 +16,9 @@ namespace BibikaProject.Infrastructure.Chat.Services
 {
     public class ChatService : IChatService
     {
-        public ChatService(IMapper mapper, 
-                           IMessageQuery messageQuery, 
-                           IMessageCommand messageCommand, 
+        public ChatService(IMapper mapper,
+                           IMessageQuery messageQuery,
+                           IMessageCommand messageCommand,
                            IChatQuery chatQuery,
                            IChatCommand chatCommand)
         {
@@ -46,7 +46,7 @@ namespace BibikaProject.Infrastructure.Chat.Services
                 throw new NotFoundException("There is no chat between these users");
             }
 
-            return mapper.Map<List<MessageDTO>>(chat.Messages.OrderBy(x => x.Date));
+            return mapper.Map<List<MessageDTO>>(chat.Messages.OrderBy(x => x.Date).ToList());
         }
 
         public async Task SendMessage(SendMessageRequest sendMessageRequest)
@@ -67,15 +67,19 @@ namespace BibikaProject.Infrastructure.Chat.Services
             };
 
             var chat = await chatQuery.GetAll()
-                .FirstOrDefaultAsync(x => x.UserEmails.Contains(sendMessageRequest.FromEmail) && 
+                .FirstOrDefaultAsync(x => x.UserEmails.Contains(sendMessageRequest.FromEmail) &&
                                           x.UserEmails.Contains(sendMessageRequest.ToEmail));
 
             if (chat == null)
             {
-                chat = new Domain.Entities.Chat.Chat { UserEmails = new List<string> { sendMessageRequest.FromEmail, 
-                                                                                       sendMessageRequest.ToEmail } };
+                chat = new Domain.Entities.Chat.Chat
+                {
+                    UserEmails = new List<string> { sendMessageRequest.FromEmail,
+                                                                                       sendMessageRequest.ToEmail }
+                };
 
                 chat = await chatCommand.AddAsync(chat);
+                await chatCommand.SaveChangesAsync();
             }
 
             newMsg.ChatId = chat.Id;
@@ -95,13 +99,30 @@ namespace BibikaProject.Infrastructure.Chat.Services
 
             var result = new List<string>();
 
-            await chats.ForEachAsync(x => x.UserEmails.ForEach(x => 
-            { 
+            await chats.ForEachAsync(x => x.UserEmails.ForEach(x =>
+            {
                 if (x != email)
                     result.Add(x);
             }));
 
             return result;
+        }
+        public async Task CreateChat(CreateChatRequest createChatRequest)
+        {
+            var chat = await chatQuery.GetAll()
+                .FirstOrDefaultAsync(x => x.UserEmails.Contains(createChatRequest.FromEmail) &&
+                                          x.UserEmails.Contains(createChatRequest.ToEmail));
+
+            if (chat == null)
+            {
+                chat = new Domain.Entities.Chat.Chat
+                {
+                    UserEmails = new List<string> { createChatRequest.FromEmail, createChatRequest.ToEmail }
+                };
+
+                chat = await chatCommand.AddAsync(chat);
+                await chatCommand.SaveChangesAsync();
+            }
         }
     }
 }
