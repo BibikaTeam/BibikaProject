@@ -1,5 +1,3 @@
-import * as React from "react";
-import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import AdminLayout from "./components/containers/adminLayout";
@@ -25,11 +23,11 @@ import SettingsProfile from "./components/userCabinet/settings";
 import MyPosts from "./components/userCabinet/myPosts";
 import Message from "./components/userCabinet/message";
 import SavedPosts from "./components/userCabinet/savedPosts";
-import PostAdd from "./components/posts/add";
 import PostPage from "./components/posts/postPage";
 import DetailSearch from "./components/posts/search/detailSearch";
 import Test from "./components/test";
 import AdvOrderPage from "./components/posts/advertisment/advOrder";
+import AdminPanelPostPage from "./components/adminPanel/post";
 
 function App() {
   return (
@@ -42,19 +40,10 @@ function App() {
           <Route path="/post/:id" element={<PostPage />} />
           <Route element={<AuthorizedBasedRoute />}>
             <Route path="/user-profile" element={<UserProfile />}>
-              <Route
-                path="/user-profile/my-posts"
-                element={<MyPosts />}
-              ></Route>
-              <Route path="/user-profile/message" element={<Message />}></Route>
-              <Route
-                path="/user-profile/saved-posts"
-                element={<SavedPosts />}
-              ></Route>
-              <Route
-                path="/user-profile/settings"
-                element={<SettingsProfile />}
-              />
+              <Route path="/user-profile/my-posts" element={<MyPosts />} />
+              <Route path="/user-profile/message" element={<Message />} />
+              <Route path="/user-profile/saved-posts" element={<SavedPosts />} />
+              <Route path="/user-profile/settings" element={<SettingsProfile />} />
             </Route>
             <Route path="/post/adv-order" element={<AdvOrderPage />} />
           </Route>
@@ -74,6 +63,7 @@ function App() {
             <Route path="/admin/engine" element={<EnginePage />} />
             <Route path="/admin/complete-set" element={<CompleteSetPage />} />
             <Route path="/admin/car" element={<CarPage />} />
+            <Route path="/admin/post" element={<AdminPanelPostPage />} />
           </Route>
         </Route>
       </Routes>
