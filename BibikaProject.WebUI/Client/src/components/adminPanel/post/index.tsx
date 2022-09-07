@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
+    IPostModel,
     IRequestError,
 } from "../types";
 
@@ -16,8 +17,7 @@ import {
     Col,
     notification,
 } from "antd";
-import { getUserPostEmail } from "./service";
-
+import { deletePostUser, getUserPostEmail } from "./service";
 import type { NotificationPlacement } from "antd/lib/notification";
 const Context = React.createContext({ name: "Default" });
 
@@ -37,7 +37,7 @@ const AdminPanelPostPage = () => {
             const userPost = await getUserPostEmail(value);
             setUserPosts(userPost);
             console.log("user posts", userPosts);
-            
+
         } catch (_error) {
             const error: IRequestError = _error as IRequestError;
             error.errors.forEach((e) => {
@@ -49,20 +49,62 @@ const AdminPanelPostPage = () => {
         }
     }
 
+    const handleDeletePost = async (post: IPostModel) => {
+        setLoading(true);
+        console.log("post id", post.id);
+        
+        try {
+            await deletePostUser(post.id);
+            toast.success(`Brand ${post.id} are successfully deleted`);
+        } catch (_error) {
+            const error: IRequestError = _error as IRequestError;
+            error.errors.forEach((e) => {
+                toast.error(e);
+            });
+        } finally {
+            setLoading(false);
+        }
+    }
+
     const showModalAdvertising = () => {
         setModalAdvertising(true);
+    };
+
+    const handleOkModalUpdadeAdvertising = () => {
+        form.submit();
+        setModalAdvertising(false);
       };
 
     const handleSearchUserEmailChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const userEmail = e.target.value;
         await handleGetAllPostsUser(userEmail);
+    };
+
+    const handleFormSubmit = () => {
+        //handleAddBrand(value);
+      };
+
+    const openNotification = (placement: NotificationPlacement) => {
+        key = `open${Date.now()}`;
+        api.warning({
+          message: `Notification ${placement}`,
+          description: (
+            <Context.Consumer>{({ name }) => `Hello, ${name}!`}</Context.Consumer>
+          ),
+          placement,
+          duration: 0,
+          key: key,
+          onClick: () => {
+            notification.close(key);
+          },
+        });
       };
 
     const columns = [
         {
             title: "Назва посту",
-            dataIndex: "sellerName",
-            key: "sellerName",
+            dataIndex: "car.id",
+            key: "car.id",
             outerWidth: "60%",
         },
         {
@@ -70,14 +112,14 @@ const AdminPanelPostPage = () => {
             dataIndex: "actions",
             key: "actions",
             outerWidth: "40%",
-            render: (text: string) => (
+            render: (text: string, record: IPostModel) => (
                 <div className="buttonGroup">
                     <Button type="primary" htmlType="submit" className="danger" style={{ marginRight: 20 }}>
                         Переглянути пост
                     </Button>
                     <Popconfirm
                         title={`Ви впевнені що хочете видалити цей пост?`}
-                    //onConfirm={() => handleDeleteBrand(record)}
+                        onConfirm={() => handleDeletePost(record)}
                     >
                         <Button type="primary" htmlType="submit" className="danger" style={{ marginRight: 20 }}>
                             Видалити пост
@@ -123,35 +165,33 @@ const AdminPanelPostPage = () => {
                 title="Реклама посту"
                 visible={isModalAdvertising}
                 onCancel={() => setModalAdvertising(false)}
-                onSubmit={() => {
-                    //handleOkModalAddNewBrand
-                }}>
+                onSubmit={handleOkModalUpdadeAdvertising}>
                 <Form
                     name="basic"
                     labelCol={{ span: 8 }}
                     wrapperCol={{ span: 16 }}
-                    //onFinish={handleFormSubmit}
+                    onFinish={handleFormSubmit}
                     autoComplete="off"
                     form={form}
                 >
                     <Form.Item
                         label="очок"
                         name="title"
-                        //rules={[{ required: true, message: "Введіть нову марку машини" }]}
+                    //rules={[{ required: true, message: "Введіть нову марку машини" }]}
                     >
                         <Input />
                     </Form.Item>
                     <Form.Item
                         label="показів посту"
                         name="title"
-                        //rules={[{ required: true, message: "Введіть нову марку машини" }]}
+                    //rules={[{ required: true, message: "Введіть нову марку машини" }]}
                     >
                         <Input />
                     </Form.Item>
                     <Form.Item
                         label="показів баннер"
                         name="title"
-                        //rules={[{ required: true, message: "Введіть нову марку машини" }]}
+                    //rules={[{ required: true, message: "Введіть нову марку машини" }]}
                     >
                         <Input />
                     </Form.Item>

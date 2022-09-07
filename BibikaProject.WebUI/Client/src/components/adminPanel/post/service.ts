@@ -28,6 +28,10 @@ export const getUserPostEmail = async (userEmail: string) => {
   }
 };
 
-export const deletePostUser = () => {
-
+export const deletePostUser = (postId: number) => {
+  try {
+    
+  } catch (error) {
+    
+  }
 };
