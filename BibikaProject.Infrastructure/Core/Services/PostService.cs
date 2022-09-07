@@ -232,5 +232,11 @@ namespace BibikaProject.Infrastructure.Core.Services
 
             return resultDto;
         }
+
+        public async Task DeletePost(int id)
+        {
+            command.Delete(id);
+            await command.SaveChangesAsync();
+        }
     }
 }

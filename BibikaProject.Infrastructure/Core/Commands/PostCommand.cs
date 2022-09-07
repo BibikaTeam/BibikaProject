@@ -2,8 +2,10 @@
 using BibikaProject.Domain.Entities.Core;
 using BibikaProject.Domain.Entities.Identity;
 using BibikaProject.Infrastructure.Core.Errors;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BibikaProject.Infrastructure.Core.Commands
@@ -179,6 +181,18 @@ namespace BibikaProject.Infrastructure.Core.Commands
             }
 
             post.TrendShowsLeft--;
+        }
+
+        public override void Delete(int id)
+        {
+            var entity = context.Posts.Include(x => x.Images).FirstOrDefault(x => x.Id == id);
+
+            if (entity == null)
+            {
+                throw new BadRequestException("There is no entity with this id.");
+            }
+
+            context.Remove(entity);
         }
     }
 }
