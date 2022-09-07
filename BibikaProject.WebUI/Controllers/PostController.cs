@@ -104,13 +104,21 @@ namespace BibikaProject.WebUI.Controllers
 
             return Ok(result);
         }
+
         [HttpGet("get/min-max-values/{generationId}")]
         public async Task<IActionResult> GetMinMaxValues(int generationId)
         {
             var result = await postService.GetMinMaxYearsPrice(generationId);
 
-
             return Ok(result);
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeletePost(int id)
+        {
+            await postService.DeletePost(id);
+
+            return Ok();
         }
     }
 }

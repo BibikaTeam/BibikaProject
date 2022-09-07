@@ -28,5 +28,7 @@ namespace BibikaProject.Application.Core.Services
         Task<PostDTO> GetPostById(int id);
 
         Task<MinMaxValuesDTO> GetMinMaxYearsPrice(int generationId);
+
+        Task DeletePost(int id);
     }
 }

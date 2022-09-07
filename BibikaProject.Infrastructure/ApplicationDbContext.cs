@@ -55,7 +55,7 @@ namespace BibikaProject.Infrastructure
 
             builder.Entity<Post>()
                    .HasOne(x => x.Seller)
-                   .WithMany(x => x.Posts);
+                   .WithMany(x => x.Posts);          
 
             //builder.ApplyConfiguration(new RoleConfiguration());
         }
