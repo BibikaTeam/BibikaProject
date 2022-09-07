@@ -125,3 +125,17 @@ export interface IGearboxModel {
   id: number;
   title: string;
 }
+
+export interface IPostModel {
+  id: number;
+  year: string;
+  location: string;
+  color: string;
+  mileage: number;
+  sellerName: string;
+  likes: number;
+  viewes: string;
+  car: ICarModel;
+  price: number;
+  description: string;
+}
