@@ -42,7 +42,7 @@ namespace BibikaProject.Domain.Entities.Core
 
         public ICollection<ApplicationUser> Views { get; set; }
 
-        public bool WasInUser { get; set; }
+        public bool WasInUse { get; set; }
 
         public string TechnicalCondition { get; set; }
 
