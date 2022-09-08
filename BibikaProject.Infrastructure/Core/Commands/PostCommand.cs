@@ -55,12 +55,12 @@ namespace BibikaProject.Infrastructure.Core.Commands
 
             var user = await context.Users.FindAsync(userId);
 
-            if (post.Views == null)
+            if (user == null || post == null)
             {
-                post.Views = new List<ApplicationUser>();
+                throw new BadRequestException("User or post equals null");
             }
 
-            post.Views.Add(user);
+            await context.ViewPosts.AddAsync(new ViewPost { PostId = postId, UserId = userId });
         }
 
         public override Task<Post> AddAsync(Post entity)
