@@ -63,10 +63,10 @@ namespace BibikaProject.WebUI.Controllers
             return Ok(result);
         }
 
-        [HttpGet("get/user-posts/{email}")]
-        public async Task<IActionResult> GetUserPosts(string email)
+        [HttpGet("get/user-posts/{userId}")]
+        public async Task<IActionResult> GetUserPosts(string userId)
         {
-            var result = await postService.GetUserPosts(email);
+            var result = await postService.GetUserPosts(userId);
 
             return Ok(result);
         }

@@ -17,13 +17,14 @@ import {
     Col,
     notification,
 } from "antd";
-import { deletePostUser, getUserPostEmail } from "./service";
+import { deletePostUser, getAllPosts, getUserPostEmail } from "./service";
 import type { NotificationPlacement } from "antd/lib/notification";
 const Context = React.createContext({ name: "Default" });
 
 const AdminPanelPostPage = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [isModalAdvertising, setModalAdvertising] = useState(false);
+    const [userId, setUserId] = useState("");
     const [userPosts, setUserPosts] = useState([]);
     const [form] = Form.useForm();
 
@@ -31,13 +32,27 @@ const AdminPanelPostPage = () => {
 
     const [api, contextHolder] = notification.useNotification();
 
-    const handleGetAllPostsUser = async (value: string) => {
+    const handleGetAllPostsUser = async () => {
         setLoading(true);
         try {
-            const userPost = await getUserPostEmail(value);
-            setUserPosts(userPost);
+            setUserPosts(await getUserPostEmail(userId));
+        } catch (_error) {
+            const error: IRequestError = _error as IRequestError;
+            error.errors.forEach((e) => {
+                toast.error(e);
+            });
+        } finally {
+            setLoading(false);
+            notification.close(key);
+        }
+    }
+    
+    const handleGetAllPosts = async () => {
+        setLoading(true);
+        try {
+            console.log("get all post index", await getAllPosts());
+            setUserPosts(await getAllPosts());
             console.log("user posts", userPosts);
-
         } catch (_error) {
             const error: IRequestError = _error as IRequestError;
             error.errors.forEach((e) => {
@@ -51,11 +66,10 @@ const AdminPanelPostPage = () => {
 
     const handleDeletePost = async (post: IPostModel) => {
         setLoading(true);
-        console.log("post id", post.id);
-        
         try {
             await deletePostUser(post.id);
             toast.success(`Brand ${post.id} are successfully deleted`);
+            openNotification("bottomRight");
         } catch (_error) {
             const error: IRequestError = _error as IRequestError;
             error.errors.forEach((e) => {
@@ -73,29 +87,29 @@ const AdminPanelPostPage = () => {
     const handleOkModalUpdadeAdvertising = () => {
         form.submit();
         setModalAdvertising(false);
-      };
+    };
 
-    const handleSearchUserEmailChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const userEmail = e.target.value;
-        await handleGetAllPostsUser(userEmail);
+    const handleSearchUserEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUserId(e.target.value);
     };
 
     const handleFormSubmit = () => {
         //handleAddBrand(value);
-      };
+    };
 
     const openNotification = (placement: NotificationPlacement) => {
         key = `open${Date.now()}`;
         api.warning({
           message: `Notification ${placement}`,
           description: (
-            <Context.Consumer>{({ name }) => `Hello, ${name}!`}</Context.Consumer>
+            <Context.Consumer>{() => `Hello, click on me to refresh the table!`}</Context.Consumer>
           ),
           placement,
           duration: 0,
           key: key,
           onClick: () => {
             notification.close(key);
+            handleGetAllPostsUser();
           },
         });
       };
@@ -103,8 +117,8 @@ const AdminPanelPostPage = () => {
     const columns = [
         {
             title: "Назва посту",
-            dataIndex: "car.id",
-            key: "car.id",
+            dataIndex: "id",
+            key: "id",
             outerWidth: "60%",
         },
         {
@@ -143,8 +157,9 @@ const AdminPanelPostPage = () => {
                     <Input
                         placeholder="Input user id"
                         onChange={handleSearchUserEmailChange}
-                        style={{ width: "300px" }}
+                        style={{ width: "350px" }}
                     />
+                    <Button type="primary" htmlType="submit" onClick={handleGetAllPostsUser} style={{ marginLeft: 20 }}>Search</Button>
                 </Col>
                 <Col span={12} style={{ textAlign: "right" }}>
                     <Button
@@ -152,9 +167,7 @@ const AdminPanelPostPage = () => {
                         type="default"
                         className="buttonPrimary"
                         style={{ marginRight: 20 }}
-                        onClick={() => {
-                            //handleGetAllPostsUser();
-                        }}
+                        onClick={() => {handleGetAllPostsUser();}}
                     >
                         Обновити таблицю
                     </Button>
