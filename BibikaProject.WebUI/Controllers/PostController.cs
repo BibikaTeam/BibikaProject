@@ -88,7 +88,7 @@ namespace BibikaProject.WebUI.Controllers
 
             return Ok(result);
         }
-        
+
         [HttpGet("get/random")]
         public async Task<IActionResult> GetRandomPost()
         {
@@ -96,7 +96,7 @@ namespace BibikaProject.WebUI.Controllers
 
             return Ok(result);
         }
-        
+
         [HttpGet("get/{id}")]
         public async Task<IActionResult> GetPostById(int id)
         {
@@ -104,13 +104,32 @@ namespace BibikaProject.WebUI.Controllers
 
             return Ok(result);
         }
+
         [HttpGet("get/min-max-values/{generationId}")]
         public async Task<IActionResult> GetMinMaxValues(int generationId)
         {
             var result = await postService.GetMinMaxYearsPrice(generationId);
 
+            return Ok(result);
+        }
+
+        [HttpDelete("delete/{id}")]
+        [Authorize(Roles = ENV.AdminRoleName)]
+        public async Task<IActionResult> DeletePost(int id)
+        {
+            await postService.DeletePost(id);
+
+            return Ok();
+        }
+
+        [HttpGet("get/last-viewed")]
+        [Authorize]
+        public async Task<IActionResult> GetLastViwedPosts()
+        {
+            var result = await postService.GetLastViwedPosts(HttpContext.User.Claims.First(x => x.Type == UserJWTClaimTypes.Id).Value);
 
             return Ok(result);
         }
+
     }
 }

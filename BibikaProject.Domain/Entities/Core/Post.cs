@@ -40,7 +40,11 @@ namespace BibikaProject.Domain.Entities.Core
 
         public ICollection<ApplicationUser> Likes { get; set; }
 
-        public ICollection<ApplicationUser> Views { get; set; }
+        public ICollection<ViewPost> Views { get; set; }
+
+        public bool WasInUse { get; set; }
+
+        public string TechnicalCondition { get; set; }
 
         [Required]
         public Car Car { get; set; }

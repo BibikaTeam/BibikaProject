@@ -20,6 +20,10 @@ namespace BibikaProject.Application.Core.DTO.Post
         public int CarId { get; set; }
 
         public int Price { get; set; }
+
+        public bool WasInUse { get; set; }
+
+        public string TechnicalCondition { get; set; }
     }
 
     public class AddPostDTOValidator : AbstractValidator<AddPostDTO>
@@ -34,6 +38,7 @@ namespace BibikaProject.Application.Core.DTO.Post
             RuleFor(x => x.SellerId).NotEmpty();
             RuleFor(x => x.Price).NotEmpty();
             RuleFor(x => x.CarId).NotNull().GreaterThanOrEqualTo(1);
+            RuleFor(x => x.TechnicalCondition).NotEmpty();
         }
     }
 }

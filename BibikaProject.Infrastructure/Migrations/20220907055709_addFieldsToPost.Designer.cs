@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using BibikaProject.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BibikaProject.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220907055709_addFieldsToPost")]
+    partial class addFieldsToPost
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,6 +38,21 @@ namespace BibikaProject.Infrastructure.Migrations
                     b.HasIndex("LikesId");
 
                     b.ToTable("ApplicationUserPost");
+                });
+
+            modelBuilder.Entity("ApplicationUserPost1", b =>
+                {
+                    b.Property<int>("ViewedPostsId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ViewsId")
+                        .HasColumnType("text");
+
+                    b.HasKey("ViewedPostsId", "ViewsId");
+
+                    b.HasIndex("ViewsId");
+
+                    b.ToTable("ApplicationUserPost1");
                 });
 
             modelBuilder.Entity("BibikaProject.Domain.Entities.Chat.Chat", b =>
@@ -388,29 +405,6 @@ namespace BibikaProject.Infrastructure.Migrations
                     b.ToTable("Posts");
                 });
 
-            modelBuilder.Entity("BibikaProject.Domain.Entities.Core.ViewPost", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ViewPosts");
-                });
-
             modelBuilder.Entity("BibikaProject.Domain.Entities.Identity.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -664,6 +658,21 @@ namespace BibikaProject.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ApplicationUserPost1", b =>
+                {
+                    b.HasOne("BibikaProject.Domain.Entities.Core.Post", null)
+                        .WithMany()
+                        .HasForeignKey("ViewedPostsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BibikaProject.Domain.Entities.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("ViewsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("BibikaProject.Domain.Entities.Chat.Message", b =>
                 {
                     b.HasOne("BibikaProject.Domain.Entities.Chat.Chat", "Chat")
@@ -772,23 +781,6 @@ namespace BibikaProject.Infrastructure.Migrations
                     b.Navigation("Car");
 
                     b.Navigation("Seller");
-                });
-
-            modelBuilder.Entity("BibikaProject.Domain.Entities.Core.ViewPost", b =>
-                {
-                    b.HasOne("BibikaProject.Domain.Entities.Core.Post", "Post")
-                        .WithMany("Views")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BibikaProject.Domain.Entities.Identity.ApplicationUser", "User")
-                        .WithMany("ViewedPosts")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Post");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BibikaProject.Domain.Entities.Identity.RefreshToken", b =>
@@ -914,15 +906,11 @@ namespace BibikaProject.Infrastructure.Migrations
             modelBuilder.Entity("BibikaProject.Domain.Entities.Core.Post", b =>
                 {
                     b.Navigation("Images");
-
-                    b.Navigation("Views");
                 });
 
             modelBuilder.Entity("BibikaProject.Domain.Entities.Identity.ApplicationUser", b =>
                 {
                     b.Navigation("Posts");
-
-                    b.Navigation("ViewedPosts");
                 });
 #pragma warning restore 612, 618
         }

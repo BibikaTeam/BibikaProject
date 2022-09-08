@@ -39,6 +39,10 @@ const SiderLayout: FC = () => {
       key: "/car",
       label: "Cars",
     },
+    {
+      key: "/post",
+      label: "Posts",
+    },
   ];
 
   const handleMenuChange = (value: any) => {
@@ -59,7 +63,7 @@ const SiderLayout: FC = () => {
       <Layout className="site-layout">
         <Header
           className="site-layout-background"
-          style={{ padding: 0, color: "white" }}
+          style={{ paddingLeft: "40px", color: "white" }}
         >
           Bibika Admin Panel
         </Header>

@@ -246,6 +246,8 @@ namespace BibikaProject.WebUI
           
         public static void ConfigureUserService(this IServiceCollection services)
         {
+            services.AddTransient<IUserQuery, UserQuery>();
+
             services.AddTransient<IUserService, UserService>();
         }
 
@@ -274,6 +276,11 @@ namespace BibikaProject.WebUI
             services.AddTransient<IChatCommand, ChatCommand>();
             services.AddTransient<IChatQuery, ChatQuery>();
             services.AddTransient<IChatService, ChatService>();
+        }
+
+        public static void ConfigureViewPostQuery(this IServiceCollection services)
+        {
+            services.AddTransient<IViewPostQuery, ViewPostQuery>();
         }
     }
 }

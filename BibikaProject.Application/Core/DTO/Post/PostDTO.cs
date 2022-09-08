@@ -28,5 +28,9 @@ namespace BibikaProject.Application.Core.DTO.Post
         public int Price { get; set; }
 
         public string Description { get; set; }
+
+        public bool WasInUse { get; set; }
+
+        public string TechnicalCondition { get; set; }
     }
 }

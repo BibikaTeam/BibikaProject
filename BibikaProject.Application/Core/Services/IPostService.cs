@@ -22,11 +22,15 @@ namespace BibikaProject.Application.Core.Services
         Task<List<PostDTO>> GetUserPosts(string id);
 
         Task<List<PostDTO>> GetUserLikedPosts(string id);
-        
+
+        Task<List<PostDTO>> GetLastViwedPosts(string id);
+   
         Task<PostDTO> GetRandomPost();
 
         Task<PostDTO> GetPostById(int id);
 
         Task<MinMaxValuesDTO> GetMinMaxYearsPrice(int generationId);
+
+        Task DeletePost(int id);
     }
 }

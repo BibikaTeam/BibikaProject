@@ -41,6 +41,8 @@ namespace BibikaProject.Infrastructure
 
         public virtual DbSet<Domain.Entities.Chat.Chat> Chats { get; set; }
 
+        public virtual DbSet<ViewPost> ViewPosts { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -49,13 +51,19 @@ namespace BibikaProject.Infrastructure
                    .HasMany(x => x.Likes)
                    .WithMany(x => x.LikedPosts);
 
-            builder.Entity<Post>()
-                   .HasMany(x => x.Views)
-                   .WithMany(x => x.ViewedPosts);
+            builder.Entity<ViewPost>()
+                 .HasOne(x => x.User)
+                 .WithMany(x => x.ViewedPosts)
+                 .HasForeignKey(x => x.UserId);
+
+            builder.Entity<ViewPost>()
+                .HasOne(x => x.Post)
+                .WithMany(x => x.Views)
+                .HasForeignKey(x => x.PostId);
 
             builder.Entity<Post>()
                    .HasOne(x => x.Seller)
-                   .WithMany(x => x.Posts);
+                   .WithMany(x => x.Posts);          
 
             //builder.ApplyConfiguration(new RoleConfiguration());
         }

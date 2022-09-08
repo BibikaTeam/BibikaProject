@@ -17,7 +17,9 @@ namespace BibikaProject.Infrastructure.Core.Services.Mapper
                 .ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.Location))
                 .ForMember(dest => dest.Color, opt => opt.MapFrom(src => src.Color))
                 .ForMember(dest => dest.Mileage, opt => opt.MapFrom(src => src.Mileage))
-                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price));
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
+                .ForMember(dest => dest.TechnicalCondition, opt => opt.MapFrom(src => src.TechnicalCondition))
+                .ForMember(dest => dest.WasInUse, opt => opt.MapFrom(src => src.WasInUse));
 
             CreateMap<Post, PostDTO>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
@@ -31,7 +33,9 @@ namespace BibikaProject.Infrastructure.Core.Services.Mapper
                 .ForMember(dest => dest.Mileage, opt => opt.MapFrom(src => src.Mileage))
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
                 .ForMember(dest => dest.Viewes, opt => opt.MapFrom(src => src.Views.Count()))
-                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description));
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+                .ForMember(dest => dest.TechnicalCondition, opt => opt.MapFrom(src => src.TechnicalCondition))
+                .ForMember(dest => dest.WasInUse, opt => opt.MapFrom(src => src.WasInUse)); ;
         }
     }
 }
