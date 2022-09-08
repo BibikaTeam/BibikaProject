@@ -99,7 +99,7 @@ namespace BibikaProject.WebUI
             services.ConfigureUserService();
             services.ConfigureAdvertismentService();
             services.ConfigureSearchPanelService();
-
+            services.ConfigureViewPostQuery();
             services.ConfigureCharService();
         }
 

@@ -17,16 +17,18 @@ namespace BibikaProject.Infrastructure.Core.Services
 {
     public class PostService : IPostService
     {
-        public PostService(IPostCommand command, IMapper mapper, IPostQuery query)
+        public PostService(IPostCommand command, IMapper mapper, IPostQuery query, IViewPostQuery viewPostQuery)
         {
             this.command = command;
             this.mapper = mapper;
             this.query = query;
+            this.viewPostQuery = viewPostQuery;
         }
 
         private readonly IPostCommand command;
         private readonly IMapper mapper;
         private readonly IPostQuery query;
+        private readonly IViewPostQuery viewPostQuery;
 
         public async Task<int> AddPostAsync(AddPostDTO addPostDTO)
         {
@@ -236,7 +238,25 @@ namespace BibikaProject.Infrastructure.Core.Services
         public async Task DeletePost(int id)
         {
             command.Delete(id);
+
             await command.SaveChangesAsync();
+        }
+
+        public async Task<List<PostDTO>> GetLastViwedPosts(string id)
+        {
+            var posts = viewPostQuery.GetAll().Where(x => x.UserId == id).OrderByDescending(x => x.Id).Select(x => x.Post);
+
+            //posts = posts.IncldueAllPostProperties();
+
+            if (posts.Count() <= 3)
+            {
+                return mapper.Map<List<PostDTO>>(await posts.ToListAsync());
+            }
+
+            posts = posts.Take(3);
+
+
+            return mapper.Map<List<PostDTO>>(await posts.ToListAsync());
         }
     }
 }
