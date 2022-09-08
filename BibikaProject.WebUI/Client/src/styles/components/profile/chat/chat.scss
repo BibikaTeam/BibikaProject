@@ -1,8 +1,22 @@
 .chat-container {
     padding: 37px 150px;
+    .row{
+        margin: 0;
+    }
+    .chat-header{
+        height: 82px;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 10px 10px 0px 0px;
+        padding-left: 0;
+        .chat-name{
+            font-size: 24px;
+            line-height: 33px;
+            color: #414141;
+            display: inline-block;
+        }
+    }
     .all-chats {
-        position: relative;
-        top: 82px;
+        padding: 0 !important;
         .chat-preview {
             background-color: rgba($color: #414141, $alpha: 0.02);
 
@@ -37,26 +51,22 @@
     }
     .chat-side{
         padding-left: 0;
-        .chat-header{
-            height: 82px;
-            border: 1px solid rgba(0, 0, 0, 0.2);
-            border-radius: 10px 10px 0px 0px;
-            .chat-name{
-                font-size: 24px;
-                line-height: 33px;
-                color: #414141;
-                display: inline-block;
-            }
-        }
+        
         .messages-field {
             background-color: rgba($color: #414141, $alpha: 0.05);
             height: 725px;
-
-            span {
-                display: inline-block;
-                padding: 8px 20px;
-                background-color: white;
-                border-radius: 5px;
+            padding: 25px;
+            .message-container{
+                height: auto;
+                display: inline;
+                
+                span {
+                    padding: 8px 20px;
+                    background-color: white;
+                    border-radius: 5px;
+                    max-width: 520px;
+                    float: right;
+                }
             }
         }
     } 

@@ -12,6 +12,19 @@ const ChatPage = () => {
 
   return (
     <div className="row chat-container">
+      <div className="row">
+        <div className="col-8 offset-4 chat-header">
+          <span className="chat-name">
+            {" "}
+            <Avatar
+              size={49}
+              style={{ backgroundColor: "#2D40E0", marginTop: "5px" }}
+              icon={<UserOutlined />}
+            />
+            Maxim
+          </span>
+        </div>
+      </div>
       <div className="col-4 all-chats">
         <div className="row chat-preview active">
           <div className="row">
@@ -42,24 +55,16 @@ const ChatPage = () => {
           </span>
         </div>
       </div>
-      <div className="col-8 chat-side">
-        <div className="row chat-header">
-          <span className="chat-name">
-            {" "}
-            <Avatar
-              size={49}
-              style={{ backgroundColor: "#2D40E0", marginTop: "5px" }}
-              icon={<UserOutlined />}
-            />
-            Maxim
-          </span>
-        </div>
-
+      <div className="col-8 chat-side ">
         <div className="messages-field">
-          <span>Hellakdkasjhdkl ashd agsd kgakhsjg dajsd </span>
-          <span>Hellakdkasjhdkl </span>
-          <span>Hellakdkasjhdkl sadufys aaskljd fjkasd </span>
-          <span>Hellakdkasjhdkl </span>
+          <div className="message-container">
+            <span>Hellakdkasjhdkl ashd agsd kgakhsjg dajsd </span>
+          </div>
+          <div className="message-container">
+            <span>Hellakdkasjhdkl </span>
+          </div>
+          {/* <span>Hellakdkasjhdkl sadufys aaskljd fjkasd </span>
+          <span>Hellakdkasjhdkl </span> */}
         </div>
       </div>
     </div>
