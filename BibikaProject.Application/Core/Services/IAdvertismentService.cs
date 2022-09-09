@@ -1,5 +1,4 @@
 ﻿using BibikaProject.Application.Core.DTO.Post;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BibikaProject.Application.Core.Services
@@ -23,5 +22,13 @@ namespace BibikaProject.Application.Core.Services
         Task AddBannerViews(int postId, int amount);
 
         Task AddTrendViews(int postId, int amount);
+
+        Task<float> GetBalance(int postId);
+
+        Task<int> GetBannerViews(int postId);
+
+        Task<int> GetTrendViews(int postId);
+
+        Task<double> GetPoints(int postId);
     }
 }
