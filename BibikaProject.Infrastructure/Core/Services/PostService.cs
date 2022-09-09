@@ -83,7 +83,7 @@ namespace BibikaProject.Infrastructure.Core.Services
             if (pagedPostRequest.Filters != null)
             {
                 foreach (var filter in pagedPostRequest.Filters)
-                {
+                {                
                     if (filter.BrandId != 0)
                     {
                         posts = posts.Include(x => x.Car).ThenInclude(x => x.Generation).ThenInclude(x => x.Model);
@@ -159,6 +159,11 @@ namespace BibikaProject.Infrastructure.Core.Services
                     if (filter.PriceMax != 0)
                     {
                         posts = posts.Where(x => x.Price <= filter.PriceMax);
+                    }
+
+                    if (filter.WasInUse != null)
+                    {
+                        posts = posts.Where(x => x.WasInUse == filter.WasInUse);
                     }
                 }
             }
