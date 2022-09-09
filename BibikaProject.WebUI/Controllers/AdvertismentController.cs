@@ -88,5 +88,37 @@ namespace BibikaProject.WebUI.Controllers
 
             return Ok();
         }
+
+        [HttpGet("get-banner-views")]
+        public async Task<IActionResult> GetBannerViews([FromQuery] int postId)
+        {
+            var result = await advertismentService.GetBannerViews(postId);
+
+            return Ok(result);
+        }
+
+        [HttpGet("get-trend-views")]
+        public async Task<IActionResult> GetTrendViews([FromQuery] int postId)
+        {
+            var result = await advertismentService.GetTrendViews(postId);
+
+            return Ok(result);
+        }
+
+        [HttpGet("get-balance")]
+        public async Task<IActionResult> GetBalance([FromQuery] int postId)
+        {
+            var result = await advertismentService.GetBalance(postId);
+
+            return Ok(result);
+        }
+
+        [HttpGet("get-points")]
+        public async Task<IActionResult> GetPoints([FromQuery] int postId)
+        {
+            var result = await advertismentService.GetPoints(postId);
+
+            return Ok(result);
+        }
     }
 }

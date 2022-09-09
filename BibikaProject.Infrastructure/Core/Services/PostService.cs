@@ -74,12 +74,11 @@ namespace BibikaProject.Infrastructure.Core.Services
             IQueryable<Post> posts = query.GetAll()
                                           .IncldueAllPostProperties();
 
-
+            posts = posts.OrderByDescending(x => x.DailyPoint + (x.DailyViews * 0.01) + (x.Likes.Count() * 0.15) + (x.Balance * 0.15));
 
             var response = new PagedList<PostDTO> { CurrentPage = pagedPostRequest.Page };
 
             posts = posts.Search(pagedPostRequest.Search, "Description");
-
 
             if (pagedPostRequest.Filters != null)
             {
