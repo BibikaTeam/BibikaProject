@@ -61,3 +61,60 @@ export const getRandomTrendPost = async () => {
     }
   }
 };
+export const getLikedPostNumbers = async () => {
+  try {
+    const response = await http.get<Array<IBannerCar>>(
+      `api/post/get/user-liked`
+    );
+
+    var result = response.data.map(({ id }) => id);
+
+    return result;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.request.status == 0 || error.request.status == 500) {
+        const unknownError: IRequestError = {
+          code: error.request.status,
+          errors: new Array<string>(ErrorStrings.backendNotResponse()),
+        };
+        throw unknownError;
+      }
+      let serverError: IRequestError = {
+        errors: error.response?.data.Errors,
+        code: error.response?.data.Code,
+      };
+      throw serverError;
+    }
+  }
+};
+export const getLikedPost = async () => {
+  try {
+    const response = await http.get<Array<IBannerCar>>(
+      `api/post/get/user-liked`
+    );
+
+    const res = response.data.slice();
+
+    res.map((x) => {
+      //@ts-ignore
+      x.year = new Date(Date.parse(x.year)).getFullYear();
+    });
+
+    return res;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.request.status == 0 || error.request.status == 500) {
+        const unknownError: IRequestError = {
+          code: error.request.status,
+          errors: new Array<string>(ErrorStrings.backendNotResponse()),
+        };
+        throw unknownError;
+      }
+      let serverError: IRequestError = {
+        errors: error.response?.data.Errors,
+        code: error.response?.data.Code,
+      };
+      throw serverError;
+    }
+  }
+};

@@ -124,5 +124,23 @@ namespace BibikaProject.Infrastructure.Chat.Services
                 await chatCommand.SaveChangesAsync();
             }
         }
+
+        public async Task<MessageDTO> GetLastMessage(GetMessagesRequest getMessagesRequest)
+        {
+            var chat = await chatQuery.GetAll()
+                .Include(x => x.Messages)
+                .FirstOrDefaultAsync(x => x.UserEmails.Contains(getMessagesRequest.FirstEmail) &&
+                                          x.UserEmails.Contains(getMessagesRequest.SecondEmail));
+            if (chat == null)
+            {
+                throw new NotFoundException("There is no chat between these users");
+            }
+            if(chat.Messages.Count == 0)
+            {
+                throw new NotFoundException("This converstation doesn't have any messages");
+            }
+
+            return mapper.Map<MessageDTO>(chat.Messages.OrderBy(x => x.Date).ToList().First());
+        }
     }
 }

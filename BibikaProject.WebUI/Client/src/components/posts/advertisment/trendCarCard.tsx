@@ -12,6 +12,8 @@ import CarCardLoader from "../../common/ownElement/carCardLoader";
 import { createChat } from "../../userCabinet/chat/service";
 
 import { useNavigate } from "react-router-dom";
+import { likePost } from "../../userCabinet/service";
+import { getLikedPostNumbers } from "./service";
 
 export interface ITrendCarCardProps {
   car: IBannerCar;
@@ -21,9 +23,12 @@ export interface ITrendCarCardProps {
 const TrendCarCard = ({ car, scale }: ITrendCarCardProps) => {
   const navigator = useNavigate();
   const [imgSrc, setImgSrc] = useState<string>("");
+  const [likedPosts, setLikedPosts] = useState<Array<number>>();
+
   useEffect(() => {
     (async () => {
       loadImage();
+      readUserLiked();
     })();
   }, [car]);
 
@@ -48,13 +53,47 @@ const TrendCarCard = ({ car, scale }: ITrendCarCardProps) => {
   };
 
   const onHandleMessageWrite = async () => {
-    console.log("Works 1");
     await createChat(car.sellerEmail);
     navigator("/user-profile/chat");
   };
 
   const handleImgError = (ev: any) => {
     setImgSrc(defaultImage);
+  };
+  const onLikeClick = async () => {
+    try {
+      await likePost(car.id);
+      updateLikedPost();
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      if (error && error.errors) {
+        error.errors.forEach((e) => {
+          toast.error(e);
+        });
+      }
+    }
+  };
+  const readUserLiked = async () => {
+    try {
+      const likedArr = localStorage.getItem("liked");
+      if (!likedArr) {
+        updateLikedPost();
+      } else {
+        setLikedPosts(likedArr?.split(",").map((x) => +x));
+      }
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      if (error && error.errors) {
+        error.errors.forEach((e) => {
+          toast.error(e);
+        });
+      }
+    }
+  };
+  const updateLikedPost = async () => {
+    const result = await getLikedPostNumbers();
+    setLikedPosts(result);
+    if (result) localStorage.setItem("liked", result?.toString() as string);
   };
 
   return (
@@ -64,8 +103,12 @@ const TrendCarCard = ({ car, scale }: ITrendCarCardProps) => {
           className="trend-car-card"
           style={{ transform: `scale(${scale})` }}
         >
+          <div className="like-button" onClick={onLikeClick}>
+            {likedPosts?.includes(car.id) ? svgLiked : svgNoLiked}
+          </div>
+
+          <img src={imgSrc} alt="" onError={handleImgError} />
           <Link to={`/post/${car.id}`}>
-            <img src={imgSrc} alt="" onError={handleImgError} />
             <div className="info-block">
               <span className="trend-title">{car.car.title}</span>
               <span className="trend-location">{car.location}</span>
@@ -116,3 +159,72 @@ TrendCarCard.defaultProps = {
 };
 
 export default TrendCarCard;
+
+const svgNoLiked = (
+  <svg
+    width="95"
+    height="74"
+    viewBox="0 0 95 74"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <mask id="path-1-inside-1_0_1" fill="white">
+      <path d="M0 0H95V64C95 69.5229 90.5229 74 85 74H10C4.47715 74 0 69.5229 0 64V0Z" />
+    </mask>
+    <path
+      d="M0 0H95V64C95 69.5229 90.5229 74 85 74H10C4.47715 74 0 69.5229 0 64V0Z"
+      fill="white"
+      fill-opacity="0.3"
+    />
+    <path
+      d="M0 0H95H0ZM96 64C96 70.0751 91.0751 75 85 75H10C3.92487 75 -1 70.0751 -1 64H1C1 68.9706 5.02944 73 10 73H85C89.9706 73 94 68.9706 94 64H96ZM10 75C3.92487 75 -1 70.0751 -1 64V0H1V64C1 68.9706 5.02944 73 10 73V75ZM96 0V64C96 70.0751 91.0751 75 85 75V73C89.9706 73 94 68.9706 94 64V0H96Z"
+      fill="black"
+      fill-opacity="0.2"
+      mask="url(#path-1-inside-1_0_1)"
+    />
+    <path
+      fill-rule="evenodd"
+      clip-rule="evenodd"
+      d="M29.3717 22.4199C33.8672 17.86 41.156 17.86 45.6516 22.4199L48 24.8019L50.3484 22.4199C54.844 17.86 62.1328 17.86 66.6283 22.4199C71.1239 26.9797 71.1239 34.3727 66.6283 38.9325L51.0751 54.7081C49.3768 56.4307 46.6232 56.4307 44.9249 54.708L29.3717 38.9325C24.8761 34.3727 24.8761 26.9797 29.3717 22.4199Z"
+      fill="white"
+      fill-opacity="0.6"
+      stroke="black"
+      stroke-opacity="0.2"
+      stroke-linecap="round"
+    />
+  </svg>
+);
+
+const svgLiked = (
+  <svg
+    width="95"
+    height="74"
+    viewBox="0 0 95 74"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <mask id="path-1-inside-1_0_1" fill="white">
+      <path d="M0 0H95V64C95 69.5229 90.5229 74 85 74H10C4.47715 74 0 69.5229 0 64V0Z" />
+    </mask>
+    <path
+      d="M0 0H95V64C95 69.5229 90.5229 74 85 74H10C4.47715 74 0 69.5229 0 64V0Z"
+      fill="#219CE1"
+      fill-opacity="0.3"
+    />
+    <path
+      d="M0 0H95H0ZM96 64C96 70.0751 91.0751 75 85 75H10C3.92487 75 -1 70.0751 -1 64H1C1 68.9706 5.02944 73 10 73H85C89.9706 73 94 68.9706 94 64H96ZM10 75C3.92487 75 -1 70.0751 -1 64V0H1V64C1 68.9706 5.02944 73 10 73V75ZM96 0V64C96 70.0751 91.0751 75 85 75V73C89.9706 73 94 68.9706 94 64V0H96Z"
+      fill="black"
+      fill-opacity="0.2"
+      mask="url(#path-1-inside-1_0_1)"
+    />
+    <path
+      fill-rule="evenodd"
+      clip-rule="evenodd"
+      d="M29.3717 22.4199C33.8672 17.86 41.156 17.86 45.6516 22.4199L48 24.8019L50.3484 22.4199C54.844 17.86 62.1328 17.86 66.6283 22.4199C71.1239 26.9797 71.1239 34.3727 66.6283 38.9325L51.0751 54.7081C49.3768 56.4307 46.6232 56.4307 44.9249 54.708L29.3717 38.9325C24.8761 34.3727 24.8761 26.9797 29.3717 22.4199Z"
+      fill="#219CE1"
+      stroke="black"
+      stroke-opacity="0.2"
+      stroke-linecap="round"
+    />
+  </svg>
+);

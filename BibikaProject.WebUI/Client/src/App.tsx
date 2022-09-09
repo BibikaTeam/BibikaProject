@@ -79,7 +79,7 @@ function App() {
                   element={<SettingsProfile />}
                 />
                 <Route
-                  path="/user-profile/settings/change-password"
+                  path="/user-profile/settings/change-password/:token"
                   element={<ChangePasswordPage />}
                 />
               </Route>

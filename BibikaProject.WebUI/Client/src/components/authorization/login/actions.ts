@@ -136,6 +136,7 @@ export const logoutUser = () => {
   return async (dispatch: React.Dispatch<AuthAction>) => {
     localStorage.removeItem("token");
     localStorage.removeItem("refreshToken");
+    localStorage.removeItem("likes");
 
     dispatch({
       type: AuthActionTypes.AUTH_LOGOUT,

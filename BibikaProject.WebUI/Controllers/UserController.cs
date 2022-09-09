@@ -78,5 +78,19 @@ namespace BibikaProject.WebUI.Controllers
 
             return Ok();
         }
+        [Authorize]
+        [HttpGet("get-last-message/{email}")]
+        public async Task<IActionResult> GetLastMessage(string email)
+        {
+            var request = new GetMessagesRequest
+            {
+                FirstEmail = HttpContext.User.Claims.First(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value,
+                SecondEmail = email
+            };
+
+            var result = await chatService.GetLastMessage(request);
+
+            return Ok(result);
+        }
     }
 }

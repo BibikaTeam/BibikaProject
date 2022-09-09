@@ -13,5 +13,6 @@ namespace BibikaProject.Application.Chat.Services
 
         Task<List<string>> GetChats(string email);
         Task CreateChat(CreateChatRequest createChatRequest);
+        Task<MessageDTO> GetLastMessage(GetMessagesRequest getMessagesRequest);
     }
 }

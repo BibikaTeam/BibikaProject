@@ -46,6 +46,16 @@ const Header = () => {
           ),
         },
         {
+          key: "3",
+          label: (
+            <Link to={"/user-profile/saved-posts"}>
+              <a target="_blank" rel="noopener noreferrer">
+                Saved
+              </a>
+            </Link>
+          ),
+        },
+        {
           key: "4",
           label: (
             <Link onClick={handleLogout} to={"/login"}>

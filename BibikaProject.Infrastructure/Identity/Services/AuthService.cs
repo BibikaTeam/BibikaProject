@@ -407,6 +407,12 @@ namespace BibikaProject.Infrastructure.Identity.Services
             var result = token.Replace('.', '/').Replace('-', '+');
 
             return result;
-        }   
+        }
+
+        public async Task<string> GetUsernameByEmail(string email)
+        {
+            var user = await userManager.FindByEmailAsync(email);
+            return user.UserName;
+        }
     }
 }

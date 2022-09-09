@@ -1,14 +1,54 @@
-import { Avatar } from "antd";
-import { useEffect } from "react";
-import { getAllMessages } from "./service";
+import { Avatar, message } from "antd";
+import { useEffect, useState } from "react";
+import { getAllChats, getMessages, sendMessage } from "./service";
 import { UserOutlined } from "@ant-design/icons";
+import ChatPreviewsBlock from "./chatPreviewBlock";
+import { IRequestError } from "../../adminPanel/types";
+import { toast } from "react-toastify";
+import { IMessage } from "./types";
+import { useTypedSelector } from "../../../hooks/useTypedSelector";
 
 const ChatPage = () => {
+  const [activeEmail, setActiveEmail] = useState<string>();
+  const [messages, setMessages] = useState<Array<IMessage>>();
+  const { user } = useTypedSelector((x) => x.login);
+
   useEffect(() => {
     (async () => {
-      await getAllMessages();
+      try {
+        await getAllChats();
+      } catch (_error) {
+        const error: IRequestError = _error as IRequestError;
+        error.errors.forEach((e) => {
+          toast.error(e);
+        });
+      }
     })();
-  });
+  }, []);
+  const onActiveChatChange = async (email: string) => {
+    setActiveEmail(email);
+    await updateChats(email);
+  };
+
+  const updateChats = async (email: string) => {
+    try {
+      const result = await getMessages(email);
+      setMessages(result);
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
+    }
+  };
+
+  const handleKeyDown = async (e: any) => {
+    if (e.key === "Enter") {
+      await sendMessage(activeEmail as string, e.target.value);
+      e.target.value = "";
+      await updateChats(activeEmail as string);
+    }
+  };
 
   return (
     <div className="row chat-container">
@@ -25,47 +65,22 @@ const ChatPage = () => {
           </span>
         </div>
       </div>
-      <div className="col-4 all-chats">
-        <div className="row chat-preview active">
-          <div className="row">
-            <div className="col-9">
-              <span className="message-by-car">Audi Q8 S Line</span>
-            </div>
-            <div className="col-3">
-              <span className="time-last-message">19:20</span>
-            </div>
-          </div>
-          <span className="last-message-username">
-            Maxim:
-            <span className="last-message-text"> Ok, see you later</span>
-          </span>
-        </div>
-        <div className="row chat-preview">
-          <div className="row">
-            <div className="col-9">
-              <span className="message-by-car">Audi Q8 S Line</span>
-            </div>
-            <div className="col-3">
-              <span className="time-last-message">19:20</span>
-            </div>
-          </div>
-          <span className="last-message-username">
-            Maxim:
-            <span className="last-message-text"> Ok, see you later</span>
-          </span>
-        </div>
-      </div>
+      <ChatPreviewsBlock onSelectedChange={onActiveChatChange} />
       <div className="col-8 chat-side ">
         <div className="messages-field">
-          <div className="message-container">
-            <span>Hellakdkasjhdkl ashd agsd kgakhsjg dajsd </span>
-          </div>
-          <div className="message-container">
-            <span>Hellakdkasjhdkl </span>
-          </div>
-          {/* <span>Hellakdkasjhdkl sadufys aaskljd fjkasd </span>
-          <span>Hellakdkasjhdkl </span> */}
+          {messages && messages.length !== 0 ? (
+            messages.map((x) => (
+              <div className="message-container">
+                <p className={user?.email === x.from ? `right-align` : ""}>
+                  {x.text}
+                </p>
+              </div>
+            ))
+          ) : (
+            <></>
+          )}
         </div>
+        <input type="text" width={"100%"} onKeyDown={handleKeyDown} />
       </div>
     </div>
   );

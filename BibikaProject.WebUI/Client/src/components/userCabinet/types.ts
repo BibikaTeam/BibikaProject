@@ -19,12 +19,14 @@ export interface IConfirmOldPasswordModel {
 
 export interface INewPasswordModel {
   newPassword: string;
+  email: string;
+  token: string;
 }
 
 export interface IResetPasswordRequestModel {
-  email: string,
-  newPassword: string,
-  token: string
+  email: string;
+  newPassword: string;
+  token: string;
 }
 
 export interface IUpdateEmailModel {
