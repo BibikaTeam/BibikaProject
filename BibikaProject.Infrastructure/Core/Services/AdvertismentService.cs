@@ -104,6 +104,11 @@ namespace BibikaProject.Infrastructure.Core.Services
 
             var random = new Random();
 
+            if (posts.Count() == 0)
+            {
+                throw new NotFoundException("There is no trend posts");
+            }
+
             var post = posts.ToList()[random.Next(0, posts.Count() - 1)];
 
             if (post == null)

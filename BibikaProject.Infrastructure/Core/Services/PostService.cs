@@ -6,6 +6,7 @@ using BibikaProject.Application.Core.Requests;
 using BibikaProject.Application.Core.Responses;
 using BibikaProject.Application.Core.Services;
 using BibikaProject.Domain.Entities.Core;
+using BibikaProject.Infrastructure.Core.Errors;
 using BibikaProject.Infrastructure.Core.Services.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -219,9 +220,14 @@ namespace BibikaProject.Infrastructure.Core.Services
 
         public async Task<PostDTO> GetPostById(int id)
         {
-            var temp = await query.GetAll().IncldueAllPostProperties().FirstAsync(x => x.Id == id);
+            var temp = query.GetAll().IncldueAllPostProperties().Where(x => x.Id == id);
 
-            return mapper.Map<PostDTO>(temp);
+            if (temp == null || temp.Count() == 0)
+            {
+                throw new NotFoundException("There is no post with this id");
+            }
+
+            return mapper.Map<PostDTO>(await temp.FirstAsync());
         }
         
         public async Task<MinMaxValuesDTO> GetMinMaxYearsPrice(int generationId)
