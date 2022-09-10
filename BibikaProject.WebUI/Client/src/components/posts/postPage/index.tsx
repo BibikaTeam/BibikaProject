@@ -3,6 +3,7 @@ import { push } from "connected-react-router";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { string } from "yup";
+import PostPageLoadingPage from "./loader";
 import { getImagesByPostId, getPostById } from "./service";
 import BodyTag from "./tags/bodyTag";
 import HeaderTag from "./tags/headerTag";
@@ -51,52 +52,12 @@ const PostPage = () => {
     }
   };
 
-  return (
-    // <div style={{margin: "50px"}}>
-    //     id: {id}
-    //     <br/>
-    //     year: {post?.year}
-    //     <br/>
-    //     location: {post?.location}
-    //     <br/>
-    //     color: {post?.color}
-    //     <br/>
-    //     mileage: {post?.mileage}
-    //     <br/>
-    //     sellerName: {post?.sellerName}
-    //     <br/>
-    //     likes: {post?.likes}
-    //     <br/>
-    //     viewes: {post?.viewes}
-    //     <br/>
-    //     car:
-    //     <br/>
-    //     &emsp;car.id: {post?.car.id}
-    //       <br/>
-    //     &emsp;car.engine:
-    //       <br/>
-    //       &emsp;&emsp;car.engine.id: {post?.car.engine.id}
-    //         <br/>
-    //         &emsp;&emsp;car.engine.title: {post?.car.engine.title}
-    //         <br/>
-    //         &emsp;&emsp;car.engine.capacity: {post?.car.engine.capacity}
-    //         <br/>
-    //         &emsp;&emsp;car.engine.kwPower: {post?.car.engine.kWPower}
-    //         <br/>
-    //         &emsp;&emsp;car.engine.fuel: {post?.car.engine.fuel}
-    //         <br/>
-    //         &emsp;car.carBody.title: {post?.car.carBodyTitle}
-    //       <br/>
-    //       &emsp;car.completeSet.title: {post?.car.completeSetTitle}
-    //       <br/>
-    //       &emsp;car.gearbox.title: {post?.car.gearBoxTitle}
-    //       <br/>
-    //       &emsp;car.title: {post?.car.title}
-    //       <br/>
-    //     price: {post?.price}
-    //     <br/>
-    // </div>
+  if (post === undefined || post === null)
+  {
+    return <PostPageLoadingPage />
+  }
 
+  return (
     <div className="post-page-container">
       <div className="post-page-go-back">
         <a onClick={onGoBack}>&lt; Назад</a>
@@ -104,7 +65,7 @@ const PostPage = () => {
 
       <div className="post-page-images">
         <div className="post-page-current-image">
-          <img src={`/images/${images[currentImageIndex]}.png`} />
+          <img src={`https://localhost:5001/images/${images[currentImageIndex]}.png`} />
           <svg
             onClick={onImagePrev}
             className="left-arrow"
@@ -145,7 +106,7 @@ const PostPage = () => {
             if (index != currentImageIndex) {
               return (
                 <div className="post-page-side-image">
-                  <img src={`/images/${data}_small.png`} />
+                  <img src={`https://localhost:5001/images/${data}_small.png`} />
                 </div>
               );
             }
@@ -202,7 +163,9 @@ const PostPage = () => {
         </div>
       </div>
 
-      <div className="post-page-description">{post?.description}</div>
+      <div className="post-page-description">
+        {post?.description}
+      </div>
 
       <div className="post-page-specs">
         <div className="specs-header">
