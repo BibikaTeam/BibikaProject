@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
+    IDataAdvertisingPost,
     IPostModel,
     IRequestError,
 } from "../types";
@@ -17,8 +18,9 @@ import {
     Col,
     notification,
 } from "antd";
-import { deletePostUser, getAllPosts, getUserPostEmail } from "./service";
+import { addBannerShows, addTrendShows, deletePostUser, getAllPosts, getBannerViewsPost, getPointsPost, getTrendViewsPost, getUserPostsById } from "./service";
 import type { NotificationPlacement } from "antd/lib/notification";
+import { Link } from "react-router-dom";
 const Context = React.createContext({ name: "Default" });
 
 const AdminPanelPostPage = () => {
@@ -26,16 +28,19 @@ const AdminPanelPostPage = () => {
     const [isModalAdvertising, setModalAdvertising] = useState(false);
     const [userId, setUserId] = useState("");
     const [userPosts, setUserPosts] = useState([]);
+    const [dataAdvertisingPost, setDataAdvertisingPost] = useState<IDataAdvertisingPost>();
     const [form] = Form.useForm();
 
     let key = ``;
+
+    //e4363ebc-40ff-422e-b394-89ec6cadacc3
 
     const [api, contextHolder] = notification.useNotification();
 
     const handleGetAllPostsUser = async () => {
         setLoading(true);
         try {
-            setUserPosts(await getUserPostEmail(userId));
+            setUserPosts(await getUserPostsById(userId));
         } catch (_error) {
             const error: IRequestError = _error as IRequestError;
             error.errors.forEach((e) => {
@@ -46,13 +51,30 @@ const AdminPanelPostPage = () => {
             notification.close(key);
         }
     }
-    
-    const handleGetAllPosts = async () => {
+
+    const handleAddTrendShows = async (postId: number, amount: number) => {
         setLoading(true);
         try {
-            console.log("get all post index", await getAllPosts());
-            setUserPosts(await getAllPosts());
-            console.log("user posts", userPosts);
+            console.log("postId", postId);
+            console.log("amound", amount);
+            //await addTrendShows(postId, amount);
+        } catch (_error) {
+            const error: IRequestError = _error as IRequestError;
+            error.errors.forEach((e) => {
+                toast.error(e);
+            });
+        } finally {
+            setLoading(false);
+            notification.close(key);
+        }
+    }
+
+    const handleAddBannerShows = async (postId: number, amount: number) => {
+        setLoading(true);
+        try {
+            console.log("postId", postId);
+            console.log("amound", amount);
+            //await addBannerShows(postId, amount);
         } catch (_error) {
             const error: IRequestError = _error as IRequestError;
             error.errors.forEach((e) => {
@@ -80,8 +102,31 @@ const AdminPanelPostPage = () => {
         }
     }
 
-    const showModalAdvertising = () => {
-        setModalAdvertising(true);
+    const showModalAdvertising = async (post: IPostModel) => {
+        setLoading(true);
+        try {
+            const pointsTmp = await getPointsPost(post.id);
+            const trendShowTmp = await getTrendViewsPost(post.id);
+            const bannerShowTmp = await getBannerViewsPost(post.id)
+
+            const advertisingPostTmp: IDataAdvertisingPost = {
+                postId: post.id,
+                points: pointsTmp,
+                showTernd: trendShowTmp,
+                showBanner: bannerShowTmp
+            }
+            console.log("tmp", advertisingPostTmp);
+
+            setDataAdvertisingPost(advertisingPostTmp);
+        } catch (_error) {
+            const error: IRequestError = _error as IRequestError;
+            error.errors.forEach((e) => {
+                toast.error(e);
+            });
+        } finally {
+            setLoading(false);
+            setModalAdvertising(true);
+        }
     };
 
     const handleOkModalUpdadeAdvertising = () => {
@@ -93,33 +138,46 @@ const AdminPanelPostPage = () => {
         setUserId(e.target.value);
     };
 
-    const handleFormSubmit = () => {
-        //handleAddBrand(value);
+    const handleFormSubmit = (values: IDataAdvertisingPost) => {
+        form.resetFields();
+        if (values.showBanner !== undefined) {
+            handleAddBannerShows(values.postId, values.showBanner);
+        }
+        if (values.showTernd !== undefined) {
+            handleAddTrendShows(values.postId, values.showTernd);
+        }
+        form.resetFields();
     };
 
     const openNotification = (placement: NotificationPlacement) => {
         key = `open${Date.now()}`;
         api.warning({
-          message: `Notification ${placement}`,
-          description: (
-            <Context.Consumer>{() => `Hello, click on me to refresh the table!`}</Context.Consumer>
-          ),
-          placement,
-          duration: 0,
-          key: key,
-          onClick: () => {
-            notification.close(key);
-            handleGetAllPostsUser();
-          },
+            message: `Notification ${placement}`,
+            description: (
+                <Context.Consumer>{() => `Hello, click on me to refresh the table!`}</Context.Consumer>
+            ),
+            placement,
+            duration: 0,
+            key: key,
+            onClick: () => {
+                notification.close(key);
+                handleGetAllPostsUser();
+            },
         });
-      };
+    };
 
     const columns = [
         {
+            title: "Id",
+            dataIndex: 'id',
+            key: 'id',
+            outerWidth: "10%",
+        },
+        {
             title: "Назва посту",
-            dataIndex: "id",
-            key: "id",
-            outerWidth: "60%",
+            dataIndex: 'car.title',
+            key: 'car.title',
+            outerWidth: "50%",
         },
         {
             title: "Дії",
@@ -128,9 +186,11 @@ const AdminPanelPostPage = () => {
             outerWidth: "40%",
             render: (text: string, record: IPostModel) => (
                 <div className="buttonGroup">
-                    <Button type="primary" htmlType="submit" className="danger" style={{ marginRight: 20 }}>
-                        Переглянути пост
-                    </Button>
+                    <Link to={`/post/id=${record.id}`}>
+                        <Button type="primary" htmlType="submit" className="danger" style={{ marginRight: 20 }}>
+                            Переглянути пост
+                        </Button>
+                    </Link>
                     <Popconfirm
                         title={`Ви впевнені що хочете видалити цей пост?`}
                         onConfirm={() => handleDeletePost(record)}
@@ -140,7 +200,7 @@ const AdminPanelPostPage = () => {
                         </Button>
                     </Popconfirm>
 
-                    <Button type="primary" htmlType="submit" className="danger" onClick={showModalAdvertising}>
+                    <Button type="primary" htmlType="submit" className="danger" onClick={() => showModalAdvertising(record)}>
                         Рекламувати пост
                     </Button>
                 </div>
@@ -167,7 +227,7 @@ const AdminPanelPostPage = () => {
                         type="default"
                         className="buttonPrimary"
                         style={{ marginRight: 20 }}
-                        onClick={() => {handleGetAllPostsUser();}}
+                        onClick={() => { handleGetAllPostsUser(); }}
                     >
                         Обновити таблицю
                     </Button>
@@ -189,24 +249,23 @@ const AdminPanelPostPage = () => {
                 >
                     <Form.Item
                         label="очок"
-                        name="title"
-                    //rules={[{ required: true, message: "Введіть нову марку машини" }]}
+                        name="points"
                     >
-                        <Input />
+                        <Input defaultValue={dataAdvertisingPost?.points} value={dataAdvertisingPost?.points}></Input>
                     </Form.Item>
                     <Form.Item
-                        label="показів посту"
-                        name="title"
+                        label="показів тренд"
+                        name="showTrends"
                     //rules={[{ required: true, message: "Введіть нову марку машини" }]}
                     >
-                        <Input />
+                        <Input defaultValue={dataAdvertisingPost?.showTernd} value={dataAdvertisingPost?.showTernd} />
                     </Form.Item>
                     <Form.Item
                         label="показів баннер"
-                        name="title"
+                        name="showBanner"
                     //rules={[{ required: true, message: "Введіть нову марку машини" }]}
                     >
-                        <Input />
+                        <Input defaultValue={dataAdvertisingPost?.showBanner} value={dataAdvertisingPost?.showBanner} />
                     </Form.Item>
                 </Form>
             </FormModal>

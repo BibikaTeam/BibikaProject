@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getRandomPost } from "../../home/service";
 import { IBannerCar } from "../../home/types";
 import { getRandomTrendPost } from "./service";
 import TrendCarCard from "./trendCarCard";
@@ -24,7 +25,7 @@ const TrendBlock = () => {
       let post: IBannerCar | null | undefined = null;
       const tmpArr: Array<IBannerCar> = [];
       for (let i = 0; i <= 2; i++) {
-        post = await getRandomTrendPost();
+        post = await getRandomPost();
         tmpArr.push(post as IBannerCar);
       }
       setPostArray(tmpArr);
