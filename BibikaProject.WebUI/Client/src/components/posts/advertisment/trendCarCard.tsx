@@ -9,6 +9,7 @@ import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import loadingImage from "../../../assets/loading.gif";
 import defaultImage from "../../../assets/defaultImage.png";
 import CarCardLoader from "../../common/ownElement/carCardLoader";
+import TrendCardLoader from "./TrendCardLoader";
 
 export interface ITrendCarCardProps {
   car: IBannerCar;
@@ -92,7 +93,7 @@ const TrendCarCard = ({ car, scale }: ITrendCarCardProps) => {
           </Link>
         </div>
       ) : (
-        <CarCardLoader />
+        <TrendCardLoader />
       )}
     </>
   );
