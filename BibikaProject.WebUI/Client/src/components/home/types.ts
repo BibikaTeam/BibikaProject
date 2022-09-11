@@ -1,4 +1,12 @@
-import { ICarModel } from "../adminPanel/types";
+import {
+  IBrandModel,
+  ICarModel,
+  ICompleteSetModel,
+  IEngineModel,
+  IGenerationModel,
+  IModelModel,
+} from "../adminPanel/types";
+import { IGearBoxModel } from "../posts/add/types";
 
 export interface IBannerCar {
   // title: string;
@@ -40,4 +48,18 @@ export interface IShortCarsCarsRequest {
   countOnPage: number;
   search: string; //by descr
   searchId: number;
+}
+export interface SelectableValues {
+  brands: Array<IBrandModel>;
+  models: Array<IModelModel>;
+  generations: Array<IGenerationModel>;
+  completeSets: Array<ICompleteSetModel>;
+  carBodies: Array<ICompleteSetModel>;
+  fuelTypes: Array<String>;
+  gearBoxes: Array<IGearBoxModel>;
+  engines: Array<IEngineModel>;
+  yearMin: number;
+  yearMax: number;
+  priceMin: number;
+  priceMax: number;
 }

@@ -2,10 +2,12 @@ import axios from "axios";
 import { ErrorStrings } from "../../constants";
 import http from "../../http_common";
 import { IPaginationRequest, IRequestError } from "../adminPanel/types";
+import { ICurrentCarDetailProps } from "../posts/search/types";
 import {
   IBannerCar,
   IShortCarsCarsRequest,
   IShortSearchRespond,
+  SelectableValues,
 } from "./types";
 
 export const getRandomPost = async () => {
@@ -82,6 +84,32 @@ export const shortSearch = async (params: IShortSearchRespond) => {
     });
 
     return posts;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.request.status == 0 || error.request.status == 500) {
+        const unknownError: IRequestError = {
+          code: error.request.status,
+          errors: new Array<string>(ErrorStrings.backendNotResponse()),
+        };
+        throw unknownError;
+      }
+      let serverError: IRequestError = {
+        errors: error.response?.data.Errors,
+        code: error.response?.data.Code,
+      };
+      throw serverError;
+    }
+  }
+};
+
+export const getSelectableValues = async (values: ICurrentCarDetailProps) => {
+  try {
+    const response = await http.post<SelectableValues>(
+      `api/search-panel/get-missing-data`,
+      values
+    );
+    console.log("response,data: ", response.data);
+    return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.request.status == 0 || error.request.status == 500) {
