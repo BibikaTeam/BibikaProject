@@ -6,6 +6,7 @@ using BibikaProject.Application.Core.Requests;
 using BibikaProject.Application.Core.Responses;
 using BibikaProject.Application.Core.Services;
 using BibikaProject.Domain.Entities.Core;
+using BibikaProject.Infrastructure.Core.Errors;
 using BibikaProject.Infrastructure.Core.Services.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -74,17 +75,16 @@ namespace BibikaProject.Infrastructure.Core.Services
             IQueryable<Post> posts = query.GetAll()
                                           .IncldueAllPostProperties();
 
-
+            posts = posts.OrderByDescending(x => x.DailyPoint + (x.DailyViews * 0.01) + (x.Likes.Count() * 0.15) + (x.Balance * 0.15));
 
             var response = new PagedList<PostDTO> { CurrentPage = pagedPostRequest.Page };
 
             posts = posts.Search(pagedPostRequest.Search, "Description");
 
-
             if (pagedPostRequest.Filters != null)
             {
                 foreach (var filter in pagedPostRequest.Filters)
-                {
+                {                
                     if (filter.BrandId != 0)
                     {
                         posts = posts.Include(x => x.Car).ThenInclude(x => x.Generation).ThenInclude(x => x.Model);
@@ -161,6 +161,11 @@ namespace BibikaProject.Infrastructure.Core.Services
                     {
                         posts = posts.Where(x => x.Price <= filter.PriceMax);
                     }
+
+                    if (filter.WasInUse != null)
+                    {
+                        posts = posts.Where(x => x.WasInUse == filter.WasInUse);
+                    }
                 }
             }
 
@@ -222,9 +227,14 @@ namespace BibikaProject.Infrastructure.Core.Services
 
         public async Task<PostDTO> GetPostById(int id)
         {
-            var temp = await query.GetAll().IncldueAllPostProperties().FirstAsync(x => x.Id == id);
+            var temp = query.GetAll().IncldueAllPostProperties().Where(x => x.Id == id);
 
-            return mapper.Map<PostDTO>(temp);
+            if (temp == null || temp.Count() == 0)
+            {
+                throw new NotFoundException("There is no post with this id");
+            }
+
+            return mapper.Map<PostDTO>(await temp.FirstAsync());
         }
         
         public async Task<MinMaxValuesDTO> GetMinMaxYearsPrice(int generationId)

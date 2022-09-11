@@ -139,3 +139,10 @@ export interface IPostModel {
   price: number;
   description: string;
 }
+
+export interface IDataAdvertisingPost {
+  postId: number,
+  points: number,
+  showBanner: number,
+  showTernd: number
+}

@@ -43,6 +43,7 @@ const AdminLayout = React.lazy(
 );
 const BrandPage = React.lazy(() => import("./components/adminPanel/brand"));
 const ModelPage = React.lazy(() => import("./components/adminPanel/model"));
+const AdminPanelPostPage = React.lazy(() => import("./components/adminPanel/post"));
 
 const CarPage = React.lazy(() => import("./components/adminPanel/car"));
 const CompleteSetPage = React.lazy(
@@ -101,6 +102,7 @@ function App() {
               <Route path="/admin/engine" element={<EnginePage />} />
               <Route path="/admin/complete-set" element={<CompleteSetPage />} />
               <Route path="/admin/car" element={<CarPage />} />
+              <Route path="/admin/post" element={<AdminPanelPostPage />} />
             </Route>
           </Route>
         </Routes>

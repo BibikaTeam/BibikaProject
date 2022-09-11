@@ -1,7 +1,9 @@
 import { FC, useEffect, useState } from "react"
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
+import { IRequestError } from "../../../adminPanel/types";
 import { addImagesToPost, addPost, getCarIdByParams } from "../service";
 import { AddPostModel, CurrentStep } from "../types";
 import FirstStep from "./FirstStep";
@@ -16,7 +18,8 @@ let addPostModel: AddPostModel = {
     mileage: 1000,
     year: "",
     sellerId: "",
-    price: 0
+    price: 0,
+    technicalCondition: "ideal",
 }
 
 let images: number[] = [];
@@ -61,15 +64,21 @@ const StepsContainer: FC = () => {
     const onThirdStepFinish = (values: any) => {
         addPostModel.location = values;
         addPostModel.sellerId = userId!;
-
-        addPost(addPostModel).then(data => {
-            addImagesToPost({
-                postId: data,
-                imagesId: images
+        try {
+            addPost(addPostModel).then(data => {
+                addImagesToPost({
+                    postId: data,
+                    imagesId: images
+                });
+                    console.log(data);
+                    
             });
-                console.log(data);
-                
-        });            
+        } catch(_error) {
+            const error: IRequestError = _error as IRequestError;
+            error.errors.forEach((e) => {
+                toast.error(e);
+            });
+        }        
     }
 
     const onThirdStepBack = () => {

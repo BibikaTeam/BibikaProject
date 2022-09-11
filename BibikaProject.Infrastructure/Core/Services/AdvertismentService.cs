@@ -104,6 +104,11 @@ namespace BibikaProject.Infrastructure.Core.Services
 
             var random = new Random();
 
+            if (posts.Count() == 0)
+            {
+                throw new NotFoundException("There is no trend posts");
+            }
+
             var post = posts.ToList()[random.Next(0, posts.Count() - 1)];
 
             if (post == null)
@@ -115,6 +120,54 @@ namespace BibikaProject.Infrastructure.Core.Services
             await command.SaveChangesAsync();
 
             return mapper.Map<PostDTO>(post);
+        }
+
+        public async Task<float> GetBalance(int postId)
+        {
+            var post = await query.GetByIdAsync(postId);
+
+            if (post == null)
+            {
+                throw new NotFoundException("There is no post with this id");
+            }
+
+            return post.Balance;
+        }
+
+        public async Task<int> GetBannerViews(int postId)
+        {
+            var post = await query.GetByIdAsync(postId);
+
+            if (post == null)
+            {
+                throw new NotFoundException("There is no post with this id");
+            }
+
+            return post.BannerShowsLeft;
+        }
+
+        public async Task<int> GetTrendViews(int postId)
+        {
+            var post = await query.GetByIdAsync(postId);
+
+            if (post == null)
+            {
+                throw new NotFoundException("There is no post with this id");
+            }
+
+            return post.TrendShowsLeft;
+        }
+
+        public async Task<double> GetPoints(int postId)
+        {
+            var post = await query.GetAll().Include(x => x.Likes).FirstOrDefaultAsync(x => x.Id == postId);
+
+            if (post == null)
+            {
+                throw new NotFoundException("There is no post with this id");
+            }
+
+            return (post.DailyPoint + (post.DailyViews * 0.01) + (post.Likes.Count() * 0.15) + (post.Balance * 0.15));
         }
     }
 }

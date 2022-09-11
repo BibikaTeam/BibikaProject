@@ -29,6 +29,8 @@ namespace BibikaProject.Application.Core.Requests
         public int CompleteSetId { get; set; }
 
         public int GearBoxId { get; set; }
+
+        public bool? WasInUse { get; set; }
     }
 
     public class PagedPostRequest : PagedRequest
