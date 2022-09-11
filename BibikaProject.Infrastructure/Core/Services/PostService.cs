@@ -192,7 +192,14 @@ namespace BibikaProject.Infrastructure.Core.Services
         {
             IQueryable<Post> posts = query.GetAll()
                                           .Include(x => x.Seller)
-                                          .Include(x => x.Likes);
+                                          .Include(x => x.Likes)
+                                          .Include(x => x.Car).ThenInclude(x => x.Engine)
+                                          .Include(x => x.Car).ThenInclude(x => x.CompleteSet)
+                                          .Include(x => x.Car).ThenInclude(x => x.CarBody)
+                                          .Include(x => x.Car).ThenInclude(x => x.GearBox)
+                                          .Include(x => x.Car).ThenInclude(x => x.Generation).ThenInclude(x => x.Model).ThenInclude(x => x.Brand)
+                                          .Include(x => x.Views)
+                                          .Include(x => x.Likes); ;
 
             posts = posts.Where(x => x.Likes.Any(x => x.Id == id));
 

@@ -17,7 +17,7 @@ import ErrorPage from "./components/noMatch/errorPage";
 const HomePage = React.lazy(() => import("./components/home"));
 const PostPage = React.lazy(() => import("./components/posts/postPage"));
 const MyPosts = React.lazy(() => import("./components/userCabinet/myPosts"));
-const Message = React.lazy(() => import("./components/userCabinet/message"));
+const ChatPage = React.lazy(() => import("./components/userCabinet/chat"));
 const UserProfile = React.lazy(() => import("./components/userCabinet"));
 const SearchResult = React.lazy(
   () => import("./components/posts/result/searchResult")
@@ -70,7 +70,7 @@ function App() {
             <Route element={<AuthorizedBasedRoute />}>
               <Route path="/user-profile" element={<UserProfile />}>
                 <Route path="/user-profile/my-posts" element={<MyPosts />} />
-                <Route path="/user-profile/message" element={<Message />} />
+                <Route path="/user-profile/chat" element={<ChatPage />} />
                 <Route
                   path="/user-profile/saved-posts"
                   element={<SavedPosts />}
@@ -80,7 +80,7 @@ function App() {
                   element={<SettingsProfile />}
                 />
                 <Route
-                  path="/user-profile/settings/change-password"
+                  path="/user-profile/settings/change-password/:token"
                   element={<ChangePasswordPage />}
                 />
               </Route>

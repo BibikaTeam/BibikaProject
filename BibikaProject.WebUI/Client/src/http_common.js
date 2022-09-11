@@ -57,7 +57,6 @@ instance.interceptors.response.use(
     }
     else {
       window.location.href = "/error/500";
-
     }
     return Promise.reject(err);
   }
@@ -80,6 +79,7 @@ function updateRefreshToken() {
 function logoutUser() {
   window.localStorage.removeItem("token");
   window.localStorage.removeItem("refreshToken");
+  localStorage.removeItem("likes");
   window.location.reload();
 }
 

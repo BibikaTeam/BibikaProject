@@ -32,8 +32,6 @@ const TrendBlock = () => {
     })();
   }, []);
 
-  console.log("postArr: ", postArray);
-
   return (
     <div className="trend-block">
       <h2>Trends</h2>

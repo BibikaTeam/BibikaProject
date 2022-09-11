@@ -9,6 +9,11 @@
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
     }
+    .like-button{
+        position: absolute;
+        right: 20px;
+        cursor: pointer;
+    }
     .info-block{
         padding: 0 20px;
         .trend-title{
@@ -75,6 +80,7 @@
                 padding: 7px 59px;
                 border-radius: 10px;
                 border: none;
+                text-align: center;
                 cursor: pointer;
                 &:hover{
                     background-color: rgba($color: #E06738, $alpha: 1);
