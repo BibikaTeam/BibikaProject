@@ -30,6 +30,7 @@ import {
   deleteCompleteSet,
   getCompleteSetsByBrand,
   getCompleteSetsByModel,
+  getAllCompleteSets,
 } from "./service";
 
 import type { NotificationPlacement } from "antd/lib/notification";
@@ -43,9 +44,10 @@ const Context = React.createContext({ name: "Default" });
 const CompleteSetPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isModalAdd, setModalAdd] = useState(false);
-  const [searchedCompleteSets, setCompleteSets] = useState<
+  const [searchedCompleteSets, setSearchedCompleteSets] = useState<
     Array<ICompleteSetModel>
   >([]);
+  const [comleteSets, setCompleteSets] = useState<Array<ICompleteSetModel>>([]);
   const [form] = Form.useForm();
   const [api, contextHolder] = notification.useNotification();
 
@@ -53,8 +55,15 @@ const CompleteSetPage = () => {
 
   let key = ``;
 
+  useEffect(() => {
+    const init = async () => {
+      await handleGetAllCompleteSets();
+    };
+    init();
+  }, []);
+
   const clearCompleteSets = () => {
-    setCompleteSets([]);
+    setSearchedCompleteSets([]);
   };
 
   // const handleGetCompleteSetsByGeneration = async (generationId: number) => {
@@ -73,6 +82,24 @@ const CompleteSetPage = () => {
   //     setLoading(false);
   //   }
   // };
+
+  const handleGetAllCompleteSets = async () => {
+    setLoading(true);
+    try {
+      await getAllCompleteSets().then((data)=> {
+        setCompleteSets(data);
+      });
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+
+      });
+    } finally {
+      setLoading(false);
+      notification.close(key);
+    }
+  }
 
   const handleAddCompleteSet = async (values: ICompleteSetAddDTO) => {
     setLoading(true);
@@ -95,8 +122,8 @@ const CompleteSetPage = () => {
     try {
       await deleteCompleteSet(value.id);
       toast.success(`Brand ${value.title} are successfully deleted`);
-
-      setCompleteSets(searchedCompleteSets.filter((x) => x.id != value.id));
+      setSearchedCompleteSets(searchedCompleteSets.filter((x) => x.id != value.id));
+      openNotification("bottomRight");
     } catch (_error) {
       const error: IRequestError = _error as IRequestError;
       error.errors.forEach((e) => {
@@ -132,6 +159,7 @@ const CompleteSetPage = () => {
         notification.close(key);
         clearCompleteSets();
         getCompleteSetsByGeneration(currentGenerationId);
+        handleGetAllCompleteSets();
       },
     });
   };
@@ -184,17 +212,17 @@ const CompleteSetPage = () => {
           />
         </Col>
         <Col span={8} style={{ textAlign: "right" }}>
-          {/* <Button
+          <Button
             htmlType="button"
             type="default"
             className="buttonPrimary"
             style={{ marginRight: 20 }}
             onClick={() => {
-              handleGetCompleteSetsByGeneration(currentGenerationId);
+              handleGetAllCompleteSets();
             }}
           >
             Обновити таблицю
-          </Button> */}
+          </Button>
           <Button
             htmlType="button"
             type="default"
@@ -232,7 +260,7 @@ const CompleteSetPage = () => {
       <Table
         className="adminTable"
         size="large"
-        dataSource={searchedCompleteSets}
+        dataSource={comleteSets}
         columns={columns}
         rowKey="id"
         loading={loading}
