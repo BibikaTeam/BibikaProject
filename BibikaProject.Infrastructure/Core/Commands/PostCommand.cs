@@ -20,6 +20,11 @@ namespace BibikaProject.Infrastructure.Core.Commands
         {
             var post = await context.Posts.FindAsync(postId);
 
+            if (post == null)
+            {
+                throw new BadRequestException("Bad data");
+            }
+
             imagesId.ForEach(imageId => context.Images.Find(imageId).PostId = post.Id);
         }
 
@@ -27,7 +32,12 @@ namespace BibikaProject.Infrastructure.Core.Commands
         {
             var post = await context.Posts.FindAsync(postId);
 
-            if(post.Options == null)
+            if (post == null)
+            {
+                throw new BadRequestException("Bad data");
+            }
+
+            if (post.Options == null)
             {
                 post.Options = new List<Option>();
             }

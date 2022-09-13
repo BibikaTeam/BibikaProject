@@ -40,10 +40,14 @@ namespace BibikaProject.Infrastructure.Core.Commands
 
         public virtual void Update(TEntity entity)
         {
-            if (context.Find<TEntity>(entity.Id) == null)
+            var temp = context.Find<TEntity>(entity.Id);
+
+            if (temp == null)
             {
                 throw new NotFoundException("There is no entity with this id.");
             }
+
+            context.Entry(temp).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
 
             context.Update(entity);
         }
