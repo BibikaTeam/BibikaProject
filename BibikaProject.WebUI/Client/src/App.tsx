@@ -71,18 +71,9 @@ function App() {
               <Route path="/user-profile" element={<UserProfile />}>
                 <Route path="/user-profile/my-posts" element={<MyPosts />} />
                 <Route path="/user-profile/message" element={<Message />} />
-                <Route
-                  path="/user-profile/saved-posts"
-                  element={<SavedPosts />}
-                />
-                <Route
-                  path="/user-profile/settings"
-                  element={<SettingsProfile />}
-                />
-                <Route
-                  path="/user-profile/settings/change-password"
-                  element={<ChangePasswordPage />}
-                />
+                <Route path="/user-profile/saved-posts" element={<SavedPosts />} />
+                <Route path="/user-profile/settings" element={<SettingsProfile />} />
+                <Route path="/user-profile/settings/change-password" element={<ChangePasswordPage />} />
               </Route>
               <Route path="/post/adv-order" element={<AdvOrderPage />} />
             </Route>
