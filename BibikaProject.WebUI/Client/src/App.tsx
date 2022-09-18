@@ -17,7 +17,7 @@ import ErrorPage from "./components/noMatch/errorPage";
 const HomePage = React.lazy(() => import("./components/home"));
 const PostPage = React.lazy(() => import("./components/posts/postPage"));
 const MyPosts = React.lazy(() => import("./components/userCabinet/myPosts"));
-const Message = React.lazy(() => import("./components/userCabinet/message"));
+const ChatPage = React.lazy(() => import("./components/userCabinet/chat"));
 const UserProfile = React.lazy(() => import("./components/userCabinet"));
 const SearchResult = React.lazy(
   () => import("./components/posts/result/searchResult")

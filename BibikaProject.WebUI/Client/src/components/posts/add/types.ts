@@ -24,7 +24,8 @@ export interface AddPostModel {
     color: string,
     sellerId: string,
     carId: number,
-    price: number
+    price: number,
+    technicalCondition: string,
 }
 
 export interface AddImagesToPostModel {

@@ -6,6 +6,7 @@ using BibikaProject.Application.Core.Requests;
 using BibikaProject.Application.Core.Responses;
 using BibikaProject.Application.Core.Services;
 using BibikaProject.Domain.Entities.Core;
+using BibikaProject.Infrastructure.Core.Errors;
 using BibikaProject.Infrastructure.Core.Services.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -83,7 +84,7 @@ namespace BibikaProject.Infrastructure.Core.Services
             if (pagedPostRequest.Filters != null)
             {
                 foreach (var filter in pagedPostRequest.Filters)
-                {
+                {                
                     if (filter.BrandId != 0)
                     {
                         posts = posts.Include(x => x.Car).ThenInclude(x => x.Generation).ThenInclude(x => x.Model);
@@ -160,6 +161,11 @@ namespace BibikaProject.Infrastructure.Core.Services
                     {
                         posts = posts.Where(x => x.Price <= filter.PriceMax);
                     }
+
+                    if (filter.WasInUse != null)
+                    {
+                        posts = posts.Where(x => x.WasInUse == filter.WasInUse);
+                    }
                 }
             }
 
@@ -186,7 +192,14 @@ namespace BibikaProject.Infrastructure.Core.Services
         {
             IQueryable<Post> posts = query.GetAll()
                                           .Include(x => x.Seller)
-                                          .Include(x => x.Likes);
+                                          .Include(x => x.Likes)
+                                          .Include(x => x.Car).ThenInclude(x => x.Engine)
+                                          .Include(x => x.Car).ThenInclude(x => x.CompleteSet)
+                                          .Include(x => x.Car).ThenInclude(x => x.CarBody)
+                                          .Include(x => x.Car).ThenInclude(x => x.GearBox)
+                                          .Include(x => x.Car).ThenInclude(x => x.Generation).ThenInclude(x => x.Model).ThenInclude(x => x.Brand)
+                                          .Include(x => x.Views)
+                                          .Include(x => x.Likes); ;
 
             posts = posts.Where(x => x.Likes.Any(x => x.Id == id));
 
@@ -214,9 +227,14 @@ namespace BibikaProject.Infrastructure.Core.Services
 
         public async Task<PostDTO> GetPostById(int id)
         {
-            var temp = await query.GetAll().IncldueAllPostProperties().FirstAsync(x => x.Id == id);
+            var temp = query.GetAll().IncldueAllPostProperties().Where(x => x.Id == id);
 
-            return mapper.Map<PostDTO>(temp);
+            if (temp == null || temp.Count() == 0)
+            {
+                throw new NotFoundException("There is no post with this id");
+            }
+
+            return mapper.Map<PostDTO>(await temp.FirstAsync());
         }
         
         public async Task<MinMaxValuesDTO> GetMinMaxYearsPrice(int generationId)

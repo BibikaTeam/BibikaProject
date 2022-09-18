@@ -12,7 +12,7 @@ export interface ISelectProps {
   onChange: (value: any) => Promise<void>;
   placeholder: string | undefined;
   loading: boolean;
-  value: number;
+  value: number | undefined;
 }
 
 const MySelect = ({
@@ -34,7 +34,7 @@ const MySelect = ({
       disabled={disabled}
       onChange={onInsideChange}
       placeholder={placeholder}
-      value={value}
+      value={value ? value : undefined}
     >
       <option value="default" hidden>{`${placeholder}...`}</option>
       {values.map((x) => (
@@ -56,5 +56,5 @@ MySelect.defaultProps = {
   className: "",
   placeholder: "",
   loading: false,
-  value: 0,
+  value: undefined,
 };

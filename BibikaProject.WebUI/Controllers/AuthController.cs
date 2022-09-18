@@ -1,5 +1,6 @@
 ﻿using BibikaProject.Application.Identity.Requests;
 using BibikaProject.Application.Identity.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -78,6 +79,14 @@ namespace BibikaProject.WebUI.Controllers
             await authService.ChangeUserName(chaneUserNameRequest);
 
             return Ok();
+        }
+        [Authorize]
+        [HttpGet("get-name-by-mail/{email}")]
+        public async Task<IActionResult> GetUsernameByEmail(string email)
+        {
+            string username = await authService.GetUsernameByEmail(email);
+
+            return Ok(username);
         }
     }
 }

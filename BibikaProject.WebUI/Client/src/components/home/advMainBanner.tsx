@@ -31,6 +31,8 @@ const AdvMainBanner = () => {
     price: 85000,
     id: 51,
     description: "",
+    sellerEmail: "",
+    sellerId: "",
   };
 
   return (
