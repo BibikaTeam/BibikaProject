@@ -80,7 +80,6 @@ function App() {
           </Route>
 
           <Route path="/loading" element={<LoadingPage />} />
-
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/test" element={<Test />} />

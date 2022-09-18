@@ -11,7 +11,10 @@ const MenuProfile = () => {
     return (
         <div className="menu-container">
             <div className="left-menu-side">
-                <Avatar size={49} icon={<UserOutlined />} />
+                <Avatar 
+                className="user-icon"
+                size={50} 
+                icon={<UserOutlined />} />
                 <span className="user-name-text">{user?.name}</span>
             </div>
             <div className="right-menu-side">

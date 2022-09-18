@@ -130,8 +130,9 @@ const Header = () => {
           <>
             <Dropdown overlay={menu} placement="bottomLeft" trigger={["click"]}>
               <Avatar
-                size={49}
-                style={{ backgroundColor: "#2D40E0", marginTop: "5px" }}
+                className="user-icon"
+                size={50}
+                style={{ marginTop: "5px" }}
                 icon={<UserOutlined />}
               />
             </Dropdown>
