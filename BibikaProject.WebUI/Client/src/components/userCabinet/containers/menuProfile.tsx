@@ -21,7 +21,7 @@ const MenuProfile = () => {
                         <Link to="/user-profile/my-posts">My posts</Link>
                     </li>
                     <li>
-                        <Link to="/user-profile/message">Message</Link>
+                        <Link to="/user-profile/chat">Message</Link>
                     </li>
                     <li>
                         <Link to="/user-profile/saved-posts">Saved posts</Link>
