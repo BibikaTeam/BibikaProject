@@ -4,33 +4,36 @@ import { Link } from "react-router-dom";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 
 const MenuProfile = () => {
-  const { user } = useTypedSelector((redux) => redux.login);
+    const { user } = useTypedSelector((redux) => redux.login);
 
-  return (
-    <div className="menu-container">
-      <div className="left-menu-side">
-        <Avatar size={49} icon={<UserOutlined />} />
-        <span className="user-name-text">{user?.name}</span>
-      </div>
-      <div className="right-menu-side">
-        <ul>
-          <li>
-            <Link to="/user-profile/my-posts">My posts</Link>
-          </li>
-          <li>
-            <Link to="/user-profile/chat">Message</Link>
-          </li>
-          <li>
-            <Link to="/user-profile/saved-posts">Saved posts</Link>
-          </li>
-          <li>
-            <Link to="/user-profile/settings">Settings</Link>
-          </li>
-        </ul>
-      </div>
-    </div>
-  );
-};
+    return (
+        <div className="menu-container">
+            <div className="left-menu-side">
+                <Avatar 
+                className="user-icon"
+                size={50} 
+                icon={<UserOutlined />} />
+                <span className="user-name-text">{user?.name}</span>
+            </div>
+            <div className="right-menu-side">
+                <ul>
+                    <li>
+                        <Link to="/user-profile/my-posts">My posts</Link>
+                    </li>
+                    <li>
+                        <Link to="/user-profile/message">Message</Link>
+                    </li>
+                    <li>
+                        <Link to="/user-profile/saved-posts">Saved posts</Link>
+                    </li>
+                    <li>
+                        <Link to="/user-profile/settings">Settings</Link>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    )
+}
 
 export default MenuProfile;
 

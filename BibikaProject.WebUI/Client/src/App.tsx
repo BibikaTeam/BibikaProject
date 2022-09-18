@@ -70,26 +70,16 @@ function App() {
             <Route element={<AuthorizedBasedRoute />}>
               <Route path="/user-profile" element={<UserProfile />}>
                 <Route path="/user-profile/my-posts" element={<MyPosts />} />
-                <Route path="/user-profile/chat" element={<ChatPage />} />
-                <Route
-                  path="/user-profile/saved-posts"
-                  element={<SavedPosts />}
-                />
-                <Route
-                  path="/user-profile/settings"
-                  element={<SettingsProfile />}
-                />
-                <Route
-                  path="/user-profile/settings/change-password/:token"
-                  element={<ChangePasswordPage />}
-                />
+                <Route path="/user-profile/message" element={<Message />} />
+                <Route path="/user-profile/saved-posts" element={<SavedPosts />} />
+                <Route path="/user-profile/settings" element={<SettingsProfile />} />
+                <Route path="/user-profile/settings/change-password" element={<ChangePasswordPage />} />
               </Route>
               <Route path="/post/adv-order" element={<AdvOrderPage />} />
             </Route>
           </Route>
 
           <Route path="/loading" element={<LoadingPage />} />
-
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/test" element={<Test />} />
