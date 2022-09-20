@@ -24,6 +24,7 @@ using Google.Apis.Auth;
 using Newtonsoft.Json;
 using BibikaProject.Infrastructure.Identity.Services.FacebookAuthTypes;
 using BibikaProject.Infrastructure.Identity.Services.Helpers.Email;
+using BibikaProject.Infrastructure.Core.Errors;
 
 namespace BibikaProject.Infrastructure.Identity.Services
 {
@@ -412,6 +413,12 @@ namespace BibikaProject.Infrastructure.Identity.Services
         public async Task<string> GetUsernameByEmail(string email)
         {
             var user = await userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                throw new NotFoundException("User with this email not found");
+            }
+
             return user.UserName;
         }
     }

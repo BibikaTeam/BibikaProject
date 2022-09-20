@@ -71,8 +71,9 @@ const ChatPage = () => {
           <span className="chat-name">
             {" "}
             <Avatar
-              size={49}
-              style={{ backgroundColor: "#2D40E0", marginTop: "5px" }}
+            className="user-icon"
+              size={50}
+              style={{ margin: "5px" }}
               icon={<UserOutlined />}
             />
             <span className="username-header">{userName}</span>

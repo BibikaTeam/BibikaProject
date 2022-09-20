@@ -44,7 +44,7 @@ namespace BibikaProject.WebUI.ExceptionMiddleware
                         await context.Response.WriteAsync(new ErrorDetails()
                         {
                             Code = context.Response.StatusCode,
-                            Errors = new string[] { "Internal Server Error." }
+                            Errors = new string[] { "Internal Server Error.", contextFeature.Error.Message, contextFeature.Error.StackTrace }
 
                         }.ToString());
 

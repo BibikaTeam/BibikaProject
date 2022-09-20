@@ -7,16 +7,14 @@
     align-items: center;
 
     .left-menu-side {
-        margin-left: 20px;
         width: 50%;
-
         .user-name-text {
-            margin-left: 29px;
+            margin-left: 20px;
             font-family: 'Manrope';
             font-style: normal;
             font-weight: 600;
             font-size: 26px;
-            color: #219CE1;
+            color: $primary;
         }
     }
 
@@ -34,7 +32,7 @@
             font-style: normal;
             font-weight: 500;
             font-size: 24px;
-            color: #219CE1;
+            color: $primary;
             padding: 5px 20px;
             margin-right: 40px;
 
