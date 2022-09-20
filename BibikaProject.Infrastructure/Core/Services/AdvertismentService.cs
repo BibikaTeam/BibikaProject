@@ -78,16 +78,26 @@ namespace BibikaProject.Infrastructure.Core.Services
         {
             var posts = query.GetAll().Where(x => x.IsBanner && x.BannerShowsLeft > 0).IncldueAllPostProperties();
 
+            if (posts == null)
+            {
+                throw new NotFoundException("There is no banner post in database");
+            }
+
             var random = new Random();
 
-            var post = await posts.FirstOrDefaultAsync(x => x.Id == random.Next(0, posts.Count() - 1));
+            if (posts.Count() == 0)
+            {
+                throw new NotFoundException("There is no banner posts");
+            }
+
+            var post = posts.ToList()[random.Next(0, posts.Count() - 1)];
 
             if (post == null)
             {
                 throw new NotFoundException("There is no banner post in database");
             }
 
-            await command.DecrementBannerViews(post.Id);
+            await command.DecrementTrendViews(post.Id);
             await command.SaveChangesAsync();
 
             return mapper.Map<PostDTO>(post);

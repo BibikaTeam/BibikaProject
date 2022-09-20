@@ -1,6 +1,6 @@
 import { Avatar, message } from "antd";
 import { useEffect, useState } from "react";
-import { getAllChats, getMessages, sendMessage } from "./service";
+import { getAllChats, getMessages, getUserName, sendMessage } from "./service";
 import { UserOutlined } from "@ant-design/icons";
 import ChatPreviewsBlock from "./chatPreviewBlock";
 import { IRequestError } from "../../adminPanel/types";
@@ -12,6 +12,7 @@ const ChatPage = () => {
   const [activeEmail, setActiveEmail] = useState<string>();
   const [messages, setMessages] = useState<Array<IMessage>>();
   const { user } = useTypedSelector((x) => x.login);
+  const [userName, setUserName] = useState<string>("");
 
   useEffect(() => {
     (async () => {
@@ -28,12 +29,25 @@ const ChatPage = () => {
   const onActiveChatChange = async (email: string) => {
     setActiveEmail(email);
     await updateChats(email);
+    await updateUserName(email);
   };
 
   const updateChats = async (email: string) => {
     try {
       const result = await getMessages(email);
       setMessages(result);
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      error.errors.forEach((e) => {
+        toast.error(e);
+      });
+    }
+  };
+
+  const updateUserName = async (emailWith: string) => {
+    try {
+      const _userName = await getUserName(emailWith);
+      setUserName(_userName as string);
     } catch (_error) {
       const error: IRequestError = _error as IRequestError;
       error.errors.forEach((e) => {
@@ -61,7 +75,7 @@ const ChatPage = () => {
               style={{ backgroundColor: "#2D40E0", marginTop: "5px" }}
               icon={<UserOutlined />}
             />
-            Maxim
+            <span className="username-header">{userName}</span>
           </span>
         </div>
       </div>

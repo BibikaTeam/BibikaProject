@@ -127,3 +127,29 @@ export const getSelectableValues = async (values: ICurrentCarDetailProps) => {
     }
   }
 };
+export const getRandomBannerPost = async () => {
+  try {
+    const response = await http.get<IBannerCar>(`api/adv/get/random-banner`);
+
+    response.data.year = new Date(response.data.year).getFullYear();
+
+    const post = response.data;
+
+    return post;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.request.status == 0 || error.request.status == 500) {
+        const unknownError: IRequestError = {
+          code: error.request.status,
+          errors: new Array<string>(ErrorStrings.backendNotResponse()),
+        };
+        throw unknownError;
+      }
+      let serverError: IRequestError = {
+        errors: error.response?.data.Errors,
+        code: error.response?.data.Code,
+      };
+      throw serverError;
+    }
+  }
+};

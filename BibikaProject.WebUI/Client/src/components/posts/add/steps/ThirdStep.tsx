@@ -2,6 +2,7 @@ import { Status, Wrapper } from "@googlemaps/react-wrapper";
 import { isLatLngBoundsLiteral } from "@googlemaps/typescript-guards";
 import { Button, Input, InputRef } from "antd";
 import { FC, useEffect, useRef, useState } from "react";
+import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { GOOGLE_API_KEY } from "../../../../constants";
 import Map from "./map";
 import Marker from "./map/marker";
@@ -29,6 +30,8 @@ const formatAddress = (place: any) => {
 };
 
 const ThirdStep: FC<ThirdStepProps> = (props) => {
+  const { user } = useTypedSelector((x) => x.login);
+
   const [address, setAddress] = useState<string>();
   const [marker, setMarker] = useState<google.maps.LatLng>();
   const [zoom, setZoom] = useState(3);
@@ -110,11 +113,15 @@ const ThirdStep: FC<ThirdStepProps> = (props) => {
         <div className="steps-selects-container">
           <div className="steps-input-container">
             Сontact person
-            <Input className="steps-input" />
+            <Input className="steps-input" defaultValue={user?.name} disabled />
           </div>
           <div className="steps-input-container">
-            Phone number
-            <Input className="steps-input" />
+            Email
+            <Input
+              className="steps-input"
+              defaultValue={user?.email}
+              disabled
+            />
           </div>
         </div>
 

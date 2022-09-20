@@ -89,11 +89,7 @@ export const getImage = async (imageId: number) => {
 
 export const addPost = async (data: AddPostModel) => {
   try {
-    console.log(":", localStorage.getItem("token"));
     const response = await http.post("api/post/add", data);
-
-    console.log(response.data);
-    
 
     return response.data;
   } catch (error) {

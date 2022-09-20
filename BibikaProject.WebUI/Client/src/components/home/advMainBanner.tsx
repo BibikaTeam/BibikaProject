@@ -1,45 +1,82 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { IBannerCar } from "./types";
+import loadingImage from "../../assets/loading.gif";
+import { IMAGES_PATH } from "../../constants";
+import { IRequestError } from "../adminPanel/types";
+import { toast } from "react-toastify";
+import defaultImage from "../../assets/defaultImage.png";
+import { getImagesByPostId } from "../posts/postPage/service";
 
 export interface IMainBannerProps {
   car: IBannerCar;
+  scale: number;
 }
 
-const AdvMainBanner = () => {
-  const car: IBannerCar = {
-    car: {
-      carBodyTitle: "",
-      completeSetTitle: "",
-      engine: {
-        title: "Disel",
-        capacity: "1488",
-        fuel: "Disel",
-        id: 0,
-        kwPower: 1,
-      },
-      gearBoxTitle: "Automatic",
-      id: 1,
-      title: "Audi Q8",
-    },
-    color: "blue",
-    likes: 10,
-    sellerName: "Eduard",
-    viewes: 1000,
-    year: 2022,
-    mileage: 2000,
-    location: "Lviv",
-    price: 85000,
-    id: 51,
-    description: "",
-    sellerEmail: "",
-    sellerId: "",
+const AdvMainBanner = ({ car, scale }: IMainBannerProps) => {
+  // const car: IBannerCar = {
+  //   car: {
+  //     carBodyTitle: "",
+  //     completeSetTitle: "",
+  //     engine: {
+  //       title: "Disel",
+  //       capacity: "1488",
+  //       fuel: "Disel",
+  //       id: 0,
+  //       kwPower: 1,
+  //     },
+  //     gearBoxTitle: "Automatic",
+  //     id: 1,
+  //     title: "Audi Q8",
+  //   },
+  //   color: "blue",
+  //   likes: 10,
+  //   sellerName: "Eduard",
+  //   viewes: 1000,
+  //   year: 2022,
+  //   mileage: 2000,
+  //   location: "Lviv",
+  //   price: 85000,
+  //   id: 51,
+  //   description: "",
+  //   sellerEmail: "",
+  //   sellerId: "",
+  // };
+
+  const [imgSrc, setImgSrc] = useState<string>("");
+  const [loadingImage, setLoadingImage] = useState<string>("");
+
+  useEffect(() => {
+    (async () => {
+      loadImage();
+    })();
+  }, [car]);
+
+  const loadImage = async () => {
+    try {
+      setImgSrc(loadingImage);
+      const imgName = await getImagesByPostId(car.id);
+      if (imgName && imgName[0] && (imgName[0] as string)) {
+        setImgSrc(`${IMAGES_PATH}/${imgName[0]}_medium.png`);
+      } else {
+        setImgSrc(defaultImage);
+      }
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      if (error && error.errors) {
+        error.errors.forEach((e) => {
+          toast.error(e);
+        });
+      }
+      setImgSrc(defaultImage);
+    }
   };
 
   return (
     <div
       className="adv-main-banner"
       style={{
-        backgroundImage: `url(${"https://usaautoonline.azurewebsites.net/media/1256/audi-q8.jpg"})`,
+        backgroundImage: `url(${imgSrc})`,
       }}
     >
       {/* <img src={car.mainImageSrc} alt="Main image" /> */}
@@ -59,7 +96,10 @@ const AdvMainBanner = () => {
       </div>
     </div>
   );
-  return <h1>Chuj</h1>;
+};
+
+AdvMainBanner.defaultProps = {
+  scale: 1,
 };
 
 export default AdvMainBanner;

@@ -67,7 +67,9 @@ const DetailSearch = () => {
         </h1>
         <CurrentCarDetailSearch updateCar={updateCar} />
 
-        <Button onClick={onSearchClick}>Search</Button>
+        <button className="mainSearchBtn" onClick={onSearchClick}>
+          Search
+        </button>
       </div>
     </div>
   );

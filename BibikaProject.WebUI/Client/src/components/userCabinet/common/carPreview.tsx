@@ -2,9 +2,11 @@ import { Col, Row } from "antd";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { IMAGES_PATH } from "../../../constants";
 import { IRequestError } from "../../adminPanel/types";
 import { getImagesByPostId } from "../../posts/postPage/service";
 import { IProfileCarPreview } from "../types";
+import defaultImage from "../../../assets/defaultImage.png";
 
 export interface ICarPreviewProps {
   car: IProfileCarPreview;
@@ -12,23 +14,31 @@ export interface ICarPreviewProps {
 
 const CarPreview = ({ car }: ICarPreviewProps) => {
   const [imgSrc, setImgSrc] = useState<string>("");
+  const [loadingImage, setLoadingImage] = useState<string>("");
+
   useEffect(() => {
     (async () => {
       loadImage();
     })();
-  }, [imgSrc]);
+  }, [car]);
 
   const loadImage = async () => {
     try {
+      setImgSrc(loadingImage);
       const imgName = await getImagesByPostId(car.id);
       if (imgName && imgName[0] && (imgName[0] as string)) {
-        setImgSrc(`/images/${imgName[0]}_medium.png`);
+        setImgSrc(`${IMAGES_PATH}/${imgName[0]}_medium.png`);
+      } else {
+        setImgSrc(defaultImage);
       }
     } catch (_error) {
       const error: IRequestError = _error as IRequestError;
-      error.errors.forEach((e) => {
-        toast.error(e);
-      });
+      if (error && error.errors) {
+        error.errors.forEach((e) => {
+          toast.error(e);
+        });
+      }
+      setImgSrc(defaultImage);
     }
   };
 
@@ -60,22 +70,18 @@ const CarPreview = ({ car }: ICarPreviewProps) => {
                 <span className="icon watch"></span>
                 <span className="statistic-info">{car.views}</span>
               </Col>
-              <Col className="statistic-cell">
-                <span className="icon message"></span>
-                <span className="statistic-info">{car.messages}</span>
-              </Col>
             </Row>
             <Row className="buttons-bar">
-              <Link to="#" className="editButton">
-                Edit
-              </Link>
-              <Link to="#" className="link-button">
+              <Link to={`/post?id=${car.id}`} className="link-button">
                 Look
               </Link>
               <Link to="#" className="link-button">
                 Deactivate
               </Link>
-              <Link to={`/post/adv-order?id=${car.id}`} className="advButton">
+              <Link
+                to={`/post/trend-adv-order?id=${car.id}`}
+                className="advButton"
+              >
                 Adv
               </Link>
             </Row>

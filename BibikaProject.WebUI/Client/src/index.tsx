@@ -12,6 +12,7 @@ import { createBrowserHistory } from "history";
 import configureStore from "./store/configureStore";
 import { AuthUser, LogoutUser } from "./components/authorization/login/service";
 import { useActions } from "./hooks/useActions";
+import ErrorHandler from "./components/errorHandler";
 
 const token = localStorage.getItem("token");
 
@@ -29,7 +30,9 @@ if (token) {
 root.render(
   // <React.StrictMode>
   <Provider store={store}>
-    <App />
+    <ErrorHandler>
+      <App />
+    </ErrorHandler>
   </Provider>
   // </React.StrictMode>
 );

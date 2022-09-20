@@ -1,16 +1,18 @@
 import { Button } from "antd";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { IRequestError } from "../../adminPanel/types";
+import AdvMainBanner from "../../home/advMainBanner";
 import MainPageCarCard from "../../home/carCard";
 import { getRandomPost } from "../../home/service";
 import { IBannerCar } from "../../home/types";
 import { getPostById } from "../postPage/service";
 import { IPostModel } from "../postPage/types";
 import CarCard from "../result/carCard";
-import { enableTrendOnPost } from "./service";
+import { enableBannerOnPost, enableTrendOnPost } from "./service";
 import TrendCarCard from "./trendCarCard";
+import { useNavigate } from "react-router-dom";
 
 // export interface AdvOrderPageProps {
 //   car: IBannerCar;
@@ -21,6 +23,7 @@ const BannerAdvOrder = () => {
   const [randomPost, setRandomPost] = useState<IBannerCar>();
   const [searchParams, setSearchParams] = useSearchParams();
   const [car, setCar] = useState<IBannerCar>();
+  const navigator = useNavigate();
 
   useEffect(() => {
     (async () => {
@@ -42,11 +45,11 @@ const BannerAdvOrder = () => {
   const getSelectedPrice = () => {
     switch (selectedButton) {
       case 1:
-        return 100;
+        return 1000;
       case 2:
-        return 150;
+        return 1500;
       case 3:
-        return 800;
+        return 5000;
       default:
         return 0;
     }
@@ -65,10 +68,11 @@ const BannerAdvOrder = () => {
   };
   const buyTrendAdv = async () => {
     try {
-      await enableTrendOnPost({
+      await enableBannerOnPost({
         postId: car?.id as number,
         views: getSelectedCount(),
       });
+      navigator("/");
     } catch (_error) {
       const error: IRequestError = _error as IRequestError;
       error.errors.forEach((e) => {
@@ -89,19 +93,17 @@ const BannerAdvOrder = () => {
     }
   };
 
-  console.log(car);
-
   return (
     <div className="adv-selection">
-      <div className="trend-selection">
-        <div className="left-trend-side">
-          <h1>TREND</h1>
+      <div className="trend-selection banner row">
+        <div className="left-trend-side col-6">
+          <h1>TOP</h1>
           <h3>
-            Be with <span className="header-selection">trend!</span>
+            UP YOUR POST TO <span className="header-selection">TOP!</span>
           </h3>
 
-          <span className="privilege">privilege</span>
-          <span className="privilege">privilege</span>
+          <span className="privilege">Be with start</span>
+          <span className="privilege">Be more popular</span>
 
           <div className="buttons-group">
             <button
@@ -130,16 +132,8 @@ const BannerAdvOrder = () => {
             </button>
           </div>
         </div>
-        <div className="right-trend-side">
-          <div className="col first-col">
-            {/* <TrendCarCard car={randomPost as IBannerCar} scale={0.5} /> */}
-          </div>
-          <div className="col main-trend-banner">
-            {car && <TrendCarCard car={car as IBannerCar} scale={0.7} />}
-          </div>
-          <div className="col third-col">
-            {/* <TrendCarCard car={randomPost as IBannerCar} scale={0.5} /> */}
-          </div>
+        <div className="right-trend-side col-6">
+          {car && <AdvMainBanner car={car as IBannerCar} scale={0.7} />}
         </div>
       </div>
       <div className="trend-description">
@@ -150,9 +144,14 @@ const BannerAdvOrder = () => {
           </span>
           <span className="times-trend-description">/{getSelectedCount()}</span>
         </span>
-        <button className="choose-trend-button" onClick={buyTrendAdv}>
-          <span>Buy</span>
-        </button>
+        <div className="button-buy-group">
+          <Link to={"/"} className="skip-trend-button">
+            Skip
+          </Link>
+          <button className="choose-trend-button" onClick={buyTrendAdv}>
+            <span>Buy</span>
+          </button>
+        </div>
       </div>
     </div>
   );

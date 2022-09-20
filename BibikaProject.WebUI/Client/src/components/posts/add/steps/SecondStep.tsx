@@ -64,6 +64,10 @@ const SecondStep: FC<SecondStepProps> = (props) => {
 
   const [selectedColor, setSelectedColor] = useState<string>("");
   const [selectedPrice, setSelectedPrice] = useState<number>(0);
+  const [selectedMileage, setSelectedMileage] = useState<number>(0);
+  const [selectedTechnicalCondition, setSelectedTechnicalCondition] =
+    useState<string>("");
+  const [selectedUsing, setSelectedUsing] = useState<boolean>(true);
 
   useEffect(() => {
     setAllBrands();
@@ -217,6 +221,17 @@ const SecondStep: FC<SecondStepProps> = (props) => {
       event.target.validity.valid ? event.target.value : v
     );
   };
+  const handleMileageChange = (event: any) => {
+    setSelectedMileage((v) =>
+      event.target.validity.valid ? event.target.value : v
+    );
+  };
+  const handleTechnicalConditionChange = (value: any) => {
+    setSelectedTechnicalCondition(value);
+  };
+  const handleUsingChange = (value: any) => {
+    setSelectedUsing(value != 0);
+  };
 
   const ifModelSelected = () => {
     if (selectedModel == 0) {
@@ -279,6 +294,9 @@ const SecondStep: FC<SecondStepProps> = (props) => {
                   selectedGearBox,
                   selectedColor,
                   selectedPrice,
+                  selectedMileage,
+                  selectedTechnicalCondition,
+                  selectedUsing,
                 });
               }}
             >
@@ -365,23 +383,32 @@ const SecondStep: FC<SecondStepProps> = (props) => {
 
         <div className={ifModelSelected()}>
           <div className={ifGenerationSelected(1)}>
-            Participation in a road accident
-            <Select className="steps-select">
-              <Select.Option key={1}>Yes</Select.Option>
-              <Select.Option key={2}>No</Select.Option>
-            </Select>
+            Mileage
+            <Input
+              className="steps-select"
+              value={selectedMileage}
+              onChange={handleMileageChange}
+            />
           </div>
           <div className={ifGenerationSelected(1)}>
             Technical condition
-            <Select className="steps-select">
-              <Select.Option key={1}>Ideal</Select.Option>
-              <Select.Option key={2}>Needs repair</Select.Option>
-              <Select.Option key={3}>For spare parts</Select.Option>
+            <Select
+              className="steps-select"
+              onChange={handleTechnicalConditionChange}
+            >
+              <Select.Option key={"Ideal"}>Ideal</Select.Option>
+              <Select.Option key={"Needs repair"}>Needs repair</Select.Option>
+              <Select.Option key={"For spare parts"}>
+                For spare parts
+              </Select.Option>
             </Select>
           </div>
           <div className={ifGenerationSelected(1)}>
-            Driven from
-            <Select className="steps-select"></Select>
+            Using
+            <Select className="steps-select" onChange={handleUsingChange}>
+              <Select.Option key={1}>Used</Select.Option>
+              <Select.Option key={0}>New</Select.Option>
+            </Select>
           </div>
         </div>
 

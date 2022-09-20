@@ -1,4 +1,7 @@
 import axios from "axios";
+import {writeCars} from "./components/posts/search/actions";
+import { ILoginModel } from "./components/authorization/types";
+import ErrorHandler from "./components/errorHandler";
 
 const instance = axios.create({
     baseURL: "https://localhost:5001/",
@@ -11,6 +14,8 @@ const instance = axios.create({
         'Authorization' : `Bearer ${localStorage.getItem("token")}`
     }
 });
+
+const eh = new ErrorHandler;
 
 instance.interceptors.request.use(
     (config) => {
@@ -48,15 +53,20 @@ instance.interceptors.response.use(
           return Promise.reject(_error);
         }
       }
+      if(err.response.status === 400 && err.response.data) {
+        localStorage.setItem('errorCode', err.response.status)
+        localStorage.setItem('errorData', JSON.stringify(err.response.data.Errors));
+        eh.test();
+      }
       if (err.response.status === 403 && err.response.data) {
         return Promise.reject(err.response.data);
       }
       if(err.response.status === 500 && err.response.data) {
-        window.location.href = "/error/500";
+        // window.location.href = "/error/500";
       }
     }
     else {
-      window.location.href = "/error/500";
+      // window.location.href = "/error/500";
     }
     return Promise.reject(err);
   }

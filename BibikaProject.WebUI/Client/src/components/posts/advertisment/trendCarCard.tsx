@@ -17,7 +17,7 @@ import { createChat } from "../../userCabinet/chat/service";
 import { useNavigate } from "react-router-dom";
 import { likePost } from "../../userCabinet/service";
 import { getLikedPostNumbers } from "./service";
-
+import { IMAGES_PATH } from "../../../constants";
 
 export interface ITrendCarCardProps {
   car: IBannerCar;
@@ -41,7 +41,7 @@ const TrendCarCard = ({ car, scale }: ITrendCarCardProps) => {
       setImgSrc(loadingImage);
       const imgName = await getImagesByPostId(car.id);
       if (imgName && imgName[0] && (imgName[0] as string)) {
-        setImgSrc(`/images/${imgName[0]}_medium.png`);
+        setImgSrc(`${IMAGES_PATH}/${imgName[0]}_medium.png`);
       } else {
         setImgSrc(defaultImage);
       }

@@ -3,6 +3,7 @@ import { push } from "connected-react-router";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { string } from "yup";
+import { IMAGES_PATH } from "../../../constants";
 import PostPageLoadingPage from "./loader";
 import { getImagesByPostId, getPostById } from "./service";
 import BodyTag from "./tags/bodyTag";
@@ -52,9 +53,8 @@ const PostPage = () => {
     }
   };
 
-  if (post === undefined || post === null)
-  {
-    return <PostPageLoadingPage />
+  if (post === undefined || post === null) {
+    return <PostPageLoadingPage />;
   }
 
   return (
@@ -65,7 +65,7 @@ const PostPage = () => {
 
       <div className="post-page-images">
         <div className="post-page-current-image">
-          <img src={`https://localhost:5001/images/${images[currentImageIndex]}.png`} />
+          <img src={`${IMAGES_PATH}/${images[currentImageIndex]}.png`} />
           <svg
             onClick={onImagePrev}
             className="left-arrow"
@@ -106,7 +106,7 @@ const PostPage = () => {
             if (index != currentImageIndex) {
               return (
                 <div className="post-page-side-image">
-                  <img src={`https://localhost:5001/images/${data}_small.png`} />
+                  <img src={`${IMAGES_PATH}/${data}_small.png`} />
                 </div>
               );
             }
@@ -163,9 +163,7 @@ const PostPage = () => {
         </div>
       </div>
 
-      <div className="post-page-description">
-        {post?.description}
-      </div>
+      <div className="post-page-description">{post?.description}</div>
 
       <div className="post-page-specs">
         <div className="specs-header">

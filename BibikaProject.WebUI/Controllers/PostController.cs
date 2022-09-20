@@ -2,6 +2,7 @@
 using BibikaProject.Application.Core.Requests;
 using BibikaProject.Application.Core.Services;
 using BibikaProject.Application.Identity.Claims;
+using BibikaProject.Infrastructure.Core.Errors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BibikaProject.WebUI.Controllers
 {
-    [Route("api/post")]
+    [Route("api/post/")]
     [ApiController]
     public class PostController : ControllerBase
     {
@@ -129,6 +130,12 @@ namespace BibikaProject.WebUI.Controllers
             var result = await postService.GetLastViwedPosts(HttpContext.User.Claims.First(x => x.Type == UserJWTClaimTypes.Id).Value);
 
             return Ok(result);
+        }
+        [HttpGet("test")]
+        public IActionResult Test()
+        {
+            string[] a = new string[] { "Test error", "test error2" };
+            throw new BadRequestException(a);
         }
 
     }

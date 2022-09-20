@@ -11,6 +11,7 @@ import { IBannerCar } from "./types";
 
 import loadingImage from "../../assets/loading.gif";
 import defaultImage from "../../assets/defaultImage.png";
+import { IMAGES_PATH } from "../../constants";
 
 export interface IMainPageCarCardProps {
   car: IBannerCar;
@@ -44,7 +45,7 @@ const MainPageCarCard = ({ car }: IMainPageCarCardProps) => {
       setImgSrc(loadingImage);
       const imgName = await getImagesByPostId(car.id);
       if (imgName && imgName[0] && (imgName[0] as string)) {
-        setImgSrc(`/images/${imgName[0]}_medium.png`);
+        setImgSrc(`${IMAGES_PATH}/${imgName[0]}_medium.png`);
       } else {
         setImgSrc(defaultImage);
       }

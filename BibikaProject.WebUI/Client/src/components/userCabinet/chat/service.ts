@@ -106,7 +106,6 @@ export const sendMessage = async (toEmail: string, body: string) => {
     const token = localStorage.getItem("token");
 
     if (token && toEmail) {
-      console.log("send");
       const user = jwt_decode(token as string) as IUser;
       const responseBody = {
         text: body,
@@ -114,7 +113,6 @@ export const sendMessage = async (toEmail: string, body: string) => {
         toEmail,
       };
       await http.post(`api/user/send-message`, responseBody);
-      console.log("send 2");
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {

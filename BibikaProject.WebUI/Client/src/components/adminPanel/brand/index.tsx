@@ -65,7 +65,6 @@ const BrandPage = () => {
       const error: IRequestError = _error as IRequestError;
       error.errors.forEach((e) => {
         toast.error(e);
-
       });
     } finally {
       setLoading(false);
