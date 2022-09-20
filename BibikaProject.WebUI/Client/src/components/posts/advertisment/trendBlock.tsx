@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { IRequestError } from "../../adminPanel/types";
 import { getRandomPost } from "../../home/service";
 import { IBannerCar } from "../../home/types";
 import { getRandomTrendPost } from "./service";
@@ -22,13 +24,20 @@ const TrendBlock = () => {
 
   useEffect(() => {
     (async () => {
-      let post: IBannerCar | null | undefined = null;
-      const tmpArr: Array<IBannerCar> = [];
-      for (let i = 0; i <= 2; i++) {
-        post = await getRandomPost();
-        tmpArr.push(post as IBannerCar);
+      try {
+        let post: IBannerCar | null | undefined = null;
+        const tmpArr: Array<IBannerCar> = [];
+        for (let i = 0; i <= 2; i++) {
+          post = await getRandomTrendPost();
+          tmpArr.push(post as IBannerCar);
+        }
+        setPostArray(tmpArr);
+      } catch (_error) {
+        const error: IRequestError = _error as IRequestError;
+        error.errors.forEach((e) => {
+          toast.error(e);
+        });
       }
-      setPostArray(tmpArr);
     })();
   }, []);
 

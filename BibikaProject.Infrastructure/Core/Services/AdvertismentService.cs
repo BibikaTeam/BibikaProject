@@ -78,7 +78,8 @@ namespace BibikaProject.Infrastructure.Core.Services
         {
             var posts = query.GetAll().Where(x => x.IsBanner && x.BannerShowsLeft > 0).IncldueAllPostProperties();
 
-            if (posts.Count() == 0)
+            if (posts.Count() == 0 || posts == null)
+
             {
                 throw new NotFoundException("There is no banner post in database");
             }
@@ -92,7 +93,7 @@ namespace BibikaProject.Infrastructure.Core.Services
                 throw new NotFoundException("There is no banner post in database");
             }
 
-            await command.DecrementBannerViews(post.Id);
+            await command.DecrementTrendViews(post.Id);
             await command.SaveChangesAsync();
 
             return mapper.Map<PostDTO>(post);

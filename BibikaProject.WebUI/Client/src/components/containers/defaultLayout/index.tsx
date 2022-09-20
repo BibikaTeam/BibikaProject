@@ -1,4 +1,5 @@
 import { Outlet } from "react-router";
+import ErrorHandler from "../../errorHandler";
 import Footer from "./footer";
 import Header from "./header";
 
@@ -7,7 +8,7 @@ const DefaultLayout = () => {
     <>
       <Header />
       <Outlet></Outlet>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

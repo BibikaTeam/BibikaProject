@@ -11,11 +11,17 @@
         border: 1px solid rgba(0, 0, 0, 0.2);
         border-radius: 10px 10px 0px 0px;
         padding-left: 0;
+        display: flex;
+        align-items: center;
         .chat-name{
             font-size: 24px;
             line-height: 33px;
             color: #414141;
             display: inline-block;
+            margin-left: 20px;
+            .username-header{
+                margin-left: 20px;
+            }
         }
     }
     .all-chats {

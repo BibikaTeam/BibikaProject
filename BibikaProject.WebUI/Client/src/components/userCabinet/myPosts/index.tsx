@@ -23,8 +23,6 @@ const MyPosts = () => {
     title: "Audi Q8 S Line",
     id: 52,
   };
-  console.log(userCars);
-  console.log(userCars !== null && userCars.length !== 0);
   return (
     <>
       <div className="my-cars">

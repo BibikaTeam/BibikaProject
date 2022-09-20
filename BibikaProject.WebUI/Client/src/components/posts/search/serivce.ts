@@ -11,8 +11,6 @@ export const getMinMaxYearPriceByGeneration = async (generationId: number) => {
       `api/post/get/min-max-values/${generationId}`
     );
 
-    console.log("Data: ", response.data);
-
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

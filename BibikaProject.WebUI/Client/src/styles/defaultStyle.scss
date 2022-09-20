@@ -16,4 +16,8 @@
   #root {
     height: 100%;
     overflow-x: hidden;
+    overflow-y: scroll;
+    &::-webkit-scrollbar { 
+        display: none; 
+    }
   }

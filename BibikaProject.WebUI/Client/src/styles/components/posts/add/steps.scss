@@ -102,7 +102,8 @@
     display: flex;
     flex-direction: column;
     height: 92%;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
     padding-left: 147px;
     padding-right: 147px;
     padding-bottom: 2vh;
@@ -471,3 +472,71 @@
     }
 }
 
+.zero-step-post-add{
+    .Ellipse_27_209 {
+        animation: 2.5s linear 0s 1 normal forwards running Ellipse_27_209;
+            opacity: 0;
+    }
+    @keyframes Ellipse_27_209 {
+        0% {
+            opacity: 0;
+        }
+        20% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 1;
+        }
+    }.Ellipse_28_463 {
+        animation: 2.5s linear 0s 1 normal forwards running Ellipse_28_463;
+            opacity: 0;
+    }
+    @keyframes Ellipse_28_463 {
+        0% {
+            opacity: 0;
+        }
+        20% {
+            opacity: 0;
+        }
+        40% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 1;
+        }
+    }.Ellipse_29_49 {
+        animation: 2.5s linear 0s 1 normal forwards running Ellipse_29_49;
+            opacity: 0;
+    }
+    @keyframes Ellipse_29_49 {
+        0% {
+            opacity: 0;
+        }
+        40% {
+            opacity: 0;
+        }
+        60% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 1;
+        }
+    }.bibika_861 {
+        animation: 2.5s linear 0s 1 normal forwards running bibika_861;
+            opacity: 0;
+    }
+    @keyframes bibika_861 {
+        0% {
+            opacity: 0;
+        }
+        60% {
+            opacity: 0;
+        }
+        80% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+}

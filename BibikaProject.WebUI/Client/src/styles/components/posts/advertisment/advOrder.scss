@@ -1,10 +1,38 @@
 .adv-selection {
+    .banner {
+        background: linear-gradient(91.84deg, rgba(33, 156, 225, 0.1) -7.65%, rgba(255, 255, 255, 0.1) 190.03%) !important;
+        .left-trend-side{
+            .h1{
+                background-color: white;
+                font-size: 58px;
+                color: #E06738;
+                padding: 26px 32px;
+                border-radius: 10px;
+                display: inline-block;
+                line-height: 40px;
+                font-weight: 600;
+                margin: 0;
+            }
+        }
+        .right-trend-side{
+            .adv-main-banner {
+                padding: 0;
+                margin-right: -300px; 
+                margin-top: 50px;
+
+                .main-adv-info{
+                    margin-top: -20px;
+                }
+            }
+        }
+    }
     .trend-selection{
         background: radial-gradient(55.23% 597.02% at 74.45% 42.21%,
          rgba(224, 103, 56, 0.2) 0%, 
          rgba(224, 103, 56, 0) 100%),
          rgba(224, 103, 56, 0.1);
          height: 600px;
+         overflow: hidden;
         //  display: flex;
         //  justify-content: space-between;
         .left-trend-side{
@@ -64,6 +92,9 @@
             .first-col{
                 overflow: hidden;
             }
+            .main-trend-banner{
+                margin-top: -70px;
+            }
             .outer{
                 // display: table;
                 .inner{
@@ -97,6 +128,8 @@
     .trend-description{
         padding-left: 150px;
         padding-right: 70px;
+        display: flex;
+        justify-content: space-between;
 
         .trend-description-text{
             font-size: 43px;
@@ -112,16 +145,38 @@
                 font-weight: 800;
             }
         }
-        .choose-trend-button{
-             background-color: rgba($color: #E06738, $alpha: 0.1);
-             color: #E06738;
-             padding: 13px 143px;
-             border: none;
-             border-radius: 10px;
-             cursor: pointer;
-             font-size: 36px;
-             font-weight: 600;
-             float: right;
+        .button-buy-group{
+            display: inline-flex;
+            align-items: center;
+            // text-align: right;
+            // position: absolute;
+            // right: 0;
+            width: auto;
+            .choose-trend-button{
+                 background-color: rgba($color: #E06738, $alpha: 0.1);
+                 color: #E06738;
+                 padding: 13px 148px;
+                 border: none;
+                 border-radius: 10px;
+                 cursor: pointer;
+                 font-size: 36px;
+                 font-weight: 600;
+                 &:hover{
+                    background-color: rgba($color: #E06738, $alpha: 1);
+                    color: white;
+                 }
+            }
+            .skip-trend-button{
+                cursor: pointer;
+                font-size: 36px;
+                font-weight: 600;
+                color: #414141;
+                margin-right: 30px;
+                &:hover{
+                    text-decoration: underline;
+                }
+            }
         }
+
     }
 }

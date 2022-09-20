@@ -1,6 +1,7 @@
 import { Button } from "antd";
 import { useEffect, useState } from "react";
 import Marquee from "react-fast-marquee";
+import { Link } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { IRequestError } from "../../adminPanel/types";
@@ -12,12 +13,14 @@ import { IPostModel } from "../postPage/types";
 import CarCard from "../result/carCard";
 import { enableTrendOnPost } from "./service";
 import TrendCarCard from "./trendCarCard";
+import { useNavigate } from "react-router-dom";
 
 // export interface AdvOrderPageProps {
 //   car: IBannerCar;
 // }
 
 const TrendAdvOrder = () => {
+  const navigator = useNavigate();
   const [selectedButton, setSelectedButton] = useState<number>(1);
   const [randomPost, setRandomPost] = useState<IBannerCar>();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -70,6 +73,7 @@ const TrendAdvOrder = () => {
         postId: car?.id as number,
         views: getSelectedCount(),
       });
+      navigator("/");
     } catch (_error) {
       const error: IRequestError = _error as IRequestError;
       error.errors.forEach((e) => {
@@ -90,19 +94,17 @@ const TrendAdvOrder = () => {
     }
   };
 
-  console.log(car);
-
   return (
     <div className="adv-selection">
       <div className="trend-selection row">
-        <div className="left-trend-side col-5">
+        <div className="left-trend-side col-6">
           <h1>TREND</h1>
           <h3>
             Be with <span className="header-selection">trend!</span>
           </h3>
 
-          <span className="privilege">privilege</span>
-          <span className="privilege">privilege</span>
+          <span className="privilege">Be on many pages</span>
+          <span className="privilege">Sell car faster</span>
 
           <div className="buttons-group">
             <button
@@ -131,72 +133,13 @@ const TrendAdvOrder = () => {
             </button>
           </div>
         </div>
-        <div className="right-trend-side col-7">
-          <div className="row" style={{ height: "100%" }}>
-            <div className="first-col col-3">
-              {/* {car && (
-                <div className="outer">
-                  <div className="inner">
-                    <Marquee direction="right" speed={20} gradient={false}>
-                      <div style={{ transform: "rotate(-90deg)" }}>
-                        <TrendCarCard car={car as IBannerCar} scale={0.5} />
-                      </div>
-                      <div style={{ transform: "rotate(-90deg)" }}>
-                        <TrendCarCard car={car as IBannerCar} scale={0.5} />
-                      </div>
-                      <div
-                        style={{
-                          transform: "rotate(-90deg)",
-                          marginTop: "10px",
-                        }}
-                      >
-                        <TrendCarCard car={car as IBannerCar} scale={0.5} />
-                      </div>
-                      <div
-                        style={{
-                          transform: "rotate(-90deg)",
-                          marginTop: "10px",
-                        }}
-                      >
-                        <TrendCarCard car={car as IBannerCar} scale={0.5} />
-                      </div>
-                      <div
-                        style={{
-                          transform: "rotate(-90deg)",
-                          marginTop: "10px",
-                        }}
-                      >
-                        <TrendCarCard car={car as IBannerCar} scale={0.5} />
-                      </div>
-                    </Marquee>
-                  </div>
-                </div>
-              )} */}
-            </div>
+        <div className="right-trend-side col-6">
+          <div className="row">
+            <div className="first-col col-3"></div>
             <div className="main-trend-banner col-6">
               {car && <TrendCarCard car={car as IBannerCar} scale={0.7} />}
             </div>
-            <div className="third-col col-3">
-              {car && (
-                <Marquee direction="left" speed={40} gradient={false}>
-                  <div>
-                    <TrendCarCard car={car as IBannerCar} scale={0.5} />
-                  </div>
-                  <div>
-                    <TrendCarCard car={car as IBannerCar} scale={0.5} />
-                  </div>
-                  <div>
-                    <TrendCarCard car={car as IBannerCar} scale={0.5} />
-                  </div>
-                  <div>
-                    <TrendCarCard car={car as IBannerCar} scale={0.5} />
-                  </div>
-                  <div>
-                    <TrendCarCard car={car as IBannerCar} scale={0.5} />
-                  </div>
-                </Marquee>
-              )}
-            </div>
+            <div className="third-col col-3"></div>
           </div>
         </div>
       </div>
@@ -208,9 +151,17 @@ const TrendAdvOrder = () => {
           </span>
           <span className="times-trend-description">/{getSelectedCount()}</span>
         </span>
-        <button className="choose-trend-button" onClick={buyTrendAdv}>
-          <span>Buy</span>
-        </button>
+        <div className="button-buy-group">
+          <Link
+            to={`/post/banner-adv-order?id=${car?.id}`}
+            className="skip-trend-button"
+          >
+            Skip
+          </Link>
+          <button className="choose-trend-button" onClick={buyTrendAdv}>
+            <span>Buy</span>
+          </button>
+        </div>
       </div>
     </div>
   );

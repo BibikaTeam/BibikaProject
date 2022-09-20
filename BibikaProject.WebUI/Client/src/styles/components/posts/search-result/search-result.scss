@@ -145,6 +145,9 @@
                     color: rgba($color: #E0673899, $alpha: 0.6);
                 }
             }
+            .btn {
+                box-sizing: border-box;
+            }
             .call-btn{
                 padding: 4px 35px;
                 background-color: rgba($color: #E0673833, $alpha: 0.2);

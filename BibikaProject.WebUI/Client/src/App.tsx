@@ -12,6 +12,8 @@ import AuthorizedBasedRoute from "./routing/authorizedBasedRoute";
 import LoginPage from "./components/authorization/login";
 import RegisterPage from "./components/authorization/register";
 import ErrorPage from "./components/noMatch/errorPage";
+import ZeroStep from "./components/posts/add/steps/ZeroStep";
+import axios from "axios";
 
 //lazy loading
 const HomePage = React.lazy(() => import("./components/home"));
@@ -43,7 +45,9 @@ const AdminLayout = React.lazy(
 );
 const BrandPage = React.lazy(() => import("./components/adminPanel/brand"));
 const ModelPage = React.lazy(() => import("./components/adminPanel/model"));
-const AdminPanelPostPage = React.lazy(() => import("./components/adminPanel/post"));
+const AdminPanelPostPage = React.lazy(
+  () => import("./components/adminPanel/post")
+);
 
 const CarPage = React.lazy(() => import("./components/adminPanel/car"));
 const CompleteSetPage = React.lazy(
@@ -54,6 +58,12 @@ const GenerationPage = React.lazy(
   () => import("./components/adminPanel/generation")
 );
 const AddPostPage = React.lazy(() => import("./components/posts/add"));
+const TrendAdvOrder = React.lazy(
+  () => import("./components/posts/advertisment/trendAdvOrder")
+);
+const BannerAdvOrder = React.lazy(
+  () => import("./components/posts/advertisment/bannerAdvOrder")
+);
 
 function App() {
   return (
@@ -62,10 +72,15 @@ function App() {
         <Routes>
           <Route path="/" element={<DefaultLayout />}>
             <Route index element={<HomePage />} />
+            <Route path="/test" element={<Test />} />
             <Route path="/error/:errorCode" element={<ErrorPage />} />
             <Route path="/post/detail-search" element={<DetailSearch />} />
             <Route path="/post/search-result" element={<SearchResult />} />
             <Route path="/post/add" element={<AddPostPage />} />
+            <Route path="/post/trend-adv-order" element={<TrendAdvOrder />} />
+            <Route path="/post/trend-adv-order" element={<TrendAdvOrder />} />
+            <Route path="/post/banner-adv-order" element={<BannerAdvOrder />} />
+
             <Route path="/post/:id" element={<PostPage />} />
             <Route element={<AuthorizedBasedRoute />}>
               <Route path="/user-profile" element={<UserProfile />}>
@@ -75,14 +90,12 @@ function App() {
                 <Route path="/user-profile/settings" element={<SettingsProfile />} />
                 <Route path="/user-profile/settings/change-password" element={<ChangePasswordPage />} />
               </Route>
-              <Route path="/post/adv-order" element={<AdvOrderPage />} />
             </Route>
           </Route>
 
           <Route path="/loading" element={<LoadingPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/test" element={<Test />} />
 
           <Route path="/admin" element={<AdminBasedRoute />}>
             <Route path="/admin" element={<AdminLayout />}>

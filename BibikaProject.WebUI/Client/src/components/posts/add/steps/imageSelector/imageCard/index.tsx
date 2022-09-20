@@ -11,8 +11,6 @@ const ImageCard: FC<ImageCardProps> = (props) => {
     props.onClick(props.id);
   };
 
-  console.log("src: ", props.src);
-
   return (
     <div className="imageSelector-card-container" onClick={handleOnClick}>
       <img className="imageCard-img" src={props.src} />

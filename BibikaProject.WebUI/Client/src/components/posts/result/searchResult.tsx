@@ -12,6 +12,7 @@ import CarCard from "./carCard";
 import { ICurrentCarDetailProps, IDetailSearchProps } from "../search/types";
 import { getDetailPaginatedPosts } from "../search/serivce";
 import SearchPanel from "../../home/searchPanel";
+import TrendBlock from "../advertisment/trendBlock";
 
 const SearchResult = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -85,9 +86,7 @@ const SearchResult = () => {
   };
   const fetchDataByRequest = async (request: IDetailSearchProps) => {
     try {
-      console.log("works");
       const data = await getDetailPaginatedPosts(request);
-      console.log("data:", data);
       writeCars(data as IPaginationRequest<IBannerCar>);
     } catch (_error) {
       const error: IRequestError = _error as IRequestError;
@@ -100,6 +99,7 @@ const SearchResult = () => {
   return (
     <div className="search-page">
       <SearchPanel searchProps={requestData.filters[0]}></SearchPanel>
+      <TrendBlock />
       <div className="search-result">
         <h1>Search result</h1>
         {searchRespond?.data.map((x, id) => {

@@ -41,7 +41,6 @@ export const confirmOldPassword = async (values: ILoginModel) => {
 
 export const savePassword = async (values: INewPasswordModel) => {
   try {
-    console.log(values);
     await http.post(`api/reset-password`, values);
   } catch (error) {
     if (axios.isAxiosError(error)) {

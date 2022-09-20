@@ -46,7 +46,7 @@ const Header = () => {
           ),
         },
         {
-          key: "3",
+          key: "4",
           label: (
             <Link to={"/user-profile/saved-posts"}>
               <a target="_blank" rel="noopener noreferrer">
@@ -56,7 +56,7 @@ const Header = () => {
           ),
         },
         {
-          key: "4",
+          key: "5",
           label: (
             <Link onClick={handleLogout} to={"/login"}>
               <a target="_blank" rel="noopener noreferrer">

@@ -5,6 +5,7 @@
     height: 308px;
     border-radius: 10px;
     overflow: hidden;
+    margin-bottom: 50px;
 
     .imageCol{
         width: 500px;
@@ -115,6 +116,10 @@
                     font-weight: 500;
                     line-height: 33px;
                     border-radius: 5px;
+                    &:hover{
+                       background-color: rgba($color: #E06738, $alpha: 1);
+                       color: white;
+                    }
                 }
                 .link-button{
                     font-weight: 500;

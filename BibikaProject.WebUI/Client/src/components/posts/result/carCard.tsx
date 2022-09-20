@@ -2,9 +2,14 @@ import { Button } from "antd";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { IMAGES_PATH } from "../../../constants";
 import { IRequestError } from "../../adminPanel/types";
 import { IBannerCar } from "../../home/types";
+import { createChat } from "../../userCabinet/chat/service";
+import { likePost } from "../../userCabinet/service";
+import { getLikedPostNumbers } from "../advertisment/service";
 import { getImagesByPostId } from "../postPage/service";
+import { useNavigate } from "react-router-dom";
 
 export interface ICarCardProps {
   car: IBannerCar;
@@ -12,6 +17,8 @@ export interface ICarCardProps {
 
 const CarCard = ({ car }: ICarCardProps) => {
   const [imgSrc, setImgSrc] = useState<string>("");
+  const navigator = useNavigate();
+
   useEffect(() => {
     (async () => {
       loadImage();
@@ -22,7 +29,7 @@ const CarCard = ({ car }: ICarCardProps) => {
     try {
       const imgName = await getImagesByPostId(car.id);
       if (imgName && imgName[0] && (imgName[0] as string)) {
-        setImgSrc(`/images/${imgName[0]}_medium.png`);
+        setImgSrc(`${IMAGES_PATH}/${imgName[0]}_medium.png`);
       }
     } catch (_error) {
       const error: IRequestError = _error as IRequestError;
@@ -30,6 +37,29 @@ const CarCard = ({ car }: ICarCardProps) => {
         toast.error(e);
       });
     }
+  };
+
+  const updateLikedPost = async () => {
+    const result = await getLikedPostNumbers();
+    if (result) localStorage.setItem("liked", result?.toString() as string);
+  };
+
+  const onLikeClick = async () => {
+    try {
+      await likePost(car.id);
+      updateLikedPost();
+    } catch (_error) {
+      const error: IRequestError = _error as IRequestError;
+      if (error && error.errors) {
+        error.errors.forEach((e) => {
+          toast.error(e);
+        });
+      }
+    }
+  };
+  const onHandleMessageWrite = async () => {
+    await createChat(car.sellerEmail);
+    navigator("/user-profile/chat");
   };
 
   return (
@@ -66,12 +96,19 @@ const CarCard = ({ car }: ICarCardProps) => {
               <span className="sub-price">{car.price * 30}₴</span>
             </div>
             <div className="right-price-side">
-              <button className="message-btn">Like</button>
+              <button className="message-btn btn" onClick={onLikeClick}>
+                Like
+              </button>
               <span> </span>
               <Link to={"/"}>
-                <button className="message-btn">Message</button>
+                <button
+                  className="message-btn btn"
+                  onClick={onHandleMessageWrite}
+                >
+                  Message
+                </button>
               </Link>
-              <button className="call-btn">
+              <button className="call-btn btn">
                 <svg
                   width="32"
                   height="32"
