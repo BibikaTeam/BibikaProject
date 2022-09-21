@@ -6,6 +6,8 @@ using BibikaProject.Domain.Entities.Identity;
 using BibikaProject.Infrastructure.Core.Services.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
@@ -29,34 +31,6 @@ namespace BibikaProject.Infrastructure.Core.Services
         private readonly IImageQuery query;
 
         public const string ImagesPath = "images/";
-
-        private string ResizeImage(byte[] data, int w, int h)
-        {
-            using (var ms = new MemoryStream(data))
-            {
-                var image = System.Drawing.Image.FromStream(ms);
-
-                var ratioX = (double)w / image.Width;
-                var ratioY = (double)h / image.Height;
-
-                var ratio = Math.Min(ratioX, ratioY);
-
-                var width = (int)(image.Width * ratio);
-                var height = (int)(image.Height * ratio);
-
-                var newImage = new System.Drawing.Bitmap(width, height);
-
-                System.Drawing.Graphics.FromImage(newImage).DrawImage(image, 0, 0, width, height);
-
-                System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(newImage);
-
-                System.Drawing.ImageConverter converter = new System.Drawing.ImageConverter();
-
-                data = (byte[])converter.ConvertTo(bmp, typeof(byte[]));
-
-                return Convert.ToBase64String(data);
-            }
-        }
 
         public async Task DeleteImage(int id, string userId)
         {
@@ -82,30 +56,27 @@ namespace BibikaProject.Infrastructure.Core.Services
             }
 
             var bytes = Convert.FromBase64String(base64);
-            //var bmp = ImageWorker.FromBase64StringToImage(base64);
-            //bmp.Save($"{ImagesPath}/{imageTitle}.png", ImageFormat.Jpeg);
-            using (var imageFile = new FileStream($"{ImagesPath}/{imageTitle}.png", FileMode.Create))
+
+            // Source
+            using (var imageFile = SixLabors.ImageSharp.Image.Load(bytes))
             {
-                await imageFile.WriteAsync(bytes, 0, bytes.Length);
-                await imageFile.FlushAsync();
+                imageFile.Save(new FileStream($"{ImagesPath}/{imageTitle}.png", FileMode.Create), new PngEncoder());
             }
 
-            //var medium = ImageWorker.CompressImage(bmp, 512, 512, false);
-            //medium.Save($"{ImagesPath}/{imageTitle}_medium.png", ImageFormat.Jpeg);
-            var medium = Convert.FromBase64String(ResizeImage(bytes, 512, 512));
-            using (var imageFile = new FileStream($"{ImagesPath}/{imageTitle}_medium.png", FileMode.Create))
+            // Medium 
+            using (var imageFile = SixLabors.ImageSharp.Image.Load(bytes))
             {
-                await imageFile.WriteAsync(medium, 0, medium.Length);
-                await imageFile.FlushAsync();
+                imageFile.Mutate(x => x.Resize(512, 512));
+
+                imageFile.Save(new FileStream($"{ImagesPath}/{imageTitle}_medium.png", FileMode.Create), new PngEncoder());
             }
 
-            //var small = ImageWorker.CompressImage(bmp, 128, 128, false);
-            //small.Save($"{ImagesPath}/{imageTitle}_small.png", ImageFormat.Jpeg);
-            var small = Convert.FromBase64String(ResizeImage(bytes, 128, 128));
-            using (var imageFile = new FileStream($"{ImagesPath}/{imageTitle}_small.png", FileMode.Create))
+            // Small
+            using (var imageFile = SixLabors.ImageSharp.Image.Load(bytes))
             {
-                await imageFile.WriteAsync(small, 0, small.Length);
-                await imageFile.FlushAsync();
+                imageFile.Mutate(x => x.Resize(128, 128));
+
+                imageFile.Save(new FileStream($"{ImagesPath}/{imageTitle}_small.png", FileMode.Create), new PngEncoder());
             }
 
             var img = await command.AddAsync(new Image { Title = imageTitle, UserId = userId });
