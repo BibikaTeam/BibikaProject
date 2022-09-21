@@ -1,86 +1,114 @@
 .chat-container {
     padding: 37px 150px;
-    .row{
+
+    .row {
         margin: 0;
-        *{
+
+        * {
             padding: 0 !important;
         }
     }
-    .chat-header{
+
+    .message-text {
+        font-family: 'Manrope';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 48px;
+        line-height: 66px;
+        color: $primary-font-color;
+        margin-top: 37px;
+    }
+
+    .chat-header {
         height: 82px;
         border: 1px solid rgba(0, 0, 0, 0.2);
         border-radius: 10px 10px 0px 0px;
         padding-left: 0;
         display: flex;
         align-items: center;
-        .chat-name{
+
+        .chat-name {
             font-size: 24px;
             line-height: 33px;
             color: #414141;
             display: inline-block;
             margin-left: 20px;
-            .username-header{
+
+            .username-header {
                 margin-left: 20px;
             }
         }
     }
+
     .all-chats {
         padding: 0 !important;
+
         .chat-preview {
             background-color: rgba($color: #414141, $alpha: 0.02);
 
             border: 1px solid rgba($color: #000000, $alpha: 0.2);
             border-top: none;
             padding: 40px;
+
             &:first-child {
                 border-radius: 10px 0px 0px 0px;
                 border-top: 1px solid rgba($color: #000000, $alpha: 0.2);
-            }   
-            .message-by-car, .time-last-message {
-                font-size: 24px;
-                color: rgba(65, 65, 65, 0.5); 
             }
-            .time-last-message{
+
+            .message-by-car,
+            .time-last-message {
+                font-size: 24px;
+                color: rgba(65, 65, 65, 0.5);
+            }
+
+            .time-last-message {
                 text-align: right;
             }
-                span{
-                    font-size: 24px;
-                    line-height: 33px;
-                    display: inline;
-                }
-                .last-message-username{
-                    color: rgba(65, 65, 65, 0.7);
-                }
-                .last-message-text{
-                    color: #414141;
-                }
+
+            span {
+                font-size: 24px;
+                line-height: 33px;
+                display: inline;
+            }
+
+            .last-message-username {
+                color: rgba(65, 65, 65, 0.7);
+            }
+
+            .last-message-text {
+                color: #414141;
+            }
         }
+
         .active {
             background-color: rgba($color: #414141, $alpha: 0.05);
             border-right: none;
         }
     }
-    .chat-side{
+
+    .chat-side {
         padding-left: 0;
-        
+
         .messages-field {
             background-color: rgba($color: #414141, $alpha: 0.05);
             height: 725px;
             padding: 25px;
             overflow-y: scroll;
-            &::-webkit-scrollbar { 
-                display: none; 
+
+            &::-webkit-scrollbar {
+                display: none;
             }
-            .message-container{
+
+            .message-container {
                 height: auto;
                 display: block;
 
-                &::after{
+                &::after {
                     content: "";
                     clear: both;
                     display: table;
                 }
-                
+
                 p {
                     padding: 8px 20px;
                     background-color: white;
@@ -88,22 +116,25 @@
                     max-width: 520px;
                     float: left;
                 }
-                .right-align{
+
+                .right-align {
                     float: right;
                 }
             }
         }
+
         input {
             height: 77px;
             width: 100%;
-            font-size: 20px; 
+            font-size: 20px;
             padding: 3px 15px;
             background: #FFFFFF;
             border: 1px solid rgba(0, 0, 0, 0.2);
             border-radius: 0px 0px 10px 10px;
+
             &:active {
                 border: 2px solid rgba(0, 0, 0, 0.2);
             }
         }
-    } 
+    }
 }

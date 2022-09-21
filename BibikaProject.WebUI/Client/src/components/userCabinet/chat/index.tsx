@@ -65,13 +65,14 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="row chat-container">
+    <div className="chat-container">
+      <span className="message-text">Your messages</span>
       <div className="row">
         <div className="col-8 offset-4 chat-header">
           <span className="chat-name">
             {" "}
             <Avatar
-            className="user-icon"
+              className="user-icon"
               size={50}
               style={{ margin: "5px" }}
               icon={<UserOutlined />}
