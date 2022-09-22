@@ -21,7 +21,7 @@ const ChatPreview = ({ isActive, emailWith, onClick }: IChatPreview) => {
         const userName = await getUserName(emailWith);
         const lastMessage = await getLastMessage(emailWith);
         setLastMessage(lastMessage);
-        setUserName(userName);
+        setUserName(userName);        
       } catch (_error) {
         const error: IRequestError = _error as IRequestError;
         error.errors.forEach((e) => {

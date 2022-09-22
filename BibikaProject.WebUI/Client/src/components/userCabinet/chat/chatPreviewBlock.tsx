@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import ChatPreview from "./chatPreview";
 import { getAllChats } from "./service";
 
@@ -21,19 +22,24 @@ const ChatPreviewsBlock = ({ onSelectedChange }: IChatPreviewsBlockProps) => {
   const onHandleSelectedChange = (email: string) => {
     setSelectedMail(email);
     onSelectedChange(email);
+
   };
 
   return (
-    <div className="col-4 all-chats">
-      {chats &&
-        chats.map((x) => (
-          <ChatPreview
-            onClick={onHandleSelectedChange}
-            isActive={selectedMail == x}
-            emailWith={x}
-          />
-        ))}
-    </div>
+    
+      <div className="col-4 all-chats">
+        <Link to={`/user-profile/chat/${selectedMail}`}>
+        {chats &&
+          chats.map((x) => (
+            <ChatPreview
+              onClick={onHandleSelectedChange}
+              isActive={selectedMail == x}
+              emailWith={x}
+            />
+          ))}
+          </Link>
+      </div>
+    
   );
 };
 
