@@ -26,20 +26,16 @@ const ChatPreviewsBlock = ({ onSelectedChange }: IChatPreviewsBlockProps) => {
   };
 
   return (
-    
-      <div className="col-4 all-chats">
-        <Link to={`/user-profile/chat/${selectedMail}`}>
-        {chats &&
-          chats.map((x) => (
-            <ChatPreview
-              onClick={onHandleSelectedChange}
-              isActive={selectedMail == x}
-              emailWith={x}
-            />
-          ))}
-          </Link>
-      </div>
-    
+    <div className="col-4 all-chats">
+      {chats &&
+        chats.map((x) => (
+          <ChatPreview
+            onClick={onHandleSelectedChange}
+            isActive={selectedMail == x}
+            emailWith={x}
+          />
+        ))}
+    </div>
   );
 };
 

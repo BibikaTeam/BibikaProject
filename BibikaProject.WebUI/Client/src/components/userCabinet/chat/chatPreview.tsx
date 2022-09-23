@@ -4,6 +4,7 @@ import { IRequestError } from "../../adminPanel/types";
 import { getLastMessage, getUserName } from "./service";
 import { IMessage } from "./types";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import { Link } from "react-router-dom";
 
 export interface IChatPreview {
   isActive: boolean;
@@ -21,7 +22,7 @@ const ChatPreview = ({ isActive, emailWith, onClick }: IChatPreview) => {
         const userName = await getUserName(emailWith);
         const lastMessage = await getLastMessage(emailWith);
         setLastMessage(lastMessage);
-        setUserName(userName);        
+        setUserName(userName);
       } catch (_error) {
         const error: IRequestError = _error as IRequestError;
         error.errors.forEach((e) => {
@@ -37,27 +38,29 @@ const ChatPreview = ({ isActive, emailWith, onClick }: IChatPreview) => {
   };
 
   return (
-    <div
-      className={`row chat-preview ${isActive ? "active" : ""}`}
-      onClick={onHandleClick}
-    >
-      <div className="row">
-        <div className="col-9">
-          <span className="message-by-car">{emailWith}</span>
+    <Link to={`/user-profile/chat/${emailWith}`}>
+      <div
+        className={`row chat-preview ${isActive ? "active" : ""}`}
+        onClick={onHandleClick}
+      >
+        <div className="row">
+          <div className="col-9">
+            <span className="message-by-car">{emailWith}</span>
+          </div>
+          <div className="col-3">
+            <span className="time-last-message">
+              {lastMessage?.date
+                ? new Date(lastMessage?.date as Date).toLocaleTimeString()
+                : ""}
+            </span>
+          </div>
         </div>
-        <div className="col-3">
-          <span className="time-last-message">
-            {lastMessage?.date
-              ? new Date(lastMessage?.date as Date).toLocaleTimeString()
-              : ""}
-          </span>
-        </div>
+        <span className="last-message-username">
+          {lastMessage?.from}:
+          <span className="last-message-text"> {lastMessage?.text}</span>
+        </span>
       </div>
-      <span className="last-message-username">
-        {lastMessage?.from}:
-        <span className="last-message-text"> {lastMessage?.text}</span>
-      </span>
-    </div>
+    </Link>
   );
 };
 
