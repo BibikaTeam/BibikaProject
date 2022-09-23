@@ -65,13 +65,14 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="row chat-container">
+    <div className="chat-container">
+      <span className="message-text">Your messages</span>
       <div className="row">
         <div className="col-8 offset-4 chat-header">
           <span className="chat-name">
             {" "}
             <Avatar
-            className="user-icon"
+              className="user-icon"
               size={50}
               style={{ margin: "5px" }}
               icon={<UserOutlined />}
@@ -80,23 +81,26 @@ const ChatPage = () => {
           </span>
         </div>
       </div>
-      <ChatPreviewsBlock onSelectedChange={onActiveChatChange} />
-      <div className="col-8 chat-side ">
-        <div className="messages-field">
-          {messages && messages.length !== 0 ? (
-            messages.map((x) => (
-              <div className="message-container">
-                <p className={user?.email === x.from ? `right-align` : ""}>
-                  {x.text}
-                </p>
-              </div>
-            ))
-          ) : (
-            <></>
-          )}
+      <div className="row">
+        <ChatPreviewsBlock onSelectedChange={onActiveChatChange}/>
+        <div className="col-8 chat-side ">
+          <div className="messages-field">
+            {messages && messages.length !== 0 ? (
+              messages.map((x) => (
+                <div className="message-container">
+                  <p className={user?.email === x.from ? `right-align` : ""}>
+                    {x.text}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <></>
+            )}
+          </div>
+          <input type="text" width={"100%"} onKeyDown={handleKeyDown} />
         </div>
-        <input type="text" width={"100%"} onKeyDown={handleKeyDown} />
       </div>
+
     </div>
   );
 };

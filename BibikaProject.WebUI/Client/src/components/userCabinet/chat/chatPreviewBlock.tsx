@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import ChatPreview from "./chatPreview";
 import { getAllChats } from "./service";
 
@@ -21,6 +22,7 @@ const ChatPreviewsBlock = ({ onSelectedChange }: IChatPreviewsBlockProps) => {
   const onHandleSelectedChange = (email: string) => {
     setSelectedMail(email);
     onSelectedChange(email);
+
   };
 
   return (

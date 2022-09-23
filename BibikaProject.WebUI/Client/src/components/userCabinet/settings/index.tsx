@@ -112,7 +112,7 @@ const SettingsProfile = () => {
 
   return (
     <div className="settings-container">
-      <h1 className="settings-text">Settings</h1>
+      <span className="settings-text">Settings</span>
       <div className="settings-dropdown">
         <Collapse
           expandIconPosition={"end"}
