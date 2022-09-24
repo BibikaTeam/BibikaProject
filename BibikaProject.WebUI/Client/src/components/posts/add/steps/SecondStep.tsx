@@ -346,7 +346,7 @@ const SecondStep: FC<SecondStepProps> = (props) => {
             Engines
             <Select className="steps-select" onChange={handleEngineChange}>
               {enginesList.map((engine: IEngineModel) => (
-                <Select.Option key={engine.id}>{engine.title}</Select.Option>
+                <Select.Option key={engine.id}>{engine.title}, {engine.kwPower} kw, {engine.fuel}</Select.Option>
               ))}
             </Select>
           </div>

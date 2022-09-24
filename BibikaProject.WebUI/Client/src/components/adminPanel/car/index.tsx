@@ -34,7 +34,7 @@ import { getAllCompleteSets } from "../completeSet/service";
 const Context = React.createContext({ name: "Default" });
 
 const CarPage = () => {
-  const countOnPage: number = 3;
+  const countOnPage: number = 100;
   const [api, contextHolder] = notification.useNotification();
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -442,7 +442,7 @@ const CarPage = () => {
             onChange={handleEngineChange}
           >
             {engines.map((model: IEngineModel) => (
-              <Select.Option key={model.id}>{model.capacity} см³, {model.fuel}</Select.Option>
+              <Select.Option key={model.id}>{model.capacity} см³, {model.kwPower} kw, {model.fuel}</Select.Option>
             ))}
           </Select>
         </Col>
@@ -531,7 +531,7 @@ const CarPage = () => {
           >
             <Select placeholder="Select engine">
               {engines.map((model: IEngineModel) => (
-                <Select.Option key={model.id}>{model.capacity} см³, {model.fuel}</Select.Option>
+                <Select.Option key={model.id}>{model.capacity} см³, {model.kwPower} kw, {model.fuel}</Select.Option>
               ))}
             </Select>
           </Form.Item>
