@@ -5,6 +5,7 @@
     cursor: pointer;
     padding: 10px 30px;
     font-size: 26px;
+
     &:disabled {
         background-color: rgba(65, 65, 65, 0.08) !important;
     }
@@ -12,7 +13,23 @@
         border: 1px solid #219CE1;
         outline: none;
     }
+
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1; 
+    }
+     
+    &::-webkit-scrollbar-thumb {
+      background: rgba($color: #219CE1, $alpha: 0.5); 
+    }
+    
+    &::-webkit-scrollbar-thumb:hover {
+      background: rgba($color: #219CE1, $alpha: 1); 
+    }
 }
+
 
 .foreign-select{
     .dropdown {

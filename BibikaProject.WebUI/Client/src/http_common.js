@@ -1,6 +1,4 @@
 import axios from "axios";
-import {writeCars} from "./components/posts/search/actions";
-import { ILoginModel } from "./components/authorization/types";
 import ErrorHandler from "./components/errorHandler";
 
 const instance = axios.create({
@@ -54,19 +52,17 @@ instance.interceptors.response.use(
         }
       }
       if(err.response.status === 400 && err.response.data) {
-        localStorage.setItem('errorCode', err.response.status)
-        localStorage.setItem('errorData', JSON.stringify(err.response.data.Errors));
-        eh.test();
+        eh.errorHandling({errorCode: err.response.status, errorString: JSON.stringify(err.response.data.Errors)});
       }
       if (err.response.status === 403 && err.response.data) {
         return Promise.reject(err.response.data);
       }
       if(err.response.status === 500 && err.response.data) {
-        // window.location.href = "/error/500";
+        window.location.href = "/error/500";
       }
     }
     else {
-      // window.location.href = "/error/500";
+      window.location.href = "/error/500";
     }
     return Promise.reject(err);
   }

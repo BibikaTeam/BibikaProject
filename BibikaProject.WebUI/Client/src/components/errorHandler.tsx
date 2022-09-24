@@ -3,8 +3,13 @@ import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { toast } from "react-toastify";
 
+export interface IErrorForHandling {
+  errorCode: string | number;
+  errorString: string;
+}
+
 class ErrorHandler extends React.Component<{}, {}> {
-  public test() {
+  public errorHandling({ errorCode, errorString }: IErrorForHandling) {
     toast.success("ASDAS");
   }
   public render(): JSX.Element {
