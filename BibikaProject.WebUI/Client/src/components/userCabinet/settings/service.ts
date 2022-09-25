@@ -11,9 +11,7 @@ import { IRequestError } from "../../adminPanel/types";
 import { ErrorStrings } from "../../../constants";
 import { ILoginModel, LoginResponseType } from "../../authorization/types";
 
-export const saveContact = (values: IUpdateContactModel) => {
-  console.log("contact", values);
-};
+export const saveContact = (values: IUpdateContactModel) => {};
 
 export const confirmOldPassword = async (values: ILoginModel) => {
   try {
@@ -60,9 +58,7 @@ export const savePassword = async (values: INewPasswordModel) => {
   }
 };
 
-export const saveEmail = (values: IUpdateEmailModel) => {
-  console.log("email", values);
-};
+export const saveEmail = (values: IUpdateEmailModel) => {};
 
 export const resetPassword = async (data: IResetPasswordRequestModel) => {
   try {

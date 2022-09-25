@@ -41,7 +41,7 @@ const CarCard = ({ car }: ICarCardProps) => {
 
   const updateLikedPost = async () => {
     const result = await getLikedPostNumbers();
-    if (result) localStorage.setItem("liked", result?.toString() as string);
+    if (result) localStorage.setItem("likes", result?.toString() as string);
   };
 
   const onLikeClick = async () => {

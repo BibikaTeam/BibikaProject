@@ -14,21 +14,22 @@ const SavedPosts = () => {
 
   return (
     <div className="saved-posts">
-      <h1>Saved posts</h1>
-
-      <div className="cars-container">
-        {cars &&
-          cars.map((x) => (
-            <>
-              <TrendCarCard car={x} />
-              <TrendCarCard car={x} />
-              <TrendCarCard car={x} />
-              <TrendCarCard car={x} />
-              <TrendCarCard car={x} />
-            </>
-          ))}
-      </div>
+      {cars ? (
+        <>
+          <h1>Saved posts</h1>
+          <div className="cars-container">
+            {cars.map((x) => (
+              <>
+                <TrendCarCard car={x} />
+              </>
+            ))}
+          </div>
+        </>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
+
 export default SavedPosts;

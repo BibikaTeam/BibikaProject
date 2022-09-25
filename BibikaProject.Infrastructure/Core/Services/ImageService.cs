@@ -35,10 +35,8 @@ namespace BibikaProject.Infrastructure.Core.Services
             var userRoles = await userManager.GetRolesAsync(await userManager.FindByIdAsync(userId));
             var image = await query.GetByIdAsync(id);
             
-            if (userRoles.Contains("Admin") || image.UserId == userId)
+            if (image.UserId == userId)
             {
-                File.Delete($"{ImagesPath}/{image.Title}.png");
-
                 command.Delete(id);
                 await command.SaveChangesAsync();
             }      
@@ -64,7 +62,19 @@ namespace BibikaProject.Infrastructure.Core.Services
             // Medium 
             using (var imageFile = SixLabors.ImageSharp.Image.Load(bytes))
             {
-                imageFile.Mutate(x => x.Resize(512, 512));
+
+                const int SIZE = 512;
+
+                var ratioX = (double)SIZE / imageFile.Width;
+                var ratioY = (double)SIZE / imageFile.Height;
+
+                var ratio = Math.Min(ratioX, ratioY);
+
+                var width = (int)(imageFile.Width * ratio);
+                var height = (int)(imageFile.Height * ratio);
+
+                imageFile.Mutate(x => x.Resize(width, height));
+
 
                 imageFile.Save(new FileStream($"{ImagesPath}/{imageTitle}_medium.png", FileMode.Create), new PngEncoder());
             }
@@ -72,7 +82,17 @@ namespace BibikaProject.Infrastructure.Core.Services
             // Small
             using (var imageFile = SixLabors.ImageSharp.Image.Load(bytes))
             {
-                imageFile.Mutate(x => x.Resize(128, 128));
+                const int SIZE = 128;
+
+                var ratioX = (double)SIZE / imageFile.Width;
+                var ratioY = (double)SIZE / imageFile.Height;
+
+                var ratio = Math.Min(ratioX, ratioY);
+
+                var width = (int)(imageFile.Width * ratio);
+                var height = (int)(imageFile.Height * ratio);
+
+                imageFile.Mutate(x => x.Resize(width, height));
 
                 imageFile.Save(new FileStream($"{ImagesPath}/{imageTitle}_small.png", FileMode.Create), new PngEncoder());
             }

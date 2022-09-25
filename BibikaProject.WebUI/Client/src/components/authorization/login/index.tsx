@@ -50,7 +50,7 @@ const LoginPage: FC = () => {
     } catch (_error) {
       const error: IRequestError = _error as IRequestError;
       error.errors.forEach((e) => {
-        toast.error(e);
+        // toast.error(e);
       });
       setErrorStr(error.errors[0]);
     } finally {
@@ -63,10 +63,11 @@ const LoginPage: FC = () => {
 
     try {
       await loginGoogleUser(values);
-      toast.success("Successfully login");
+      navigator("/");
+      // toast.success("Successfully login");
     } catch (error) {
-      if (!error || !(error as LoginErrorType)) toast.error("Some error");
-      else toast.error((error as LoginErrorType).errorString);
+      // if (!error || !(error as LoginErrorType)) toast.error("Some error");
+      // else toast.error((error as LoginErrorType).errorString);
     } finally {
       setLoading(false);
     }
@@ -77,16 +78,15 @@ const LoginPage: FC = () => {
     setLoading(true);
     try {
       await loginFacebookUser({ facebookToken: values.accessToken });
-      toast.success("Successfully login");
+      navigator("/");
+      // toast.success("Successfully login");
     } catch (error) {
-      if (!error || !(error as LoginErrorType)) toast.error("Some error");
-      else toast.error((error as LoginErrorType).errorString);
+      // if (!error || !(error as LoginErrorType)) toast.error("Some error");
+      // else toast.error((error as LoginErrorType).errorString);
     } finally {
       setLoading(false);
     }
   };
-
-  console.log("AAAA");
 
   return (
     <Spin tip="Loading..." spinning={loading} size="large">

@@ -79,7 +79,7 @@ const TrendCarCard = ({ car, scale }: ITrendCarCardProps) => {
   };
   const readUserLiked = async () => {
     try {
-      const likedArr = localStorage.getItem("liked");
+      const likedArr = localStorage.getItem("likes");
       if (!likedArr) {
         updateLikedPost();
       } else {
@@ -97,7 +97,7 @@ const TrendCarCard = ({ car, scale }: ITrendCarCardProps) => {
   const updateLikedPost = async () => {
     const result = await getLikedPostNumbers();
     setLikedPosts(result);
-    if (result) localStorage.setItem("liked", result?.toString() as string);
+    if (result) localStorage.setItem("likes", result?.toString() as string);
   };
 
   return (

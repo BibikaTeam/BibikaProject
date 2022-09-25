@@ -73,10 +73,9 @@ const StepsContainer: FC = () => {
   };
 
   const onThirdStepFinish = (values: any) => {
-    addPostModel.location = values;
+    addPostModel.location = "Kyiv";
     addPostModel.sellerId = userId!;
     try {
-      console.log("values: ", addPostModel);
       addPost(addPostModel).then((data) => {
         addImagesToPost({
           postId: data,

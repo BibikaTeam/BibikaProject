@@ -45,7 +45,7 @@ const CarPage = () => {
   const [generations, setGenerations] = useState<Array<IGenerationModel>>([]);
   const [engines, setEngines] = useState<Array<IEngineModel>>([]);
   const [carBodies, setCarBodies] = useState<Array<ICarBodyModel>>([]);
-  const [comleteSets, setComleteSets] = useState<Array<ICompleteSetModel>>([]);
+  const [completeSets, setCompleteSets] = useState<Array<ICompleteSetModel>>([]);
   const [gearboxes, setGearboxes] = useState<Array<IGearboxModel>>([]);
 
   const [currentBrand, setCurrentBrand] = useState<number>(0);
@@ -173,7 +173,7 @@ const CarPage = () => {
   const setAllCopleteSets = async () => {
     try {
       await getAllCompleteSets().then((data) => {
-        setComleteSets(data as ICompleteSetModel[]);
+        setCompleteSets(data as ICompleteSetModel[]);
       })
     } catch (_error) {
       const error: IRequestError = _error as IRequestError;
@@ -552,7 +552,7 @@ const CarPage = () => {
             rules={[{ required: true, message: "Виберіть комплектацію для машини" }]}
           >
             <Select placeholder="Select complete set">
-              {comleteSets.map((model: ICompleteSetModel) => (
+              {completeSets.map((model: ICompleteSetModel) => (
                 <Select.Option key={model.id}>{model.title}</Select.Option>
               ))}
             </Select>

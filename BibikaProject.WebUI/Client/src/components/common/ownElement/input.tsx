@@ -5,6 +5,7 @@ export interface IInputProps {
   placeholder: string | undefined;
   loading: boolean;
   value: number | string;
+  type: "number" | "text";
 }
 
 const MyInput = ({
@@ -14,6 +15,7 @@ const MyInput = ({
   placeholder,
   loading,
   value,
+  type,
 }: IInputProps) => {
   return (
     <input
@@ -22,6 +24,7 @@ const MyInput = ({
       onChange={onChange}
       placeholder={placeholder}
       value={value}
+      type={type}
     />
   );
 };
@@ -33,4 +36,5 @@ MyInput.defaultProps = {
   placeholder: "",
   loading: false,
   value: 0,
+  type: "text",
 };

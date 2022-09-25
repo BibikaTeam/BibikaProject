@@ -82,7 +82,7 @@ const ChatPage = () => {
         </div>
       </div>
       <div className="row">
-        <ChatPreviewsBlock onSelectedChange={onActiveChatChange}/>
+        <ChatPreviewsBlock onSelectedChange={onActiveChatChange} />
         <div className="col-8 chat-side ">
           <div className="messages-field">
             {messages && messages.length !== 0 ? (
@@ -100,7 +100,6 @@ const ChatPage = () => {
           <input type="text" width={"100%"} onKeyDown={handleKeyDown} />
         </div>
       </div>
-
     </div>
   );
 };

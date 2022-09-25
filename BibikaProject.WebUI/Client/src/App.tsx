@@ -14,6 +14,7 @@ import RegisterPage from "./components/authorization/register";
 import ErrorPage from "./components/noMatch/errorPage";
 import ZeroStep from "./components/posts/add/steps/ZeroStep";
 import axios from "axios";
+import ModalAdvUp from "./components/posts/advertisment/advModalPage";
 
 //lazy loading
 const HomePage = React.lazy(() => import("./components/home"));
@@ -86,10 +87,22 @@ function App() {
               <Route path="/user-profile" element={<UserProfile />}>
                 <Route path="/user-profile/my-posts" element={<MyPosts />} />
                 <Route path="/user-profile/chat" element={<ChatPage />} />
-                <Route path="/user-profile/chat/:email" element={<ChatPage />} />
-                <Route path="/user-profile/saved-posts" element={<SavedPosts />} />
-                <Route path="/user-profile/settings" element={<SettingsProfile />} />
-                <Route path="/user-profile/settings/change-password" element={<ChangePasswordPage />} />
+                <Route
+                  path="/user-profile/chat/:email"
+                  element={<ChatPage />}
+                />
+                <Route
+                  path="/user-profile/saved-posts"
+                  element={<SavedPosts />}
+                />
+                <Route
+                  path="/user-profile/settings"
+                  element={<SettingsProfile />}
+                />
+                <Route
+                  path="/user-profile/settings/change-password"
+                  element={<ChangePasswordPage />}
+                />
               </Route>
             </Route>
           </Route>

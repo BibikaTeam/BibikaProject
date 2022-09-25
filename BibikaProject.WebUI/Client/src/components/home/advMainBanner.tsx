@@ -57,7 +57,7 @@ const AdvMainBanner = ({ car, scale }: IMainBannerProps) => {
       setImgSrc(loadingImage);
       const imgName = await getImagesByPostId(car.id);
       if (imgName && imgName[0] && (imgName[0] as string)) {
-        setImgSrc(`${IMAGES_PATH}/${imgName[0]}_medium.png`);
+        setImgSrc(`${IMAGES_PATH}/${imgName[0]}.png`);
       } else {
         setImgSrc(defaultImage);
       }

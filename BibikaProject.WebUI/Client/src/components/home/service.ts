@@ -108,7 +108,6 @@ export const getSelectableValues = async (values: ICurrentCarDetailProps) => {
       `api/search-panel/get-missing-data`,
       values
     );
-    console.log("response,data: ", response.data);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

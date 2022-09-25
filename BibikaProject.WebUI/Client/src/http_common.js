@@ -58,11 +58,11 @@ instance.interceptors.response.use(
         return Promise.reject(err.response.data);
       }
       if(err.response.status === 500 && err.response.data) {
-        window.location.href = "/error/500";
+        // window.location.href = "/error/500";
       }
     }
     else {
-      window.location.href = "/error/500";
+      // window.location.href = "/error/500";
     }
     return Promise.reject(err);
   }

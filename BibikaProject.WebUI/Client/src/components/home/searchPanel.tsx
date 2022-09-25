@@ -227,7 +227,6 @@ const SearchPanel = ({ searchProps }: SearchPanelProps) => {
   const handleRadioChange = () => {};
 
   const handleSearch = async (values: IShortSearchRespond) => {
-    console.log(carModel);
     const searchString = qs.stringify(carModel.filters[0]);
     navigator(`/post/search-result?${searchString}`);
   };

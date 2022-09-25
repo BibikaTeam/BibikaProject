@@ -107,15 +107,12 @@ export const loginFacebookUser = (data: FacebookLoginModel) => {
 
           const user = jwt_decode(token) as IUser;
 
-          console.log(1);
           //Write to redux
           dispatch({
             type: AuthActionTypes.AUTH_LOGIN,
             payload: user,
           });
         });
-
-      console.log(2);
 
       return Promise.resolve();
     } catch (error) {

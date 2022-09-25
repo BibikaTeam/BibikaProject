@@ -65,4 +65,6 @@
 			</ResolvedFileToPublish>
 		</ItemGroup>
 	</Target>
+
+	<ProjectExtensions><VisualStudio><UserProperties client_4build_4static_4js_4314_13fb27a0f_1chunk_1js_1map__JsonSchema="" /></VisualStudio></ProjectExtensions>
 </Project>

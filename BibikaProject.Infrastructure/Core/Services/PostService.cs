@@ -216,7 +216,12 @@ namespace BibikaProject.Infrastructure.Core.Services
                                           .Include(x => x.Car).ThenInclude(x => x.GearBox)
                                           .Include(x => x.Car).ThenInclude(x => x.Generation).ThenInclude(x => x.Model).ThenInclude(x => x.Brand)
                                           .Include(x => x.Views)
-                                          .Include(x => x.Likes); ;
+                                          .Include(x => x.Likes);
+
+            if (posts.Count() == 0 || posts == null)
+            {
+                throw new NotFoundException("No one post in database");
+            }
 
             var postsList = await posts.ToListAsync();
 

@@ -13,6 +13,7 @@ import CarCard from "../result/carCard";
 import { enableBannerOnPost, enableTrendOnPost } from "./service";
 import TrendCarCard from "./trendCarCard";
 import { useNavigate } from "react-router-dom";
+import ModalAdvUp from "./advModalPage";
 
 // export interface AdvOrderPageProps {
 //   car: IBannerCar;
@@ -24,6 +25,7 @@ const BannerAdvOrder = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [car, setCar] = useState<IBannerCar>();
   const navigator = useNavigate();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {
@@ -40,6 +42,13 @@ const BannerAdvOrder = () => {
 
   const onButtonTimesClick = (index: number) => {
     setSelectedButton(index);
+  };
+
+  const handleModalOpen = () => {
+    setIsOpen(true);
+  };
+  const handleModalClose = () => {
+    setIsOpen(false);
   };
 
   const getSelectedPrice = () => {
@@ -94,66 +103,79 @@ const BannerAdvOrder = () => {
   };
 
   return (
-    <div className="adv-selection">
-      <div className="trend-selection banner row">
-        <div className="left-trend-side col-6">
-          <h1>TOP</h1>
-          <h3>
-            UP YOUR POST TO <span className="header-selection">TOP!</span>
-          </h3>
+    <>
+      <div className="adv-selection">
+        <div className="trend-selection banner row">
+          <div className="left-trend-side col-6">
+            <h1 className="banner-mark">TOP</h1>
+            <h3>
+              UP YOUR POST TO <span className="header-selection">TOP!</span>
+            </h3>
 
-          <span className="privilege">Be with start</span>
-          <span className="privilege">Be more popular</span>
+            <span className="privilege">Be with start</span>
+            <span className="privilege">Be more popular</span>
 
-          <div className="buttons-group">
-            <button
-              className={`button-trend-times-select ${
-                selectedButton === 1 ? "active" : ""
-              }`}
-              onClick={() => onButtonTimesClick(1)}
-            >
-              50 shows
+            <div className="buttons-group">
+              <button
+                className={`button-trend-times-select ${
+                  selectedButton === 1 ? "active" : ""
+                }`}
+                onClick={() => onButtonTimesClick(1)}
+              >
+                50 shows
+              </button>
+              <button
+                className={`button-trend-times-select ${
+                  selectedButton === 2 ? "active" : ""
+                }`}
+                onClick={() => onButtonTimesClick(2)}
+              >
+                100 shows
+              </button>
+              <button
+                className={`button-trend-times-select ${
+                  selectedButton === 3 ? "active" : ""
+                }`}
+                onClick={() => onButtonTimesClick(3)}
+              >
+                500 shows
+              </button>
+            </div>
+          </div>
+          <div className="right-trend-side col-6">
+            {car && <AdvMainBanner car={car as IBannerCar} scale={0.7} />}
+          </div>
+        </div>
+        <div className="trend-description">
+          <span className="trend-description-text">
+            Car on banner only for{" "}
+            <span className="price-trend-description">
+              {getSelectedPrice()}uah
+            </span>
+            <span className="times-trend-description">
+              /{getSelectedCount()}
+            </span>
+          </span>
+          <div className="button-buy-group">
+            <Link to={"/"} className="skip-trend-button">
+              Skip
+            </Link>
+            <button className="up-post-button" onClick={handleModalOpen}>
+              <span>Up post</span>
             </button>
-            <button
-              className={`button-trend-times-select ${
-                selectedButton === 2 ? "active" : ""
-              }`}
-              onClick={() => onButtonTimesClick(2)}
-            >
-              100 shows
-            </button>
-            <button
-              className={`button-trend-times-select ${
-                selectedButton === 3 ? "active" : ""
-              }`}
-              onClick={() => onButtonTimesClick(3)}
-            >
-              500 shows
+            <button className="choose-trend-button" onClick={buyTrendAdv}>
+              <span>Buy</span>
             </button>
           </div>
         </div>
-        <div className="right-trend-side col-6">
-          {car && <AdvMainBanner car={car as IBannerCar} scale={0.7} />}
-        </div>
       </div>
-      <div className="trend-description">
-        <span className="trend-description-text">
-          Upgrade your popularity only for{" "}
-          <span className="price-trend-description">
-            {getSelectedPrice()}uah
-          </span>
-          <span className="times-trend-description">/{getSelectedCount()}</span>
-        </span>
-        <div className="button-buy-group">
-          <Link to={"/"} className="skip-trend-button">
-            Skip
-          </Link>
-          <button className="choose-trend-button" onClick={buyTrendAdv}>
-            <span>Buy</span>
-          </button>
-        </div>
-      </div>
-    </div>
+      <ModalAdvUp
+        postId={car?.id as number}
+        isOpen={isOpen}
+        handleModalClose={handleModalClose}
+        handleModalOpen={handleModalOpen}
+      />
+    </>
   );
 };
 

@@ -10,10 +10,11 @@ export interface IErrorForHandling {
 
 class ErrorHandler extends React.Component<{}, {}> {
   public errorHandling({ errorCode, errorString }: IErrorForHandling) {
-    toast.success("ASDAS");
+    console.log("Error code: ", errorCode);
+    console.log("Error string: ", errorString);
   }
   public render(): JSX.Element {
-    return <div>{this.props.children}</div>;
+    return <>{this.props.children}</>;
   }
 }
 export default ErrorHandler;
