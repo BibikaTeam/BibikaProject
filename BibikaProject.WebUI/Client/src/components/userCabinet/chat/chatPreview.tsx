@@ -15,6 +15,7 @@ export interface IChatPreview {
 const ChatPreview = ({ isActive, emailWith, onClick }: IChatPreview) => {
   const [userName, setUserName] = useState<string>();
   const [lastMessage, setLastMessage] = useState<IMessage>();
+  const { user } = useTypedSelector((x) => x.login);
 
   useEffect(() => {
     (async () => {
@@ -38,14 +39,14 @@ const ChatPreview = ({ isActive, emailWith, onClick }: IChatPreview) => {
   };
 
   return (
-    <Link to={`/user-profile/chat/${emailWith}`}>
+    <Link to={`/user-profile/chat?email=${emailWith}`}>
       <div
         className={`row chat-preview ${isActive ? "active" : ""}`}
         onClick={onHandleClick}
       >
         <div className="row">
           <div className="col-9">
-            <span className="message-by-car">{emailWith}</span>
+            <span className="message-by-car">{userName}</span>
           </div>
           <div className="col-3">
             <span className="time-last-message">
@@ -56,8 +57,12 @@ const ChatPreview = ({ isActive, emailWith, onClick }: IChatPreview) => {
           </div>
         </div>
         <span className="last-message-username">
-          {lastMessage?.from}:
-          <span className="last-message-text"> {lastMessage?.text}</span>
+          {lastMessage && (
+            <>
+              {user?.email == lastMessage?.from ? user?.name : userName}:
+              <span className="last-message-text"> {lastMessage?.text}</span>
+            </>
+          )}
         </span>
       </div>
     </Link>

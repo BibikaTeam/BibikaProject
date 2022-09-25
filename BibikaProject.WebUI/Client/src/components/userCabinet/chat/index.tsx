@@ -1,23 +1,44 @@
 import { Avatar, message } from "antd";
 import { useEffect, useState } from "react";
-import { getAllChats, getMessages, getUserName, sendMessage } from "./service";
+import {
+  createChat,
+  getAllChats,
+  getMessages,
+  getUserName,
+  sendMessage,
+} from "./service";
 import { UserOutlined } from "@ant-design/icons";
 import ChatPreviewsBlock from "./chatPreviewBlock";
 import { IRequestError } from "../../adminPanel/types";
 import { toast } from "react-toastify";
 import { IMessage } from "./types";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import { useSearchParams } from "react-router-dom";
+import LoadingPage from "../../containers/defaultLayout/loading";
 
 const ChatPage = () => {
   const [activeEmail, setActiveEmail] = useState<string>();
   const [messages, setMessages] = useState<Array<IMessage>>();
   const { user } = useTypedSelector((x) => x.login);
   const [userName, setUserName] = useState<string>("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     (async () => {
       try {
-        await getAllChats();
+        setLoading(true);
+        const email = searchParams.get("email") as string;
+        const chats = await getAllChats();
+
+        if (email && email != null && email.includes("@")) {
+          await createChat(email);
+          await onActiveChatChange(email);
+        } else {
+          await onActiveChatChange(chats[0]);
+        }
+
+        setLoading(false);
       } catch (_error) {
         const error: IRequestError = _error as IRequestError;
         error.errors.forEach((e) => {
@@ -63,6 +84,8 @@ const ChatPage = () => {
       await updateChats(activeEmail as string);
     }
   };
+
+  if (loading) return <LoadingPage></LoadingPage>;
 
   return (
     <div className="chat-container">

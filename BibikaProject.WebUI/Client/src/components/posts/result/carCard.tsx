@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 import { IMAGES_PATH } from "../../../constants";
 import { IRequestError } from "../../adminPanel/types";
 import { IBannerCar } from "../../home/types";
-import { createChat } from "../../userCabinet/chat/service";
 import { likePost } from "../../userCabinet/service";
 import { getLikedPostNumbers } from "../advertisment/service";
 import { getImagesByPostId } from "../postPage/service";
@@ -58,8 +57,7 @@ const CarCard = ({ car }: ICarCardProps) => {
     }
   };
   const onHandleMessageWrite = async () => {
-    await createChat(car.sellerEmail);
-    navigator("/user-profile/chat");
+    navigator(`/user-profile/chat?email=${car.sellerEmail}`);
   };
 
   return (

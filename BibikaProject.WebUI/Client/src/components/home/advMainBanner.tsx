@@ -7,13 +7,16 @@ import { IRequestError } from "../adminPanel/types";
 import { toast } from "react-toastify";
 import defaultImage from "../../assets/defaultImage.png";
 import { getImagesByPostId } from "../posts/postPage/service";
+import { Button } from "antd";
+import loadingImg from "../../assets/loading.gif";
 
 export interface IMainBannerProps {
   car: IBannerCar;
   scale: number;
+  loading: boolean;
 }
 
-const AdvMainBanner = ({ car, scale }: IMainBannerProps) => {
+const AdvMainBanner = ({ car, scale, loading }: IMainBannerProps) => {
   // const car: IBannerCar = {
   //   car: {
   //     carBodyTitle: "",
@@ -72,7 +75,7 @@ const AdvMainBanner = ({ car, scale }: IMainBannerProps) => {
     }
   };
 
-  return (
+  return loading ? (
     <div
       className="adv-main-banner"
       style={{
@@ -95,11 +98,20 @@ const AdvMainBanner = ({ car, scale }: IMainBannerProps) => {
         </Link>
       </div>
     </div>
+  ) : (
+    <div className="adv-main-banner" style={{ position: "relative" }}>
+      <img
+        style={{ width: 200, position: "absolute", top: "48%", left: "42%" }}
+        src={loadingImg}
+        alt=""
+      />
+    </div>
   );
 };
 
 AdvMainBanner.defaultProps = {
   scale: 1,
+  loading: false,
 };
 
 export default AdvMainBanner;

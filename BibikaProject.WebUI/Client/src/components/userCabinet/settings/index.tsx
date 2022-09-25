@@ -182,45 +182,6 @@ const SettingsProfile = () => {
           </Panel>
         </Collapse>
       </div>
-      <div className="settings-dropdown">
-        <Collapse
-          expandIconPosition={"end"}
-          className="settings-menu"
-          bordered={false}
-        >
-          <Panel
-            header="Email address"
-            key="1"
-            className="settings-submenu-container"
-          >
-            <div className="settings-input-container">
-              New email address
-              <Input
-                className="settings-input"
-                type="email"
-                onChange={handleNewEmailChange}
-              />
-            </div>
-            <div className="settings-input-container">
-              Password
-              <Input
-                className="settings-input"
-                onChange={handleEmailPassswordChange}
-                disabled={disableInputEmailPassword}
-              />
-            </div>
-            <div className="settings-button-container">
-              <Button
-                className="settings-button"
-                onClick={handleSaveEmail}
-                disabled={disableSaveButtonEmail}
-              >
-                Save
-              </Button>
-            </div>
-          </Panel>
-        </Collapse>
-      </div>
       <div className="delete-button">
         <Link to="#" className="link-button">
           Delete profile

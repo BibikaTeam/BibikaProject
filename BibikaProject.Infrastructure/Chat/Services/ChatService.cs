@@ -140,7 +140,7 @@ namespace BibikaProject.Infrastructure.Chat.Services
                 throw new NotFoundException("This converstation doesn't have any messages");
             }
 
-            return mapper.Map<MessageDTO>(chat.Messages.OrderBy(x => x.Date).ToList().First());
+            return mapper.Map<MessageDTO>(chat.Messages.OrderByDescending(x => x.Date).ToList().First());
         }
     }
 }

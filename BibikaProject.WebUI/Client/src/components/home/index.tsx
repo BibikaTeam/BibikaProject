@@ -32,7 +32,10 @@ const HomePage = () => {
   return (
     <div className="home-page">
       <div className="adb-main-container">
-        {bannerCar && <AdvMainBanner car={bannerCar as IBannerCar} />}
+        <AdvMainBanner
+          car={bannerCar as IBannerCar}
+          loading={bannerCar != null && bannerCar != undefined}
+        />
       </div>
       <SearchPanel />
       <TrendBlock />
