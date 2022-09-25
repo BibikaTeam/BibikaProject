@@ -72,7 +72,7 @@ const CarPreview = ({ car }: ICarPreviewProps) => {
               </Col>
             </Row>
             <Row className="buttons-bar">
-              <Link to={`/post?id=${car.id}`} className="link-button">
+              <Link to={`/post/${car.id}`} className="link-button">
                 Look
               </Link>
               <Link to="#" className="link-button">
