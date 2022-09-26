@@ -162,15 +162,15 @@ namespace BibikaProject.WebUI
 
             app.UseHangfireServer();
 
-            //app.UseSpa(spa =>
-            //{
-            //    spa.Options.SourcePath = "Client";
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "Client";
 
-            //    //if (env.IsDevelopment())
-            //    //{
-            //    //    spa.UseReactDevelopmentServer(npmScript: "start");
-            //    //}
-            //});
+                //if (env.IsDevelopment())
+                //{
+                //    spa.UseReactDevelopmentServer(npmScript: "start");
+                //}
+            });
 
             RecurringJob.AddOrUpdate<AdvertismentHelper>("dailyPointsDecrement", x => x.DecrementDailyPoints(), Cron.Daily);
             RecurringJob.AddOrUpdate<AdvertismentHelper>("balanceDecrement", x => x.DecrementBalance(), Cron.Daily);

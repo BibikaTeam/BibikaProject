@@ -73,7 +73,7 @@ const TrendAdvOrder = () => {
         postId: car?.id as number,
         views: getSelectedCount(),
       });
-      navigator("/");
+      navigator(`/post/banner-adv-order?id=${car?.id}`);
     } catch (_error) {
       const error: IRequestError = _error as IRequestError;
       error.errors.forEach((e) => {

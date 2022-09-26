@@ -79,7 +79,6 @@ function App() {
             <Route path="/post/search-result" element={<SearchResult />} />
             <Route path="/post/add" element={<AddPostPage />} />
             <Route path="/post/trend-adv-order" element={<TrendAdvOrder />} />
-            <Route path="/post/trend-adv-order" element={<TrendAdvOrder />} />
             <Route path="/post/banner-adv-order" element={<BannerAdvOrder />} />
 
             <Route path="/post/:id" element={<PostPage />} />
